@@ -125,11 +125,12 @@ class DataColumnAttributes(object):
                 rowNum += 1
         # Add sheet with all column relationships for each file:
         attrSheet = wb.add_worksheet('Column Attributes')
-        attrSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
-        rowOff = 1
+        #attrSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
+        #rowOff = 1
+        rowOff = 0
         for dt in self.__dateToAttrs:
             attr = self.__dateToAttrs[dt]
-            df = attr.Relationships.ToDataFrame()
+            df = attr.Relationships.ToDataFrame(False)
             # Write file date:
             attrSheet.write(rowOff, 0, "File Date")
             attrSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
@@ -149,7 +150,6 @@ class DataColumnAttributes(object):
                         # Write column headers:
                         attrSheet.write(filerow, num, col)
             rowOff += df.shape[0] + 1
-
         wb.close()
         
     def CreateTableDefinition(self, table = None):

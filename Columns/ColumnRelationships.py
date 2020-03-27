@@ -92,9 +92,9 @@ class ColumnRelationships(object):
                 if subkey == key:
                     newdata[key][subkey] = '='
                 elif subkey not in data[key]:
-                    newdata[key][subkey] = str(data[subkey][key].Reverse()) if countinfo == True else data[subkey][key].Reverse().TypeStr
+                    newdata[key][subkey] = data[subkey][key].Reverse().CountStr if countinfo == True else data[subkey][key].Reverse().TypeStr
                 else:
-                    newdata[key][subkey] = str(data[key][subkey]) if countinfo == True else data[key][subkey]
+                    newdata[key][subkey] = data[key][subkey].CountStr if countinfo == True else data[key][subkey].TypeStr
         
         return DataFrame(newdata)
 
