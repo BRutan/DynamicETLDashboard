@@ -4,8 +4,10 @@
 # Description:
 # * 
 
+import dateutil.parser as dateparser
 from decimal import Decimal
 from pandas import DataFrame
+from Columns.ColumnRelationships import RelationshipEnum
 import re
 
 class ColumnAttribute(object):
@@ -26,6 +28,7 @@ class ColumnAttribute(object):
         self.__isNullable = None
         self.__isUnique = None
         self.__uniqueCount = None
+        self.__uniques = None
         self.__type = None
         
     def __eq__(self, col):
@@ -54,14 +57,14 @@ class ColumnAttribute(object):
     def IsUnique(self):
         return self.__isUnique
     @property
-    def Relationships(self):
-        return self.__relationships
-    @property
     def Type(self):
         return self.__type
     @property
     def UniqueCount(self):
         return self.__uniqueCount
+    @property
+    def Uniques(self):
+        return self.__uniques
     ###################
     # Interface Methods:
     ###################
@@ -71,20 +74,25 @@ class ColumnAttribute(object):
         Inputs:
         * column: Expecting pandas Series or list-like container.
         """
-        uniques = set([val for num, val in enumerate(column) if not column.isna()[num]])
+        uniques = set(column.drop_duplicates())
         self.__uniqueCount = len(uniques)
-        self.__isNullable = True if len([val for val in column.isna() if val]) > 0 else False
+        self.__isNullable = True if [val for val in column.isna() if val] else False
         self.__isUnique = True if self.__uniqueCount == len(column) else False
         # See if Pandas DataFrame has determined types, or check column types manually:
         typeStr = str(column.dtype)
-        if uniques and self.__isNullable:
-            # Get specific type:
+        if uniques:
             typeStr = str(DataFrame(uniques)[0].dtype)
+        if self.__uniqueCount < 25:
+            self.__uniques = uniques
         if typeStr != 'object':
-            self.__type = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
+            typeStr = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
         else:
-            #self.__type = ColumnAttribute.ParseCells(uniques)
-            self.__type = 'varchar(max)'
+            # Verify that DataFrame has determine type effectively:
+            #typeStr = ColumnAttribute.__DetermineColType(uniques)
+            #if typeStr == 'object':
+            #   typeStr = 'varchar(max)'
+            typeStr = 'varchar(max)'
+        self.__type = typeStr
 
     def ToReportCell(self, header):
         """
@@ -94,8 +102,11 @@ class ColumnAttribute(object):
             return self.ColumnName
         return getattr(self, header)
 
-    @staticmethod
-    def DTypeToTSQLType(typeStr):
+    @classmethod
+    def DTypeToTSQLType(cls, typeStr):
+        """
+        * Convert dtype to appropriate TSQL type.
+        """
         if 'int' in typeStr:
             if typeStr == 'int64':
                 return 'bigint'
@@ -111,17 +122,38 @@ class ColumnAttribute(object):
             return 'datetime'
         if 'bool' in typeStr:
             return 'bool'
-        
-    @staticmethod
-    def IsNumeric(val):
-        return ColumnAttribute.__numericPattern.match(val) is None
-
+    @classmethod
+    def IsInt(val):
+        try:
+            temp = int(val)
+            return True
+        except:
+            return False
+    @classmethod
+    def IsFloat(val):
+        try:
+            temp = float(val)
+            return True
+        except:
+            return False
+    @classmethod
+    def IsDatetime(cls, val):
+        """
+        * Determine if value is a datetime object.
+        """
+        try:
+            temp = dateparser.parse(val)
+            return True
+        except:
+            return False
     ################
     # Private Helpers:
     ################
     @staticmethod
     def __IntType(val):
-        # Find minimum storage size for integer type:
+        """
+        * Find minimum storage size for integer type:
+        """
         val = int(val)
         if val > 2 ** 31 - 1 or val < -2 ** 31:
             return 'bigint'
@@ -130,25 +162,40 @@ class ColumnAttribute(object):
         if val > 255 or val < 0:
             return 'smallint'
         return 'tinyint'
-        
     @staticmethod
     def __FloatType(val):
-        # Find minimum storage size for floating point type:
+        """
+        * Find minimum storage size for floating point type:
+        """
         val = Decimal(val).as_tuple()
         scale = abs(val.exponent)
         prec = len(val.digits[0:scale + 1])
         return 'decimal(%d,%d)' % (prec,scale)
 
     @staticmethod
-    def __ParseCells(column):
+    def __DetermineColType(column):
         """
-        * Parse attributes of all cells.
+        * Determine appropriate type for data.
         """
-        for val in column:
-            val = val.strip()
-            # Determine type:
-            self.__SetType(val)
-            if val not in self.__uniquevals:
-                self.__uniqueVals[val] = True
-
+        typeStr = ColumnAttribute.__GetType(column[0])
+        if typeStr == 'object':
+            return typeStr
+        for num in xrange(1, column):
+            if typeStr != ColumnAttribute.__GetType(column[num]):
+                # Set type to object if of mixed types:
+                return 'object'
+        return typeStr
+    @staticmethod
+    def __GetType(val):
+        if ColumnAttribute.IsInt(val):
+            typeStr = 'int'
+        elif ColumnAttribute.IsFloat(val):
+            typeStr = 'float'
+        elif ColumnAttribute.IsDatetime(val):
+            typeStr = 'datetime'
+        else:
+            typeStr = 'object'
+        return typeStr
+            
+            
     

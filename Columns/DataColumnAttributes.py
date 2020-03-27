@@ -125,7 +125,8 @@ class DataColumnAttributes(object):
                 rowNum += 1
         # Add sheet with all column relationships for each file:
         attrSheet = wb.add_worksheet('Column Attributes')
-        rowOff = 0
+        attrSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
+        rowOff = 1
         for dt in self.__dateToAttrs:
             attr = self.__dateToAttrs[dt]
             df = attr.Relationships.ToDataFrame()

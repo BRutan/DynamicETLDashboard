@@ -122,9 +122,9 @@ class ColumnRelationship:
         return self.__type == val.Type
     def __str__(self):
         """
-        * Return TypeStr by default.
+        * Return CountStr by default.
         """
-        return self.TypeStr
+        return self.CountStr
     #############
     # Properties:
     #############
