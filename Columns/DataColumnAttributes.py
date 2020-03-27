@@ -150,6 +150,31 @@ class DataColumnAttributes(object):
                         # Write column headers:
                         attrSheet.write(filerow, num, col)
             rowOff += df.shape[0] + 1
+
+        # Add Uniques sheet listing all unique values for columns:
+        uniqueSht = wb.add_worksheet('Uniques')
+        rowOff = 0
+        for dt in self.__dateToAttrs:
+            attrs = self.__dateToAttrs[dt]
+            uniqueCols = [attr.ColumnName for attr in attrs] if attrs.Attributes else None
+            if not uniqueCols:
+                continue
+            maxUniques = max([len(attrs.Attributes[col].Uniques) for col in uniqueCols])
+            attrSheet.write(rowOff, 0, "File Date")
+            attrSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
+            for colNum, col in enumerate(uniqueCols):
+                attr = attrs.Attributes[col]
+                for row in range(0, len(attr.Uniques) + 1):
+                    filerow = row + rowOff
+                    if row != 0:
+                        # Write data:
+                        uniqueSht.write(filerow, colNum, attr.Uniques[row - 1])
+                    else:
+                        # Print column name:
+                        uniqueSht.write(filerow, colNum, col)
+            rowOff += maxUniques + 1
+
+
         wb.close()
         
     def CreateTableDefinition(self, table = None):

@@ -4,10 +4,11 @@
 # Description:
 # * 
 
+from sortedcontainers import SortedSet
+from Columns.ColumnRelationships import RelationshipEnum
 import dateutil.parser as dateparser
 from decimal import Decimal
 from pandas import DataFrame
-from Columns.ColumnRelationships import RelationshipEnum
 import re
 
 class ColumnAttribute(object):
@@ -17,7 +18,7 @@ class ColumnAttribute(object):
     __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
     __floatPattern = re.compile('\.[0-9]')
     __datePattern = re.compile('^[0-9]{1,2}[//-_][0-9]{1,2}//[0-9]{2,4}$')
-    __pandaTypeToSQLType = { 'object' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal' }
+    __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal' }
     def __init__(self, name):
         """
         * Instantiate attributes for data column.
@@ -74,24 +75,24 @@ class ColumnAttribute(object):
         Inputs:
         * column: Expecting pandas Series or list-like container.
         """
-        uniques = set(column.drop_duplicates())
+        uniques = SortedSet(column.drop_duplicates())
         self.__uniqueCount = len(uniques)
         self.__isNullable = True if [val for val in column.isna() if val] else False
         self.__isUnique = True if self.__uniqueCount == len(column) else False
         # See if Pandas DataFrame has determined types, or check column types manually:
-        typeStr = str(column.dtype)
         if uniques:
-            typeStr = str(DataFrame(uniques)[0].dtype)
+            typeStr = str(DataFrame(list(uniques)).dtypes[0].char.lower())
         if self.__uniqueCount < 25:
             self.__uniques = uniques
-        if typeStr != 'object':
+        if typeStr != 'o':
             typeStr = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
         else:
             # Verify that DataFrame has determine type effectively:
-            #typeStr = ColumnAttribute.__DetermineColType(uniques)
-            #if typeStr == 'object':
-            #   typeStr = 'varchar(max)'
-            typeStr = 'varchar(max)'
+            typeStr = ColumnAttribute.__DetermineColType(uniques)
+            if typeStr == 'o':
+                typeStr = 'varchar(max)'
+            else:
+                typeStr = ColumnAttribute.__dtypeToSQLType[typeStr]
         self.__type = typeStr
 
     def ToReportCell(self, header):
@@ -123,14 +124,14 @@ class ColumnAttribute(object):
         if 'bool' in typeStr:
             return 'bool'
     @classmethod
-    def IsInt(val):
+    def IsInt(cls, val):
         try:
             temp = int(val)
             return True
         except:
             return False
     @classmethod
-    def IsFloat(val):
+    def IsFloat(cls, val):
         try:
             temp = float(val)
             return True
@@ -178,12 +179,12 @@ class ColumnAttribute(object):
         * Determine appropriate type for data.
         """
         typeStr = ColumnAttribute.__GetType(column[0])
-        if typeStr == 'object':
+        if typeStr == 'o':
             return typeStr
         for num in xrange(1, column):
             if typeStr != ColumnAttribute.__GetType(column[num]):
                 # Set type to object if of mixed types:
-                return 'object'
+                return 'o'
         return typeStr
     @staticmethod
     def __GetType(val):
@@ -194,7 +195,7 @@ class ColumnAttribute(object):
         elif ColumnAttribute.IsDatetime(val):
             typeStr = 'datetime'
         else:
-            typeStr = 'object'
+            typeStr = 'o'
         return typeStr
             
             
