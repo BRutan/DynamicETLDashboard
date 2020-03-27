@@ -1,0 +1,8 @@
+{
+   "Name": {
+    "Source": "\\\\wanlink.us\\dfsroot\\APPS\\GCM Feeds\\{0}",
+    "Production": "\\\\wanlink.us\\dfsroot\\APPS\\GCM Feeds\\{0}",
+    "FilenameMask": "",
+    "DateMask": "dateMask:yyyyMMdd"
+  }
+}

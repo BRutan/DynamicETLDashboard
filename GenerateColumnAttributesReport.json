@@ -1,0 +1,7 @@
+{
+	"datapath" : "Data\\",
+	"reportpath" : "EntitlementsAttributes.xlsx",
+	"filedatereg" : {"Regex":"(\\d{8})", "DateFormat" : "%m%d%Y"},
+  "filenamereg": "Entitlements_\\d+.csv",
+  "tablename" :  "Entitlements"
+}
