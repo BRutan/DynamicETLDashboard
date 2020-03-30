@@ -162,8 +162,8 @@ class DataColumnAttributes(object):
                 if not uniqueCols:
                     continue
                 maxUniques = max([len(attrs.Attributes[col].Uniques) for col in uniqueCols])
-                attrSheet.write(rowOff, 0, "File Date")
-                attrSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
+                uniqueSht.write(rowOff, 0, "File Date")
+                uniqueSht.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
                 for colNum, col in enumerate(uniqueCols):
                     attr = attrs.Attributes[col]
                     for row in range(0, len(attr.Uniques) + 1):
