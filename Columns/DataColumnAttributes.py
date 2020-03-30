@@ -92,7 +92,6 @@ class DataColumnAttributes(object):
         if not self.__dateToAttrs:
             # Skip report if no column attributes could be generated:
             return
-
         wb = xlsxwriter.Workbook(path)
         # Create Column Report sheet that details column attributes for latest file:
         colReport = wb.add_worksheet('Column Type Report')
@@ -109,7 +108,6 @@ class DataColumnAttributes(object):
                 val = attr.ToReportCell(header)
                 colReport.write(rowNum, colNum, val)
             rowNum += 1
-
         # Create Column Change report that details how columns have changed over time:
         if self.__columnChgDates:
             chgSheet = wb.add_worksheet('Column Chg Report')
@@ -125,16 +123,16 @@ class DataColumnAttributes(object):
                     chgSheet.write(rowNum, num, val)
                 rowNum += 1
         # Add sheet with all column relationships for each file:
-        attrSheet = wb.add_worksheet('Column Attributes')
-        #attrSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
+        relSheet = wb.add_worksheet('Column Relationships')
+        #relSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
         #rowOff = 1
         rowOff = 0
         for dt in self.__dateToAttrs:
             attr = self.__dateToAttrs[dt]
             df = attr.Relationships.ToDataFrame(False)
             # Write file date:
-            attrSheet.write(rowOff, 0, "File Date")
-            attrSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
+            relSheet.write(rowOff, 0, "File Date")
+            relSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
             # Write columns:
             cols = list(df.columns.copy())
             cols.insert(0, '')
@@ -143,15 +141,14 @@ class DataColumnAttributes(object):
                 for num, col in enumerate(cols):
                     if row != 0:
                         if num != 0:
-                            attrSheet.write(filerow, num, df[col][row - 1])
+                            relSheet.write(filerow, num, df[col][row - 1])
                         else:
                             # Write row index:
-                            attrSheet.write(filerow, num, df[cols[1]].index[row - 1])
+                            relSheet.write(filerow, num, df[cols[1]].index[row - 1])
                     else:
                         # Write column headers:
-                        attrSheet.write(filerow, num, col)
+                        relSheet.write(filerow, num, col)
             rowOff += df.shape[0] + 1
-
         # Add Uniques sheet listing all unique values for columns:
         if self.__hasuniques:
             uniqueSht = wb.add_worksheet('Uniques')
@@ -175,7 +172,6 @@ class DataColumnAttributes(object):
                             # Print column name:
                             uniqueSht.write(filerow, colNum, col)
                 rowOff += maxUniques + 1
-
         wb.close()
         
     def CreateTableDefinition(self, table = None):
