@@ -22,10 +22,10 @@ class ColumnAttributes(object):
         """
         self.__path = path
         self.__colcount = None
-        self.__GetFileDate(fileDateFormat)
-        self.__ParseFile()
         # Map { ColName -> ColAttribute }:
         self.__attributes = SortedDict()
+        self.__GetFileDate(fileDateFormat)
+        self.__ParseFile()
         self.__error = ''
 
     def __iter__(self):

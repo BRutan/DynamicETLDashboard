@@ -129,17 +129,20 @@ class ColumnRelationship:
     @property
     def CountStr(self):
         """
-        * Return string of form "<KeyUniqueCount>_<ValueUniqueCount>".
+        * Return string of form "<KeyGroupByCount>_<ValueGroupByCount>".
         """
         return self.__countstr % (self.__leftcount, self.__rightcount)
     @property
     def Type(self):
         """
-        * Return relationship name string, ex: "one_one".
+        * Return type enumeration.
         """
         return self.__type
     @property
     def TypeStr(self):
+        """
+        * Type enumeration in string form (ex: "one_one").
+        """
         return ColumnRelationship.__typestrs[self.__type]
     ##############
     # Interface Methods:
