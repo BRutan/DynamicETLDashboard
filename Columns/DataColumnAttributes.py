@@ -93,8 +93,33 @@ class DataColumnAttributes(object):
             # Skip report if no column attributes could be generated:
             return
         wb = xlsxwriter.Workbook(path)
-        # Create Column Report sheet that details column attributes for latest file:
-        colReport = wb.add_worksheet('Column Type Report')
+        self.__GenColumnAttributeSheet(wb)
+        self.__GenColChangeDateSheet(wb)
+        self.__GenColRelationshipsSheet(wb)
+        self.__GenUniquesSheet(wb)
+        wb.close()
+        
+    def CreateTableDefinition(self, table = None):
+        """
+        * Create SQL table definition based upon latest 
+        columnattributes.
+        """
+        if not table is None and not isinstance(table, str):
+            raise Exception('table must be None or a string.')
+        latest = max(self.__dateToAttrs)
+        latest = self.__dateToAttrs[latest]
+        path = '%s.sql' % table if not table is None else 'tabledef'
+        with open(path, 'w') as f:
+            self.__WriteTableDef(f, latest, table)
+
+    ##################
+    # Private Helpers:
+    ##################
+    def __GenColumnAttributeSheet(self, wb):
+        """
+        * Create Column Report sheet that details column attributes for latest file.
+        """
+        colReport = wb.add_worksheet('Column Attributes')
         headers = DataColumnAttributes.__columnReportHeaders
         latest = max(self.__dateToAttrs)
         latest = self.__dateToAttrs[latest]
@@ -108,7 +133,11 @@ class DataColumnAttributes(object):
                 val = attr.ToReportCell(header)
                 colReport.write(rowNum, colNum, val)
             rowNum += 1
-        # Create Column Change report that details how columns have changed over time:
+        
+    def __GenColChangeDateSheet(self, wb):
+        """
+        * Create Column Change sheet that details how columns have changed over time.
+        """
         if self.__columnChgDates:
             chgSheet = wb.add_worksheet('Column Chg Report')
             headers = DataColumnAttributes.__columnChgReportHeaders
@@ -122,7 +151,11 @@ class DataColumnAttributes(object):
                 for num, val in enumerate(row):
                     chgSheet.write(rowNum, num, val)
                 rowNum += 1
-        # Add sheet with all column relationships for each file:
+
+    def __GenColRelationshipsSheet(self, wb):
+        """
+        * Add sheet with all column relationships for each file.
+        """
         relSheet = wb.add_worksheet('Column Relationships')
         #relSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
         #rowOff = 1
@@ -149,7 +182,12 @@ class DataColumnAttributes(object):
                         # Write column headers:
                         relSheet.write(filerow, num, col)
             rowOff += df.shape[0] + 1
-        # Add Uniques sheet listing all unique values for columns:
+
+    def __GenUniquesSheet(self, wb):
+        """
+        * Add Uniques sheet listing all unique values for columns
+        that have a uniquecount below threshhold.
+        """
         if self.__hasuniques:
             uniqueSht = wb.add_worksheet('Uniques')
             rowOff = 0
@@ -172,24 +210,7 @@ class DataColumnAttributes(object):
                             # Print column name:
                             uniqueSht.write(filerow, colNum, col)
                 rowOff += maxUniques + 1
-        wb.close()
-        
-    def CreateTableDefinition(self, table = None):
-        """
-        * Create SQL table definition based upon latest 
-        columnattributes.
-        """
-        if not table is None and not isinstance(table, str):
-            raise Exception('table must be None or a string.')
-        latest = max(self.__dateToAttrs)
-        latest = self.__dateToAttrs[latest]
-        path = '%s.sql' % table if not table is None else 'tabledef'
-        with open(path, 'w') as f:
-            self.__WriteTableDef(f, latest, table)
 
-    ##################
-    # Private Helpers:
-    ##################
     def __WriteTableDef(self, file, attributes, table = None):
         """
         * Write table definition in standard format.
