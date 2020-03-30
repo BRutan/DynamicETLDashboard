@@ -2,7 +2,7 @@
 # ColumnAttribute.py
 #####################################
 # Description:
-# * 
+# * Immutable object containing target column attributes.
 
 from sortedcontainers import SortedSet
 from Columns.ColumnRelationships import RelationshipEnum
@@ -13,7 +13,7 @@ import re
 
 class ColumnAttribute(object):
     """
-    * Row in report.
+    * Immutable object containing target column's attribute.
     """
     __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
     __floatPattern = re.compile('\.[0-9]')

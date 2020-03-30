@@ -2,7 +2,8 @@
 # ColumnAttributes.py
 #####################################
 # Description:
-# *
+# * Immutable container of ColumnAttributes 
+# for single entity.
 
 from datetime import datetime
 import pandas
@@ -15,18 +16,20 @@ class ColumnAttributes(object):
     """
     * Container of multiple ColAttributes for single entity.
     """
-    def __init__(self, path, fileDateFormat, key = None):
+    def __init__(self, path, fileDateFormat):
         """
         * Instantiate new object.
-        Optional Inputs:
-        * key: Any type that can be used to demarcate groups of column attributes (ex: by a file date).
         """
-        self.__key = key
         self.__path = path
-        self.__GetFileDate(path, fileDateFormat)
+        self.__colcount = None
+        self.__GetFileDate(fileDateFormat)
+        self.__ParseFile()
         # Map { ColName -> ColAttribute }:
         self.__attributes = SortedDict()
         self.__error = ''
+
+    def __iter__(self):
+        pass
 
     def __eq__(self, attributes):
         for attr in attributes.Attributes:
@@ -50,6 +53,9 @@ class ColumnAttributes(object):
     @property
     def RowCount(self):
         return self.__rowCount
+    @property
+    def Path(self):
+        return self.__path
     @RowCount.setter
     def RowCount(self, val):
         self.__rowCount = val
@@ -57,34 +63,6 @@ class ColumnAttributes(object):
     ######################
     # Interface Methods:
     ######################
-    def ParseFile(self, path):
-        """
-        * Parse column all column attributes in DataFrame.
-        Inputs:
-        * data: Expecting a DataFrame object.
-        """
-        try:
-            data = self.__GetFileData(path)
-        except BaseException as ex:
-            self.__error = str(ex)
-            return
-
-        # Store attributes of each column:
-        self.ParseHeaderRow(data)
-        for col in data.columns:
-            self.__attributes[col].ParseColumn(data[col])
-        # Map all relationships between columns:
-        self.__relationships = ColumnRelationships(data)
-
-    def ParseHeaderRow(self, data):
-        """
-        * Parse header row in file.
-        """
-        self.__attributes = { col : ColumnAttribute(col) for col in data.columns }
-        # Map column name to index and back:
-        self.__colNumToCol = { num : col for num, col in enumerate(data.columns) }
-        self.__colToColNum = { self.__colNumToCol[num] : num for num in self.__colNumToCol }
-
     def ToFileRow(self, horiz = True):
         """
         * Express as string for output to file.
@@ -100,13 +78,42 @@ class ColumnAttributes(object):
                 row.append([attr.ToRow()])
         return row
 
-    def __GetFileDate(self, path, format):
+    ######################
+    # Private Helpers:
+    ######################
+    def __ParseFile(self):
+        """
+        * Parse column all column attributes in DataFrame.
+        """
+        try:
+            data = self.__GetFileData()
+        except BaseException as ex:
+            self.__error = str(ex)
+            return
+
+        # Store attributes of each column:
+        self.__ParseHeaderRow(data)
+        for col in data.columns:
+            self.__attributes[col].ParseColumn(data[col])
+        # Map all relationships between columns:
+        self.__relationships = ColumnRelationships(data)
+
+    def __ParseHeaderRow(self, data):
+        """
+        * Parse header row in file.
+        """
+        self.__attributes = { col : ColumnAttribute(col) for col in data.columns }
+        # Map column name to index and back:
+        self.__colNumToCol = { num : col for num, col in enumerate(data.columns) }
+        self.__colToColNum = { self.__colNumToCol[num] : num for num in self.__colNumToCol }
+
+    def __GetFileDate(self, format):
         format = { arg.lower() : format[arg] for arg in format }
-        match = format['regex'].search(path)[0]
+        match = format['regex'].search(self.__path)[0]
         self.__fileDate = datetime.strptime(match, format['dateformat'])
 
-    def __GetFileData(self, path):
-        if '.csv' in path:
-            return pandas.read_csv(path)
-        elif '.xls' in path:
-            return pandas.read_excel(path)
+    def __GetFileData(self):
+        if '.csv' in self.__path:
+            return pandas.read_csv(self.__path)
+        elif '.xls' in self.__path:
+            return pandas.read_excel(self.__path)

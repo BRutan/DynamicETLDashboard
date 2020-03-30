@@ -42,6 +42,15 @@
     <Compile Include="GUI\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Report\PathMap.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Report\ReportGenerator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Report\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TestETL.py">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +70,7 @@
     <Folder Include="Data\" />
     <Folder Include="ETL\" />
     <Folder Include="GUI\" />
+    <Folder Include="Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="GenerateColumnAttributesReport.json" />

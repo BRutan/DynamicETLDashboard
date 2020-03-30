@@ -65,8 +65,6 @@ class ColumnRelationships(object):
         """
         left_max = data[[col1, col2]].groupby(col1).count().max()[0]
         right_max = data[[col1, col2]].groupby(col2).count().max()[0]
-        left_uniq_count = len(data[col1].drop_duplicates())
-        right_uniq_count = len(data[col2].drop_duplicates())
         if left_max==1:
             if right_max==1:
                 enum = RelationshipEnum.ONE_TO_ONE 
@@ -77,7 +75,7 @@ class ColumnRelationships(object):
                 enum = RelationshipEnum.MANY_TO_ONE
             else:
                 enum = RelationshipEnum.MANY_TO_MANY
-        return ColumnRelationship(enum, left_uniq_count, right_uniq_count)
+        return ColumnRelationship(enum, left_max, right_max)
 
     @staticmethod
     def __AsDataFrame(data, countinfo):

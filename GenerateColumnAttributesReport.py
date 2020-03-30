@@ -74,7 +74,7 @@ def RunReport():
     # Get all column attributes for data files:
     ###############################
     print ("Reading all data files at")
-    print ("%s" % (args.datapath))
+    print (args.datapath)
     attributes = DataColumnAttributes()
     attributes.GetDataAttributes(args.datapath, args.filedateinfo, args.filenamereg)
     attributes.GenerateReport(args.reportpath)

@@ -7,15 +7,11 @@
 import re
 from datetime import datetime
 
-
 def IsRegex(regStr):
     try:
         exp = re.compile(regStr)
     except:
         return False
-    return True
-
-def IsDatetimeFormatExp(expStr):
     return True
 
 ################

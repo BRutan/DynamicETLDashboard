@@ -2,7 +2,7 @@
 # DataColumnAttributes.py
 #####################################
 # Description:
-# * Aggregate column attributes (relationships, types, counts).
+# * Aggregate column attributes (attributes and relationships).
 
 from Columns.ColumnAttributes import ColumnAttributes
 from Columns.ColumnRelationships import ColumnRelationships
@@ -65,7 +65,6 @@ class DataColumnAttributes(object):
         # Get column attributes of all target files:
         for path in filePaths:
             currAttrs = ColumnAttributes(path, dateFormat)
-            currAttrs.ParseFile(path)
             if currAttrs.Error:
                 self.__errors[path] = currAttrs.Error
             # Map { FileDate -> ColumnAttributes }:
@@ -174,7 +173,6 @@ class DataColumnAttributes(object):
                         uniqueSht.write(filerow, colNum, col)
             rowOff += maxUniques + 1
 
-
         wb.close()
         
     def CreateTableDefinition(self, table = None):
@@ -200,8 +198,9 @@ class DataColumnAttributes(object):
         file.write('//****** Object: Table [dbo].[%s] Script Date: %s ******//\n\n' % (table if not table is None else 'FillTableHere', datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
         file.write('CREATE TABLE [dbo].[%s]\n' % table if not table is None else 'FillTableHere')
         file.write('(')
-        for name in attributes.Attributes:
+        for num, name in enumerate(attributes.Attributes):
             attr = attributes.Attributes[name]
             nullable = 'NOT NULL' if not attr.IsNullable else 'NULL'
-            file.write('[%s] %s %s\n' % (attr.ColumnName, attr.Type, nullable))
+            last = num == len(attributes.Attributes) - 1
+            file.write('[%s] %s %s%s\n' % (attr.ColumnName, attr.Type, nullable, ',' if last else ''))
         file.write(') ON [PRIMARY];\n\nGO\n')
