@@ -28,6 +28,7 @@ class DataColumnAttributes(object):
         * Instantiate new object.
         """
         # Map date to attributes, and attributes that have changed with time:
+        self.__hasuniques = False
         self.__dateToAttrs = SortedDict()
         self.__columnChgDates = SortedDict()
         self.__errors = {}
@@ -54,7 +55,6 @@ class DataColumnAttributes(object):
             raise Exception("\n".join(errs))
 
         self.__dateFormat = dateFormat
-
         # Get all files that match data file expression at provided path:
         filePaths = []
         if fileExp:
@@ -67,8 +67,10 @@ class DataColumnAttributes(object):
             currAttrs = ColumnAttributes(path, dateFormat)
             if currAttrs.Error:
                 self.__errors[path] = currAttrs.Error
-            # Map { FileDate -> ColumnAttributes }:
-            self.__dateToAttrs[currAttrs.FileDate] = currAttrs
+            else:
+                self.__hasuniques = self.__hasuniques if self.__hasuniques else any([True for col in currAttrs.Attributes if not currAttrs.Attributes[col] is None])
+                # Map { FileDate -> ColumnAttributes }:
+                self.__dateToAttrs[currAttrs.FileDate] = currAttrs
 
         # Determine if columns have changed:
         prevAttrs = None
@@ -151,8 +153,7 @@ class DataColumnAttributes(object):
             rowOff += df.shape[0] + 1
 
         # Add Uniques sheet listing all unique values for columns:
-        hasUniques = any([True for dt in self.__dateToAttrs if any([True for col in self.__dateToAttrs[dt].Attributes if not self.__dateToAttrs[dt].Attributes[col] is None])])
-        if hasUniques:
+        if self.__hasuniques:
             uniqueSht = wb.add_worksheet('Uniques')
             rowOff = 0
             for dt in self.__dateToAttrs:
@@ -194,6 +195,9 @@ class DataColumnAttributes(object):
     # Private Helpers:
     ##################
     def __WriteTableDef(self, file, attributes, table = None):
+        """
+        * Write table definition in standard format.
+        """
         file.write('USE [MetricsDyetl];\nGO\nSET ANSI_NULLS ON\nGO\n\n')
         file.write('SET ANSI_NULLS ON;\nGO\n\n')
         file.write('SET QUOTED_IDENTIFIER ON;\nGO\n\n')
