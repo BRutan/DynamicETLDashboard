@@ -9,7 +9,7 @@ GO
 SET QUOTED_IDENTIFIER ON;
 GO
 
-//****** Object: Table [dbo].[Entitlements] Script Date: 03 30 2020 12:05:23 PM ******//
+//****** Object: Table [dbo].[Entitlements] Script Date: 03 30 2020 12:43:20 PM ******//
 
 CREATE TABLE [dbo].[Entitlements]
 ([UserName] varchar(max) NOT NULL
