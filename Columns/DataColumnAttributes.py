@@ -13,6 +13,7 @@ import os
 from pandas import DataFrame, concat
 import re
 from sortedcontainers import SortedDict
+from Utilities.FileConverter import FileConverter
 import xlsxwriter
 
 class DataColumnAttributes(object):
@@ -56,17 +57,13 @@ class DataColumnAttributes(object):
 
         self.__dateFormat = dateFormat
         # Get all files that match data file expression at provided path:
-        filePaths = []
-        if fileExp:
-            filePaths = [os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file)) and fileExp.match(file)]
-        else:
-            filePaths = [os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
-
+        filePaths = FileConverter.GetAllFilePaths(path,fileExp)
         # Get column attributes of all target files:
-        for path in filePaths:
+        for file in filePaths:
+            path = filePaths[file]
             currAttrs = ColumnAttributes(path, dateFormat)
             if currAttrs.Error:
-                self.__errors[path] = currAttrs.Error
+                self.__errors[file] = currAttrs.Error
             else:
                 self.__hasuniques = self.__hasuniques if self.__hasuniques else any([True for col in currAttrs.Attributes if not currAttrs.Attributes[col] is None])
                 # Map { FileDate -> ColumnAttributes }:
