@@ -2,7 +2,7 @@
 # Helpers.py
 #####################################
 # Description:
-# * 
+# * General helper functions for various classes. 
 
 import re
 from datetime import datetime

@@ -10,7 +10,7 @@ import xlsxwriter
 
 class ETLTester(object):
     """
-    * Compare table and file outputs.
+    * Test new ETL created in .
     """
     def __init__(self, samplepath):
         self.__samplepath = samplepath

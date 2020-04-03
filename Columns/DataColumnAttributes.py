@@ -106,6 +106,8 @@ class DataColumnAttributes(object):
         """
         if not table is None and not isinstance(table, str):
             raise Exception('table must be None or a string.')
+        if not self.__dateToAttrs:
+            return
         latest = max(self.__dateToAttrs)
         latest = self.__dateToAttrs[latest]
         path = '%s.sql' % table if not table is None else 'tabledef'

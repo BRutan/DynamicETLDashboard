@@ -24,9 +24,9 @@ class ColumnAttributes(object):
         self.__colcount = None
         # Map { ColName -> ColAttribute }:
         self.__attributes = SortedDict()
+        self.__error = ''
         self.__GetFileDate(fileDateFormat)
         self.__ParseFile()
-        self.__error = ''
 
     def __iter__(self):
         pass
