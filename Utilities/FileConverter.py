@@ -4,13 +4,15 @@
 # Description:
 # * Convert all files matching regular expression to path.
 
-from Utilities.Helpers import IsRegex
+from argparse import ArgumentParser
+from cmd2 import with_argparser
 import shutil
 import os
+from Utilities.Helpers import IsRegex
 
 class FileConverter:
     """
-    * Convert all files.
+    * Empty singleton-like class.
     """
     def __init__(self):
         """
