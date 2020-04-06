@@ -66,8 +66,11 @@ class Arguments(object):
         elif '\\' in args['reportpath'] and not os.path.exists(args['reportpath'][0:args['reportpath'].rfind('\\')]):
             errs.append('(reportpath) Enclosing folder does not exist.')
         elif os.path.exists(args['reportpath']):
-            path = args['reportpath']
-            args['reportpath'] = "%s_1.%s" % (path[0:path.find('.') - 1], path[path.find('.') + 1:])
+            filename, extension = os.path.splitext(args['reportpath'])
+            count = 2
+            while os.path.exists(args['reportpath']):
+                args['reportpath'] = "%s_%d%s" % (filename, count, extension)
+                count += 1
 
         if 'filenamereg' in args and not IsRegex(args['filenamereg']):
             errs.append(' '.join(['(filenamereg)', args['filenamereg'], 'is not a valid regular expression.']))

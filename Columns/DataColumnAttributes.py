@@ -9,6 +9,7 @@ from Columns.ColumnRelationships import ColumnRelationships
 import csv
 from datetime import datetime, date
 import dateutil.parser as dtparse
+from operator import neg
 import os
 from pandas import DataFrame, concat
 import re
@@ -23,6 +24,11 @@ class DataColumnAttributes(object):
     """
     __columnReportHeaders = ['Name', 'Type', 'IsNullable', 'IsUnique', 'UniqueCount']
     __columnChgReportHeaders = ['Date', 'Name', 'Type', 'Nullable', 'IsUnique', 'UniqueCount']
+    # For report generation:
+    __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
+    __one_one_format = {'font_color': 'black', 'bg_color' : 'green'}
+    __one_many_format = {'font_color': 'black', 'bg_color' : 'blue'}
+    __many_many_format = {'font_color': 'black', 'bg_color' : 'red'}
     __regType = type(re.compile(''))
     def __init__(self):
         """
@@ -44,8 +50,7 @@ class DataColumnAttributes(object):
     ###################
     def GetDataAttributes(self, path, dateFormat, fileExp = None, filePaths = None):
         """
-        * Generate report using all files at path. If fileExp is provided
-        then only search files matching expression.
+        * Get all column attributes in files at path or at provided paths.
         Inputs:
         * path: String to folder.
         * dateFormat: Regex string for file dates.
@@ -133,13 +138,14 @@ class DataColumnAttributes(object):
         * Create Column Report sheet that details column attributes for latest file.
         """
         colReport = wb.add_worksheet('Column Attributes')
+        headerFormat = wb.add_format(DataColumnAttributes.__headerFormat)
         headers = DataColumnAttributes.__columnReportHeaders
         latest = max(self.__dateToAttrs)
         latest = self.__dateToAttrs[latest]
         rowNum = 0
         for header in headers:
             colNum = 0
-            colReport.write(rowNum, colNum, header)
+            colReport.write(rowNum, colNum, header, headerFormat)
             for name in latest.Attributes:
                 colNum += 1
                 attr = latest.Attributes[name]
@@ -151,33 +157,49 @@ class DataColumnAttributes(object):
         """
         * Create Column Change sheet that details how columns have changed over time.
         """
-        if self.__columnChgDates:
-            chgSheet = wb.add_worksheet('Column Chg Report')
-            headers = DataColumnAttributes.__columnChgReportHeaders
-            rowNum = 0
-            for num, header in enumerate(headers):
-                chgSheet.write(rowNum, num, header)
-            for dt in self.__columnChgDates:
-                rowNum += 1
-                attr = self.__columnChgDates[dt]
-                row = attr.ToReportRow()
-                for num, val in enumerate(row):
-                    chgSheet.write(rowNum, num, val)
-                rowNum += 1
+        if not self.__columnChgDates:
+            return
+        chgSheet = wb.add_worksheet('Column Chg Report')
+        headerFormat = wb.add_format(DataColumnAttributes.__headerFormat)
+        headers = DataColumnAttributes.__columnChgReportHeaders
+        rowNum = 0
+        for num, header in enumerate(headers):
+            chgSheet.write(rowNum, num, header, headerFormat)
+        for dt in self.__columnChgDates:
+            rowNum += 1
+            attr = self.__columnChgDates[dt]
+            row = attr.ToReportRow()
+            for num, val in enumerate(row):
+                chgSheet.write(rowNum, num, val)
+            rowNum += 1
 
     def __GenColRelationshipsSheet(self, wb):
         """
         * Add sheet with all column relationships for each file.
         """
         relSheet = wb.add_worksheet('Column Relationships')
-        #relSheet.write(0, 0, "Format is <ColUniqueNum>_<RowUniqueNum>")
-        #rowOff = 1
-        rowOff = 0
+        headerFormat = wb.add_format(DataColumnAttributes.__headerFormat)
+        one_one = wb.add_format(DataColumnAttributes.__one_one_format) 
+        one_many = wb.add_format(DataColumnAttributes.__one_many_format)
+        many_many = wb.add_format(DataColumnAttributes.__many_many_format)
+        type_format = SortedDict({'one_one' : one_one, 'one_many' : one_many, 
+                       'many_one' : one_many, 'many_many' : many_many, 
+                       '=' : wb.add_format({'font_color': 'black', 'bg_color' : 'white'})})
+        # Write the color key:
+        relSheet.write(0, 0, 'Color Key:', headerFormat)
+        col = 1
+        for type_ in type_format:
+            if type_ != '=':
+                relSheet.write(0, col, type_, headerFormat)
+                relSheet.write(1, col, '', type_format[type_])
+                col += 1
+        rowOff = 2
+        # Write all relationships for each report:
         for dt in self.__dateToAttrs:
             attr = self.__dateToAttrs[dt]
             df = attr.Relationships.ToDataFrame(False)
             # Write file date:
-            relSheet.write(rowOff, 0, "File Date")
+            relSheet.write(rowOff, 0, "File Date", headerFormat)
             relSheet.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
             # Write columns:
             cols = list(df.columns.copy())
@@ -187,42 +209,46 @@ class DataColumnAttributes(object):
                 for num, col in enumerate(cols):
                     if row != 0:
                         if num != 0:
-                            relSheet.write(filerow, num, df[col][row - 1])
+                            relSheet.write(filerow, num, df[col][row - 1], type_format[df[col][row - 1]])
                         else:
                             # Write row index:
-                            relSheet.write(filerow, num, df[cols[1]].index[row - 1])
+                            relSheet.write(filerow, num, df[cols[1]].index[row - 1], headerFormat)
                     else:
                         # Write column headers:
-                        relSheet.write(filerow, num, col)
-            rowOff += df.shape[0] + 1
+                        relSheet.write(filerow, num, col, headerFormat)
+            rowOff += df.shape[0] + 3
 
     def __GenUniquesSheet(self, wb):
         """
         * Add Uniques sheet listing all unique values for columns
         that have a uniquecount below threshhold.
         """
-        if self.__hasuniques:
-            uniqueSht = wb.add_worksheet('Uniques')
-            rowOff = 0
-            for dt in self.__dateToAttrs:
-                attrs = self.__dateToAttrs[dt]
-                uniqueCols = [col for col in attrs.Attributes if not attrs.Attributes[col].Uniques is None] if attrs.Attributes else None
-                if not uniqueCols:
-                    continue
-                maxUniques = max([len(attrs.Attributes[col].Uniques) for col in uniqueCols])
-                uniqueSht.write(rowOff, 0, "File Date")
-                uniqueSht.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
-                for colNum, col in enumerate(uniqueCols):
-                    attr = attrs.Attributes[col]
-                    for row in range(0, len(attr.Uniques) + 1):
-                        filerow = row + rowOff
-                        if row != 0:
-                            # Write data:
-                            uniqueSht.write(filerow, colNum, attr.Uniques[row - 1])
-                        else:
-                            # Print column name:
-                            uniqueSht.write(filerow, colNum, col)
-                rowOff += maxUniques + 1
+        if not self.__hasuniques:
+            return
+        uniqueSht = wb.add_worksheet('Uniques')
+        headerFormat = wb.add_format(DataColumnAttributes.__headerFormat)
+        rowOff = 0
+        for dt in self.__dateToAttrs:
+            attrs = self.__dateToAttrs[dt]
+            uniqueCols = [col for col in attrs.Attributes if not attrs.Attributes[col].Uniques is None] if attrs.Attributes else None
+            if not uniqueCols:
+                continue
+            maxUniques = max([len(attrs.Attributes[col].Uniques) for col in uniqueCols])
+            # Write file date:
+            uniqueSht.write(rowOff, 0, "File Date", headerFormat)
+            uniqueSht.write(rowOff, 1, dt.strftime('%m/%d/%Y'))
+            rowOff += 1
+            for colNum, col in enumerate(uniqueCols):
+                attr = attrs.Attributes[col]
+                for row in range(0, len(attr.Uniques) + 1):
+                    filerow = row + rowOff
+                    if row != 0:
+                        # Write data:
+                        uniqueSht.write(filerow, colNum, str(attr.Uniques.iloc[row - 1]))
+                    else:
+                        # Print column name:
+                        uniqueSht.write(filerow, colNum, col, headerFormat)
+            rowOff += maxUniques + 3
 
     def __WriteTableDef(self, file, attributes, table = None):
         """

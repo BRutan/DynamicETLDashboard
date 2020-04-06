@@ -75,13 +75,12 @@ class ColumnAttribute(object):
         Inputs:
         * column: Expecting pandas Series or list-like container.
         """
-        uniques = SortedSet(column.drop_duplicates())
+        uniques = column.drop_duplicates()
         self.__uniqueCount = len(uniques)
-        self.__isNullable = True if [val for val in column.isna() if val] else False
+        self.__isNullable = any(column.isna())
         self.__isUnique = True if self.__uniqueCount == len(column) else False
         # See if Pandas DataFrame has determined types, or check column types manually:
-        if uniques:
-            typeStr = str(DataFrame(list(uniques)).dtypes[0].char.lower())
+        typeStr = str(DataFrame(list(uniques)).dtypes[0].char.lower())
         if self.__uniqueCount < 25:
             self.__uniques = uniques
         if typeStr != 'o':
@@ -181,16 +180,14 @@ class ColumnAttribute(object):
         typeStr = ColumnAttribute.__GetType(column[0])
         if typeStr == 'o':
             return typeStr
-        for num in xrange(1, column):
-            if typeStr != ColumnAttribute.__GetType(column[num]):
+        for num, val in enumerate(column):
+            if num != 0 and typeStr != ColumnAttribute.__GetType(val):
                 # Set type to object if of mixed types:
                 return 'o'
         return typeStr
     @staticmethod
     def __GetType(val):
-        if ColumnAttribute.IsInt(val):
-            typeStr = 'int'
-        elif ColumnAttribute.IsFloat(val):
+        if ColumnAttribute.IsInt(val) or ColumnAttribute.IsFloat(val):
             typeStr = 'float'
         elif ColumnAttribute.IsDatetime(val):
             typeStr = 'datetime'
