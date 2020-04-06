@@ -8,10 +8,11 @@
 
 from argparse import ArgumentParser, ArgumentError
 from Columns.DataColumnAttributes import DataColumnAttributes
-from Utilities.Helpers import IsRegex
 import json
 import os
 import re
+from Utilities.Helpers import IsRegex
+from Utilities.FileConverter import FileConverter
 
 class Arguments(object):
     """
@@ -27,12 +28,16 @@ class Arguments(object):
         self.filedateinfo['regex'] = re.compile(self.filedateinfo['regex'])
         self.tablename = args['tablename']
         self.filenamereg = None
+        self.convertedpaths = None
         if 'filenamereg' in args:
             self.filenamereg = re.compile(args['filenamereg'])
         if 'convert' in args:
+            print("Converting all files at '%s'" % (args['convert']['convertpath']))
+            print("to '%s" % args['convert']['toextension'])
             # Convert all files before pulling:
+            self.convertedpaths = FileConverter.ConvertAllFilePaths(args['convert']['convertpath'], args['convert']['toextension'], 
+                                              filereg = self.filenamereg, folderpath = self.datapath)
             self.datapath = args['convert']['convertpath'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
-    
     @staticmethod
     def __CheckArgs(args):
         """
@@ -68,17 +73,20 @@ class Arguments(object):
             errs.append(' '.join(['(filenamereg)', args['filenamereg'], 'is not a valid regular expression.']))
 
         if 'convert' in args:
-            if not ('convertpath' in args['convert'] and 'extension' in args['convert']):
-                errs.append('convert requires "extension" and "convertpath" as attributes.')
-            elif '.' not in args['convert']['extension']:
-                errs.append('%s is invalid conversion extension.' % args['convert']['extension'])
+            if not ('convertpath' in args['convert'] and 'toextension' in args['convert']):
+                errs.append('convert requires "toextension" and "convertpath" as attributes.')
+            elif '.' not in args['convert']['toextension']:
+                errs.append('%s is invalid conversion extension.' % args['convert']['toextension'])
             if 'convertpath' in args['convert'] and not os.path.exists(args['convert']['convertpath']):
                 errs.append('convertpath does not exist.')
 
         if errs:
             raise Exception("\n".join(errs))
 
-def RunReport():
+def GenerateColumnAttributesReport():
+    print("------------------------------")
+    print("GenerateColumnAttributesReport")
+    print("------------------------------")
     #args = GetArgsFromCMDLine()
     args = GetArgsFromJson()
     ###############################
@@ -87,7 +95,7 @@ def RunReport():
     print ("Reading all data files at")
     print (args.datapath)
     attributes = DataColumnAttributes()
-    attributes.GetDataAttributes(args.datapath, args.filedateinfo, args.filenamereg)
+    attributes.GetDataAttributes(args.datapath, args.filedateinfo, args.filenamereg, args.convertedpaths)
     attributes.GenerateReport(args.reportpath)
     print ("Generating table definition for")
     print (args.tablename)
@@ -144,4 +152,4 @@ def GetArgsFromJson():
     return Arguments(json.load(open(path, 'rb')))
 
 if __name__ == "__main__":
-    RunReport()
+    GenerateColumnAttributesReport()

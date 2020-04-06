@@ -103,12 +103,15 @@
     <Folder Include="ETL\" />
     <Folder Include="GUI\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="Utilities\" />
     <Folder Include="Report\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
     <Content Include="ETL\appsettings-template.json" />
     <Content Include="ETL\TestETL.json" />
+    <Content Include="TestETLPipeline.json" />
     <Content Include="ValidateAndAppendNewETL.json" />
     <Content Include="GenerateColumnAttributesReport.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />

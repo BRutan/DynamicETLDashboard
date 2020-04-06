@@ -33,7 +33,7 @@ class FileConverter:
         * Returns { FileName -> Path }.
         """
         errs = []
-        if not isinstance(str, folderpath):
+        if not isinstance(folderpath, str):
             errs.append('folderpath must be a string.')
         elif not os.path.isdir(folderpath):
             errs.append('folderpath must point to a folder.')
@@ -46,24 +46,26 @@ class FileConverter:
         if errs:
             raise Exception('\n'.join(errs))
         filePaths = {}
-        if fileExp:
-            filePaths = { file : os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file)) and filereg.match(file)}
+        if filereg:
+            filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file)) and filereg.match(file)}
         else:
-            filePaths = { file : os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))}
+            filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file))}
         return filePaths
     @classmethod
-    def ConvertAllFilePaths(cls, outfolder, extension, folderpath = None, filereg = None, paths = None, subdirs = False):
+    def ConvertAllFilePaths(cls, outfolder, new_ext, folderpath = None, filereg = None, paths = None, subdirs = False):
         """
         * Convert all files listed in folderpath/paths to files with 
         extension in outfolder.
         Inputs:
         * outfolder: string output folder for converted files. Must exist.
-        * extension: extension to convert files to.
+        * new_ext: extension to convert files to.
         Mutually Exclusive Inputs:
         * folderpath, filereg: put string folder containing files matching filereg regular expression.
         * paths: list of filepaths to convert.
         Optional Inputs:
         * subdirs: Search all subdirectories of folderpath for matching files.
+        Outputs:
+        * Dictionary mapping { convertedfilename -> path }.
         """
         errs = []
         if not isinstance(outfolder, str):
@@ -72,20 +74,20 @@ class FileConverter:
             errs.append('outfolder must be point to a folder.')
         elif not os.path.exists(outfolder):
             errs.append('outfolder does not exist.')
-        if not isinstance(extension, str):
+        if not isinstance(new_ext, str):
             errs.append('extension must be a string.')
-        elif '.' not in extension:
+        elif '.' not in new_ext:
             errs.append('extension is invalid.')
         if folderpath is None and filereg is None and paths is None:
             errs.append('One of folderpath, filereg and paths must be passed.')
-        elif not (folderpath is None and filereg is None) ^ (paths is None):
+        elif not (not folderpath is None and not filereg is None) ^ (not paths is None):
             errs.append('folderpath AND filereg or (exclusive) paths must be passed.')
         elif not folderpath is None:
             if not isinstance(folderpath, str):
                 errs.append('folderpath must be a string.')
             elif not os.path.isdir(folderpath):
                 errs.append('folderpath must point to a folder.')
-            elif os.path.exists(folderpath):
+            elif not os.path.exists(folderpath):
                 errs.append('folderpath does not exist.')
             if not IsRegex(filereg):
                 errs.append('filereg must be a valid regular expression.')
@@ -95,12 +97,25 @@ class FileConverter:
         if errs:
             raise Exception('\n'.join(errs))
 
+        # Convert local folders to current working directory for use with
+        # shutil:
+        if ":" not in outfolder and outfolder[0] != "\\":
+            outfolder = "%s\\%s" % (os.getcwd(), outfolder)
+        if ":" not in folderpath and folderpath[0] != "\\":
+            outfolder = "%s\\%s" % (os.getcwd(), folderpath)
+        # Get all full file paths if not provided:
         if folderpath:
             paths = list(FileConverter.GetAllFilePaths(folderpath, filereg, subdirs).values())
+        if not outfolder[len(outfolder)-1:len(outfolder)] == "\\":
+            outfolder += "\\"
         
+        convertedpaths = {}
         for filepath in paths:
-            filename, file_extension = os.path.splitext(filepath)
-            oldfile = "%s//%s_%s" % (outfolder, filename, file_extension)
-            newfile = "%s//%s_%s" % (outfolder, filename, extension)
-            shutil.copyfile(filepath, outfolder)
-            os.rename(oldfile, newfile)
+            filename = os.path.basename(filepath)
+            newfilename = "%s%s" % (filename[0:filename.find('.')],new_ext)
+            convertedpath = "%s%s" % (outfolder, newfilename)
+            if not os.path.exists(convertedpath):
+                shutil.copyfile(filepath, convertedpath)
+            convertedpaths[newfilename] = convertedpath
+
+        return convertedpaths

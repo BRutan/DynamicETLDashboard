@@ -33,31 +33,45 @@ class DataColumnAttributes(object):
         self.__dateToAttrs = SortedDict()
         self.__columnChgDates = SortedDict()
         self.__errors = {}
-
-    def GetDataAttributes(self, path, dateFormat, fileExp = None):
+    ###################
+    # Properties:
+    ###################
+    @property
+    def HasErrors(self):
+        return len(self.__errors) > 0
+    ###################
+    # Interface Methods:
+    ###################
+    def GetDataAttributes(self, path, dateFormat, fileExp = None, filePaths = None):
         """
         * Generate report using all files at path. If fileExp is provided
         then only search files matching expression.
         Inputs:
         * path: String to folder.
         * dateFormat: Regex string for file dates.
-        * fileExp: Regular expressions to select files or None.
+        Optional:
+        * fileExp: Regular expressions to select files or None. If not supplied then all files in folder will
+        be chosen.
+        * filePaths: Dictionary mapping { FileName -> Path }.
         """
         errs = []
-        if fileExp and not isinstance(fileExp, DataColumnAttributes.__regType):
-            errs.append("fileExp must be a regular expression object, or None.")
         if not isinstance(path, str):
             errs.append("path must be a string.")
         if not isinstance(dateFormat, dict):
             errs.append("dateFormat must be a dictionary with keys ['regex', 'dateformat' ].")
         elif not 'regex' in dateFormat and 'dateformat' not in dateFormat:
             errs.append("dateFormat must have 'regex' and 'dateformat' keys.")
+        if fileExp and not isinstance(fileExp, DataColumnAttributes.__regType):
+            errs.append("fileExp must be a regular expression object, or None.")
+        if filePaths and not isinstance(filePaths, dict):
+            errs.append('filePaths must be a dictionary mapping { FileName -> Path } or None.')
         if errs:
             raise Exception("\n".join(errs))
 
         self.__dateFormat = dateFormat
-        # Get all files that match data file expression at provided path:
-        filePaths = FileConverter.GetAllFilePaths(path,fileExp)
+        # Get all files that match data file expression at provided path if not supplied:
+        if filePaths is None:
+            filePaths = FileConverter.GetAllFilePaths(path, fileExp)
         # Get column attributes of all target files:
         for file in filePaths:
             path = filePaths[file]

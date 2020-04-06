@@ -1,0 +1,8 @@
+{
+	"datapath" : "R:\\Enterprise Risk Dashboard\\Vendor Risk\\Data\\",
+	"reportpath" : "VendorRisk_Attributes.xlsx",
+	"filedatereg" : {"Regex":"(\\d{8})", "DateFormat" : "%Y%m%d"},
+  "filenamereg": "66908_\\d+.xls",
+  "tablename": "VendorRisk",
+  "convert": {"toextension": ".xlsx","convertpath" :  "Data\\Vendor Risk"}
+}
