@@ -63,8 +63,6 @@ class ColumnRelationships(object):
         * Determine if one-to-one/one-to-many/many-to-one/many-to-many relationship exists
         between columns.
         """
-        if 'Description' in [col1, col2] and 'RoleName' in [col1, col2]:
-            col1 = col1
         colset = data[[col1, col2]].drop_duplicates([col1, col2])
         left_max = colset.groupby(col1).count().max()[0]
         right_max = colset.groupby(col2).count().max()[0]

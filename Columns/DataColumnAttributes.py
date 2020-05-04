@@ -209,7 +209,7 @@ class DataColumnAttributes(object):
                 for num, col in enumerate(cols):
                     if row != 0:
                         if num != 0:
-                            relSheet.write(filerow, num, df[col][row - 1], type_format[df[col][row - 1]])
+                            relSheet.write(filerow, num, "", type_format[df[col][row - 1]])
                         else:
                             # Write row index:
                             relSheet.write(filerow, num, df[cols[1]].index[row - 1], headerFormat)

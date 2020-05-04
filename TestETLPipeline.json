@@ -1,6 +1,6 @@
 {
 	"webapipath: : "",
-
-
-	"database" : "localdb"
+	"dynamicetlservicepath" : "",
+	"localserver" : "localhost:23014//api//etljobs",
+	"localdatabase" : "."
 }
