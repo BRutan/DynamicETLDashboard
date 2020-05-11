@@ -48,7 +48,7 @@ class DataColumnAttributes(object):
     ###################
     # Interface Methods:
     ###################
-    def GetDataAttributes(self, path, dateFormat, fileExp = None, filePaths = None):
+    def GetDataAttributes(self, path, dateFormat, fileExp = None, filePaths = None, sheets = None):
         """
         * Get all column attributes in files at path or at provided paths.
         Inputs:
@@ -58,6 +58,7 @@ class DataColumnAttributes(object):
         * fileExp: Regular expressions to select files or None. If not supplied then all files in folder will
         be chosen.
         * filePaths: Dictionary mapping { FileName -> Path }.
+        * sheets: Sheets to use if using xls/xlsx file (will create one ETL/table definition per sheet).
         """
         errs = []
         if not isinstance(path, str):

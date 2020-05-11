@@ -51,7 +51,7 @@
     <Compile Include="Exceptions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestETLPipeline.py">
+    <Compile Include="ImplementAndTestETLPipeline.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\__init__.py">
@@ -78,9 +78,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Report\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestETL.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GenerateColumnAttributesReport.py" />
@@ -111,7 +108,7 @@
     <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
     <Content Include="ETL\appsettings-template.json" />
     <Content Include="ETL\TestETL.json" />
-    <Content Include="TestETLPipeline.json" />
+    <Content Include="ImplementAndTestETLPipeline.json" />
     <Content Include="ValidateAndAppendNewETL.json" />
     <Content Include="GenerateColumnAttributesReport.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />

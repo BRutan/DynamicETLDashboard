@@ -18,16 +18,17 @@ class Arguments(object):
     """
     * Validate and store script arguments.
     """
-    __ReqArgs = { 'datapath' : False, 'reportpath' : False, 'filedatereg' : False, 'tablename' : False }
+    __ReqArgs = { 'data' : False, 'reportpath' : False, 'filedatereg' : False, 'tablename' : False }
     def __init__(self, args):
         args = { arg.lower() : args[arg] for arg in args }
         Arguments.__CheckArgs(args)
-        self.datapath = args['datapath'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
+        self.datapath = args['data']['path'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
         self.reportpath = args['reportpath']
         self.filedateinfo = { key.lower() : args['filedatereg'][key] for key in args['filedatereg'] }
         self.filedateinfo['regex'] = re.compile(self.filedateinfo['regex'])
         self.tablename = args['tablename']
         self.filenamereg = None
+        self.sheets = args['data']['sheets'] if 'sheets' in args['data'] else None
         self.convertedpaths = None
         if 'filenamereg' in args:
             self.filenamereg = re.compile(args['filenamereg'])
@@ -46,21 +47,27 @@ class Arguments(object):
         errs = []
         req = Arguments.__ReqArgs.copy()
         for arg in args:
-            if arg in req:
-                req[arg] = True
+            if arg.lower() in req:
+                req[arg.lower()] = True
 
         missing = [arg for arg in req if not req[arg]]
         if missing:
-            raise Exception(' '.join(['The following required arguments are missing:', ','.join(missing)]))
+            raise Exception(' '.join(['The following required arguments are missing:', ', '.join(missing)]))
 
-        if '.' in args['datapath']:
-            errs.append('datapath must point to folder.')
-        elif not os.path.exists(args['datapath']):
-            errs.append(' '.join(['(datapath)', args['datapath'], 'does not exist.']))
-
+        # "data" arguments:
+        if 'path' not in args['data']:
+            missing.append('data::path')
+        elif not os.path.isdir(args['data']['path']):
+            errs.append('data::path must point to folder.')
+        elif not os.path.exists(args['data']['path']):
+            errs.append(' '.join(['(data::path)', args['data']['path'], ' does not exist.']))
+        if 'sheets' in args['data'] and not isinstance(args['data']['sheets'], list):
+            errs.append('data::sheets must be a list.')
+        # "filedatereg" arguments:
         if not IsRegex(args['filedatereg']['Regex']):
             errs.append(' '.join(['(filedatereg)', args['filedatereg']['Regex'], 'Not a valid regular expression.']))
 
+        # "reportpath" arguments:
         if '.' not in args['reportpath']:
             errs.append('(reportpath) Must point to a file.')
         elif '\\' in args['reportpath'] and not os.path.exists(args['reportpath'][0:args['reportpath'].rfind('\\')]):
@@ -72,9 +79,11 @@ class Arguments(object):
                 args['reportpath'] = "%s_%d%s" % (filename, count, extension)
                 count += 1
 
+        # "filenamereg" arguments:
         if 'filenamereg' in args and not IsRegex(args['filenamereg']):
-            errs.append(' '.join(['(filenamereg)', args['filenamereg'], 'is not a valid regular expression.']))
+            errs.append(' '.join(['(filenamereg) ', args['filenamereg'], ' is not a valid regular expression.']))
 
+        # "convert" arguments:
         if 'convert' in args:
             if not ('convertpath' in args['convert'] and 'toextension' in args['convert']):
                 errs.append('convert requires "toextension" and "convertpath" as attributes.')
@@ -83,6 +92,8 @@ class Arguments(object):
             if 'convertpath' in args['convert'] and not os.path.exists(args['convert']['convertpath']):
                 errs.append('convertpath does not exist.')
 
+        if missing:
+            errs.append('The following required subarguments are missing: {%s}' % ', '.join(missing))
         if errs:
             raise Exception("\n".join(errs))
 
@@ -98,7 +109,7 @@ def GenerateColumnAttributesReport():
     print ("Reading all data files at")
     print (args.datapath)
     attributes = DataColumnAttributes()
-    attributes.GetDataAttributes(args.datapath, args.filedateinfo, args.filenamereg, args.convertedpaths)
+    attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets)
     attributes.GenerateReport(args.reportpath)
     print ("Generating table definition for")
     print (args.tablename)

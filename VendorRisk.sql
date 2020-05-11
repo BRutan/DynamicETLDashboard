@@ -9,7 +9,7 @@ GO
 SET QUOTED_IDENTIFIER ON;
 GO
 
-//****** Object: Table [dbo].[VendorRisk] Script Date: 04 06 2020 14:57:50 PM ******//
+//****** Object: Table [dbo].[VendorRisk] Script Date: 05 11 2020 09:52:05 AM ******//
 
 CREATE TABLE [dbo].[VendorRisk]
 ([Engagement Name] varchar(max) NULL

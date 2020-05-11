@@ -2,7 +2,7 @@
 # ValidateAndAppendNewETL.py
 #####################################
 # Description:
-# * 
+# * Validate new ETL parameters.
 
 import json
 from ETL.NewETLCreator import NewETLCreator
