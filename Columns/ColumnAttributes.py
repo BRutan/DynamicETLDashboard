@@ -16,12 +16,13 @@ class ColumnAttributes(object):
     """
     * Container of multiple ColAttributes for single entity.
     """
-    def __init__(self, path, fileDateFormat):
+    def __init__(self, path, fileDateFormat, sheet = None):
         """
         * Instantiate new object.
         """
         self.__path = path
         self.__colcount = None
+        self.__sheetname = sheet
         # Map { ColName -> ColAttribute }:
         self.__attributes = SortedDict()
         self.__error = ''
@@ -108,6 +109,9 @@ class ColumnAttributes(object):
         self.__colToColNum = { self.__colNumToCol[num] : num for num in self.__colNumToCol }
 
     def __GetFileDate(self, format):
+        """
+        * Extract FileDate from file (every file must have a file date).
+        """
         format = { arg.lower() : format[arg] for arg in format }
         match = format['regex'].search(self.__path)[0]
         self.__fileDate = datetime.strptime(match, format['dateformat'])
@@ -116,4 +120,4 @@ class ColumnAttributes(object):
         if '.csv' in self.__path:
             return pandas.read_csv(self.__path)
         elif '.xls' in self.__path:
-            return pandas.read_excel(self.__path)
+            return pandas.read_excel(self.__path, 0 if not self.__sheetname is None else self.__sheetname)
