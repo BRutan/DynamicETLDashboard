@@ -159,7 +159,7 @@ class ColumnAttribute(object):
         val = int(val)
         if val > 2 ** 31 - 1 or val < -2 ** 31:
             return 'bigint'
-        if val > 2 ** 15 - 1or val < -2 ** 15:
+        if val > 2 ** 15 - 1 or val < -2 ** 15:
             return 'int'
         if val > 255 or val < 0:
             return 'smallint'
@@ -197,5 +197,3 @@ class ColumnAttribute(object):
             typeStr = 'o'
         return typeStr
             
-            
-    

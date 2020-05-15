@@ -1,5 +1,5 @@
 #####################################
-# ImplementAndTestETLPipeline.py
+# TestETLPipeline.py
 #####################################
 # Description:
 # * Using updated DynamicETL.Service appsettings-template.json 
@@ -10,10 +10,19 @@
 # account for discrepencies or exceptions thrown by DynamicETL.Service.
 
 import json
+from ETL.ETLJobLoader import ETLJobLoader
+from ETL.ETLTester import ETLTester
 
-def ImplementAndTestETLPipeline():
-    # Pull script attributes:
-    args = json.load(open())
+def LoadArgsFromJSON():
+    args = json.load(open('TestETLPipeline.json'))
+
+
+    return args
+
+def TestETLPipeline():
+    # Pull script parameters:
+    args = LoadArgsFromJSON()
+
 
 
 if __name__ == "__main__":

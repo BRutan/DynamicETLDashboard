@@ -1,5 +1,5 @@
 #####################################
-# NewETLCreator.py
+# NewETLAppender.py
 #####################################
 # Description:
 # * Validate new ETL and append to build script for use in DynamicETL.Service.
@@ -7,7 +7,7 @@
 import json
 import os
 
-class NewETLCreator:
+class NewETLAppender:
     """
     * Check that ETLs are formatted properly and append to 
     existing DynamicETL build script.

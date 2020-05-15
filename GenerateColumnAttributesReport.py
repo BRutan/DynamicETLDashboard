@@ -42,7 +42,7 @@ class Arguments(object):
     @staticmethod
     def __CheckArgs(args):
         """
-        * Check argument validity, throw exception if any failed.
+        * Check argument validity, throw exception if any are invalid.
         """
         errs = []
         req = Arguments.__ReqArgs.copy()
@@ -104,7 +104,7 @@ def GenerateColumnAttributesReport():
     #args = GetArgsFromCMDLine()
     args = GetArgsFromJson()
     ###############################
-    # Get all column attributes for data files:
+    # Get all column attributes for data file(s):
     ###############################
     print ("Reading all data files at")
     print (args.datapath)
@@ -116,7 +116,7 @@ def GenerateColumnAttributesReport():
     tableDefOutput = args.reportpath[0:args.reportpath.rfind('\\')] + '\\'
     print ("Generating table definition for %s at " % args.tablename)
     print (tableDefOutput)
-    attributes.CreateTableDefinition(tableDefOutput, args.tablename)
+    attributes.CreateTableDefinitions(tableDefOutput, args.tablename)
     print ("Finished generating table definitions.")
 
 def GetArgsFromCMDLine():

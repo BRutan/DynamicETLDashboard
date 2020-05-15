@@ -2,32 +2,32 @@
 # ValidateAndAppendNewETL.py
 #####################################
 # Description:
-# * Validate new ETL parameters.
+# * Generate updated appsettings-template.json file for use
+# in 
 
 import json
-from ETL.NewETLCreator import NewETLCreator
+from ETL.NewETLAppender import NewETLAppender
 from jsonargparse import ArgumentParser, ActionJsonSchema, ParserError
 from jsonschema import validate
 from Utilities.Helpers import CheckPath, CheckRegex
 
 argschema = {}
 
+def GetArgsFromJson():
+    """
+    * Get arguments for this script from local json file.
+    """
+    args = json.load("ValidateAndAppendNewETL.json")
+
+
 def ValidateAndAppendNewETL():
     print("-------------------------------")
     print("ValidateAndAppendNewETL:")
     print("-------------------------------")
     # Validate application parameters:
-    argfile = json.load("ValidateAndAppendNewETL.json")
-    desc = "Validate new ETL attributes and append to existing DynamicETL appsettings json file."
-    parser = ArgumentParser(prog="ValidateAndAppendNewETL", description=desc)
-    parser.add_argument('cfg', action=ActionJsonSchema(schema = argfile))
-    try:
-        args = parser.parse_args()
-    except ParserError as ex:
-        print("Error:")
-        print(str(ex))
+    args = GetArgsFromJson()
     # Validate new ETLs and append to existing appsettings file:
-
+    appender = NewETLAppender(args.path, args.buildscriptpath)
     
 
 

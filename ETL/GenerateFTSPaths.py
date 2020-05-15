@@ -2,7 +2,9 @@
 # GenerateFTSPaths.py
 #####################################
 # Description:
-# *
+# * Automatically generate FileTransferService XML 
+# schema for each version of ETL (QA, UAT, STG) 
+# using provided attributes.
 
 from bs4 import BeautifulSoup as Soup
 import json

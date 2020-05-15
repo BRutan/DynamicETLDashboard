@@ -130,7 +130,7 @@ class DataColumnAttributes(object):
             self.__GenUniquesSheet(wb)
             wb.close()
         
-    def CreateTableDefinition(self, outputpath, table = None):
+    def CreateTableDefinitions(self, outputpath, table = None):
         """
         * Create SQL table definition based upon latest 
         columnattributes.
@@ -151,18 +151,18 @@ class DataColumnAttributes(object):
             raise Exception('\n'.join(errs))
         outputpath += ('\\' if not outputpath.endswith('\\') else '')
         latest = max(self.__dateToAttrs)
-        table = table.replace(' ', '_') if not table is None else 'Tabledef'
+        table = table.replace(' ', '') if not table is None else 'Tabledef'
         if isinstance(self.__dateToAttrs, dict):
             # Create one table definition per sheet:
             for sheetname in self.__dateToAttrs[latest]:
                 attr = self.__dateToAttrs[latest][sheetname]
-                table_full = ('%s.%s' %  (table, sheetname)).replace(' ', '_')
+                table_full = ('%s.%s' %  (table, sheetname)).replace(' ', '')
                 path = '%s%s.sql' % (outputpath, table_full)
                 with open(path, 'w') as f:
                     self.__WriteTableDef(f, attr, table_full)
         else:
             attr = self.__dateToAttrs[latest]
-            path = ('%s%s.sql' % (outputpath, table)).replace(' ', '_')
+            path = ('%s%s.sql' % (outputpath, table)).replace(' ', '')
             with open(path, 'w') as f:
                 self.__WriteTableDef(f, attr, table)
 
@@ -343,7 +343,7 @@ class DataColumnAttributes(object):
         file.write('USE [MetricsDyetl];\nGO\nSET ANSI_NULLS ON\nGO\n\n')
         file.write('SET ANSI_NULLS ON;\nGO\n\n')
         file.write('SET QUOTED_IDENTIFIER ON;\nGO\n\n')
-        file.write('//****** Object: Table [dbo].[%s] Script Date: %s ******//\n\n' % (table if not table is None else '<FillTableHere>', datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
+        file.write('/****** Object: Table [dbo].[%s] Script Date: %s ******/\n\n' % (table if not table is None else '<FillTableHere>', datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
         file.write('CREATE TABLE [dbo].[%s]\n' % table if not table is None else 'FillTableHere')
         file.write('(\n')
         for num, name in enumerate(attributes.Attributes):

@@ -11,7 +11,6 @@ import os
 from pandas import DataFrame
 import re
 import requests
-from ETLObj import ETLObj
 
 class ETLJobLoader(object):
     """
@@ -20,51 +19,49 @@ class ETLJobLoader(object):
     __DefaultHost = 'https://localhost:23014/api/jobs'
     __ReqJSONFields = { 'id' : False, 'fileid' : False, 'subject' : False, 'arg' : False, 'filename' : False }
     __jsonRE = re.compile("{.+}")
-    def __init__(self, hostName = None):
+    def __init__(self, webapiPath, hostName = None):
         """
-        * Load ETL Job to 
+        * Initialize object that posts ETL jobs.
+        Inputs:
+        * webapiPath: Path to WebAPI executable.
+        Optional Inputs:
+        * hostName: URL for WebAPI host.
         """
-        errs = []
         if hostName and not isinstance(hostName, str):
-            errs.append('hostName must be a string or None.')
+            raise Exception('hostName must be a string or None.')
         
-        if errs:
-            raise Exception('\n'.join(errs))
-        self.__jsonObj = None
         self.__host = hostName.strip() if not hostName is None else ETLJobLoader.__DefaultHost
 
-    def PostETL(self, path = None):
+    def PostETL(self, jsonpath):
         """
-        * Post ETL in json file at path to target server.
-        Optional Inputs:
-        * path: Path to json file.
+        * Run WebAPI, post ETL in json file at path to target server.
+        Inputs:
+        * jsonpath: Path to json file containing post arguments.
         """
+        # Validate json arguments:
+        jsonArgs = json.load(open(jsonpath, 'rb'))
+        ETLJobLoader.__CheckJSONETL(jsonArgs)
         # Post job to server:
-        if not path:
-            try:
-                result = requests.post(url = '', data = self.__jsonObj)
-            except BaseException as ex:
-                pass
-        else:
-            # Load new JSON object and post:
-            self.LoadETLJSON(path)
-            self.PostETL()
-
+        result = requests.post(url = self.__host, data = self.__jsonObj)
+        
+        # Load new JSON object and post:
+        self.LoadETLJSON(path)
+        
     def CheckETLPosted(self):
         """
         * Check that ETL has been posted already.
         """
         result = requests.get(self.__host)
         
-    @staticmethod
-    def RequiredJSONFields():
+    @classmethod
+    def RequiredJSONFields(cls):
         """
         * 
         """
         return ETLJobLoader.__ReqJSONFields.copy()
         
-    @staticmethod
-    def __CheckJSONETL(jsonObj):
+    @classmethod
+    def __CheckJSONETL(cls, jsonObj):
         """
         * Ensure all required attributes are in the json object and valid.
         """
