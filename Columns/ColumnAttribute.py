@@ -9,6 +9,7 @@ from Columns.ColumnRelationships import RelationshipEnum
 import dateutil.parser as dateparser
 from decimal import Decimal
 from pandas import DataFrame
+import numpy as np
 import re
 
 class ColumnAttribute(object):
@@ -19,6 +20,7 @@ class ColumnAttribute(object):
     __floatPattern = re.compile('\.[0-9]')
     __datePattern = re.compile('^[0-9]{1,2}[//-_][0-9]{1,2}//[0-9]{2,4}$')
     __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal' }
+
     def __init__(self, name):
         """
         * Instantiate attributes for data column.
@@ -76,21 +78,21 @@ class ColumnAttribute(object):
         * column: Expecting pandas Series or list-like container.
         """
         uniques = column.drop_duplicates()
-        self.__uniqueCount = len(uniques)
+        self.__uniqueCount = len(uniques.dropna())
         self.__isNullable = any(column.isna())
         self.__isUnique = True if self.__uniqueCount == len(column) else False
-        # See if Pandas DataFrame has determined types, or check column types manually:
-        typeStr = str(DataFrame(list(uniques)).dtypes[0].char.lower())
         if self.__uniqueCount < 25:
-            self.__uniques = uniques
-        if typeStr != 'o':
+            self.__uniques = uniques.dropna()
+        # See if Pandas DataFrame has determined types, or check column types manually:
+        typeStr = DataFrame(list(uniques)).dtypes[0].name.lower()
+        if typeStr != 'object':
             typeStr = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
         else:
             # Verify that DataFrame has determine type effectively:
             typeStr = ColumnAttribute.__DetermineColType(uniques)
             if typeStr == 'o':
                 typeStr = 'varchar(max)'
-            else:
+            elif typeStr in ColumnAttribute.__dtypeToSQLType:
                 typeStr = ColumnAttribute.__dtypeToSQLType[typeStr]
         self.__type = typeStr
 

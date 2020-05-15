@@ -16,7 +16,7 @@
       "Non-IT Admin"
     ]
   },
-  "reportpath": "Exception_Daily_Report.xlsx",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\Exception_Daily_Report.xlsx",
   "filedatereg": {
     "Regex": "\\d{2}_\\d{2}_\\d{4}",
     "DateFormat": "%m_%d_%Y"

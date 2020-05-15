@@ -130,37 +130,45 @@ class DataColumnAttributes(object):
             self.__GenUniquesSheet(wb)
             wb.close()
         
-    def CreateTableDefinition(self, table = None):
+    def CreateTableDefinition(self, outputpath, table = None):
         """
         * Create SQL table definition based upon latest 
         columnattributes.
         Will create one table definition per sheet if file consists of 
         multiple sheets.
         Inputs:
+        * outputpath: Folder to output 
         * table: Name for table definition .sql file.
         """
-        if not table is None and not isinstance(table, str):
-            raise Exception('table must be None or a string.')
         if not self.__dateToAttrs:
             return
+        errs = []
+        if not table is None and not isinstance(table, str):
+            errs.append('table must be None or a string.')
+        if not os.path.isdir(outputpath):
+            errs.append('outputpath must be a folder')
+        if errs:
+            raise Exception('\n'.join(errs))
+        outputpath += ('\\' if not outputpath.endswith('\\') else '')
         latest = max(self.__dateToAttrs)
+        table = table.replace(' ', '_') if not table is None else 'Tabledef'
         if isinstance(self.__dateToAttrs, dict):
             # Create one table definition per sheet:
             for sheetname in self.__dateToAttrs[latest]:
                 attr = self.__dateToAttrs[latest][sheetname]
-                table_full = '%s.%s' %  (table if not table is None else 'tabledef', sheetname)
-                path = '%s.sql' % table_full
+                table_full = ('%s.%s' %  (table, sheetname)).replace(' ', '_')
+                path = '%s%s.sql' % (outputpath, table_full)
                 with open(path, 'w') as f:
-                    self.__WriteTableDef(f, attr, table_full, sheetname)
-            else:
-                attr = self.__dateToAttrs[latest]
-                path = '%s.sql' % table if not table is None else 'tabledef'
-                with open(path, 'w') as f:
-                    self.__WriteTableDef(f, attr, table)
+                    self.__WriteTableDef(f, attr, table_full)
+        else:
+            attr = self.__dateToAttrs[latest]
+            path = ('%s%s.sql' % (outputpath, table)).replace(' ', '_')
+            with open(path, 'w') as f:
+                self.__WriteTableDef(f, attr, table)
 
     ##################
     # Private Helpers:
-    ##################
+    ################## 
     def __ExtractFile(self, path):
         """
         * Extract data from single file.
@@ -193,7 +201,7 @@ class DataColumnAttributes(object):
         """
         * Generate one report per target sheet.
         """
-        subpath = path[0:path.find('.')]
+        subpath = path[0:path.rfind('.')]
         for sheetname in self.__sheets:
             outpath = subpath + '_' + sheetname + '.xlsx'
             wb = xlsxwriter.Workbook(outpath)
@@ -337,10 +345,11 @@ class DataColumnAttributes(object):
         file.write('SET QUOTED_IDENTIFIER ON;\nGO\n\n')
         file.write('//****** Object: Table [dbo].[%s] Script Date: %s ******//\n\n' % (table if not table is None else '<FillTableHere>', datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
         file.write('CREATE TABLE [dbo].[%s]\n' % table if not table is None else 'FillTableHere')
-        file.write('(')
+        file.write('(\n')
         for num, name in enumerate(attributes.Attributes):
             attr = attributes.Attributes[name]
             nullable = 'NOT NULL' if not attr.IsNullable else 'NULL'
-            last = num == len(attributes.Attributes) - 1
-            file.write('[%s] %s %s%s\n' % (attr.ColumnName, attr.Type, nullable, ',' if last else ''))
+            file.write('[%s] %s %s,\n' % (attr.ColumnName, attr.Type, nullable))
+        file.write('[FileDate] datetime NOT NULL,\n')
+        file.write('[RunDate] datetime NOT NULL\n')
         file.write(') ON [PRIMARY];\n\nGO\n')

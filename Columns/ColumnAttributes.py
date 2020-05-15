@@ -120,4 +120,4 @@ class ColumnAttributes(object):
         if '.csv' in self.__path:
             return pandas.read_csv(self.__path)
         elif '.xls' in self.__path:
-            return pandas.read_excel(self.__path, 0 if not self.__sheetname is None else self.__sheetname)
+            return pandas.read_excel(self.__path, sheet_name = (0 if self.__sheetname is None else self.__sheetname))

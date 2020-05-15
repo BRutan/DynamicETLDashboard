@@ -111,11 +111,13 @@ def GenerateColumnAttributesReport():
     attributes = DataColumnAttributes()
     attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets)
     attributes.GenerateReport(args.reportpath)
-    print ("Generating table definition for")
-    print (args.tablename)
-    attributes.CreateTableDefinition(args.tablename)
     print ("Finished generating report at")
     print (args.reportpath)
+    tableDefOutput = args.reportpath[0:args.reportpath.rfind('\\')] + '\\'
+    print ("Generating table definition for %s at " % args.tablename)
+    print (tableDefOutput)
+    attributes.CreateTableDefinition(tableDefOutput, args.tablename)
+    print ("Finished generating table definitions.")
 
 def GetArgsFromCMDLine():
     parser = ArgumentParser()
