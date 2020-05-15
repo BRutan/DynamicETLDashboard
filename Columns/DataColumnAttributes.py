@@ -14,6 +14,7 @@ import os
 from pandas import DataFrame, concat
 import re
 from sortedcontainers import SortedDict
+import string
 from Utilities.FileConverter import FileConverter
 import xlsxwriter
 
@@ -29,6 +30,7 @@ class DataColumnAttributes(object):
     __one_one_format = {'font_color': 'black', 'bg_color' : 'green'}
     __one_many_format = {'font_color': 'black', 'bg_color' : 'blue'}
     __many_many_format = {'font_color': 'black', 'bg_color' : 'red'}
+    __etl_excl_chars = set([ch for ch in string.punctuation])
     __regType = type(re.compile(''))
     def __init__(self):
         """
@@ -156,7 +158,8 @@ class DataColumnAttributes(object):
             # Create one table definition per sheet:
             for sheetname in self.__dateToAttrs[latest]:
                 attr = self.__dateToAttrs[latest][sheetname]
-                table_full = ('%s.%s' %  (table, sheetname)).replace(' ', '')
+                table_full = ('%s.%s' %  (table, sheetname))
+                table_full = DataColumnAttributes.__FixName(table_full)
                 path = '%s%s.sql' % (outputpath, table_full)
                 with open(path, 'w') as f:
                     self.__WriteTableDef(f, attr, table_full)
@@ -203,7 +206,8 @@ class DataColumnAttributes(object):
         """
         subpath = path[0:path.rfind('.')]
         for sheetname in self.__sheets:
-            outpath = subpath + '_' + sheetname + '.xlsx'
+            sheetname_fixed = DataColumnAttributes.__FixName(sheetname)
+            outpath = subpath + '_' + sheetname_fixed + '.xlsx'
             wb = xlsxwriter.Workbook(outpath)
             self.__GenColumnAttributeSheet(wb, sheetname)
             self.__GenColChangeDateSheet(wb, sheetname)
@@ -340,11 +344,15 @@ class DataColumnAttributes(object):
         """
         * Write table definition in standard format.
         """
+        if not table is None:
+            table_fixed = DataColumnAttributes.__FixName(table)
+        else:
+            table_fixed = '<FillTableHere>'
         file.write('USE [MetricsDyetl];\nGO\nSET ANSI_NULLS ON\nGO\n\n')
         file.write('SET ANSI_NULLS ON;\nGO\n\n')
         file.write('SET QUOTED_IDENTIFIER ON;\nGO\n\n')
-        file.write('/****** Object: Table [dbo].[%s] Script Date: %s ******/\n\n' % (table if not table is None else '<FillTableHere>', datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
-        file.write('CREATE TABLE [dbo].[%s]\n' % table if not table is None else 'FillTableHere')
+        file.write('/****** Object: Table [dbo].[%s] Script Date: %s ******/\n\n' % (table_fixed, datetime.today().strftime('%m %d %Y %H:%M:%S %p')))
+        file.write('CREATE TABLE [dbo].[%s]\n' % table_fixed)
         file.write('(\n')
         for num, name in enumerate(attributes.Attributes):
             attr = attributes.Attributes[name]
@@ -353,3 +361,14 @@ class DataColumnAttributes(object):
         file.write('[FileDate] datetime NOT NULL,\n')
         file.write('[RunDate] datetime NOT NULL\n')
         file.write(') ON [PRIMARY];\n\nGO\n')
+
+    @classmethod
+    def __FixName(cls, name):
+        startIndex = name.rfind('.') + 1
+        endIndex = len(name)
+        subname = name[startIndex:endIndex]
+        subname_fixed = ''.join([ch if ch not in DataColumnAttributes.__etl_excl_chars else ' ' for ch in subname])
+        subname_fixed = subname_fixed.title().replace(' ', '') if len(subname_fixed.replace(' ', '')) != len(subname_fixed) else subname_fixed
+        name_fixed = name[0:startIndex] + subname_fixed
+
+        return name_fixed
