@@ -1,6 +1,7 @@
 {
-	"webapipath: : "",
-	"dynamicetlservicepath" : "",
-	"localserver" : "localhost:23014//api//etljobs",
-	"localdatabase" : "."
+  "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll",
+  "dynamicetlservicepath": "",
+  "localserver": "localhost:23014//api//etljobs",
+  "localdatabase": ".",
+  "postargspath" :  "postargs.json"
 }
