@@ -4,7 +4,7 @@
 # Description:
 # * Test loaded data versus ETL test file.
 
-from ETLJobLoader import ETLJobLoader
+from ETL.ETLJobLoader import ETLJobLoader
 from pandas import DataFrame
 import xlsxwriter
 

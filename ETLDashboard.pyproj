@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TestETLPipeline.py</StartupFile>
+    <StartupFile>Temp.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -31,6 +31,9 @@
     <Compile Include="ETL\NewETLAppender.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\TSQLInterface.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Exceptions\CustomExceptions.py">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +46,9 @@
     <Compile Include="Exceptions\LogFile.py" />
     <Compile Include="Exceptions\NonFatal.py" />
     <Compile Include="Exceptions\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestETLPipeline.py">
