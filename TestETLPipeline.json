@@ -2,6 +2,7 @@
   "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll",
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
   "localserver": "localhost:23014\\api\\etljobs",
-  "localdatabase": ".",
-  "postargspath" :  "postargs.json"
+  "sqlconnection": ".",
+  "postargspath": "postargs.json",
+  "tablename" :  ""
 }

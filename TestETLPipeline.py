@@ -20,7 +20,7 @@ def LoadArgsFromJSON():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = set(['dynamicetlservicepath','localserver','localdatabase','postargspath','tablename','webapipath'])
+    req_args = set(['dynamicetlservicepath','localserver','postargspath','sqlconnection','tablename','webapipath'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
     args = json.load(open('TestETLPipeline.json', 'rb'))
@@ -79,7 +79,7 @@ def TestETLPipeline():
     loader = ETLJobLoader(args['webapipath'], args['dynamicetlservicepath'], )
     loader.PostETL(args['postargs.json'])
     # Compare input versus output etl data:
-    tester = ETLComparer(args['postargs']['arg']['FilePath'], args['localserver'], args['localdatabase'], args['tablename'])
+    tester = ETLComparer(args['postargs']['arg']['FilePath'],args['sqlconnection'],args['localserver'],args['tablename'])
     tester.GenerateComparisonReport()
 
 
