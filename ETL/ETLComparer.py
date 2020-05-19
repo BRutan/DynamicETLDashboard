@@ -1,15 +1,16 @@
 #####################################
-# ETLTester.py
+# ETLComparer.py
 #####################################
 # Description:
-# * Test loaded data versus ETL test file.
+# * Compare loaded data (via DynamicETL.WebAPI + Service) 
+# versus ETL test file.
 
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
 from pandas import DataFrame
 import xlsxwriter
 
-class ETLTester(object):
+class ETLComparer(object):
     """
     * Compare inputted data from ETL source file versus data loaded into 
     ETL table.
@@ -37,16 +38,20 @@ class ETLTester(object):
             raise Exception('\n'.join(errs))
 
         reportWorkbook = Workbook()
-        reportWorkbook.add_sheet("Table_Data")
-        reportWorkbook.add_sheet("File_Data")
+        reportWorkbook.add_sheet("Difference")
         for rowNum in range(0, fileData):
             pass
 
     ####################
     # Private Helpers:
     ####################
-    @staticmethod
-    def __AddRowsToSheet(data, sheet, dtFormat = None):
+    def __QueryDB(self, tablename):
+        """
+        * Query database.
+        """
+        pass
+    @classmethod
+    def __AddRowsToSheet(cls, data, sheet, dtFormat = None):
         rowNums = range(0, len(data))
         for rowNum in rowNums:
             for col in data.columns:

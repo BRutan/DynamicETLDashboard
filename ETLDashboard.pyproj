@@ -65,7 +65,7 @@
     </Compile>
     <Compile Include="GUI\ETLDashboard.py" />
     <Compile Include="ETL\ETLJobLoader.py" />
-    <Compile Include="ETL\ETLTester.py" />
+    <Compile Include="ETL\ETLComparer.py" />
     <Compile Include="ETL\GenerateFTSPaths.py" />
     <Compile Include="GUI\__init__.py">
       <SubType>Code</SubType>

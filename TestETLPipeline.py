@@ -10,7 +10,7 @@
 # uploaded data discrepancies.
 
 from ETL.ETLJobLoader import ETLJobLoader
-from ETL.ETLTester import ETLTester
+from ETL.ETLComparer import ETLComparer
 from ETL.TSQLInterface import TSQLInterface
 import json
 import os
@@ -76,13 +76,11 @@ def TestETLPipeline():
     # Open DynamicETL.WebApi and post test ETL job:
     print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
     print(args['webapipath'])
-    try:
-        loader = ETLJobLoader(args['webapipath'])
-        loader.PostETL(args['postargs.json'])
-    except Exception as ex:
-        print(str(ex))
+    loader = ETLJobLoader(args['webapipath'])
+    loader.PostETL(args['postargs.json'])
+    
     # Compare input versus output etl data:
-    tester = ETLTester()
+    tester = ETLComparer()
     tester.GenerateComparisonReport()
 
 
