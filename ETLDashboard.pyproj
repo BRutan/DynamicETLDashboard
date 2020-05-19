@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AddFileWatcherConfig.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Columns\ColumnAttribute.py" />
     <Compile Include="Columns\ColumnAttributes.py" />
     <Compile Include="Columns\DataColumnAttributes.py" />
