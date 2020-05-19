@@ -20,7 +20,7 @@ def LoadArgsFromJSON():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = set(['webapipath','dynamicetlservicepath','localserver','localdatabase','postargspath'])
+    req_args = set(['dynamicetlservicepath','localserver','localdatabase','postargspath','tablename','webapipath'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
     args = json.load(open('TestETLPipeline.json', 'rb'))
@@ -31,7 +31,7 @@ def LoadArgsFromJSON():
     if missing:
         errs.append('The following required args are missing: {%s}' % ','.join(missing))
         raise Exception(''.join(errs))
-    
+
     # postargspath:
     if not os.path.exists(args['postargspath']):
         errs.append('(postargspath) Path does not exist.')
@@ -76,11 +76,10 @@ def TestETLPipeline():
     # Open DynamicETL.WebApi and post test ETL job:
     print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
     print(args['webapipath'])
-    loader = ETLJobLoader(args['webapipath'])
+    loader = ETLJobLoader(args['webapipath'], args['dynamicetlservicepath'], )
     loader.PostETL(args['postargs.json'])
-    
     # Compare input versus output etl data:
-    tester = ETLComparer()
+    tester = ETLComparer(args['postargs']['arg']['FilePath'], args['localserver'], args['localdatabase'], args['tablename'])
     tester.GenerateComparisonReport()
 
 
