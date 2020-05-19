@@ -15,7 +15,8 @@ import requests
 
 class ETLJobLoader(object):
     """
-    * Load ETL Job to server.
+    * Open DynamicETL.WebAPI, post ETL job and run DynamicETL.Service.
+    Read logfile for issues if necessary.
     """
     __DefaultHost = 'https://localhost:23014/api/jobs'
     __ReqJSONFields = { 'id' : False, 'fileid' : False, 'subject' : False, 'arg' : False, 'filename' : False }
@@ -55,11 +56,9 @@ class ETLJobLoader(object):
     ######################
     # Interface Methods:
     ######################
-    def PostETL(self, jsonpath):
+    def RunETL(self, jsonpath):
         """
-        * Run WebAPI, post ETL in json file at path to target server.
-        Inputs:
-        * jsonpath: Path to json file containing post arguments.
+        * Open WebAPI, post ETL
         """
         if not isinstance(jsonpath, str):
             raise Exception('jsonpath must be a string.')
@@ -68,6 +67,12 @@ class ETLJobLoader(object):
         elif not os.path.exists(jsonpath):
             raise Exception('jsonpath does not exists.')
         
+    def __PostETL(self, jsonpath):
+        """
+        * Run WebAPI, post ETL in json file at path to target server.
+        Inputs:
+        * jsonpath: Path to json file containing post arguments.
+        """
         # Validate json arguments:
         jsonArgs = json.load(open(jsonpath, 'rb'))
         ETLJobLoader.__CheckJSONETL(jsonArgs)
@@ -80,33 +85,30 @@ class ETLJobLoader(object):
         # Load new JSON object and post:
         
 
-    def CheckETLPosted(self):
+    def __CheckETLPosted(self):
         """
-        * Check that ETL has been posted already.
+        * Check that ETL was successfully posted.
         """
         result = requests.get(self.__host)
 
-    def OpenWebAPI(self):
+    def __OpenWebAPI(self):
         """
         * Close WebAPI instance.
         """
         if not self.__opened:
             pass
 
-    def CloseWebAPI(self):
+    def __CloseWebAPI(self):
         """
         * Close WebAPI instance.
         """
         if self.__opened:
             pass
-        
-    ######################
-    # Static Helpers:
-    ######################
+    
     @classmethod
     def RequiredJSONFields(cls):
         """
-        * 
+        * Return copy of required DynamicETL.WebAPI etl json fields.
         """
         return ETLJobLoader.__ReqJSONFields.copy()
         
@@ -131,14 +133,5 @@ class ETLJobLoader(object):
                 
         if errs:
             raise Exception('\n'.join(errs))
-
-class SQLCredentials(object):
-    """
-    * Credentials used to log into sql server.
-    """
-    __paramToCred = { "" : "" } 
-    def __init__(self, **kwargs):
-        pass
-
 
 

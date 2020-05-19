@@ -5,16 +5,26 @@
 # * Test loaded data versus ETL test file.
 
 from ETL.ETLJobLoader import ETLJobLoader
+from ETL.TSQLInterface import TSQLInterface
 from pandas import DataFrame
 import xlsxwriter
 
 class ETLTester(object):
     """
-    * Test new ETL created in .
+    * Compare inputted data from ETL source file versus data loaded into 
+    ETL table.
     """
-    def __init__(self, samplepath):
+    def __init__(self, inputfilepath, server, database, tablename):
+        """
+        * Connect to database and set  
+        """
+        self.__Validate(inputfilepath, server, database, tablename)
+        self.__interface = TSQLInterface(server, database)
         self.__samplepath = samplepath
 
+    ####################
+    # Interface Methods:
+    ####################
     def GenerateComparisonReport(self, sampleFilePath, tableName, outputPath, pKey = None):
         """
         * Generate report detailing differences between table rows
@@ -32,6 +42,9 @@ class ETLTester(object):
         for rowNum in range(0, fileData):
             pass
 
+    ####################
+    # Private Helpers:
+    ####################
     @staticmethod
     def __AddRowsToSheet(data, sheet, dtFormat = None):
         rowNums = range(0, len(data))

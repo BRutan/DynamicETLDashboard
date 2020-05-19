@@ -11,6 +11,7 @@
 
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.ETLTester import ETLTester
+from ETL.TSQLInterface import TSQLInterface
 import json
 import os
 import sys
