@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TestETLPipeline.py</StartupFile>
+    <StartupFile>Temp.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,6 +29,9 @@
     <Compile Include="Columns\DataColumnAttributes.py" />
     <Compile Include="Columns\ColumnRelationships.py" />
     <Compile Include="Columns\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ETL\DataReader.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\NewETLAppender.py">

@@ -95,8 +95,11 @@ def TestETLPipeline():
         print(message)
         sys.exit()
     # Query server to get uploaded data:
-    TSQLInterface(args['sqlconnection'], args['sqldatabase'])
-
+    interface = TSQLInterface(args['sqlconnection'], args['sqldatabase'])
+    query = "SELECT * FROM %s" % args['sqltablename']
+    data_test = interface.Select(query)
+    # Pull data from test file:
+    data_valid = None
     # Compare input versus output etl data:
     tester = DataComparer()
     tester.GenerateComparisonReport(args['reportpath'],)
