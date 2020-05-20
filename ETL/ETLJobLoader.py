@@ -2,7 +2,8 @@
 # ETLJobLoader.py
 #####################################
 # Description:
-# * Post ETL job using POST request in local .json file.
+# * Open DynamicETL.WebAPI, post ETL job and run DynamicETL.Service.
+# Read logfile for issues if necessary.
 
 import ctypes
 from enum import Enum
@@ -52,28 +53,24 @@ class ETLJobLoader(object):
     ######################
     # Interface Methods:
     ######################
-    def RunETL(self, jsonpath):
+    def RunETL(self, jsonobj):
         """
-        * Open DynamicETL.WebAPI, post ETL job using json file and run DynamicETL.Service.
+        * Open DynamicETL.WebAPI, post ETL job using passed json arguments 
+        and run DynamicETL.Service.
         Inputs:
-        * jsonpath: String path to json file containing ETL post arguments.
+        * jsonobj: Dictionary containing WebAPI json post arguments for target ETL.
         """
-        if not isinstance(jsonpath, str):
-            raise Exception('jsonpath must be a string.')
-        elif not jsonpath.endswith('json'):
-            raise Exception('jsonpath must point to json file.')
-        elif not os.path.exists(jsonpath):
-            raise Exception('jsonpath does not exists.')
+        if not isinstance(jsonobj, dict):
+            raise Exception('jsonobj must be a dictionary.')
         # Validate json arguments:
-        jsonobj = json.load(open(jsonpath, 'rb'))
-        ETLJobLoader.__CheckJSONETL(jsonobj)
         try:
+            ETLJobLoader.__CheckJSONETL(jsonobj)
             self.__OpenWebAPI()
             self.__PostETL(jsonobj)
             self.__RunService()
             self.__CloseApps()
         except Exception as ex:
-            raise Exception('(ETLJobLoader) %s' % str(ex))
+            raise Exception('(ETLJobLoader)\n%s' % str(ex))
 
     def ReadLogFile(self):
         """
@@ -98,7 +95,7 @@ class ETLJobLoader(object):
         """
         # https://stackoverflow.com/questions/5759377/how-to-call-a-dll-function-in-parallel-in-python
         webapi = ctypes.cdll.LoadLibrary(self.__webapipath)
-        webapi.Program.Main()
+        webapi.Main()
 
     def __PostETL(self, jsonobj):
         """
@@ -126,7 +123,6 @@ class ETLJobLoader(object):
         * Check that ETL was successfully posted.
         """
         result = requests.get(self.__host)
-
     
     def __Validate(self, webapiPath, servicePath, logpath, hostName):
         """
@@ -162,8 +158,9 @@ class ETLJobLoader(object):
         """
         * Ensure all required attributes are in the json object and valid.
         """
+        errs = []
         reqFields = ETLJobLoader.__ReqJSONFields.copy()
-        normJSON = { col.lower() : col[jsonObj] for col in jsonObj }
+        normJSON = { col.lower() : jsonObj[col] for col in jsonObj }
         for field in normJSON:
             if field in reqFields:
                 reqFields[field] = True
@@ -171,11 +168,10 @@ class ETLJobLoader(object):
         missing = [reqFields[field] for field in reqFields if not reqFields[field]]
         if missing:
             errs.append(''.join(['Missing the following JSON fields:{', ','.join(missing), '}']))
-        if reqFields['arg'] and 'filepath' not in normJSON['arg']: 
+        if reqFields['arg'] and 'FilePath' not in normJSON['arg']: 
             errs.append('arg must include filepath.')
-        elif reqFields['arg'] and not os.path.exists(normJSON['arg']['filepath']):
-            errs.append('file at filepath in json file does not exist.')
-                
+        elif reqFields['arg'] and not os.path.exists(normJSON['arg'].split('FilePath')[1].strip("':'").strip("'}")):
+            errs.append('file at arg::FilePath does not exist.')
         if errs:
             raise Exception('\n'.join(errs))
 

@@ -4,5 +4,6 @@
   "localserver": "localhost:23014\\api\\etljobs",
   "sqlconnection": ".",
   "postargspath": "postargs.json",
-  "tablename" :  ""
+  "logpath": "C:\\logs\\",
+  "tablename": "tbl_CyberSecurity_Exceptions_GS"
 }

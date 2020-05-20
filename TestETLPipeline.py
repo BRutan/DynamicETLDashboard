@@ -10,7 +10,7 @@
 # uploaded data discrepancies.
 
 from ETL.ETLJobLoader import ETLJobLoader
-from ETL.ETLComparer import ETLComparer
+from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
 import json
 import os
@@ -82,10 +82,10 @@ def TestETLPipeline():
     # Open DynamicETL.WebApi and post test ETL job:
     print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
     print(args['webapipath'])
-    loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'], )
-    loader.PostETL(args['postargs.json'])
+    loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'])
+    loader.RunETL(args['postargs'])
     # Compare input versus output etl data:
-    tester = ETLComparer(args['postargs']['arg']['FilePath'],args['sqlconnection'],args['localserver'],args['tablename'])
+    tester = DataComparer(args['postargs']['arg']['FilePath'],args['sqlconnection'],args['localserver'],args['tablename'])
     tester.GenerateComparisonReport()
 
 
