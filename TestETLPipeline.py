@@ -20,7 +20,8 @@ def LoadArgsFromJSON():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = set(['dynamicetlservicepath','logpath','localserver','postargspath','sqlconnection','tablename','webapipath'])
+    req_args = ['dynamicetlservicepath','logpath','webapiurl','postargspath','reportpath','sqlconnection','sqldatabase','sqltable','webapipath'] 
+    req_args = set(req_args)
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
     args = json.load(open('TestETLPipeline.json', 'rb'))
@@ -31,6 +32,10 @@ def LoadArgsFromJSON():
     if missing:
         errs.append('The following required args are missing: {%s}' % ','.join(missing))
         raise Exception(''.join(errs))
+
+    # reportpath:
+    if not args['reportpath'].endswith('.xlsx'):
+        errs.append('(reportpath) Must point to xlsx file.')
 
     # logpath:
     if not os.path.isdir(args['logpath']):
@@ -82,11 +87,19 @@ def TestETLPipeline():
     # Open DynamicETL.WebApi and post test ETL job:
     print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
     print(args['webapipath'])
-    loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'])
+    loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
     loader.RunETL(args['postargs'])
+    # Determine if any issues occurred in the log file. Exit application if issues occurred:
+    message = loader.ReadLogFile()
+    if message:
+        print(message)
+        sys.exit()
+    # Query server to get uploaded data:
+    TSQLInterface(args['sqlconnection'], args['sqldatabase'])
+
     # Compare input versus output etl data:
-    tester = DataComparer(args['postargs']['arg']['FilePath'],args['sqlconnection'],args['localserver'],args['tablename'])
-    tester.GenerateComparisonReport()
+    tester = DataComparer()
+    tester.GenerateComparisonReport(args['reportpath'],)
 
 
 if __name__ == "__main__":
