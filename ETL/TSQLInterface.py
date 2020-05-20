@@ -5,6 +5,7 @@
 # * Perform SELECT, INSERT, UPDATE, etc queries on TSQL server 
 # databases.
 
+from itertools import combinations
 import numpy as np
 from pandas import DataFrame, isnull, notnull, read_sql
 import pyodbc
@@ -106,9 +107,62 @@ class TSQLInterface:
         cursor.executemany(insert_query, list(data.itertuples(index=False,name=None)))
         cursor.commit()
 
+    @classmethod
+    def PrimaryKeys(cls, data, maxCombs = None, ignoreCols = None, findFirst = False):
+        """
+        * Find some combination of columns that can work as a primary key
+        in passed dataset.
+        Inputs:
+        * data: DataFrame containing data to find primary key for. 
+        Will return None if no combination works.
+        Optional:
+        * maxCombs: Maximum number of columns to combine.
+        * ignoreCols: Columns to ignore.
+        * findFirst: Return first primary key, else will return all possible 
+        primary keys.
+        """
+        errs = []
+        if not isinstance(data, DataFrame):
+            errs.append('data must be a DataFrame.')
+        if not maxCombs is None and not isinstance(maxCombs, (int, float)):
+            errs.append('maxCombs must be numeric.')
+        elif not maxCombs is None and maxCombs < 1:
+            errs.append('maxCombs must be >= 1.')
+        if not ignoreCols is None and not isinstance(ignoreCols, list):
+            errs.append('ignoreCols must be a list.')
+        if not isinstance(findFirst, bool):
+            errs.append('findFirst must be a boolean.')
+        if errs:
+            raise Exception('\n'.join(errs))
+        checkCols = set(data.columns) - set(ignoreCols if not ignoreCols is None else [])
+        maxCombs = (len(checkCols) if maxCombs is None else maxCombs) + 1
+        pKeys = []
+        for numCols in range(1, maxCombs):
+            for comb in combinations(checkCols, numCols):
+                if TSQLInterface.__CheckComb(comb, pKeys):
+                    cols = list(comb)
+                    if len(set(data[cols].itertuples(index=False,name=None))) == len(data):
+                        if findFirst:
+                            return set(cols)
+                        pKeys.append(set(cols))
+        return pKeys
+
     ######################
     # Private helpers:
     ######################
+    @classmethod
+    def __CheckComb(cls, comb, pKeys):
+        """
+        * Determine if any subset of combinations is present in passed pkeys,
+        since any combination that includes a pkey will also be a pkey.
+        """
+        if not pKeys:
+            return True
+        comb = set(comb)
+        for key in pKeys:
+            if len(key - comb) == 0:
+                return False
+        return True
     def __CloseConnection(self):
         """
         * Close connection if opened.

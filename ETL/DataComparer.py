@@ -87,7 +87,7 @@ class DataComparer(object):
         if not ignoreCols is None:
             ignoreCols = set([col.lower() for col in ignoreCols])
             data_test = data_test[[col for col in data_test.columns if not col.lower() in ignoreCols]]
-            data_valid = data_test[[col for col in data_valid.columns if not col.lower() in ignoreCols]]
+            data_valid = data_valid[[col for col in data_valid.columns if not col.lower() in ignoreCols]]
         # Remove columns in data_valid not in data_test:
         missingCols = set(data_valid.columns) - set(data_test.columns)
         if missingCols:
@@ -96,7 +96,7 @@ class DataComparer(object):
         # Perform comparison:
         if not pKey is None:
             # Compare using primary key:
-            pKey = pKey.lower()
+            pKey = [pKey.lower()] if isinstance(pKey, str) else [key.lower() for key in pKey]
             diff = { col : [] for col in data_test.columns }
             validPKeys = set(data_valid[pKey])
             for row in range(0, len(data_test)):
@@ -141,15 +141,28 @@ class DataComparer(object):
             errs.append('data_test must be a DataFrame.')
         if not isinstance(data_valid, DataFrame):
             errs.append('data_valid must be a DataFrame.')
-        if not ignoreCols is None and not isinstance(ignoreCols, list):
-            errs.append('ignoreCols must be a list of strings if provided.')
+        if not ignoreCols is None and not hasattr(ignoreCols, '__iter__'):
+            errs.append('ignoreCols must be an iterable of strings.')
         elif not ignoreCols is None and any([not isinstance(val, str) for val in ignoreCols]):
-            errs.append('ignoreCols must be list of strings if provided.')
-        if not pKey is None and not isinstance(pKey, str):
-            errs.append('pKey must be a string if provided.')
-        if isinstance(pKey, str) and isinstance(data_test, DataFrame) and not pKey.lower() in [col.lower() for col in data_test.columns]:
-            errs.append('pKey not present in data_test.')
-        if isinstance(pKey, str) and isinstance(data_valid, DataFrame) and not pKey.lower() in [col.lower() for col in data_valid.columns]:
-            errs.append('pKey not present in data_valid.')
+            errs.append('ignoreCols must be an iterable of strings if provided.')
+        if not pKey is None and not (isinstance(pKey, str) or hasattr(pKey, '__iter__')):
+            errs.append('pKey must be a string/list of strings if provided.')
+        elif isinstance(pKey, str):
+            if isinstance(data_test, DataFrame) and not pKey.lower() in [col.lower() for col in data_test.columns]:
+                errs.append('pKey not present in data_test.')
+            if isinstance(data_valid, DataFrame) and not pKey.lower() in [col.lower() for col in data_valid.columns]:
+                errs.append('pKey not present in data_valid.')
+        elif hasattr(pKey, '__iter__'):
+            if any([not isinstance(key, str) for key in pKey]):
+                errs.append('pKey must only contain strings if an iterable.')
+            else:
+                if isinstance(data_test, DataFrame):
+                    missing = set([key.lower() for key in pKey]) - set([col.lower() for col in data_test.columns])
+                    if missing:
+                        errs.append('The following pkeys are missing from data_test: %s' % ','.join(missing))
+                elif isinstance(data_valid, DataFrame):
+                    missing = set([key.lower() for key in pKey]) - set([col.lower() for col in data_valid.columns])
+                    if missing:
+                        errs.append('The following pkeys are missing from data_valid: %s' % ','.join(missing))
         if errs:
             raise Exception('\n'.join(errs))
