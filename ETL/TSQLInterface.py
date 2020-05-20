@@ -6,6 +6,7 @@
 # databases.
 
 from itertools import combinations
+from numba import jit
 import numpy as np
 from pandas import DataFrame, isnull, notnull, read_sql
 import pyodbc
@@ -117,7 +118,7 @@ class TSQLInterface:
         Will return None if no combination works.
         Optional:
         * maxCombs: Maximum number of columns to combine.
-        * ignoreCols: Columns to ignore.
+        * ignoreCols: Iterable containing string columns to ignore.
         * findFirst: Return first primary key, else will return all possible 
         primary keys.
         """
@@ -128,18 +129,68 @@ class TSQLInterface:
             errs.append('maxCombs must be numeric.')
         elif not maxCombs is None and maxCombs < 1:
             errs.append('maxCombs must be >= 1.')
-        if not ignoreCols is None and not isinstance(ignoreCols, list):
-            errs.append('ignoreCols must be a list.')
+        if not ignoreCols is None and not hasattr(ignoreCols, '__iter__'):
+            errs.append('ignoreCols must be an iterable of strings if provided.')
+        elif not ignoreCols is None and any([not isinstance(col, str) for col in ignoreCols]):
+            errs.append('ignoreCols must only contain strings.')
         if not isinstance(findFirst, bool):
             errs.append('findFirst must be a boolean.')
         if errs:
             raise Exception('\n'.join(errs))
         checkCols = set(data.columns) - set(ignoreCols if not ignoreCols is None else [])
+        data = data[checkCols]
         maxCombs = (len(checkCols) if maxCombs is None else maxCombs) + 1
+        maxCombs = min(len(checkCols), maxCombs) + 1
         pKeys = []
         for numCols in range(1, maxCombs):
-            for comb in combinations(checkCols, numCols):
+            allcombos = combinations(checkCols, numCols)
+            for comb in allcombos:
                 if TSQLInterface.__CheckComb(comb, pKeys):
+                    cols = list(comb)
+                    if len(set(data[cols].itertuples(index=False,name=None))) == len(data):
+                        if findFirst:
+                            return set(cols)
+                        pKeys.append(set(cols))
+        return pKeys
+
+    @staticmethod
+    @jit(nopython=True)
+    def PrimaryKeysNumba(data, comboSets, findFirst = False):
+        """
+        * Use Numba to find some combination of columns that can work as a primary key
+        in passed dataset.
+        Inputs:
+        * data: Numpy array containing data to find primary key for. 
+        Will return None if no combination works.
+        * comboSets: List of list of all possible combinations of target columns, for target choice
+        sizes.
+        Optional:
+        * findFirst: Return first primary key, else will return all possible 
+        primary keys.
+        """
+        errs = []
+        if not isinstance(data, np.array):
+            errs.append('data must be a numpy array.')
+        if not maxCombs is None and not isinstance(maxCombs, (int, float)):
+            errs.append('maxCombs must be numeric.')
+        elif not maxCombs is None and maxCombs < 1:
+            errs.append('maxCombs must be >= 1.')
+        if not ignoreCols is None and not hasattr(ignoreCols, '__iter__'):
+            errs.append('ignoreCols must be an iterable of strings if provided.')
+        elif not ignoreCols is None and any([not isinstance(col, str) for col in ignoreCols]):
+            errs.append('ignoreCols must only contain strings.')
+        if not isinstance(findFirst, bool):
+            errs.append('findFirst must be a boolean.')
+        if errs:
+            raise Exception('\n'.join(errs))
+        checkCols = set(data.columns) - set(ignoreCols if not ignoreCols is None else [])
+        data = data[checkCols]
+        maxCombs = (len(checkCols) if maxCombs is None else maxCombs) + 1
+        maxCombs = min(len(checkCols), maxCombs) + 1
+        pKeys = []
+        for combSet in comboSets:
+            for comb in combSet:
+                if __CheckCombNumba(comb, pKeys):
                     cols = list(comb)
                     if len(set(data[cols].itertuples(index=False,name=None))) == len(data):
                         if findFirst:
@@ -152,6 +203,20 @@ class TSQLInterface:
     ######################
     @classmethod
     def __CheckComb(cls, comb, pKeys):
+        """
+        * Determine if any subset of combinations is present in passed pkeys,
+        since any combination that includes a pkey will also be a pkey.
+        """
+        if not pKeys:
+            return True
+        comb = set(comb)
+        for key in pKeys:
+            if len(key - comb) == 0:
+                return False
+        return True
+    @staticmethod
+    @jit(nopython=True)
+    def __CheckCombNumba(cls, comb, pKeys):
         """
         * Determine if any subset of combinations is present in passed pkeys,
         since any combination that includes a pkey will also be a pkey.

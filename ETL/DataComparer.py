@@ -30,8 +30,8 @@ class DataComparer(object):
         * data_test: DataFrame containing test data.
         * data_valid: DataFrame containing valid data to compare against.
         Optional:
-        * ignoreCols: List of columns (strings) to ignore when comparing. 
-        * pKey: If provided, rows will be compared where primary key column is the same.
+        * ignoreCols: Iterable of columns (strings) to ignore when comparing. 
+        * pKey: String or iterable to determine which rows to compare.
         """
         # Validate parameters:
         DataComparer.__Validate(reportPath, data_test, data_valid, ignoreCols, pKey)
@@ -50,16 +50,16 @@ class DataComparer(object):
         """
         * Generate summary page in workbook.
         """
-        wb.add_sheet('Summary')
-        wb.write(0, 0, 'Missing Columns')
-        wb.write(0, 1, missingColsMsg)
-        wb.write(1, 0, '# of Differing Rows')
-        wb.write(1, 1, len(compData))
+        summarySheet = wb.add_worksheet('Summary')
+        summarySheet.write(0, 0, 'Missing Columns')
+        summarySheet.write(0, 1, missingColsMsg)
+        summarySheet.write(1, 0, '# of Differing Rows')
+        summarySheet.write(1, 1, len(compData))
         # Write # of differences for each column:
-        wb.write(2, 0, '# of Differences by Column')
+        summarySheet.write(2, 0, '# of Differences by Column')
         for num, col in enumerate(compData.columns):
-            wb.write(3, num, col)
-            wb.write(3, num, len([val for val in compData[col] if val]))
+            summarySheet.write(3, num, col)
+            summarySheet.write(4, num, len([val for val in compData[col] if val]))
 
     @classmethod
     def __GenerateDiffPage(cls, compData, wb):
@@ -67,23 +67,23 @@ class DataComparer(object):
         * Generate sheet detailing specific differences in 
         column values.
         """
-        wb.add_sheet('Differences')
+        diffSheet = wb.add_worksheet('Differences')
         # Write all differing columns:
-        compData.to_excel(wb, 'Differences')
-        #for rowNum in range(0, len(compData)):
-        #    for colNum, col in enumerate(compData.columns):
-        #        if rowNum != 0:
-        #            wb.write(rowNum, colNum, compData[col][rowNum - 1])
-        #        else:
-        #            wb.write(rowNum, colNum, col)
+        for rowNum in range(0, len(compData)):
+            for colNum, col in enumerate(compData.columns):
+                if rowNum != 0:
+                    diffSheet.write(rowNum, colNum, compData[col][rowNum - 1])
+                else:
+                    # Write headers:
+                    diffSheet.write(rowNum, colNum, col)
     @classmethod
     def __Compare(cls, data_test, data_valid, ignoreCols, pKey):
         """
         * Return dataframe containing rows where datasets differ.
         """
         missingColsMsg = None
-        data_test = data_test.rename(columns={col : col.lower() for col in data_test.columns})
-        data_valid = data_valid.rename(columns={col : col.lower() for col in data_valid.columns})
+        data_test = data_test.rename(columns={col : col.lower() for col in data_test.columns}).fillna('')
+        data_valid = data_valid.rename(columns={col : col.lower() for col in data_valid.columns}).fillna('')
         if not ignoreCols is None:
             ignoreCols = set([col.lower() for col in ignoreCols])
             data_test = data_test[[col for col in data_test.columns if not col.lower() in ignoreCols]]
@@ -95,33 +95,39 @@ class DataComparer(object):
             data_valid = data_valid[[col for col in data_valid if not col in missingCols]]
         # Perform comparison:
         if not pKey is None:
-            # Compare using primary key:
+            # Compare using primary key(s):
             pKey = [pKey.lower()] if isinstance(pKey, str) else [key.lower() for key in pKey]
+            data_test = data_test.set_index(list(pKey))
+            data_valid = data_valid.set_index(list(pKey))
             diff = { col : [] for col in data_test.columns }
-            validPKeys = set(data_valid[pKey])
-            for row in range(0, len(data_test)):
-                target = data_test.iloc[row][pKey]
-                if target not in validPKeys:
-                    # Write entire row if pkey value not present:
-                    for col in data_test.columns:
-                        diff[col].append(data_test.iloc[row][col])
-                else:
-                    # Write all column values that do not match:
-                    match = data_valid.loc[data_valid[pKey] == target].values[0]
-                    rowDiff = { col : None for col in data_test.columns }
-                    appendDiff = False
-                    for num, col in enumerate(data_test.columns):
-                        if col != pKey and data_test[col][row] != match[num]:
-                            rowDiff[col] = '%s vs %s' % (data_test[col][row], match[num])
-                            appendDiff = True
-                    # Append differing values if differences occurred:
-                    if appendDiff:
-                        rowDiff[pKey] = target
-                        for col in rowDiff:
-                            diff[col].append(rowDiff[col])
+            diff.update({col : [] for col in data_test.index.names})
+            matches_test = data_test[data_valid.index == data_test.index]
+            matches_valid = data_valid[data_valid.index == data_valid.index]
+            non_matches = data_test[data_valid.index != data_test.index]
+            # Compare rows where primary key is the same:
+            for row in range(0, len(matches_test)):
+                test = matches_test.iloc[row]
+                valid = matches_valid.iloc[row]
+                rowDiff = { col : None for col in diff }
+                appendDiff = False
+                for col in matches_test.columns:
+                    if test[col] != valid[col]:
+                        rowDiff[col] = '%s vs %s' % (test[col], valid[col])
+                        appendDiff = True
+                # Append differing values if differences occurred:
+                if appendDiff:
+                    for num, col in enumerate(matches_test.index.names):
+                        rowDiff[col] = matches_test.index[row][num]
+                    for col in rowDiff:
+                        diff[col].append(rowDiff[col])
+            # Write entire row for each data_test pkey value not present in data_valid:
+            for row in range(0, len(non_matches)):
+                target = non_matches.iloc[row]
+                for col in diff:
+                    diff[col].append(data_test.iloc[row][col])    
             return DataFrame(diff), missingColsMsg
         else:
-            # Return all rows in data_test not present in data_valid:
+            # Compare rows as they appear in descending order:
             test_tuples = set(data_test.itertuples())
             valid_tuples = set(data_valid.itertuples())
             diff = valid_tuples - test_tuples
@@ -142,12 +148,14 @@ class DataComparer(object):
         if not isinstance(data_valid, DataFrame):
             errs.append('data_valid must be a DataFrame.')
         if not ignoreCols is None and not hasattr(ignoreCols, '__iter__'):
-            errs.append('ignoreCols must be an iterable of strings.')
+            errs.append('ignoreCols must be an iterable of strings if provided.')
         elif not ignoreCols is None and any([not isinstance(val, str) for val in ignoreCols]):
             errs.append('ignoreCols must be an iterable of strings if provided.')
         if not pKey is None and not (isinstance(pKey, str) or hasattr(pKey, '__iter__')):
-            errs.append('pKey must be a string/list of strings if provided.')
+            errs.append('pKey must be a string/iterable of strings if provided.')
         elif isinstance(pKey, str):
+            if hasattr(ignoreCols, '__iter__') and pKey in ignoreCols:
+                errs.append('pKey cannot be in ignoreCols.')
             if isinstance(data_test, DataFrame) and not pKey.lower() in [col.lower() for col in data_test.columns]:
                 errs.append('pKey not present in data_test.')
             if isinstance(data_valid, DataFrame) and not pKey.lower() in [col.lower() for col in data_valid.columns]:
@@ -156,6 +164,10 @@ class DataComparer(object):
             if any([not isinstance(key, str) for key in pKey]):
                 errs.append('pKey must only contain strings if an iterable.')
             else:
+                if hasattr(ignoreCols, '__iter__'):
+                    overlap = set(pKey).intersection(set(ignoreCols))
+                    if overlap:
+                        errs.append('The following pKey columns overlap with ignoreCols: %s' % overlap)
                 if isinstance(data_test, DataFrame):
                     missing = set([key.lower() for key in pKey]) - set([col.lower() for col in data_test.columns])
                     if missing:
