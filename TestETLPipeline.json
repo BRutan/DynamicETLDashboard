@@ -3,6 +3,7 @@
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
   "localserver": "localhost:23014\\api\\etljobs",
   "sqlconnection": ".",
+  "reportpath" :  "DataComparison.xlsx",
   "postargspath": "postargs.json",
   "logpath": "C:\\logs\\",
   "tablename": "tbl_CyberSecurity_Exceptions_GS"
