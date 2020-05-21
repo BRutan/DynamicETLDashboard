@@ -2,10 +2,11 @@
   "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll",
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
   "webapiurl": "localhost:23014\\api\\etljobs",
-  "sqlconnection": ".",
+  "sqlconnection": "nj1qasql13",
   "sqldatabase": "MetricsDYETL",
   "sqltable": "tbl_CyberSecurity_Exceptions_GS",
   "reportpath": "DataComparison.xlsx",
   "postargspath": "postargs.json",
-  "logpath": "C:\\logs\\"
+  "logpath": "C:\\logs\\",
+  "localtest": "False"
 }

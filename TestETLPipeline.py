@@ -21,7 +21,7 @@ def LoadArgsFromJSON():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = ['dynamicetlservicepath','logpath','webapiurl','postargspath','reportpath','sqlconnection','sqldatabase','sqltable','webapipath'] 
+    req_args = ['dynamicetlservicepath','localtest','logpath','postargspath','reportpath','sqlconnection','sqldatabase','sqltable','webapipath','webapiurl'] 
     req_args = set(req_args)
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
@@ -43,6 +43,13 @@ def LoadArgsFromJSON():
         errs.append('(logpath) Must point to a folder.')
     elif not os.path.exists(args['logpath']):
         errs.append('(logpath) Folder does not exist.')
+
+    # localtest:
+    args['localtest'] = args['localtest'].lower()
+    if not args['localtest'] in ['true', 'false']:
+        errs.append('(localtest) Must be true/false.')
+    else:
+        args['localtest'] = args['localtest'] == 'true'
 
     # postargspath:
     if not os.path.exists(args['postargspath']):
