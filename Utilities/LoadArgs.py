@@ -11,7 +11,7 @@ import json
 import re
 import os
 import sys
-from Utilities.Helpers import StringIsDT
+from Utilities.Helpers import FillEnvironmentVariables, LoadJsonFile, StringIsDT
 
 ############################
 # GenerateColumnAttributesReport.py
@@ -162,7 +162,7 @@ def TestETLPipelineJsonArgs():
     req_postargs_arg = set(['FilePath'])
     if not os.path.exists('TestETLPipeline.json'):
         raise Exception('TestETLPipeline.json does not exist.')
-    args = json.load(open('TestETLPipeline.json', 'rb'))
+    args = LoadJsonFile('TestETLPipeline.json')
     # Ensure required arguments are present:
     errs = []
     missing = req_args - set(args)
@@ -176,8 +176,15 @@ def TestETLPipelineJsonArgs():
         missing_test = req_args_test - set(args['testetlargs'])
         if missing_test:
             errs.append('The following required testetlargs are missing: %s' % ','.join(missing_test))
-    if not os.path.exists(os.getcwd() + 'Appsettings'):
-        errs.append('Appsettings folder is missing.')
+    if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
+        errs.append('Local AppsettingsFiles folder is missing.')
+    elif not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
+        errs.append('Local AppsettingsFiles\\config.json file is missing.')
+    else:
+        try:
+            args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
+        except Exception as ex:
+            errs.append('Issue with config.json: %s' % str(err))
     if errs:
         raise Exception('\n'.join(errs))
     ########################
@@ -196,11 +203,14 @@ def TestETLPipelineJsonArgs():
         errs.append('(filewatcherappsettingstemplatepath) Path must point to .json.')
     else:
         # Ensure filewatcher config has correct keys:
-        fwconfig = json.load(open(args['fixedargs']['filewatcherappsettingstemplatepath'], 'rb'))
-        if not 'files' in fwconfig:
-            errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
-        else:
-            args['fixedargs']['filewatcher'] = fwconfig
+        try:
+            fwconfig = LoadJsonFile(args['fixedargs']['filewatcherappsettingstemplatepath'])
+            if not 'files' in fwconfig:
+                errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
+            else:
+                args['fixedargs']['filewatcher'] = fwconfig
+        except Exception as ex:
+            errs.append('(filewatcherappsettingstemplatepath) Issue with json file: %s' % str(ex))
             
     # logpath:
     if not os.path.isdir(args['fixedargs']['logpath']):
@@ -214,7 +224,7 @@ def TestETLPipelineJsonArgs():
     elif not args['fixedargs']['postargspath'].endswith('.json'):
         errs.append('(postargspath) Path must point to a json file.')
     else:
-        post_args = json.load(open(args['fixedargs']['postargspath'], 'rb'))
+        post_args = LoadJsonFile(args['fixedargs']['postargspath'])
         missing = req_postargs - set(post_args)
         if missing:
             errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
@@ -237,7 +247,7 @@ def TestETLPipelineJsonArgs():
         errs.append('(serviceappsettingspath) Must point to .json file.')
     else:
         try:
-            args['fixedargs']['appsettings'] = json.load(open(args['fixedargs']['serviceappsettingspath'], 'rb'))
+            args['fixedargs']['appsettings'] = LoadJsonFile(args['fixedargs']['serviceappsettingspath'])
         except Exception as ex:
             errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
 
@@ -246,10 +256,20 @@ def TestETLPipelineJsonArgs():
         errs.append('(webapipath) Path does not exist.')
     elif not args['fixedargs']['webapipath'].endswith('.dll'):
         errs.append('(webapipath) Path must point to dll.')
-
     ########################
     # testetlargs:
     ########################
+    # testmode:
+    args['testetlargs']['testmode'] = args['testetlargs']['testmode'].upper()
+    validModes = set(['QA', 'STG', 'UAT', 'LOCAL'])
+    if args['testetlargs']['testmode'] not in validModes:
+        errs.append('(testmode) Must be one of %s (not %s).' % (validModes, args['testetlargs']['testmode']))
+        args['testetlargs']['testmode'] = None
+    elif 'filewatcher' in args['fixedargs']:
+        args['fixedargs']['filewatcher'] = FillEnvironmentVariables(args['fixedargs']['filewatcher'],args['config'],args['testetlargs']['testmode'])
+    if not args['testetlargs']['testmode'] is None:
+        args['testetlargs']['server'] = args['config']['Servers'][args['testetlargs']['testmode']]
+
     # etlname: ensure etl is present in appsettings file. 
     # If present then get etl's database and table names from the 
     # appsettings file:
@@ -280,21 +300,21 @@ def TestETLPipelineJsonArgs():
                 else:
                     dbName = source[0].split('=')[1].strip(';')
                     args['testetlargs']['database'] = dbName   
-    if 'filewatcher' in args['fixedargs'] and 'files' in args['fixedargs']['filewatcher']:
+    if not args['testetlargs']['testmode'] is None and 'filewatcher' in args['fixedargs'] and 'files' in args['fixedargs']['filewatcher']:
        # Get etl output path using filewatcher config:
        path = None
        for config in args['fixedargs']['filewatcher']['files']:
-           if 'Subject' in config and args['testetlargs']['etlname'] == config['Subject']:
+           if 'subject' in config and args['testetlargs']['etlname'] == config['subject']:
                path = config['inbound']
                break
        if path is None:     
            errs.append('(etlname) ETL not configured in filewatcher appsettings file.')
        else:
            # Fill in environment variables using config.json:
-           mode = args['testetlargs']['testmode']
-           args['testetlargs']['etldatapath'] = 
-
-
+           args['testetlargs']['etlfolder'] = os.path.split(path)[0] + '\\'
+           if not os.path.exists(args['testetlargs']['etlfolder']):
+               errs.append('(filewatcherappsettingstemplatepath) ETL folder does not exist.')
+           
     # filedate: 
     if not StringIsDT(args['testetlargs']['filedate'], False):
         errs.append('(filedate) %s is invalid date string.' % args['testetlargs']['filedate'])

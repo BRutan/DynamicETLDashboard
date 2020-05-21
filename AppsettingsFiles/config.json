@@ -1,149 +1,156 @@
 {
-	"environment": {
-		"PROD": "Prod",
-		"QA": "QA",
-		"CI": "CI",
-		"STG": "STG",
-		"UAT": "UAT",
-		"LOCAL": "LOCAL"
-	},
-	"Build_Number": {
-		"LOCAL": "DEV-BUILD",
-		"PROD": "DEV-BUILD",
-		"QA": "DEV-BUILD",
-		"STG": "DEV-BUILD",
-		"CI": "DEV-BUILD",
-		"UAT": "DEV-BUILD"
-	},
-	"WindowsServer": {
-		"LOCAL": "localhost",
-		"PROD": "localhost",
-		"QA": "localhost",
-		"STG": "localhost",
-		"CI": "localhost",
-		"UAT": "localhost"
-	},
-	"WindowsDeployDirectory": {
-		"LOCAL": "C:\\Services",
-		"PROD": "E:\\Services",
-		"QA": "E:\\Services",
-		"STG": "E:\\Services",
-		"CI": "E:\\Services",
-		"UAT": "E:\\Services"
-	},
-	
-	"Inbound_Folder": {
-		"PROD": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\Relationship Data Source Files",
-		"QA": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\QA",
-		"CI": "c:\\\\temp\\\\Corporate Conflicts\\\\System Files\\\\Local",
-		"STG": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\STG",
-		"UAT": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\UAT",
-		"LOCAL": "c:\\\\temp\\\\Corporate Conflicts\\\\System Files\\\\Local"
-	},
-	"ServiceAccount": {
-		"LOCAL": "LocalSystem",
-		"PROD": "",
-		"QA": "",
-		"STG": "",
-		"CI": "LocalSystem",
-		"UAT": ""
-	},
-	"ServiceAccountPassword": {
-		"LOCAL": "",
-		"PROD": "",
-		"QA": "",
-		"STG": "",
-		"CI": "",
-		"UAT": ""
-	},
-	"Working_Folder_Name": {
-		"PROD": "c:\\temp\\FileWatcherWorkingFolder",
-		"QA": "c:\\temp\\FileWatcherWorkingFolder",
-		"CI": "c:\\temp\\FileWatcherWorkingFolder",
-		"STG": "c:\\temp\\FileWatcherWorkingFolder",
-		"UAT": "c:\\temp\\FileWatcherWorkingFolder",
-		"LOCAL": "c:\\temp\\FileWatcherWorkingFolder"
-	},
-	"GcisData_WebServer": {
-		"PROD": "GcisData",
-		"QA": "GcisDataQA",
-		"CI": "Localhost/GcisData",
-		"STG": "GcisDataSTG",
-		"UAT": "GcisDataUAT",
-		"LOCAL": "Localhost/GcisData"
-	},
-	"FileDistributor": {
-		"PROD": "\"http://FileDistributor/api/item\"",
-		"QA": "\"http://FileDistributorQA/api/item\"",
-		"CI": "\"http://Localhost/FileDistributor/api/item\"",
-		"STG": "\"http://FileDistributorSTG/api/item\"",
-		"UAT": "\"http://FileDistributorUAT/api/item\"",
-		"LOCAL": "\"http://Localhost/FileDistributor/api/item\""
-	},
-	"Etl_Trigger_Url": {
-		"PROD": "\"http://GcisData/api/holdings/etl/trigger\", \"http://GcisDataSTG/api/holdings/etl/trigger\", \"http://GcisDataUAT/api/holdings/etl/trigger\", \"http://GcisDataQA/api/holdings/etl/trigger\"",
-		"QA": "\"http://GcisDataQA/api/holdings/etl/trigger\"",
-		"CI": "\"http://Localhost/GcisData/api/holdings/etl/trigger\"",
-		"STG": "\"http://GcisDataSTG/api/holdings/etl/trigger\"",
-		"UAT": "\"http://GcisDataUAT/api/holdings/etl/trigger\"",
-		"LOCAL":"\"http://Localhost/GcisData/api/holdings/etl/trigger\""
-	},
-	"Etl_Trigger_Url_Mezo": {
-		"PROD": "\"http://GcisData/api/holdings/etl/trigger\", \"http://GcisDataSTG/api/holdings/etl/trigger\", \"http://GcisDataUAT/api/holdings/etl/trigger\", \"http://GcisDataQA/api/holdings/etl/trigger\", \"http://gsfwdl/api/FileWatcher/RelatedEntities\"",
-		"QA": "\"http://GcisDataQA/api/holdings/etl/trigger\"",
-		"CI": "\"http://Localhost/GcisData/api/holdings/etl/trigger\"",
-		"STG": "\"http://GcisDataSTG/api/holdings/etl/trigger\"",
-		"UAT": "\"http://GcisDataUAT/api/holdings/etl/trigger\"",
-		"LOCAL":"\"http://Localhost/GcisData/api/holdings/etl/trigger\""
-	},
-	"FileVault_FileUrl": {
-		"PROD": "https://FileVault/api/file",
-		"QA": "https://FileVaultQA/api/file",
-		"CI": "https://localhost/FileVault/api/file",
-		"STG": "https://FileVaultSTG/api/file",
-		"UAT": "https://FileVaultUAT/api/file",
-		"LOCAL": "https://localhost/FileVault/api/file"
-	},
-	"FileVaultWebServer": {
-		"PROD": "https://FileVault/",
-		"QA": "https://FileVaultQA/",
-		"CI": "https://localhost/FileVault/",
-		"STG": "https://FileVaultSTG/",
-		"UAT": "https://FileVaultUAT/",
-		"LOCAL": "https://localhost/FileVault/"
-	},
-	"Log_Dir": {
-		"PROD": "e:\\deploy\\logs",
-		"QA": "e:\\deploy\\logs",
-		"CI": "E:\\logs",
-		"STG": "e:\\deploy\\logs",
-		"UAT": "e:\\deploy\\logs",
-		"LOCAL": "C:\\logs"
-	},
-	"Log_Level": {
-		"PROD": "DEBUG",
-		"QA": "DEBUG",
-		"CI": "DEBUG",
-		"STG": "DEBUG",
-		"UAT": "DEBUG",
-		"LOCAL": "DEBUG"
-	},
-	"CC_Job_Url" : {
-		"PROD": "\"http://DynamicEtl/api/EtlJobs\"",
-		"STG": "\"http://DynamicEtlSTG/api/EtlJobs\"",
-		"UAT": "\"http://DynamicEtlUAT/api/EtlJobs\"",
-		"QA": "\"http://DynamicEtlQA/api/EtlJobs\"",				
-		"CI": "\"http://localhost/DynamicEtl/api/EtlJobs\"",
-		"LOCAL": "\"http://localhost/DynamicEtl/api/EtlJobs\""
+  "environment": {
+    "PROD": "Prod",
+    "QA": "QA",
+    "CI": "CI",
+    "STG": "STG",
+    "UAT": "UAT",
+    "LOCAL": "LOCAL"
+  },
+  "Build_Number": {
+    "LOCAL": "DEV-BUILD",
+    "PROD": "DEV-BUILD",
+    "QA": "DEV-BUILD",
+    "STG": "DEV-BUILD",
+    "CI": "DEV-BUILD",
+    "UAT": "DEV-BUILD"
+  },
+  "WindowsServer": {
+    "LOCAL": "localhost",
+    "PROD": "localhost",
+    "QA": "localhost",
+    "STG": "localhost",
+    "CI": "localhost",
+    "UAT": "localhost"
+  },
+  "WindowsDeployDirectory": {
+    "LOCAL": "C:\\Services",
+    "PROD": "E:\\Services",
+    "QA": "E:\\Services",
+    "STG": "E:\\Services",
+    "CI": "E:\\Services",
+    "UAT": "E:\\Services"
+  },
 
-	},
-	"CC_Source_Path": {
-		"PROD": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GS",
-		"STG": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\STG",
-		"UAT": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\UAT",
-		"QA": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\QA",				
-		"CI": "c:\\\\temp",
-		"LOCAL": "c:\\\\temp"
-	}
+  "Inbound_Folder": {
+    "PROD": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\Relationship Data Source Files",
+    "QA": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\QA",
+    "CI": "c:\\\\temp\\\\Corporate Conflicts\\\\System Files\\\\Local",
+    "STG": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\STG",
+    "UAT": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\Corporate Conflicts\\\\System Files\\\\UAT",
+    "LOCAL": "c:\\\\temp\\\\Corporate Conflicts\\\\System Files\\\\Local"
+  },
+  "ServiceAccount": {
+    "LOCAL": "LocalSystem",
+    "PROD": "",
+    "QA": "",
+    "STG": "",
+    "CI": "LocalSystem",
+    "UAT": ""
+  },
+  "ServiceAccountPassword": {
+    "LOCAL": "",
+    "PROD": "",
+    "QA": "",
+    "STG": "",
+    "CI": "",
+    "UAT": ""
+  },
+  "Working_Folder_Name": {
+    "PROD": "c:\\temp\\FileWatcherWorkingFolder",
+    "QA": "c:\\temp\\FileWatcherWorkingFolder",
+    "CI": "c:\\temp\\FileWatcherWorkingFolder",
+    "STG": "c:\\temp\\FileWatcherWorkingFolder",
+    "UAT": "c:\\temp\\FileWatcherWorkingFolder",
+    "LOCAL": "c:\\temp\\FileWatcherWorkingFolder"
+  },
+  "GcisData_WebServer": {
+    "PROD": "GcisData",
+    "QA": "GcisDataQA",
+    "CI": "Localhost/GcisData",
+    "STG": "GcisDataSTG",
+    "UAT": "GcisDataUAT",
+    "LOCAL": "Localhost/GcisData"
+  },
+  "FileDistributor": {
+    "PROD": "\"http://FileDistributor/api/item\"",
+    "QA": "\"http://FileDistributorQA/api/item\"",
+    "CI": "\"http://Localhost/FileDistributor/api/item\"",
+    "STG": "\"http://FileDistributorSTG/api/item\"",
+    "UAT": "\"http://FileDistributorUAT/api/item\"",
+    "LOCAL": "\"http://Localhost/FileDistributor/api/item\""
+  },
+  "Etl_Trigger_Url": {
+    "PROD": "\"http://GcisData/api/holdings/etl/trigger\", \"http://GcisDataSTG/api/holdings/etl/trigger\", \"http://GcisDataUAT/api/holdings/etl/trigger\", \"http://GcisDataQA/api/holdings/etl/trigger\"",
+    "QA": "\"http://GcisDataQA/api/holdings/etl/trigger\"",
+    "CI": "\"http://Localhost/GcisData/api/holdings/etl/trigger\"",
+    "STG": "\"http://GcisDataSTG/api/holdings/etl/trigger\"",
+    "UAT": "\"http://GcisDataUAT/api/holdings/etl/trigger\"",
+    "LOCAL": "\"http://Localhost/GcisData/api/holdings/etl/trigger\""
+  },
+  "Etl_Trigger_Url_Mezo": {
+    "PROD": "\"http://GcisData/api/holdings/etl/trigger\", \"http://GcisDataSTG/api/holdings/etl/trigger\", \"http://GcisDataUAT/api/holdings/etl/trigger\", \"http://GcisDataQA/api/holdings/etl/trigger\", \"http://gsfwdl/api/FileWatcher/RelatedEntities\"",
+    "QA": "\"http://GcisDataQA/api/holdings/etl/trigger\"",
+    "CI": "\"http://Localhost/GcisData/api/holdings/etl/trigger\"",
+    "STG": "\"http://GcisDataSTG/api/holdings/etl/trigger\"",
+    "UAT": "\"http://GcisDataUAT/api/holdings/etl/trigger\"",
+    "LOCAL": "\"http://Localhost/GcisData/api/holdings/etl/trigger\""
+  },
+  "FileVault_FileUrl": {
+    "PROD": "https://FileVault/api/file",
+    "QA": "https://FileVaultQA/api/file",
+    "CI": "https://localhost/FileVault/api/file",
+    "STG": "https://FileVaultSTG/api/file",
+    "UAT": "https://FileVaultUAT/api/file",
+    "LOCAL": "https://localhost/FileVault/api/file"
+  },
+  "FileVaultWebServer": {
+    "PROD": "https://FileVault/",
+    "QA": "https://FileVaultQA/",
+    "CI": "https://localhost/FileVault/",
+    "STG": "https://FileVaultSTG/",
+    "UAT": "https://FileVaultUAT/",
+    "LOCAL": "https://localhost/FileVault/"
+  },
+  "Log_Dir": {
+    "PROD": "e:\\deploy\\logs",
+    "QA": "e:\\deploy\\logs",
+    "CI": "E:\\logs",
+    "STG": "e:\\deploy\\logs",
+    "UAT": "e:\\deploy\\logs",
+    "LOCAL": "C:\\logs"
+  },
+  "Log_Level": {
+    "PROD": "DEBUG",
+    "QA": "DEBUG",
+    "CI": "DEBUG",
+    "STG": "DEBUG",
+    "UAT": "DEBUG",
+    "LOCAL": "DEBUG"
+  },
+  "CC_Job_Url": {
+    "PROD": "\"http://DynamicEtl/api/EtlJobs\"",
+    "STG": "\"http://DynamicEtlSTG/api/EtlJobs\"",
+    "UAT": "\"http://DynamicEtlUAT/api/EtlJobs\"",
+    "QA": "\"http://DynamicEtlQA/api/EtlJobs\"",
+    "CI": "\"http://localhost/DynamicEtl/api/EtlJobs\"",
+    "LOCAL": "\"http://localhost/DynamicEtl/api/EtlJobs\""
 
+  },
+  "CC_Source_Path": {
+    "PROD": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GS",
+    "STG": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\STG",
+    "UAT": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\UAT",
+    "QA": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GCM Feeds\\\\QA",
+    "CI": "c:\\\\temp",
+    "LOCAL": "c:\\\\temp"
+  },
+  "Servers": {
+    "PROD": "",
+    "STG": "nj1stgsql13",
+    "UAT": "nj1uatsql13",
+    "QA": "nj1qasql13",
+    "CI": "",
+    "LOCAL": "."
+  }
 }

@@ -2,8 +2,8 @@
 # TestETLPipeline.py
 #####################################
 # Description:
-# 1) Open test version of WebAPI, execute post request using sample data file to test
-# ETL pipeline on local MetricsDYETL database. 
+# 1) Open test version of WebAPI, execute post request using args specified in
+# postargs.json. 
 # 2) Execute DynamicETL.Service to run ETL pipeline with local database.
 # 3) Query local MetricsDYETL database, compare uploaded contents to original sample file.
 # 4) Generate report accounting for exceptions thrown by DynamicETL.Service or any source data versus
@@ -13,10 +13,12 @@ from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
-from Utilities.LoadArgs import TestETLPipelineJsonArgs
 import json
 import os
+from shutil import copyfile
 import sys
+from time import sleep
+from Utilities.LoadArgs import TestETLPipelineJsonArgs
 
 def TestETLPipeline():
     print("------------------------------")
@@ -28,35 +30,60 @@ def TestETLPipeline():
     except Exception as ex:
         msg = '%s:\n%s' % ('The following input argument issues occured:', str(ex))
         print(msg)
+        input('Press enter to exit.')
         sys.exit()
     if args['testetlargs']['localtest']:
         # Open DynamicETL.WebApi and post test ETL job:
         print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
         print(args['webapipath'])
-        loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
-        loader.RunETL(args['postargs'])
+        try:
+            loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
+            loader.RunETL(args['postargs'])
+        except Exception as ex:
+            print('ETL could not be run:')
+            print(str(ex))
+            input('Press enter to exit.')
+            sys.exit()
         # Determine if any issues occurred in the log file.
         # Exit application if issues occurred:
         message = loader.ReadLogFile()
         if message:
             print(message)
+            input('Press enter to exit.')
             sys.exit()
     else:
-        # Output sample file to FileWatcher folder, wait for sample file to be implemented
-        # and 
-        sampleFile = os.path.split(args['testetlargs']['samplefile'])[1]
-        filewatcherPath = "%s\\%s" % (fwPath,sampleFile) 
-        os.rename(args['testetlargs']['samplefile'])
+        # Output sample file to FileWatcher folder, wait for sample file to be sucked
+        # up by etl. If does not suck up, delete file and notify user:
+        print('Outputting data file to')
+        print('%s' % args['testetlargs']['etlfolder'])
+        print('Will wait five seconds to allow data to be implemented...')
+        sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
+        filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
+        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
+        sleep(5)
+        if os.path.exists(filewatcherPath):
+            print('File was not implemented into etl after 5 seconds.')
+            input('Press enter to exit.')
+            sys.exit()
 
     # Query server to get uploaded data:
-    interface = TSQLInterface(args['testetlargs']['sqlconnection'], args['sqldatabase'])
-    query = "SELECT * FROM %s" % args['sqltablename']
-    data_test = interface.Select(query)
+    try:
+        interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
+        query = "SELECT * FROM %s WHERE [fileDate] = %s" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
+        data_test = interface.Select(query)
+    except Exception as ex:
+        print('Could not query %s::%s::%s' % (args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename']))
+        print('Reason: %s' % str(ex))
+        input('Press enter to exit.')
+        sys.exit()
     # Pull data from test file:
-    data_valid = DataReader.Read(args['samplefile'])
+    data_valid = DataReader.Read(args['testetlargs']['samplefile'])
     # Compare input versus output etl data:
+    print('Generating comparison report...')
     tester = DataComparer()
-    tester.GenerateComparisonReport(args['reportpath'], data_test, data_valid, ['FileDate', 'RunDate'])
+    tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ['FileDate', 'RunDate'])
+    print('Finished generating report at')
+    print(args['testetlargs']['reportpath'])
 
 if __name__ == "__main__":
     TestETLPipeline()
