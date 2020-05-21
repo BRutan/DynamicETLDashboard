@@ -24,12 +24,12 @@ def TestETLPipeline():
     print("------------------------------")
     # Pull and verify script parameters:
     try:
-        args = LoadArgsFromJSON()
+        args = TestETLPipelineJsonArgs()
     except Exception as ex:
         msg = '%s:\n%s' % ('The following input argument issues occured:', str(ex))
         print(msg)
         sys.exit()
-    if args['localtest']:
+    if args['testetlargs']['localtest']:
         # Open DynamicETL.WebApi and post test ETL job:
         print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
         print(args['webapipath'])
@@ -52,7 +52,6 @@ def TestETLPipeline():
     # Compare input versus output etl data:
     tester = DataComparer()
     tester.GenerateComparisonReport(args['reportpath'], data_test, data_valid, ['FileDate', 'RunDate'])
-
 
 if __name__ == "__main__":
     TestETLPipeline()

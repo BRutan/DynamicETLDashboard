@@ -8,8 +8,10 @@
 # ValidateAndAppendNewETL.py).
 
 import json
+import re
 import os
 import sys
+from Utilities.Helpers import StringIsDT
 
 ############################
 # GenerateColumnAttributesReport.py
@@ -97,6 +99,7 @@ class Arguments(object):
         if errs:
             raise Exception("\n".join(errs))
 
+
 def GenerateColumnAttributesReportCMDLineArgs():
     parser = ArgumentParser()
     # Mandatory positional arguments:
@@ -159,69 +162,125 @@ def TestETLPipelineJsonArgs():
     req_postargs_arg = set(['FilePath'])
     args = json.load(open('TestETLPipeline.json', 'rb'))
     
-    # Validate arguments:
+    # Ensure required arguments are present:
     errs = []
     missing = req_args - set(args)
     if missing:
         errs.append('The following required toplevel args are missing: %s' % ','.join(missing))
-        raise Exception('\n'.join(errs))
-    missing_fixed = req_args_fixed - set(args['fixedargs'])
-    if missing_fixed:
-        errs.append('The following required fixedargs are missing: %s' % ','.join(missing_fixed))
-    missing_test = req_args_test - set(args['testargs'])
-    if missing_test:
-        errs.append('The following required testargs are missing: %s' % ','.join(missing_test))
+    if 'fixedargs' in args:
+        missing_fixed = req_args_fixed - set(args['fixedargs'])
+        if missing_fixed:
+            errs.append('The following required fixedargs are missing: %s' % ','.join(missing_fixed))
+    if 'testetlargs' in args:
+        missing_test = req_args_test - set(args['testetlargs'])
+        if missing_test:
+            errs.append('The following required testetlargs are missing: %s' % ','.join(missing_test))
     if errs:
         raise Exception('\n'.join(errs))
     ########################
-    # 
-    # reportpath:
-    if not args['reportpath'].endswith('.xlsx'):
-        errs.append('(reportpath) Must point to xlsx file.')
+    # fixedargs:
+    ########################
+    # dynamicetlservicepath:
+    if not os.path.exists(args['fixedargs']['dynamicetlservicepath']):
+        errs.append('(dynamicetlservicepath) Path does not exist.')
+    elif not args['fixedargs']['dynamicetlservicepath'].endswith('.exe'):
+        errs.append('(dynamicetlservicepath) Path must point to dll.')
 
     # logpath:
-    if not os.path.isdir(args['logpath']):
+    if not os.path.isdir(args['fixedargs']['logpath']):
         errs.append('(logpath) Must point to a folder.')
-    elif not os.path.exists(args['logpath']):
+    elif not os.path.exists(args['fixedargs']['logpath']):
         errs.append('(logpath) Folder does not exist.')
 
-    # localtest:
-    args['localtest'] = args['localtest'].lower()
-    if not args['localtest'] in ['true', 'false']:
-        errs.append('(localtest) Must be true/false.')
-    else:
-        args['localtest'] = args['localtest'] == 'true'
-
     # postargspath:
-    if not os.path.exists(args['postargspath']):
+    if not os.path.exists(args['fixedargs']['postargspath']):
         errs.append('(postargspath) Path does not exist.')
-    elif not args['postargspath'].endswith('.json'):
+    elif not args['fixedargs']['postargspath'].endswith('.json'):
         errs.append('(postargspath) Path must point to a json file.')
     else:
-        post_args = json.load(open(args['postargspath'], 'rb'))
+        post_args = json.load(open(args['fixedargs']['postargspath'], 'rb'))
         missing = req_postargs - set(post_args)
         if missing:
             errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
         else:
-            args['postargs'] = post_args
+            args['fixedargs']['postargs'] = post_args
     # Get sample file name from post args file:
-    if 'postargs' in args and 'arg' in args['postargs']:
-        args['samplefile'] = args['postargs']['arg'].split(':')[1].strip('{').strip('}')
+    if 'postargs' in args['fixedargs'] and 'arg' in args['fixedargs']['postargs']:
+        match = re.search('[A-Z]:.+', args['fixedargs']['postargs']['arg'])
+        if not match:
+            errs.append('(postargs) arg::FilePath is not a valid path.')
+        else:
+            args['testetlargs']['samplefile'] = match[0].strip("{}'")
+    if 'samplefile' in args['testetlargs'] and not os.path.exists(args['testetlargs']['samplefile']):
+        errs.append('(postargs) File at arg::FilePath does not exist.')
+
+    # serviceappsettingspath:
+    if not os.path.exists(args['fixedargs']['serviceappsettingspath']):
+        errs.append('(serviceappsettingspath) Does not exist.')
+    elif not args['fixedargs']['serviceappsettingspath'].endswith('.json'):
+        errs.append('(serviceappsettingspath) Must point to .json file.')
+    else:
+        try:
+            args['fixedargs']['appsettings'] = json.load(open(args['fixedargs']['serviceappsettingspath'], 'rb'))
+        except Exception as ex:
+            errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
 
     # webapipath:
-    if not os.path.exists(args['webapipath']):
+    if not os.path.exists(args['fixedargs']['webapipath']):
         errs.append('(webapipath) Path does not exist.')
-    elif not args['webapipath'].endswith('.dll'):
+    elif not args['fixedargs']['webapipath'].endswith('.dll'):
         errs.append('(webapipath) Path must point to dll.')
 
-    # dynamicetlservicepath:
-    if not os.path.exists(args['dynamicetlservicepath']):
-        errs.append('(dynamicetlservicepath) Path does not exist.')
-    elif not args['dynamicetlservicepath'].endswith('.exe'):
-        errs.append('(dynamicetlservicepath) Path must point to dll.')
+    ########################
+    # testetlargs:
+    ########################
+    # etlname: ensure etl is present in appsettings file:
+    if 'appsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['appsettings']['Etls']:
+        errs.append('(etlname) ETL %s not in appsettings file.' % args['testetlargs']['etlname'])
+    elif 'appsettings' in args['fixedargs']:
+        etl = args['testetlargs']['etlname']
+        # Ensure that appsettings json file has all necessary keys:
+        if 'TableName' not in args['fixedargs']['appsettings']['Etls'][etl]:
+            errs.append('(serviceappsettingspath) Missing "TableName" property key for %s etl.' % etl)
+        else:
+            args['testetlargs']['tablename'] = args['fixedargs']['appsettings']['Etls'][etl]['TableName']
+        if 'Destination' not in args['fixedargs']['appsettings']['Etls'][etl]:
+            errs.append('(serviceappsettingspath) Missing "Destination" property key for %s etl.' % etl)
+        elif 'Destinations' not in args['fixedargs']['appsettings']:
+            errs.append('(serviceappsettingspath) Missing "Destinations" property key in json file.')
+        else:
+            dbHandle = args['fixedargs']['appsettings']['Etls'][etl]['Destination']
+            if dbHandle not in args['fixedargs']['appsettings']['Destinations']:
+                errs.append('(serviceappsettingspath) Missing %s handle in "Sources".' % dbHandle)
+            elif 'ConfigValue' not in args['fixedargs']['appsettings']['Destinations'][dbHandle]:
+                errs.append('(serviceappsettingspath) Missing "ConfigValue" key in "Destinations" key in json file.')
+            else:
+                config = args['fixedargs']['appsettings']['Destinations'][dbHandle]['ConfigValue']
+                source = re.search("Data Source=[aA-zZ]+;", config)
+                if not source:
+                    errs.append('(serviceappsettingspath) Missing "Data Source" in "Destinations::%s::ConfigValue".' % dbHandle)
+                else:
+                    dbName = source[0].split('=')[1].strip(';')
+                    args['testetlargs']['database'] = dbName
+            
+    # filedate: 
+    if not StringIsDT(args['testetlargs']['filedate'], False):
+        errs.append('(filedate) %s is invalid date string.' % args['testetlargs']['filedate'])
+    else:
+        args['testetlargs']['filedate'] = StringIsDT(args['testetlargs']['filedate'], True)
+
+    # localtest:
+    args['testetlargs']['localtest'] = args['testetlargs']['localtest'].lower()
+    if not args['testetlargs']['localtest'] in ['true', 'false']:
+        errs.append('(localtest) Must be true/false.')
+    else:
+        args['testetlargs']['localtest'] = args['testetlargs']['localtest'] == 'true'
+
+    # reportpath:
+    if not args['testetlargs']['reportpath'].endswith('.xlsx'):
+        errs.append('(reportpath) Must point to xlsx file.')
 
     if errs:
         raise Exception('\n'.join(errs))
 
     return args
-

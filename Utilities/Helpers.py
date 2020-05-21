@@ -41,22 +41,19 @@ def IsRegex(regStr):
         return False
     return True
 
-def StringIsDT(dateString, predicate = False):
+def StringIsDT(dateString, returnval = False):
     """
     * Return true if passed string is a date.
     Input:
     * dateString: String that could possibly represent a date.
-    * predicate: If True then will return True/False if can or cannot convert.
-    Otherwise an exception will be raised.
+    * returnval: If True then will return converted date, otherwise returns True/False.
     Output:
     * Return true if passed date can be converted to a datetime object.
     """
     try:
         out = dateparse.parse(dateString)
-        return (out if not predicate else True)
+        return (out if returnval else True)
     except:
-        if not predicate:
-            raise Exception("%s is not a date/datetime string." % dateString)
         return False
 
 ################
