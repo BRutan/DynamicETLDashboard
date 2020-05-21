@@ -60,6 +60,9 @@
     <Compile Include="TestETLPipeline.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\LoadArgs.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\__init__.py">
       <SubType>Code</SubType>
     </Compile>

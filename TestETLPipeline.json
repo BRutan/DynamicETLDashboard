@@ -1,12 +1,17 @@
 {
-  "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll",
-  "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
-  "webapiurl": "localhost:23014\\api\\etljobs",
-  "sqlconnection": "nj1qasql13",
-  "sqldatabase": "MetricsDYETL",
-  "sqltable": "tbl_CyberSecurity_Exceptions_GS",
-  "reportpath": "DataComparison.xlsx",
-  "postargspath": "postargs.json",
-  "logpath": "C:\\logs\\",
-  "localtest": "False"
+  "fixedargs": {
+    "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
+    "logpath": "C:\\logs\\",
+    "postargspath": "postargs.json",
+    "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\Appsettings.json",
+    "webapiurl": "localhost:23014\\api\\etljobs",
+    "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
+  },
+  "testetlargs": {
+    "etlname": "GS.SecurityExceptions.v1",
+    "filedate": "",
+    "localtest": "False",
+    "reportpath": "SecurityExceptions_DataComparison.xlsx",
+    "sqlconnection": "nj1qasql13"
+  }
 }

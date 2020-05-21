@@ -13,76 +13,10 @@ from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
+from Utilities.LoadArgs import TestETLPipelineJsonArgs
 import json
 import os
 import sys
-
-def LoadArgsFromJSON():
-    """
-    * Pull and validate arguments from local json file.
-    """
-    req_args = ['dynamicetlservicepath','localtest','logpath','postargspath','reportpath','sqlconnection','sqldatabase','sqltable','webapipath','webapiurl'] 
-    req_args = set(req_args)
-    req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
-    req_postargs_arg = set(['FilePath'])
-    args = json.load(open('TestETLPipeline.json', 'rb'))
-    
-    # Validate arguments:
-    errs = []
-    missing = req_args - set(args)
-    if missing:
-        errs.append('The following required args are missing: {%s}' % ','.join(missing))
-        raise Exception(''.join(errs))
-
-    # reportpath:
-    if not args['reportpath'].endswith('.xlsx'):
-        errs.append('(reportpath) Must point to xlsx file.')
-
-    # logpath:
-    if not os.path.isdir(args['logpath']):
-        errs.append('(logpath) Must point to a folder.')
-    elif not os.path.exists(args['logpath']):
-        errs.append('(logpath) Folder does not exist.')
-
-    # localtest:
-    args['localtest'] = args['localtest'].lower()
-    if not args['localtest'] in ['true', 'false']:
-        errs.append('(localtest) Must be true/false.')
-    else:
-        args['localtest'] = args['localtest'] == 'true'
-
-    # postargspath:
-    if not os.path.exists(args['postargspath']):
-        errs.append('(postargspath) Path does not exist.')
-    elif not args['postargspath'].endswith('.json'):
-        errs.append('(postargspath) Path must point to a json file.')
-    else:
-        post_args = json.load(open(args['postargspath'], 'rb'))
-        missing = req_postargs - set(post_args)
-        if missing:
-            errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
-        else:
-            args['postargs'] = post_args
-    # Get sample file name from post args file:
-    if 'postargs' in args and 'arg' in args['postargs']:
-        args['samplefile'] = args['postargs']['arg'].split(':')[1].strip('{').strip('}')
-
-    # webapipath:
-    if not os.path.exists(args['webapipath']):
-        errs.append('(webapipath) Path does not exist.')
-    elif not args['webapipath'].endswith('.dll'):
-        errs.append('(webapipath) Path must point to dll.')
-
-    # dynamicetlservicepath:
-    if not os.path.exists(args['dynamicetlservicepath']):
-        errs.append('(dynamicetlservicepath) Path does not exist.')
-    elif not args['dynamicetlservicepath'].endswith('.exe'):
-        errs.append('(dynamicetlservicepath) Path must point to dll.')
-
-    if errs:
-        raise Exception('\n'.join(errs))
-
-    return args
 
 def TestETLPipeline():
     print("------------------------------")
@@ -95,16 +29,20 @@ def TestETLPipeline():
         msg = '%s:\n%s' % ('The following input argument issues occured:', str(ex))
         print(msg)
         sys.exit()
-    # Open DynamicETL.WebApi and post test ETL job:
-    print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
-    print(args['webapipath'])
-    loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
-    loader.RunETL(args['postargs'])
-    # Determine if any issues occurred in the log file. Exit application if issues occurred:
-    message = loader.ReadLogFile()
-    if message:
-        print(message)
-        sys.exit()
+    if args['localtest']:
+        # Open DynamicETL.WebApi and post test ETL job:
+        print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
+        print(args['webapipath'])
+        loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
+        loader.RunETL(args['postargs'])
+        # Determine if any issues occurred in the log file. Exit application if issues occurred:
+        message = loader.ReadLogFile()
+        if message:
+            print(message)
+            sys.exit()
+    else:
+        # Output data to ETL pipeline folder:
+        pass
     # Query server to get uploaded data:
     interface = TSQLInterface(args['sqlconnection'], args['sqldatabase'])
     query = "SELECT * FROM %s" % args['sqltablename']
