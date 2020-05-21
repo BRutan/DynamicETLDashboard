@@ -13,7 +13,6 @@ def compare():
     data_valid = interface.Select(query)
     ignoreCols = ['ID', 'fileDate', 'RunDate']
     pKey = TSQLInterface.PrimaryKeys(data_valid, 7, ignoreCols = ignoreCols, findFirst = True)
-    #pKey = {'Group', 'SamAccountName'}
     interface = TSQLInterface('.', 'MetricsDyetl')
     data_test = interface.Select(query)
     DataComparer.GenerateComparisonReport('CyberSecurityExceptionsDiff_Post.xlsx', data_test, data_valid, ignoreCols, pKey)

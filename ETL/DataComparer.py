@@ -67,6 +67,9 @@ class DataComparer(object):
         * Generate sheet detailing specific differences in 
         column values.
         """
+        # Do not generate sheet if no differences occurred.
+        if len(compData) == 0:
+            return
         diffSheet = wb.add_worksheet('Differences')
         # Write all differing columns:
         for rowNum in range(0, len(compData)):

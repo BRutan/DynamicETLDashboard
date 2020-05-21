@@ -72,7 +72,25 @@ class TSQLInterface:
         """
         * Return dataframe containing requested data.
         """
+        if not isinstance(query, str):
+            raise Exception('query must be a string.')
+        elif not 'select' in query.lower():
+            raise Exception('query must be a SELECT statement.')
         return read_sql(query, self.__connection)
+
+    def Execute(self, query):
+        """
+        * Execute non-SELECT/INSERT query.
+        Inputs:
+        * query: string SQL query.
+        """
+        if not isinstance(query, str):
+            raise Exception('query must be a string.')
+        elif 'select' in query.lower() or 'insert' in query.lower():
+            raise Exception('Use Insert/Select if making an insert/select query.')
+        cursor = self.__connection.cursor()
+        cursor.execute(query)
+        cursor.commit()
 
     def Insert(self, data, table, identity_insert = False):
         """
@@ -239,13 +257,11 @@ class TSQLInterface:
             self.__connection.close()
             self.__connection = None
         self.__connectString = None
-    
     def __IsConnected(self):
         """
         * Determine if connected to instance.
         """
         return not self.__connection is None
-    
     def __Validate(self, server, database):
         """
         * Validate construction parameters.
@@ -264,7 +280,6 @@ class TSQLInterface:
         table = TSQLInterface.__WrapName(self.__database) + '.' + TSQLInterface.__WrapName(table)
         engine = create_engine('mssql+pyodbc:///?odbc_connect=%s' % self.__connectString)
         data.to_sql(name=table, con=engine)
-    
     @classmethod
     def __CleanData(cls, data):
         """
@@ -276,7 +291,6 @@ class TSQLInterface:
 #            if data[col].dtype.type == np.datetime64:
 #                data[col] = [val if not val == np.datetime64('NaT') else None for val in data[col]]
         return data.fillna('')
-
     @classmethod
     def __WrapName(cls, name):
         """

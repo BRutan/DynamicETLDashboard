@@ -9,8 +9,9 @@
 # 4) Generate report accounting for exceptions thrown by DynamicETL.Service or any source data versus
 # uploaded data discrepancies.
 
-from ETL.ETLJobLoader import ETLJobLoader
 from ETL.DataComparer import DataComparer
+from ETL.DataReader import DataReader
+from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
 import json
 import os
@@ -55,6 +56,9 @@ def LoadArgsFromJSON():
             errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
         else:
             args['postargs'] = post_args
+    # Get sample file name from post args file:
+    if 'postargs' in args and 'arg' in args['postargs']:
+        args['samplefile'] = args['postargs']['arg'].split(':')[1].strip('{').strip('}')
 
     # webapipath:
     if not os.path.exists(args['webapipath']):
@@ -99,10 +103,10 @@ def TestETLPipeline():
     query = "SELECT * FROM %s" % args['sqltablename']
     data_test = interface.Select(query)
     # Pull data from test file:
-    data_valid = None
+    data_valid = DataReader.Read(args['samplefile'])
     # Compare input versus output etl data:
     tester = DataComparer()
-    tester.GenerateComparisonReport(args['reportpath'],)
+    tester.GenerateComparisonReport(args['reportpath'], data_test, data_valid, ['FileDate', 'RunDate'])
 
 
 if __name__ == "__main__":
