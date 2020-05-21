@@ -156,12 +156,13 @@ def TestETLPipelineJsonArgs():
     * Pull and validate arguments from local json file.
     """
     req_args = set(['fixedargs', 'testetlargs'])
-    req_args_fixed = set(['dynamicetlservicepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
-    req_args_test = set(['etlname','filedate','localtest','reportpath','sqlconnection'])
+    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
+    req_args_test = set(['etlname','filedate','localtest','reportpath','testmode'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
+    if not os.path.exists('TestETLPipeline.json'):
+        raise Exception('TestETLPipeline.json does not exist.')
     args = json.load(open('TestETLPipeline.json', 'rb'))
-    
     # Ensure required arguments are present:
     errs = []
     missing = req_args - set(args)
@@ -175,6 +176,8 @@ def TestETLPipelineJsonArgs():
         missing_test = req_args_test - set(args['testetlargs'])
         if missing_test:
             errs.append('The following required testetlargs are missing: %s' % ','.join(missing_test))
+    if not os.path.exists(os.getcwd() + 'Appsettings'):
+        errs.append('Appsettings folder is missing.')
     if errs:
         raise Exception('\n'.join(errs))
     ########################
@@ -184,8 +187,21 @@ def TestETLPipelineJsonArgs():
     if not os.path.exists(args['fixedargs']['dynamicetlservicepath']):
         errs.append('(dynamicetlservicepath) Path does not exist.')
     elif not args['fixedargs']['dynamicetlservicepath'].endswith('.exe'):
-        errs.append('(dynamicetlservicepath) Path must point to dll.')
+        errs.append('(dynamicetlservicepath) Path must point to an .exe.')
 
+    # filewatcherappsettingstemplatepath:
+    if not os.path.exists(args['fixedargs']['filewatcherappsettingstemplatepath']):
+        errs.append('(filewatcherappsettingstemplatepath) Path does not exist.')
+    elif not args['fixedargs']['filewatcherappsettingstemplatepath'].endswith('.json'):
+        errs.append('(filewatcherappsettingstemplatepath) Path must point to .json.')
+    else:
+        # Ensure filewatcher config has correct keys:
+        fwconfig = json.load(open(args['fixedargs']['filewatcherappsettingstemplatepath'], 'rb'))
+        if not 'files' in fwconfig:
+            errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
+        else:
+            args['fixedargs']['filewatcher'] = fwconfig
+            
     # logpath:
     if not os.path.isdir(args['fixedargs']['logpath']):
         errs.append('(logpath) Must point to a folder.')
@@ -234,12 +250,14 @@ def TestETLPipelineJsonArgs():
     ########################
     # testetlargs:
     ########################
-    # etlname: ensure etl is present in appsettings file:
+    # etlname: ensure etl is present in appsettings file. 
+    # If present then get etl's database and table names from the 
+    # appsettings file:
     if 'appsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['appsettings']['Etls']:
         errs.append('(etlname) ETL %s not in appsettings file.' % args['testetlargs']['etlname'])
     elif 'appsettings' in args['fixedargs']:
         etl = args['testetlargs']['etlname']
-        # Ensure that appsettings json file has all necessary keys:
+        # Ensure that service appsettings json file has all necessary keys:
         if 'TableName' not in args['fixedargs']['appsettings']['Etls'][etl]:
             errs.append('(serviceappsettingspath) Missing "TableName" property key for %s etl.' % etl)
         else:
@@ -261,8 +279,22 @@ def TestETLPipelineJsonArgs():
                     errs.append('(serviceappsettingspath) Missing "Data Source" in "Destinations::%s::ConfigValue".' % dbHandle)
                 else:
                     dbName = source[0].split('=')[1].strip(';')
-                    args['testetlargs']['database'] = dbName
-            
+                    args['testetlargs']['database'] = dbName   
+    if 'filewatcher' in args['fixedargs'] and 'files' in args['fixedargs']['filewatcher']:
+       # Get etl output path using filewatcher config:
+       path = None
+       for config in args['fixedargs']['filewatcher']['files']:
+           if 'Subject' in config and args['testetlargs']['etlname'] == config['Subject']:
+               path = config['inbound']
+               break
+       if path is None:     
+           errs.append('(etlname) ETL not configured in filewatcher appsettings file.')
+       else:
+           # Fill in environment variables using config.json:
+           mode = args['testetlargs']['testmode']
+           args['testetlargs']['etldatapath'] = 
+
+
     # filedate: 
     if not StringIsDT(args['testetlargs']['filedate'], False):
         errs.append('(filedate) %s is invalid date string.' % args['testetlargs']['filedate'])
@@ -272,7 +304,7 @@ def TestETLPipelineJsonArgs():
     # localtest:
     args['testetlargs']['localtest'] = args['testetlargs']['localtest'].lower()
     if not args['testetlargs']['localtest'] in ['true', 'false']:
-        errs.append('(localtest) Must be true/false.')
+        errs.append('(localtest) Must be "true" or "false", case-insensitive.')
     else:
         args['testetlargs']['localtest'] = args['testetlargs']['localtest'] == 'true'
 

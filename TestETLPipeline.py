@@ -35,16 +35,21 @@ def TestETLPipeline():
         print(args['webapipath'])
         loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
         loader.RunETL(args['postargs'])
-        # Determine if any issues occurred in the log file. Exit application if issues occurred:
+        # Determine if any issues occurred in the log file.
+        # Exit application if issues occurred:
         message = loader.ReadLogFile()
         if message:
             print(message)
             sys.exit()
     else:
-        # Output data to ETL pipeline folder:
-        pass
+        # Output sample file to FileWatcher folder, wait for sample file to be implemented
+        # and 
+        sampleFile = os.path.split(args['testetlargs']['samplefile'])[1]
+        filewatcherPath = "%s\\%s" % (fwPath,sampleFile) 
+        os.rename(args['testetlargs']['samplefile'])
+
     # Query server to get uploaded data:
-    interface = TSQLInterface(args['sqlconnection'], args['sqldatabase'])
+    interface = TSQLInterface(args['testetlargs']['sqlconnection'], args['sqldatabase'])
     query = "SELECT * FROM %s" % args['sqltablename']
     data_test = interface.Select(query)
     # Pull data from test file:

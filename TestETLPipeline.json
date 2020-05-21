@@ -1,17 +1,18 @@
 {
   "fixedargs": {
     "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
+    "filewatcherappsettingstemplatepath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",
     "logpath": "C:\\logs\\",
     "postargspath": "postargs.json",
-    "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\Appsettings.json",
+    "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\Service_Appsettings.json ",
     "webapiurl": "localhost:23014\\api\\etljobs",
     "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
   },
   "testetlargs": {
     "etlname": "GS.SecurityExceptions.v1",
-    "filedate": "",
+    "filedate": "2020-03-04",
     "localtest": "False",
     "reportpath": "SecurityExceptions_DataComparison.xlsx",
-    "sqlconnection": "nj1qasql13"
+    "testmode": "qa"
   }
 }

@@ -108,11 +108,14 @@
     <Folder Include="GUI\" />
     <Folder Include="Exceptions\" />
     <Folder Include="DefaultScriptConfigs\" />
+    <Folder Include="AppsettingsFiles\" />
     <Folder Include="Utilities\" />
     <Folder Include="Report\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Appsettings.json" />
+    <Content Include="AppsettingsFiles\config.json" />
+    <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
+    <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
     <Content Include="ETL\appsettings-template.json" />
     <Content Include="postargs.json" />
