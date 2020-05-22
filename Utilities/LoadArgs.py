@@ -332,6 +332,10 @@ def TestETLPipelineJsonArgs():
     if not args['testetlargs']['reportpath'].endswith('.xlsx'):
         errs.append('(reportpath) Must point to xlsx file.')
 
+    # ignorecols (optional):
+    if 'ignorecols' in args['testetlargs'] and not isinstance(args['testetlargs']['ignorecols'], list):
+        errs.append('(ignorecols) Must be a list if provided.')
+
     if errs:
         raise Exception('\n'.join(errs))
 

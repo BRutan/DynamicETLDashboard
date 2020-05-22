@@ -65,7 +65,6 @@ def TestETLPipeline():
             print('File was not implemented into etl after 5 seconds.')
             input('Press enter to exit.')
             sys.exit()
-
     # Query server to get uploaded data:
     try:
         interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
@@ -78,10 +77,13 @@ def TestETLPipeline():
         sys.exit()
     # Pull data from test file:
     data_valid = DataReader.Read(args['testetlargs']['samplefile'])
-    # Compare input versus output etl data:
+    # Compare test file data versus output etl data:
     print('Generating comparison report...')
     tester = DataComparer()
-    tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ['FileDate', 'RunDate'])
+    ignoreCols = ['FileDate', 'RunDate']
+    if 'ignorecols' in args['testetlargs']:
+        ignoreCols.extend(args['testetlargs']['ignorecols'])
+    tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols)
     print('Finished generating report at')
     print(args['testetlargs']['reportpath'])
 

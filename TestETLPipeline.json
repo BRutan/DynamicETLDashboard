@@ -13,6 +13,7 @@
     "filedate": "2020-03-04",
     "localtest": "False",
     "reportpath": "SecurityExceptions_DataComparison.xlsx",
-    "testmode": "qa"
+    "testmode": "QA",
+    "ignorecols" :  ""
   }
 }
