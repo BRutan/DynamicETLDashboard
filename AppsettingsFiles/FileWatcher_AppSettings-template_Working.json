@@ -1115,14 +1115,14 @@
       "subject": "GEMS.GS.IB.Revenue.HistoricalHB.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\Revenue\\M&A Productivity Analysis*.xlsx",
       "outbound": [
-        "{FileDistributor}"
+        {FileDistributor}
       ]
     },
     {
       "subject": "GEMS.GS.IB.Revenue.IBRevenue.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\Revenue\\IB Revenue & Backlog*.xlsx",
       "outbound": [
-        "{FileDistributor}"
+        {FileDistributor}
       ]
     },
 	  {

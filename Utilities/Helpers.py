@@ -57,39 +57,6 @@ def StringIsDT(dateString, returnval = False):
     except:
         return False
 
-def FixJsonConfigs(jsonfilepath):
-    """
-    * Fix json file at path so can use with python json library.
-    Inputs:
-    * jsonfilepath: Path to json file that needs correcting.
-    If nothing wrong with file then will do nothing.
-    """
-    if not isinstance(jsonfilepath, str):
-        raise Exception('jsonfilepath must be a string.')
-    elif not jsonfilepath.endswith('json'):
-        raise Exception('jsonfilepath must point to json file.')
-    elif not os.path.exists(jsonfilepath):
-        raise Exception('File at jsonfilepath does not exist.')
-    try:
-        result = json.load(open(jsonfilepath, 'rb'))
-        return
-    except:
-        pass
-    # Convert non-string environment variables to strings:
-    varPattern = re.compile('(?<!"){.+}(?!")')
-    lines = []
-    with open(jsonfilepath, 'r') as target:
-        for line in target:
-            matches = varPattern.search(line)
-            if matches:
-                matches = set(matches)
-                for match in matches:
-                    line = line.replace(match, '"%s"' % match)
-            lines.append(line)
-    # Write replacement lines to file:
-    with open(jsonfilepath, 'w') as target:
-        pass
-
 def LoadJsonFile(jsonpath, config = None, configval = None):
     """
     * Load json file and optionally fill in environment variables using
@@ -134,6 +101,7 @@ def TrimAll(val):
         for num in range(0, len(val)):
             val[num] = TrimAll(val[num])
     return val
+
 def FillEnvironmentVariables(target, configjson, configval):
     """
     * Fill all environment variable strings using 

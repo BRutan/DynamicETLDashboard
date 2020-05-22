@@ -18,12 +18,15 @@ import os
 from shutil import copyfile
 import sys
 from time import sleep
+from Utilities.FixJsonConfigs import FixJsonConfigs
 from Utilities.LoadArgs import TestETLPipelineJsonArgs
 
 def TestETLPipeline():
     print("------------------------------")
     print("TestETLPipeline: ")
     print("------------------------------")
+    # Ensure all AppSettings json files can be uploaded:
+    FixJsonConfigs()
     # Pull and verify script parameters:
     try:
         args = TestETLPipelineJsonArgs()
