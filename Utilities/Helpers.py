@@ -10,6 +10,21 @@ import json
 from jsonargparse import ArgumentError
 import os
 import re
+from time import sleep
+from tqdm import trange
+
+def Countdown(numSeconds):
+    """
+    * Print countdown sequence
+    for waiting.
+    """
+    if not isinstance(numSeconds, (int, float)):
+        raise Exception('numSeconds must be numeric.')
+    elif int(numSeconds) <= 0:
+        raise Exception('numSeconds must be positive.')
+    numSeconds = int(numSeconds)
+    for i in trange(numSeconds):
+        sleep(1)
 
 def CheckPath(path, argname, exists = True, pathtype = None):
     errs = []

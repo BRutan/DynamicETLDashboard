@@ -19,6 +19,7 @@ from shutil import copyfile
 import sys
 from time import sleep
 from Utilities.FixJsonConfigs import FixJsonConfigs
+from Utilities.Helpers import Countdown
 from Utilities.LoadArgs import TestETLPipelineJsonArgs
 
 def TestETLPipeline():
@@ -63,7 +64,7 @@ def TestETLPipeline():
         sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
         filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
         copyfile(args['testetlargs']['samplefile'], filewatcherPath)
-        sleep(5)
+        Countdown(5)
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
             input('Press enter to exit.')
