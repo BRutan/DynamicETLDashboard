@@ -152,5 +152,13 @@
     "QA": "nj1qasql13",
     "CI": "",
     "LOCAL": "."
+  },
+  "ServerLogs": {
+    "PROD": "",
+    "STG": "",
+    "UAT": "",
+    "QA": "\\\\nj1qaapp20\\logs",
+    "CI": "",
+    "LOCAL": "."
   }
 }
