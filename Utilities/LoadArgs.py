@@ -157,7 +157,7 @@ def TestETLPipelineJsonArgs():
     """
     req_args = set(['fixedargs', 'testetlargs'])
     req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
-    req_args_test = set(['etlname','filedate','localtest','reportpath','testmode'])
+    req_args_test = set(['etlname','filedate','reportpath','testmode'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
     if not os.path.exists('TestETLPipeline.json'):
@@ -320,13 +320,6 @@ def TestETLPipelineJsonArgs():
         errs.append('(filedate) %s is invalid date string.' % args['testetlargs']['filedate'])
     else:
         args['testetlargs']['filedate'] = StringIsDT(args['testetlargs']['filedate'], True)
-
-    # localtest:
-    args['testetlargs']['localtest'] = args['testetlargs']['localtest'].lower()
-    if not args['testetlargs']['localtest'] in ['true', 'false']:
-        errs.append('(localtest) Must be "true" or "false", case-insensitive.')
-    else:
-        args['testetlargs']['localtest'] = args['testetlargs']['localtest'] == 'true'
 
     # reportpath:
     if not args['testetlargs']['reportpath'].endswith('.xlsx'):

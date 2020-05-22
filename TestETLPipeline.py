@@ -35,7 +35,7 @@ def TestETLPipeline():
         print(msg)
         input('Press enter to exit.')
         sys.exit()
-    if args['testetlargs']['localtest']:
+    if args['testetlargs']['testmode'] == 'LOCAL':
         # Open DynamicETL.WebApi and post test ETL job:
         print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
         print(args['webapipath'])
@@ -47,7 +47,7 @@ def TestETLPipeline():
             print(str(ex))
             input('Press enter to exit.')
             sys.exit()
-        # Determine if any issues occurred in the log file.
+        # Determine if any issues occurred in the WebAPI/Service log file.
         # Exit application if issues occurred:
         message = loader.ReadLogFile()
         if message:
