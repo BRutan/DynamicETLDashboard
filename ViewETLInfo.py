@@ -13,10 +13,10 @@ def ViewETLInfo():
     * Display useful information regarding etlname.
     """
     args = ViewETLInfoJsonArgs()
-    # Aggregate and display information:
+    # Aggregate info, generate report and display information:
     info = ETLInfo(args['etlname'], args)
+    info.GenerateSummaryReport(args['summarypath'])
     print(info.Summarize())
-
 
 
 if __name__ == '__main__':

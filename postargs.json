@@ -1,7 +1,7 @@
 {
   "id": 10,
   "fileid": 10,
-  "subject": "GS.SecurityExceptions.v1",
-  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GS.SecurityExceptions.v1\\GI_InfoSec_Exceptions_2020-03-04-06-31-54.xlsx'}",
-  "fileName": "GI_InfoSec_Exceptions_2020-03-04-06-31-54.xlsx"
+  "subject": "GIAPTrackingUpcoming.v1",
+  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GIAPTrackingUpcoming.v1\\GI AP Tracking Report 4.30.20.xlsx'}",
+  "fileName": "GI AP Tracking Report 4.30.20.xlsx"
 }

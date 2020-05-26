@@ -5,6 +5,7 @@
 # * Aggregates all useful information about
 # an ETL (tablename, server, file locations).
 
+import csv
 from Helpers import FillEnvironmentVariables
 import json
 
@@ -55,6 +56,20 @@ class ETLInfo:
         out.append('TableName: %s' % self.__tablename)
 
         return '\n'.join(errs)
+
+    def GenerateSummaryReport(self, reportpath):
+        """
+        * Generate report at path.
+        Inputs:
+        * reportpath: Path to output report. Must point to .csv file.
+        """
+        if not isinstance(reportpath, str):
+            raise Exception('reportpath must be a string.')
+        elif not reportpath.endswith('.csv'):
+            raise Exception('reportpath must point to .csv file.')
+        lines = []
+        with open(reportpath, 'w', newline = '') as f:
+            writer = csv.writer(f)
 
     ###################
     # Private Helpers:

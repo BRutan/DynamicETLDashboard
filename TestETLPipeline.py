@@ -41,8 +41,8 @@ def TestETLPipeline():
         print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
         print(args['webapipath'])
         try:
-            loader = ETLJobLoader(args['webapipath'],args['dynamicetlservicepath'],args['logpath'],args['webapiurl'])
-            loader.RunETL(args['postargs'])
+            loader = ETLJobLoader(args['fixedargs']['webapipath'],args['fixedargs']['dynamicetlservicepath'],args['fixedargs']['logpath'],args['fixedargs']['webapiurl'])
+            loader.RunETL(args['testetlargs']['postargs'])
         except Exception as ex:
             print('ETL could not be run:')
             print(str(ex))

@@ -21,9 +21,7 @@ def ETLDashboardJsonArgs():
     * Pull arguments from ETLDashboard.json file.
     """
     errs = []
-    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
-    req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
-    req_postargs_arg = set(['FilePath'])
+    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','serviceappsettingspath','webapipath','webapiurl'])
     if not os.path.exists('ETLDashboard.json'):
         errs.append('ETLDashboard.json file does not exist.')
     else:
@@ -60,28 +58,6 @@ def ETLDashboardJsonArgs():
         errs.append('(logpath) Must point to a folder.')
     elif not os.path.exists(args['logpath']):
         errs.append('(logpath) Folder does not exist.')
-
-    # postargspath:
-    if not os.path.exists(args['postargspath']):
-        errs.append('(postargspath) Path does not exist.')
-    elif not args['postargspath'].endswith('.json'):
-        errs.append('(postargspath) Path must point to a json file.')
-    else:
-        post_args = LoadJsonFile(args['postargspath'])
-        missing = req_postargs - set(post_args)
-        if missing:
-            errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
-        else:
-            args['postargs'] = post_args
-    # Get sample file name from post args file:
-    if 'postargs' in args and 'arg' in args['postargs']:
-        match = re.search('[A-Z]:.+', args['postargs']['arg'])
-        if not match:
-            errs.append('(postargs) arg::FilePath is not a valid path.')
-        else:
-            args['samplefile'] = match[0].strip("{}'")
-    if 'samplefile' in args and not os.path.exists(args['samplefile']):
-        errs.append('(postargs) File at arg::FilePath does not exist.')
 
     # serviceappsettingspath:
     if not os.path.exists(args['serviceappsettingspath']):
@@ -250,6 +226,8 @@ def TestETLPipelineJsonArgs():
     * Pull and validate arguments from local json file.
     """
     req_args = set(['etlname','filedate','reportpath','testmode'])
+    req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
+    req_postargs_arg = set(['FilePath'])
     if not os.path.exists('TestETLPipeline.json'):
         raise Exception('TestETLPipeline.json does not exist.')
     args = {}
@@ -259,9 +237,9 @@ def TestETLPipelineJsonArgs():
     errs = []
     missing = req_args - set(args['testetlargs'])
     if missing:
-        errs.append('The following required toplevel args are missing: %s' % ','.join(missing))
+        errs.append('The following required args are missing from TestETLPipeline.json: %s' % ','.join(missing))
     if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
-        errs.append('Local AppsettingsFiles folder is missing.')
+        errs.append('Local \\AppsettingsFiles\\ folder is missing.')
     elif not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
         errs.append('Local AppsettingsFiles\\config.json file is missing.')
     else:
@@ -275,6 +253,28 @@ def TestETLPipelineJsonArgs():
     ########################
     # testetlargs:
     ########################
+    # postargspath:
+    if not os.path.exists(args['testetlargs']['postargspath']):
+        errs.append('(postargspath) Path does not exist.')
+    elif not args['testetlargs']['postargspath'].endswith('.json'):
+        errs.append('(postargspath) Path must point to a json file.')
+    else:
+        post_args = LoadJsonFile(args['testetlargs']['postargspath'])
+        missing = req_postargs - set(post_args)
+        if missing:
+            errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
+        else:
+            args['testetlargs']['postargs'] = post_args
+    # Get sample file name from post args file:
+    if 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
+        match = re.search('[A-Z]:.+', args['testetlargs']['postargs']['arg'])
+        if not match:
+            errs.append('(postargs) arg::FilePath is not a valid path.')
+        else:
+            args['testetlargs']['samplefile'] = match[0].strip("{}'")
+    if 'samplefile' in args['testetlargs'] and not os.path.exists(args['testetlargs']['samplefile']):
+        errs.append('(postargspath) File at arg::FilePath does not exist.')
+
     # testmode:
     args['testetlargs']['testmode'] = args['testetlargs']['testmode'].upper()
     validModes = set(['QA', 'STG', 'UAT', 'LOCAL'])
