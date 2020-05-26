@@ -56,8 +56,10 @@ class DataReader:
         """
         * Read data at path.
         """
-        if path.endswith('csv'):
+        if path.endswith('.csv'):
             return read_csv(path, delimiter = (',' if delim is None else delim))
-        elif path.endswith('xls'):
+        elif path.endswith('.xls') or path.endswith('.xlsx'):
             return read_excel(path, sheet_name = (0 if sheetName is None else sheetName ))
-
+        else:
+            ext = os.path.split(path)
+            raise Exception('%s extension is invalid.' % ext)

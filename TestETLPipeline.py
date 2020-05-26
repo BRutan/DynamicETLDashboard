@@ -62,11 +62,11 @@ def TestETLPipeline():
         # up by etl. If does not suck up, delete file and notify user:
         print('Outputting data file to')
         print('%s' % args['testetlargs']['etlfolder'])
-        print('Will wait five seconds to allow data to be implemented...')
-        sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
+        print('Will wait ten seconds to allow data to be implemented...')
+        sampleFileName = os.path.split(args['fixedargs']['samplefile'])[1]
         filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
-        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
-        Countdown(5)
+        copyfile(args['fixedargs']['samplefile'], filewatcherPath)
+        Countdown(10)
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
             input('Press enter to exit.')
@@ -82,13 +82,14 @@ def TestETLPipeline():
         input('Press enter to exit.')
         os._exit(0)
     # Pull data from test file:
-    data_valid = DataReader.Read(args['testetlargs']['samplefile'])
+    data_valid = DataReader.Read(args['fixedargs']['samplefile'])
     # Compare test file data versus output etl data:
     print('Generating comparison report...')
     tester = DataComparer()
     ignoreCols = ['FileDate', 'RunDate']
     if 'ignorecols' in args['testetlargs']:
         ignoreCols.extend(args['testetlargs']['ignorecols'])
+    ignoreCols = set([col for col in ignoreCols if col.strip()])
     tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols)
     print('Finished generating report at')
     print(args['testetlargs']['reportpath'])
