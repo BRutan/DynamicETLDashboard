@@ -101,7 +101,7 @@ def ETLDashboardJsonArgs():
         errs.append('(webapipath) Path must point to dll.')
     if errs:
         raise Exception('\n'.join(errs))
-    return errs
+    return args
 
 ############################
 # GenerateColumnAttributesReport.py
