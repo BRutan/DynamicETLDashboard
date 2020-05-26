@@ -333,3 +333,29 @@ def TestETLPipelineJsonArgs():
         raise Exception('\n'.join(errs))
 
     return args
+
+############################
+# ViewETLInfo.py
+############################
+def ViewETLInfoJsonArgs():
+    """
+    * Get and verify arguments from ViewETLInfo.json.
+    """
+    reqArgs = set(['etlname'])
+    args = None
+    errs = []
+    if not os.path.exists('ViewETLInfo.json'):
+        errs.append('ViewETLInfo.json does not exist.')
+    else:
+        try:
+            args = json.load(open('ViewETLInfo.json', 'rb'))
+        except Exception as ex:
+            errs.append('Could not load ViewETLInfo.json. Reason: %s' % str(ex))
+    if not args is None:
+        missing = reqArgs - set(args)
+        if missing:
+            errs.append('The following required args are missing: %s' % ','.join(missing))
+    if errs:
+        raise Exception('\n'.join(errs))
+    
+    return args

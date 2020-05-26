@@ -50,7 +50,9 @@ def TestETLPipeline():
             sys.exit()
         # Determine if any issues occurred in the WebAPI/Service log file.
         # Exit application if issues occurred:
-        message = loader.ReadLogFile()
+        messages = []
+        messages.append(loader.ReadLogFile())
+        messages.append(loader.ReadLogFile())
         if message:
             print(message)
             input('Press enter to exit.')

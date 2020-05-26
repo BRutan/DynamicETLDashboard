@@ -6,6 +6,7 @@
 # Read logfile for issues if necessary.
 
 import ctypes
+from datetime import datetime
 from enum import Enum
 import json
 import os
@@ -43,6 +44,8 @@ class ETLJobLoader(object):
         self.__webapipath = webapiPath.strip()
         self.__servicepath = servicePath.strip()
         self.__opened = False
+        self.__runtime = None
+        self.__etlname = None
 
     def __del__(self):
         """
@@ -62,22 +65,43 @@ class ETLJobLoader(object):
         """
         if not isinstance(jsonobj, dict):
             raise Exception('jsonobj must be a dictionary.')
-        # Validate json arguments:
+        self.__etlname = None
+        self.__runtime = None
         try:
+            # Validate json arguments:
             ETLJobLoader.__CheckJSONETL(jsonobj)
             self.__OpenWebAPI()
             self.__PostETL(jsonobj)
             self.__RunService()
+            self.__runtime = datetime.now()
             self.__CloseApps()
         except Exception as ex:
             raise Exception('(ETLJobLoader)\n%s' % str(ex))
 
-    def ReadLogFile(self):
+    def ReadLogFile(self, logpath):
         """
-        * Read DynamicETL.Service and WebAPI logfile, 
-        summarize any issues that occurred.
+        * Read logfile associated with process, 
+        summarize any issues that occurred with most recent
+        etl job posting.
+        Inputs:
+        * logpath: Path to DynamicETL.Service/WebAPI/alt logfile.
         """
-        pass
+        errs = []
+        if not isinstance(logpath, str):
+            errs.append('logpath must be a string.')
+        elif not os.path.isfile(logpath):
+            errs.append('logpath does not point to valid file.')
+        if self.__etlname is None or self.__runtime is None:
+            errs.append('ETL has not been posted.')
+        if errs:
+            raise Exception('\n'.join(errs))
+
+        issues = []
+        # Read logfile, summarize issues:
+        with open(logpath, 'r') as log:
+            pass
+
+        return '\n'.join(issues)
 
     @classmethod
     def RequiredJSONFields(cls):
@@ -91,11 +115,18 @@ class ETLJobLoader(object):
     ######################
     def __OpenWebAPI(self):
         """
-        * Open DynamicETL.WebAPI instance.
+        * Open DynamicETL.WebAPI instance if necessary.
         """
-        # https://stackoverflow.com/questions/5759377/how-to-call-a-dll-function-in-parallel-in-python
-        webapi = ctypes.cdll.LoadLibrary(self.__webapipath)
-        webapi.Main()
+        # Determine if WebAPI is running:
+        try:
+            requests.get(self.__host)
+            openAPI = False
+        except:
+            openAPI = True
+        # Open WebAPI if not running:
+        if openAPI:
+            webapi = ctypes.cdll.LoadLibrary(self.__webapipath)
+            webapi.Main()
 
     def __PostETL(self, jsonobj):
         """
@@ -103,7 +134,6 @@ class ETLJobLoader(object):
         """
         # Post job to DynamicETL.WebAPI:
         result = requests.post(url = self.__host, data = jsonobj)
-        
 
     def __RunService(self):
         """

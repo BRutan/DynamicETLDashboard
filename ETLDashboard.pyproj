@@ -102,6 +102,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Helpers.py" />
+    <Compile Include="ViewETLInfo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="__init__.py">
       <SubType>Code</SubType>
     </Compile>
