@@ -32,6 +32,9 @@ class ETLInfo:
     def ETLName(self):
         return self.__etlname
     @property
+    def InputFileSignature(self):
+        return self.__inputfilesig
+    @property
     def InputFolders(self):
         return self.__inputfolders
     @property
@@ -47,7 +50,9 @@ class ETLInfo:
         """
         * Return string summarizing ETL for display purposes.
         """
-        out = []
+        out = ['-' * 20, self.__etlname, '-' * 20]
+        out.append('ServerName: %s' % self.__servername)
+        out.append('TableName: %s' % self.__tablename)
 
         return '\n'.join(errs)
 
@@ -59,6 +64,7 @@ class ETLInfo:
         * Collect all information regarding etlname
         using appsettings files indicated in paths.
         """
+        self.__inputfilesig = None
         self.__inputfolders = None
         self.__servername = None
         self.__tablename = None
@@ -108,7 +114,7 @@ class ETLInfo:
         if not isinstance(jsonpaths, dict):
             errs.append('jsonpaths must be a dictionary.')
         else:
-            req = set([''])
+            req = set(['filewatcherappsettingstemplatepath', 'dynamicetlservicepath'])
             missing = req - set(jsonpaths)
             if missing:
                 errs.append('The following required keys missing from args: %s' % ','.join(missing))

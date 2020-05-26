@@ -27,7 +27,7 @@ def TestETLPipeline():
     print("TestETLPipeline: ")
     print("------------------------------")
     # Ensure all AppSettings json files can be uploaded:
-    FixJsonConfigs()
+    #FixJsonConfigs()
     # Pull and verify script parameters:
     try:
         args = TestETLPipelineJsonArgs()
@@ -35,7 +35,7 @@ def TestETLPipeline():
         msg = '%s:\n%s' % ('The following input argument issues occured:', str(ex))
         print(msg)
         input('Press enter to exit.')
-        sys.exit()
+        os._exit(0)
     if args['testetlargs']['testmode'] == 'LOCAL':
         # Open DynamicETL.WebApi and post test ETL job:
         print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
@@ -47,7 +47,7 @@ def TestETLPipeline():
             print('ETL could not be run:')
             print(str(ex))
             input('Press enter to exit.')
-            sys.exit()
+            os._exit(0)
         # Determine if any issues occurred in the WebAPI/Service log file.
         # Exit application if issues occurred:
         messages = []
@@ -56,7 +56,7 @@ def TestETLPipeline():
         if message:
             print(message)
             input('Press enter to exit.')
-            sys.exit()
+            os._exit(0)
     else:
         # Output sample file to FileWatcher folder, wait for sample file to be sucked
         # up by etl. If does not suck up, delete file and notify user:
@@ -70,7 +70,7 @@ def TestETLPipeline():
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
             input('Press enter to exit.')
-            sys.exit()
+            os._exit(0)
     # Query server to get uploaded data:
     try:
         interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
@@ -80,7 +80,7 @@ def TestETLPipeline():
         print('Could not query %s::%s::%s' % (args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename']))
         print('Reason: %s' % str(ex))
         input('Press enter to exit.')
-        sys.exit()
+        os._exit(0)
     # Pull data from test file:
     data_valid = DataReader.Read(args['testetlargs']['samplefile'])
     # Compare test file data versus output etl data:

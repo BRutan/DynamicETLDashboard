@@ -14,6 +14,96 @@ import sys
 from Utilities.Helpers import FillEnvironmentVariables, LoadJsonFile, StringIsDT
 
 ############################
+# ETLDashboard
+############################
+def ETLDashboardJsonArgs():
+    """
+    * Pull arguments from ETLDashboard.json file.
+    """
+    errs = []
+    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
+    req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
+    req_postargs_arg = set(['FilePath'])
+    if not os.path.exists('ETLDashboard.json'):
+        errs.append('ETLDashboard.json file does not exist.')
+    else:
+        args = LoadJsonFile('ETLDashboard.json')
+        missing = req_args_fixed - set(args)
+        if missing:
+            errs.append('The following required arguments are missing from ETLDashboard.json: %s' % ','.join(missing))
+    if errs:
+        raise Exception('\n'.join(errs))
+    # dynamicetlservicepath:
+    if not os.path.exists(args['dynamicetlservicepath']):
+        errs.append('(dynamicetlservicepath) Path does not exist.')
+    elif not args['dynamicetlservicepath'].endswith('.exe'):
+        errs.append('(dynamicetlservicepath) Path must point to an .exe.')
+
+    # filewatcherappsettingstemplatepath:
+    if not os.path.exists(args['filewatcherappsettingstemplatepath']):
+        errs.append('(filewatcherappsettingstemplatepath) Path does not exist.')
+    elif not args['filewatcherappsettingstemplatepath'].endswith('.json'):
+        errs.append('(filewatcherappsettingstemplatepath) Path must point to .json.')
+    else:
+        # Ensure filewatcher config has correct keys:
+        try:
+            fwconfig = LoadJsonFile(args['filewatcherappsettingstemplatepath'])
+            if not 'files' in fwconfig:
+                errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
+            else:
+                args['filewatcher'] = fwconfig
+        except Exception as ex:
+            errs.append('(filewatcherappsettingstemplatepath) Issue with json file: %s' % str(ex))
+            
+    # logpath:
+    if not os.path.isdir(args['logpath']):
+        errs.append('(logpath) Must point to a folder.')
+    elif not os.path.exists(args['logpath']):
+        errs.append('(logpath) Folder does not exist.')
+
+    # postargspath:
+    if not os.path.exists(args['postargspath']):
+        errs.append('(postargspath) Path does not exist.')
+    elif not args['postargspath'].endswith('.json'):
+        errs.append('(postargspath) Path must point to a json file.')
+    else:
+        post_args = LoadJsonFile(args['postargspath'])
+        missing = req_postargs - set(post_args)
+        if missing:
+            errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
+        else:
+            args['postargs'] = post_args
+    # Get sample file name from post args file:
+    if 'postargs' in args and 'arg' in args['postargs']:
+        match = re.search('[A-Z]:.+', args['postargs']['arg'])
+        if not match:
+            errs.append('(postargs) arg::FilePath is not a valid path.')
+        else:
+            args['samplefile'] = match[0].strip("{}'")
+    if 'samplefile' in args and not os.path.exists(args['samplefile']):
+        errs.append('(postargs) File at arg::FilePath does not exist.')
+
+    # serviceappsettingspath:
+    if not os.path.exists(args['serviceappsettingspath']):
+        errs.append('(serviceappsettingspath) Does not exist.')
+    elif not args['serviceappsettingspath'].endswith('.json'):
+        errs.append('(serviceappsettingspath) Must point to .json file.')
+    else:
+        try:
+            args['appsettings'] = LoadJsonFile(args['serviceappsettingspath'])
+        except Exception as ex:
+            errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
+
+    # webapipath:
+    if not os.path.exists(args['webapipath']):
+        errs.append('(webapipath) Path does not exist.')
+    elif not args['webapipath'].endswith('.dll'):
+        errs.append('(webapipath) Path must point to dll.')
+    if errs:
+        raise Exception('\n'.join(errs))
+    return errs
+
+############################
 # GenerateColumnAttributesReport.py
 ############################
 class Arguments(object):
@@ -101,6 +191,9 @@ class Arguments(object):
 
 
 def GenerateColumnAttributesReportCMDLineArgs():
+    """
+    * Get command line arguments for GenerateColumnAttributesReport.py script.
+    """
     parser = ArgumentParser()
     # Mandatory positional arguments:
     parser.add_argument("datapath", type=str, help="Path to folder containing data.")
@@ -155,27 +248,17 @@ def TestETLPipelineJsonArgs():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = set(['fixedargs', 'testetlargs'])
-    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','postargspath','serviceappsettingspath','webapipath','webapiurl'])
-    req_args_test = set(['etlname','filedate','reportpath','testmode'])
-    req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
-    req_postargs_arg = set(['FilePath'])
+    req_args = set(['etlname','filedate','reportpath','testmode'])
     if not os.path.exists('TestETLPipeline.json'):
         raise Exception('TestETLPipeline.json does not exist.')
-    args = LoadJsonFile('TestETLPipeline.json')
+    args = {}
+    args['testetlargs'] = LoadJsonFile('TestETLPipeline.json')
+    args['fixedargs'] = ETLDashboardJsonArgs()
     # Ensure required arguments are present:
     errs = []
-    missing = req_args - set(args)
+    missing = req_args - set(args['testetlargs'])
     if missing:
         errs.append('The following required toplevel args are missing: %s' % ','.join(missing))
-    if 'fixedargs' in args:
-        missing_fixed = req_args_fixed - set(args['fixedargs'])
-        if missing_fixed:
-            errs.append('The following required fixedargs are missing: %s' % ','.join(missing_fixed))
-    if 'testetlargs' in args:
-        missing_test = req_args_test - set(args['testetlargs'])
-        if missing_test:
-            errs.append('The following required testetlargs are missing: %s' % ','.join(missing_test))
     if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
         errs.append('Local AppsettingsFiles folder is missing.')
     elif not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
@@ -187,75 +270,7 @@ def TestETLPipelineJsonArgs():
             errs.append('Issue with config.json: %s' % str(err))
     if errs:
         raise Exception('\n'.join(errs))
-    ########################
-    # fixedargs:
-    ########################
-    # dynamicetlservicepath:
-    if not os.path.exists(args['fixedargs']['dynamicetlservicepath']):
-        errs.append('(dynamicetlservicepath) Path does not exist.')
-    elif not args['fixedargs']['dynamicetlservicepath'].endswith('.exe'):
-        errs.append('(dynamicetlservicepath) Path must point to an .exe.')
-
-    # filewatcherappsettingstemplatepath:
-    if not os.path.exists(args['fixedargs']['filewatcherappsettingstemplatepath']):
-        errs.append('(filewatcherappsettingstemplatepath) Path does not exist.')
-    elif not args['fixedargs']['filewatcherappsettingstemplatepath'].endswith('.json'):
-        errs.append('(filewatcherappsettingstemplatepath) Path must point to .json.')
-    else:
-        # Ensure filewatcher config has correct keys:
-        try:
-            fwconfig = LoadJsonFile(args['fixedargs']['filewatcherappsettingstemplatepath'])
-            if not 'files' in fwconfig:
-                errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
-            else:
-                args['fixedargs']['filewatcher'] = fwconfig
-        except Exception as ex:
-            errs.append('(filewatcherappsettingstemplatepath) Issue with json file: %s' % str(ex))
-            
-    # logpath:
-    if not os.path.isdir(args['fixedargs']['logpath']):
-        errs.append('(logpath) Must point to a folder.')
-    elif not os.path.exists(args['fixedargs']['logpath']):
-        errs.append('(logpath) Folder does not exist.')
-
-    # postargspath:
-    if not os.path.exists(args['fixedargs']['postargspath']):
-        errs.append('(postargspath) Path does not exist.')
-    elif not args['fixedargs']['postargspath'].endswith('.json'):
-        errs.append('(postargspath) Path must point to a json file.')
-    else:
-        post_args = LoadJsonFile(args['fixedargs']['postargspath'])
-        missing = req_postargs - set(post_args)
-        if missing:
-            errs.append('(postargspath) The following required arguments in json file are missing: {%s}' % ','.join(missing))
-        else:
-            args['fixedargs']['postargs'] = post_args
-    # Get sample file name from post args file:
-    if 'postargs' in args['fixedargs'] and 'arg' in args['fixedargs']['postargs']:
-        match = re.search('[A-Z]:.+', args['fixedargs']['postargs']['arg'])
-        if not match:
-            errs.append('(postargs) arg::FilePath is not a valid path.')
-        else:
-            args['testetlargs']['samplefile'] = match[0].strip("{}'")
-    if 'samplefile' in args['testetlargs'] and not os.path.exists(args['testetlargs']['samplefile']):
-        errs.append('(postargs) File at arg::FilePath does not exist.')
-
-    # serviceappsettingspath:
-    if not os.path.exists(args['fixedargs']['serviceappsettingspath']):
-        errs.append('(serviceappsettingspath) Does not exist.')
-    elif not args['fixedargs']['serviceappsettingspath'].endswith('.json'):
-        errs.append('(serviceappsettingspath) Must point to .json file.')
-    else:
-        try:
-            args['fixedargs']['appsettings'] = LoadJsonFile(args['fixedargs']['serviceappsettingspath'])
-        except Exception as ex:
-            errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
-
-    # webapipath:
-    if not os.path.exists(args['fixedargs']['webapipath']):
-        errs.append('(webapipath) Path does not exist.')
-    elif not args['fixedargs']['webapipath'].endswith('.dll'):
-        errs.append('(webapipath) Path must point to dll.')
+    
     ########################
     # testetlargs:
     ########################
