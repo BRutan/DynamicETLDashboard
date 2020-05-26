@@ -34,6 +34,9 @@
     <Compile Include="ETL\DataReader.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\ETLInfo.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ETL\NewETLAppender.py">
       <SubType>Code</SubType>
     </Compile>
@@ -137,6 +140,7 @@
     <Content Include="Columns\__pycache__\__init__.cpython-36.pyc" />
     <Content Include="ETL\default.xml" />
     <Content Include="ETL\ftsattrs.json" />
+    <Content Include="ViewETLInfo.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
