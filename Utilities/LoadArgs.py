@@ -357,7 +357,7 @@ def ViewETLInfoJsonArgs():
     """
     * Get and verify arguments from ViewETLInfo.json.
     """
-    reqArgs = set(['etlname'])
+    reqArgs = set(['etlname', 'summarypath'])
     args = None
     errs = []
     if not os.path.exists('ViewETLInfo.json'):
@@ -371,6 +371,8 @@ def ViewETLInfoJsonArgs():
         missing = reqArgs - set(args)
         if missing:
             errs.append('The following required args are missing: %s' % ','.join(missing))
+    if 'summarypath' in args and not args['summarypath'].endswith('.csv'):
+        errs.append('(summarypath) Must point to .csv file.')
     if errs:
         raise Exception('\n'.join(errs))
     

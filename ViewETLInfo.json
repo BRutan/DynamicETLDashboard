@@ -1,3 +1,5 @@
 {
-  "etlname" :  ""
+  "etlname": "GIAPTrackingUpcoming.v1",
+  "openfileexplorerpaths": "true",
+  "summarypath": "GIAPTrackingUpcoming_Summary.xlsx"
 }

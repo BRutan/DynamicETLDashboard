@@ -1,5 +1,5 @@
 {
-  "etlname": "GIAPTrackingUpcoming.v1",
+  "etlname": "GS.SecurityExceptions.v1",
   "filedate": "2020-03-04",
   "reportpath": "SecurityExceptions_DataComparison_QA.xlsx",
   "testmode": "QA",
