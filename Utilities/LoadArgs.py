@@ -269,8 +269,6 @@ def TestETLPipelineJsonArgs():
     if 'comparefile' in args['testetlargs']:
         if not os.path.isfile(args['testetlargs']['comparefile']):
             errs.append('(comparefile) Not a valid file.')
-        else:
-            args['testetlargs']['samplefile'] = args['testetlargs']['comparefile']
     elif 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
         match = re.search('[A-Z]:.+', args['testetlargs']['postargs']['arg'])
         if not match:

@@ -82,7 +82,8 @@ def TestETLPipeline():
         input('Press enter to exit.')
         os._exit(0)
     # Pull data from test file:
-    data_valid = DataReader.Read(args['fixedargs']['samplefile'])
+    compareFile = args['testetlargs']['comparefile'] if 'comparefile' in args['testetlargs'] else args['testetlargs']['samplefile']
+    data_valid = DataReader.Read(compareFile)
     # Compare test file data versus output etl data:
     print('Generating comparison report...')
     tester = DataComparer()
