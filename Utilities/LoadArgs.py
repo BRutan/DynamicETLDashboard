@@ -342,9 +342,8 @@ def TestETLPipelineJsonArgs():
         errs.append('(reportpath) Must point to xlsx file.')
 
     # comparefile (optional):
-    if 'comparefile' in args['testetlargs']:
-        if not os.path.isfile(args['testetlargs']['comparefile']):
-            errs.append('(comparefile) Not a valid file.')
+    if 'comparefile' in args['testetlargs'] and not os.path.isfile(args['testetlargs']['comparefile']):
+        errs.append('(comparefile) Not a valid file.')
 
     # ignorecols (optional):
     if 'ignorecols' in args['testetlargs'] and not isinstance(args['testetlargs']['ignorecols'], list):
