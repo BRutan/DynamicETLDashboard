@@ -266,10 +266,7 @@ def TestETLPipelineJsonArgs():
         else:
             args['testetlargs']['postargs'] = post_args
     # Get sample file name from post args file:
-    if 'comparefile' in args['testetlargs']:
-        if not os.path.isfile(args['testetlargs']['comparefile']):
-            errs.append('(comparefile) Not a valid file.')
-    elif 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
+    if 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
         match = re.search('[A-Z]:.+', args['testetlargs']['postargs']['arg'])
         if not match:
             errs.append('(postargs) arg::FilePath is not a valid path.')
@@ -343,6 +340,11 @@ def TestETLPipelineJsonArgs():
     # reportpath:
     if not args['testetlargs']['reportpath'].endswith('.xlsx'):
         errs.append('(reportpath) Must point to xlsx file.')
+
+    # comparefile (optional):
+    if 'comparefile' in args['testetlargs']:
+        if not os.path.isfile(args['testetlargs']['comparefile']):
+            errs.append('(comparefile) Not a valid file.')
 
     # ignorecols (optional):
     if 'ignorecols' in args['testetlargs'] and not isinstance(args['testetlargs']['ignorecols'], list):
