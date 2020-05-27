@@ -38,8 +38,8 @@ def TestETLPipeline():
         os._exit(0)
     if args['testetlargs']['testmode'] == 'LOCAL':
         # Open DynamicETL.WebApi and post test ETL job:
-        print("Loading ETL %s test job to WebAPI at" % args['postargs']['subject'])
-        print(args['webapipath'])
+        print("Loading ETL %s test job to WebAPI at" % args['testetlargs']['postargs']['subject'])
+        print(args['fixedargs']['webapipath'])
         try:
             loader = ETLJobLoader(args['fixedargs']['webapipath'],args['fixedargs']['dynamicetlservicepath'],args['fixedargs']['logpath'],args['fixedargs']['webapiurl'])
             loader.RunETL(args['testetlargs']['postargs'])

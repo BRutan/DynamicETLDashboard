@@ -266,14 +266,19 @@ def TestETLPipelineJsonArgs():
         else:
             args['testetlargs']['postargs'] = post_args
     # Get sample file name from post args file:
-    if 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
+    if 'comparefile' in args['testetlargs']:
+        if not os.path.isfile(args['testetlargs']['comparefile']):
+            errs.append('(comparefile) Not a valid file.')
+        else:
+            args['testetlargs']['samplefile'] = args['testetlargs']['samplefile']
+    elif 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
         match = re.search('[A-Z]:.+', args['testetlargs']['postargs']['arg'])
         if not match:
             errs.append('(postargs) arg::FilePath is not a valid path.')
         else:
             args['testetlargs']['samplefile'] = match[0].strip("{}'")
-    if 'samplefile' in args['testetlargs'] and not os.path.exists(args['testetlargs']['samplefile']):
-        errs.append('(postargspath) File at arg::FilePath does not exist.')
+        if 'samplefile' in args['testetlargs'] and not os.path.isfile(args['testetlargs']['samplefile']):
+            errs.append('(postargspath) File at arg::FilePath does not point to valid file.')
 
     # testmode:
     args['testetlargs']['testmode'] = args['testetlargs']['testmode'].upper()
@@ -328,7 +333,7 @@ def TestETLPipelineJsonArgs():
        else:
            # Fill in environment variables using config.json:
            args['testetlargs']['etlfolder'] = os.path.split(path)[0] + '\\'
-           if not os.path.exists(args['testetlargs']['etlfolder']):
+           if args['testetlargs']['testmode'] != 'LOCAL' and not os.path.exists(args['testetlargs']['etlfolder']):
                errs.append('(filewatcherappsettingstemplatepath) ETL folder does not exist.')
            
     # filedate: 

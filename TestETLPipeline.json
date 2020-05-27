@@ -1,7 +1,7 @@
 {
   "etlname": "GIAPTrackingUpcoming.v1",
   "filedate": "2020-04-30",
-  "postargs" : "postargs.json",
+  "postargspath": "postargs.json",
   "reportpath": "GIAPTrackingUpcoming_DataComparison_QA.xlsx",
   "testmode": "LOCAL"
 }

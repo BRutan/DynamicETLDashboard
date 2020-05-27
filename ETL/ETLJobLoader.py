@@ -14,6 +14,8 @@ from pandas import DataFrame
 import re
 import requests
 import threading
+import time
+import signal
 import subprocess
 
 class ETLJobLoader(object):
@@ -56,27 +58,30 @@ class ETLJobLoader(object):
     ######################
     # Interface Methods:
     ######################
-    def RunETL(self, jsonobj):
+    def RunETL(self, postargsjson):
         """
         * Open DynamicETL.WebAPI, post ETL job using passed json arguments 
         and run DynamicETL.Service.
         Inputs:
-        * jsonobj: Dictionary containing WebAPI json post arguments for target ETL.
+        * postargsjson: Dictionary containing WebAPI json post arguments for target ETL.
         """
-        if not isinstance(jsonobj, dict):
-            raise Exception('jsonobj must be a dictionary.')
+        if not isinstance(postargsjson, dict):
+            raise Exception('postargsjson must be a dictionary.')
         self.__etlname = None
-        self.__runtime = None
+        self.__webapiprocess = None
         try:
             # Validate json arguments:
-            ETLJobLoader.__CheckJSONETL(jsonobj)
+            ETLJobLoader.__CheckJSONETL(postargsjson)
+            self.__etlname = postargsjson['subject']
+            # Open run main method in WebAPI, post json arguments
+            # and run Service:
             self.__OpenWebAPI()
-            self.__PostETL(jsonobj)
+            self.__PostETL(postargsjson)
             self.__RunService()
             self.__runtime = datetime.now()
             self.__CloseApps()
         except Exception as ex:
-            raise Exception('(ETLJobLoader)\n%s' % str(ex))
+            raise Exception('(ETLJobLoader) The following issues occurred: \n%s' % str(ex))
 
     def ReadLogFile(self, logpath):
         """
@@ -118,35 +123,53 @@ class ETLJobLoader(object):
         * Open DynamicETL.WebAPI instance if necessary.
         """
         # Determine if WebAPI is running:
+        result = None
         try:
-            requests.get(self.__host)
-            openAPI = False
-        except:
-            openAPI = True
+            result = requests.get(self.__host)
+            if result.status_code == 200:
+                return
+        except Exception as ex:
+            pass
+        if not result is None and result.status_code != 200:
+            raise Exception('Could not access WebAPI at %s. Status: %d.' % (self.__host, result.status_code))
         # Open WebAPI if not running:
-        if openAPI:
+        try:
             webapi = ctypes.cdll.LoadLibrary(self.__webapipath)
-            webapi.Main()
-
+            self.__webapiprocess = webapi.Main()
+        except Exception as ex:
+            if '' in str(ex):
+                raise Exception('')
+            else:
+                raise Exception('Failed to run WebApi. Reason: %s' % str(ex))
     def __PostETL(self, jsonobj):
         """
         * Open DynamicETL.WebAPI and post ETL using args in passed json file.
         """
+        # Skip posting if already posted:
+        result = requests.get(self.__host)
+        if len(result.json()) != 0:
+            for post in result.json():
+                if 'identifier' in post and post['identifier'] == self.__etlname:
+                    return
         # Post job to DynamicETL.WebAPI:
         result = requests.post(url = self.__host, data = jsonobj)
+        if result.status_code != 200:
+            raise Exception('Could not post to WebAPI at %s. Status: %d.' % (self.__host, result.status_code))
 
     def __RunService(self):
         """
         * Open DynamicETL.Service instance.
         """
-        subprocess.run(self.__servicepath)
+        process = subprocess.Popen(self.__servicepath, shell = False, preexec_fn = os.setsid)
+        time.sleep(10)
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
 
     def __CloseApps(self):
         """
         * Close DynamicETL.WebAPI and Service instances.
         """
-        pass
-    
+        if not self.__webapiprocess is None:
+            os.killpg(os.getpgid(self.__webapiprocess.pid), signal.SIGTERM)
 
     def __CheckETLPosted(self):
         """
