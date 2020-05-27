@@ -1,6 +1,6 @@
 {
   "etlname": "GS.SecurityExceptions.v1",
-  "filedate": "2020-05-19",
+  "filedate": "2020-04-13",
   "reportpath": "SecurityExceptions_DataComparison_QA.xlsx",
   "postargspath" :  "postargs.json",
   "comparefile": "SecurityExceptionsComp.csv",

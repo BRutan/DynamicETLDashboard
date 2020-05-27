@@ -20,7 +20,7 @@ def compare():
 
 def getdata():
     interface = TSQLInterface('.', 'MetricsDyetl')
-    query = "SELECT * FROM tbl_CyberSecurity_Exceptions_GS WHERE fileDate = '2020-05-19'"
+    query = "SELECT * FROM tbl_CyberSecurity_Exceptions_GS"
     data = interface.Select(query)
     data.to_csv('SecurityExceptionsComp.csv')
     #pKey = TSQLInterface.PrimaryKeys(data, 4, ignoreCols = ['ID', 'fileDate', 'RunDate'], findFirst = True)

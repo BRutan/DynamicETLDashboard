@@ -63,9 +63,9 @@ def TestETLPipeline():
         print('Outputting data file to')
         print('%s' % args['testetlargs']['etlfolder'])
         print('Will wait ten seconds to allow data to be implemented...')
-        sampleFileName = os.path.split(args['fixedargs']['samplefile'])[1]
+        sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
         filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
-        copyfile(args['fixedargs']['samplefile'], filewatcherPath)
+        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
         Countdown(10)
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
@@ -74,7 +74,7 @@ def TestETLPipeline():
     # Query server to get uploaded data:
     try:
         interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
-        query = "SELECT * FROM %s WHERE [fileDate] = %s" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
+        query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
         data_test = interface.Select(query)
     except Exception as ex:
         print('Could not query %s::%s::%s' % (args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename']))

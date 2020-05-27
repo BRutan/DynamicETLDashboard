@@ -104,8 +104,8 @@ class DataComparer(object):
             data_valid = data_valid.set_index(list(pKey))
             diff = { col : [] for col in data_test.columns }
             diff.update({col : [] for col in data_test.index.names})
-            matches_test = data_test[data_valid.index == data_test.index]
-            matches_valid = data_valid[data_valid.index == data_valid.index]
+            matches_test = data_test.loc[data_valid.index]
+            matches_valid = data_valid.loc[data_test.index]
             non_matches = data_test[data_valid.index != data_test.index]
             # Compare rows where primary key is the same:
             for row in range(0, len(matches_test)):
