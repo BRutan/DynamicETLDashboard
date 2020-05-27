@@ -90,8 +90,9 @@ def TestETLPipeline():
     if 'ignorecols' in args['testetlargs']:
         ignoreCols.extend(args['testetlargs']['ignorecols'])
     ignoreCols = set([col.strip() for col in ignoreCols if col.strip()])
+    pkeys = args['testetlargs']['pkey'] if 'pkey' in args['testetlargs'] else None
     try:
-        tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols)
+        tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols, pkeys)
     except Exception as ex:
         print('Could not generate report.')
         print('Reason: %s' % str(ex))

@@ -19,12 +19,13 @@ def compare():
 
 
 def getdata():
-    interface = TSQLInterface('nj1uatsql13', 'MetricsDyetl')
-    query = 'SELECT * FROM [dbo].[tbl_CyberSecurity_Exceptions_GS]'
-    data = interface.Select(query)
     interface = TSQLInterface('.', 'MetricsDyetl')
-    interface.Insert(data, 'tbl_CyberSecurity_Exceptions_GS', True)
-
+    query = "SELECT * FROM tbl_CyberSecurity_Exceptions_GS WHERE fileDate = '2020-05-19'"
+    data = interface.Select(query)
+    data.to_csv('SecurityExceptionsComp.csv')
+    #pKey = TSQLInterface.PrimaryKeys(data, 4, ignoreCols = ['ID', 'fileDate', 'RunDate'], findFirst = True)
+    #return pKey
 
 if __name__ == '__main__':
-    compare()
+    #compare()
+    getdata()

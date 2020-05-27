@@ -2,6 +2,6 @@
   "etlname": "GS.SecurityExceptions.v1",
   "filedate": "2020-03-04",
   "reportpath": "SecurityExceptions_DataComparison_QA.xlsx",
-  "testmode": "QA",
-  "ignorecols": [ "ID", "", "" ]
+  "comparefile": "SecurityExceptionsComp.csv",
+  "testmode": "QA"
 }

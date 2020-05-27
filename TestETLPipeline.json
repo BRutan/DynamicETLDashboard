@@ -1,7 +1,10 @@
 {
-  "etlname": "GIAPTrackingUpcoming.v1",
-  "filedate": "2020-04-30",
-  "postargspath": "postargs.json",
-  "reportpath": "GIAPTrackingUpcoming_DataComparison_QA.xlsx",
-  "testmode": "LOCAL"
+  "etlname": "GS.SecurityExceptions.v1",
+  "filedate": "2020-05-19",
+  "reportpath": "SecurityExceptions_DataComparison_QA.xlsx",
+  "postargspath" :  "postargs.json",
+  "comparefile": "SecurityExceptionsComp.csv",
+  "testmode": "QA",
+  "pkey": [ "Display Name", "Group" ],
+  "ignorecols": [ "ID" ]
 }

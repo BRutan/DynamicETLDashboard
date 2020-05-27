@@ -225,7 +225,7 @@ def TestETLPipelineJsonArgs():
     """
     * Pull and validate arguments from local json file.
     """
-    req_args = set(['etlname','filedate','reportpath','testmode'])
+    req_args = set(['etlname','filedate','postargspath','reportpath','testmode'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
     if not os.path.exists('TestETLPipeline.json'):
@@ -270,7 +270,7 @@ def TestETLPipelineJsonArgs():
         if not os.path.isfile(args['testetlargs']['comparefile']):
             errs.append('(comparefile) Not a valid file.')
         else:
-            args['testetlargs']['samplefile'] = args['testetlargs']['samplefile']
+            args['testetlargs']['samplefile'] = args['testetlargs']['comparefile']
     elif 'postargs' in args['testetlargs'] and 'arg' in args['testetlargs']['postargs']:
         match = re.search('[A-Z]:.+', args['testetlargs']['postargs']['arg'])
         if not match:
@@ -332,7 +332,7 @@ def TestETLPipelineJsonArgs():
            errs.append('(etlname) ETL not configured in filewatcher appsettings file.')
        else:
            # Fill in environment variables using config.json:
-           args['testetlargs']['etlfolder'] = os.path.split(path)[0] + '\\'
+           args['testetlargs']['etlfolder'] = os.path.split(path)[0] + ('\\' if not os.path.split(path)[0].endswith('\\') else '')
            if args['testetlargs']['testmode'] != 'LOCAL' and not os.path.exists(args['testetlargs']['etlfolder']):
                errs.append('(filewatcherappsettingstemplatepath) ETL folder does not exist.')
            
@@ -349,6 +349,13 @@ def TestETLPipelineJsonArgs():
     # ignorecols (optional):
     if 'ignorecols' in args['testetlargs'] and not isinstance(args['testetlargs']['ignorecols'], list):
         errs.append('(ignorecols) Must be a list if provided.')
+
+    # pkey (optional):
+    if 'pkey' in args['testetlargs']:
+        if isinstance(args['testetlargs']['pkey'], str):
+            args['testetlargs']['pkey'] = [args['testetlargs']['pkey']]
+        elif not isinstance(args['testetlargs']['pkey'], list):
+            errs.append('pkey must be a string or a list.')
 
     if errs:
         raise Exception('\n'.join(errs))
@@ -378,6 +385,7 @@ def ViewETLInfoJsonArgs():
             errs.append('The following required args are missing: %s' % ','.join(missing))
     if 'summarypath' in args and not args['summarypath'].endswith('.csv'):
         errs.append('(summarypath) Must point to .csv file.')
+
     if errs:
         raise Exception('\n'.join(errs))
     
