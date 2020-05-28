@@ -34,7 +34,9 @@ class FileTransferConfig:
     ##################
     def GenerateXML(self, filepath):
         """
-        * Generate XML file using attributes.
+        * Generate XML file at specified path using attributes.
+        Inputs:
+        * filepath: String path to xml file wish to output to.
         """
         if not isinstance(filepath, str):
             raise Exception('filepath must be a string.')
@@ -49,20 +51,74 @@ class FileTransferConfig:
         out = {}
         out['TransferId'] = self.TransferID
         out['TransferTimeLimitSeconds'] = self.TransferTimeLimitSeconds
-        out['LastAttempt'] = self.LastAttempt.strptime('%Y-%m-%dT%h:%m:%s:%ss')
-
-
+        out['LastAttempt'] = self.LastAttempt
+        out['PollingFrequencySeconds'] = self.PollingFreqSeconds
+        out['IsDeleted'] = self.IsDeleted
+        out['IsDisabled'] = self.IsDisabled
+        out['Description'] = self.Description
+        out['LastUpdateTime'] = self.LastUpdateTime
+        out['ExpirationTime'] = self.ExpirationTime
+        out['LastModifiedByUser'] = self.LastModifiedByUser
+        out['Sources'] = self.Sources
+        out['RetriedFailedOnly'] = self.RetriedFailedOnly
         return out
 
-    def ReadJSON(self, jsonobj):
+    def ConvertJSON(self, jsonobj):
         """
-        * Convert json object into 
+        * Convert json object into FileTransferConfig object.
         """
-        pass
-
+        self.__DefaultInitialize()
+        self.TransferID = out['TransferId']
+        self.TransferTimeLimitSeconds = out['TransferTimeLimitSeconds']
+        self.LastAttempt = out['LastAttempt']
+        self.PollingFreqSeconds = out['PollingFrequencySeconds']
+        self.IsDeleted = out['IsDeleted']
+        self.IsDisabled = out['IsDisabled']
+        self.Description = out['Description']
+        self.LastUpdateTime = out['LastUpdateTime']
+        self.ExpirationTime = out['ExpirationTime']
+        self.LastModifiedByUser = out['LastModifiedByUser']
+        self.Sources = out['Sources']
+        self.RetriedFailedOnly = out['RetriedFailedOnly']
+        
     ##################
     # Private Helpers:
     ##################
+    def __ConvertFile(self, filepath):
+        """
+        * Convert passed xml file to transfer object.
+        """
+        filevals = FileTransferConfig.__CleanFile(filepath)
+        soup = Soup(filevals)
+
+
+    @staticmethod
+    def __Validate(filepath):
+        """
+        * Validate constructor arguments.
+        """
+        errs = []
+        if not filepath is None and not isinstance(filepath, str):
+            errs.append('filepath must be a string.')
+        elif not filepath.endswith('.xml'):
+            errs.append('filepath must point to an xml file.')
+        elif not os.path.exists(filepath):
+            errs.append('filepath does not exist.')
+        if errs:
+            raise Exception('\n'.join(errs))
+
+    @staticmethod
+    def __CleanFile(filepath):
+        """
+        * Clean strings in file before converting into
+        BeautifulSoup object.
+        """
+        lines = []
+        with open(filepath, 'r') as f:
+            line = f.readline()
+            lines.append(''.join([ch for ch in line if ord(ch) < 128]))
+        return '\n'.join(lines)
+
     def __DefaultInitialize(self):
         """
         * Initialize all members to default values.
