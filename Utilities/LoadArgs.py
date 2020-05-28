@@ -218,6 +218,36 @@ def GenerateColumnAttributesReportJsonArgs():
         raise Exception(''.join([path, ' does not exist.']))
     return Arguments(json.load(open(path, 'rb')))
 
+
+############################
+# GenerateFileTransferConfig.py
+############################
+def GenerateFileTransferConfigJsonArgs():
+    """
+    * Pull and validate required arguments for 
+    GenerateFileTransferConfig script.
+    """
+    req_args = set(['groupregex'])
+    errs = []
+    if not os.path.exists('GenerateFileTransferConfig.json'):
+        raise Exception('GenerateFileTransferConfig.json does not exist.')
+    try:
+        args = LoadJsonFile('GenerateFileTransferConfig.json')
+    except Exception as ex:
+        errs.append('Failed to read GenerateFileTransferConfig.json')
+        errs.append('Reason: %s' % str(ex))
+        raise Exception('\n'.join(errs))
+    missing = req_args - set(args)
+    if missing:
+        raise Exception('The following required arguments are missing: %s' % ','.join(missing))
+    if not isinstance(args['groupregex'], str):
+        errs.append('(groupregex) Must be a string.')
+    elif not IsRegex(args['groupregex']):
+        errs.append('(groupregex) Invalid regular expression,')
+    if errs:
+        raise Exception('\n'.join(errs))
+    return args
+
 ############################
 # TestETLPipeline.py
 ############################
