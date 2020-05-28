@@ -7,6 +7,8 @@
 # fast lookup for data source and output
 # paths.
 
+from bs4 import Beautifulsoup as Soup
+import json
 import selenium
 
 class FileTransferServiceAggregator:

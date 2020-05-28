@@ -58,14 +58,26 @@ def TestETLPipeline():
             input('Press enter to exit.')
             os._exit(0)
     else:
+        # Remove data with filedate from server:
+        argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
+        print('Removing data with fileDate %s from %s::%s::%s' % argTup)
+        try:
+            interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
+            query = "DELETE FROM [%s] WHERE fileDate = '%s'" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
+            interface.Execute(query)
+        except Exception as ex:
+            print('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
+            print('Reason: %s' % str(err))
+            input('Press enter to exit.')
+            os._exit(0)
         # Output sample file to FileWatcher folder, wait for sample file to be sucked
-        # up by etl. If does not suck up, delete file and notify user:
+        # up by etl. If does not suck up, notify user:
         print('Outputting data file to')
         print('%s' % args['testetlargs']['etlfolder'])
         print('Will wait ten seconds to allow data to be implemented...')
         sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
         filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
-        #copyfile(args['testetlargs']['samplefile'], filewatcherPath)
+        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
         Countdown(10)
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
