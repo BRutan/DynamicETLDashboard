@@ -44,23 +44,46 @@ class FileTransferServiceAggregator:
         filetransferservice paths.
         """
         try:
-            chromeOptions = webdriver.ChromeOptions()
-            chromeOptions.add_experimental_option('useAutomationExtension', False)
-            driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
+            driver.get(ftsurl)
+            __MaxTransfersPerSheet(driver)
+            paths = __DownloadTargetTransfers(driver)
+            self.__AggregateTransfers(paths)
         except Exception as ex:
-            errs.append('Missing chromedriver from PATH.')
-            raise Exception('\n'.join(errs))
-        # Export all xml configs to temporary location:
-        tempLoc = "Temp"
-        if not os.path.exists(tempLoc):
-            os.mkdir(tempLoc)
+            pass
+        
+    @staticmethod
+    def __ConnectChromeDriver(ftsurl):
+        chromeOptions = webdriver.ChromeOptions()
+        chromeOptions.add_experimental_option('useAutomationExtension', False)
+        driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
         driver.get(ftsurl)
-        pageswitch = driver.find_element_by_id('')
-        while pageswitch.val != 24:
+        return driver
+    @staticmethod
+    def __MaximizeTransfersPerSheet(driver):
+        """
+        * Maximize number of transfers per sheet to minimize page 
+        switching.
+        """
+        selbox = driver.find_element_by_class_name('ui-pg-selbox')
+        options = selbox.find_elements_by_tag_name('option')
+        targetopt = None
+        for option in options:
+            if targetopt is None or (not targetopt is None and option.text.isnumeric() and int(option.text) > int(targetopt.text)):
+                targetopt = option
+        targetopt.click()
+    @staticmethod
+    def __DownloadTargetTransfersToTemp(driver):
+        pageswitch = driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
+        currpage = pageswitch.find_element_by_id('sp_1_xferpager').text
+        maxpage = 24
+        while currpage != maxpage:
             elems = [elem for elem in driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
             for elem in elems:
                 pass
 
+                pageswitch.find_element_by_id('sp_1_xferpager').text
+    def __AggregateTransfers(self, paths):
+        pass
     @staticmethod
     def __Validate(ftsurl, chromedriverpath):
         """
