@@ -38,8 +38,8 @@ class DataComparer(object):
         # Generate report:
         compData, missingColsMsg = DataComparer.__Compare(data_test, data_valid, ignoreCols, pKey)
         reportWB = xlsxwriter.Workbook(reportPath)
-        DataComparer.__GenerateSummaryPage(compData,reportWB,missingColsMsg)
-        DataComparer.__GenerateDiffPage(compData,reportWB)
+        DataComparer.__GenerateSummaryPage(compData, reportWB, missingColsMsg)
+        DataComparer.__GenerateDiffPage(compData, reportWB)
         reportWB.close()
 
     ####################
@@ -71,7 +71,7 @@ class DataComparer(object):
         if len(compData) == 0:
             return
         diffSheet = wb.add_worksheet('Differences')
-        # Write all differing columns:
+        # Write all rows with differing column values:
         for rowNum in range(0, len(compData)):
             for colNum, col in enumerate(compData.columns):
                 if rowNum != 0:
@@ -85,12 +85,18 @@ class DataComparer(object):
         * Return dataframe containing rows where datasets differ.
         """
         missingColsMsg = None
+        colMap = {col.lower() : col for col in data_test.columns}
         data_test = data_test.rename(columns={col : col.lower() for col in data_test.columns}).fillna('')
         data_valid = data_valid.rename(columns={col : col.lower() for col in data_valid.columns}).fillna('')
         if not ignoreCols is None:
             ignoreCols = set([col.lower() for col in ignoreCols])
             data_test = data_test[[col for col in data_test.columns if not col.lower() in ignoreCols]]
             data_valid = data_valid[[col for col in data_valid.columns if not col.lower() in ignoreCols]]
+        columnOrder = data_test.columns
+        # Match testing dtypes to valid dtypes:
+        for col in data_test.columns:
+            if data_valid[col].dtype != data_test[col].dtype:
+                data_test[col] = data_test[col].astype(data_valid[col].dtype)
         # Remove columns in data_valid not in data_test:
         missingCols = set(data_valid.columns) - set(data_test.columns)
         if missingCols:
@@ -106,11 +112,11 @@ class DataComparer(object):
             diff.update({col : [] for col in data_test.index.names})
             matches_test = data_test.loc[data_valid.index]
             matches_valid = data_valid.loc[data_test.index]
-            non_matches = data_test[data_valid.index != data_test.index]
+            non_matches = data_test.loc[data_test.index == set(data_test.index) - set(data_valid.index)]
             # Compare rows where primary key is the same:
             for row in range(0, len(matches_test)):
                 test = matches_test.iloc[row]
-                valid = matches_valid.iloc[row]
+                valid = matches_valid.loc[test.name]
                 rowDiff = { col : None for col in diff }
                 appendDiff = False
                 for col in matches_test.columns:
@@ -128,13 +134,16 @@ class DataComparer(object):
                 target = non_matches.iloc[row]
                 for col in diff:
                     diff[col].append(data_test.iloc[row][col])    
-            return DataFrame(diff), missingColsMsg
+            df = DataFrame(diff)
         else:
             # Compare rows as they appear in descending order:
             test_tuples = set(data_test.itertuples())
             valid_tuples = set(data_valid.itertuples())
             diff = valid_tuples - test_tuples
-            return DataFrame(diff, columns = data_test.columns), missingColsMsg
+            df = DataFrame(diff)
+        # Reorder columns to match original order:
+        df = df[columnOrder].rename(columns = colMap)
+        return df, missingColsMsg
 
     @classmethod
     def __Validate(cls, reportPath, data_test, data_valid, ignoreCols, pKey):

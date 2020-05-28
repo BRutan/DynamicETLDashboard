@@ -65,7 +65,7 @@ def TestETLPipeline():
         print('Will wait ten seconds to allow data to be implemented...')
         sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
         filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'],sampleFileName) 
-        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
+        #copyfile(args['testetlargs']['samplefile'], filewatcherPath)
         Countdown(10)
         if os.path.exists(filewatcherPath):
             print('File was not implemented into etl after 5 seconds.')
