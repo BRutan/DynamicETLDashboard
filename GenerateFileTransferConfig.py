@@ -11,7 +11,11 @@ from Filepaths.FileTransferServiceAggregator import FileTransferServiceAggregato
 from Utilities.LoadArgs import ETLDashboardJsonArgs
 
 def GenerateFileTransferConfig():
+    print("------------------------------")
+    print('GenerateFileTransferConfig')
+    print("------------------------------")
     try:
+        print("Pulling arguments from ETLDashboard.json.")
         args = ETLDashboardJsonArgs()
     except Exception as ex:
         print('Failed to pull arguments from ETLDashboard.json.')
@@ -21,14 +25,15 @@ def GenerateFileTransferConfig():
 
     # Pull all configuration files from web portal:
     try:
-        agg = FileTransferServiceAggregator(args['filetransferurl'])
+        print("Aggregating all transfers from web portal at")
+        print("%s") % args['filetransferurl']
+        agg = FileTransferServiceAggregator(args['filetransferurl'], args['chromedriverpath'])
         agg.OutputLookup()
     except Exception as ex:
         print('Failed to aggregate from filetransferurl.')
         print('Reason: %s' % ex)
         input('Press enter to exit.')
         os._exit(0)
-
 
 if __name__ == '__main__':
     GenerateFileTransferConfig()
