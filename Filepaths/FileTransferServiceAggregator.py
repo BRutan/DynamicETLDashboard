@@ -17,6 +17,7 @@ class FileTransferServiceAggregator:
     * Aggregate all filepaths from FileTransferService to allow
     fast lookup for data source and output paths.
     """
+    __xferFileSig = re.compile('TransferId_\d+.xml')
     __reType = type(re.compile('a'))
     def __init__(self, ftsurl, chromedriverpath, groupregex):
         """
@@ -69,14 +70,19 @@ class FileTransferServiceAggregator:
             self.__DownloadTargetTransfers()
             self.__AggregateTransfers()
         except Exception as ex:
-            pass
+            raise Exception()
 
     def __ConnectChromeDriver(self):
         """
         * Generate new Chrome instance, 
         """
+        # Output downloaded transfers to temporary directory:
+        self.__tempdir = os.getcwd() + '\\Temp\\'
+        if not os.path.exists(self.__tempdir):
+            os.mkdir(self.__tempdir)
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
+        chromeOptions.add_argument("download.default_directory=%s" % self.__tempdir)
         self.__driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
         self.__driver.get(self.__ftsurl)
         
@@ -98,7 +104,7 @@ class FileTransferServiceAggregator:
         * Pull all targeted XML transfer configs from 
         gsfts url.
         """
-        self.__paths = []
+        self.__paths = set()
         movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
         pageindicator = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
         currpage = 1
@@ -106,18 +112,29 @@ class FileTransferServiceAggregator:
         while currpage <= maxpage:
             elems = [elem for elem in self.__driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
             for elem in elems:
-                cells = elem.get_elements_by_tag_name('td')
-                if self.__targetregex.match(cells[2].text):
-                    elem.get_element_by_class_name("ui-icon ui-icon-arrowreturnthick-1-s").click()
-                self.__paths.append('')
+                cells = elem.find_elements_by_tag_name('td')
+                if self.__targetregex.match(cells[1].text):
+                    # Click button to download file:
+                    a = cells[9].find_element_by_class_name('a')
+                    a.find_element_by_tag_name("span").click()
             # Proceed to next page:
             movebutton.click()
             currpage += 1
+        # Get all paths to downloaded xml files:
+        self.__GatherDownloadedFiles()
 
     def __AggregateTransfers(self):
         """
         * Convert XML configs into json object.
         """
+        pass
+
+
+    def __GatherDownloadedFiles(self):
+        """
+        * Store all downloaded files.
+        """
+
         pass
 
     def __Cleanup(self):
@@ -129,8 +146,11 @@ class FileTransferServiceAggregator:
             for path in self.__paths:
                 os.rmdir(path)
             self.__paths = None
+        if os.path.exists(self.__tempdir):
+            os.rmdir(path)
         if not self.__driver is None:
             self.__driver.close()
+            self.__driver = None
 
     @staticmethod
     def __Validate(ftsurl, chromedriverpath, groupregex):
