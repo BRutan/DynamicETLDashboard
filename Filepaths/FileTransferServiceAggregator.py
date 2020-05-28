@@ -146,7 +146,7 @@ class FileTransferServiceAggregator:
             errs.append('chromedriverpath must point to an executable.')
         elif not os.path.exists(chromedriverpath):
             errs.append('chromedriverpath file does not exist.')
-        if not isinstance(groupregex, (str, reType)):
+        if not isinstance(groupregex, (str, FileTransferServiceAggregator.__reType)):
             errs.append('groupregex must be a string or regular expression object.')
         elif isinstance(groupregex, str) and not IsRegex(groupregex):
             errs.append('groupregex must be a valid regular expression string.')
