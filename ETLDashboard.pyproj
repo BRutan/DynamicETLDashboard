@@ -88,15 +88,6 @@
     <Compile Include="GUI\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Report\PathMap.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Report\ReportGenerator.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Report\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="GenerateColumnAttributesReport.py" />
     <Compile Include="GUI\ETLViewer.py">
       <SubType>Code</SubType>
@@ -121,8 +112,8 @@
     <Folder Include="Exceptions\" />
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
+    <Folder Include="Output\" />
     <Folder Include="Utilities\" />
-    <Folder Include="Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppsettingsFiles\config.json" />
