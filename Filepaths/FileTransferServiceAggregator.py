@@ -10,6 +10,7 @@ import json
 import os
 import re
 from selenium import webdriver
+from Utilities.FileConverter import FileConverter
 from Utilities.Helpers import IsRegex
 
 class FileTransferServiceAggregator:
@@ -70,7 +71,8 @@ class FileTransferServiceAggregator:
             self.__DownloadTargetTransfers()
             self.__AggregateTransfers()
         except Exception as ex:
-            raise Exception()
+            self.__Cleanup()
+            raise ex
 
     def __ConnectChromeDriver(self):
         """
@@ -114,28 +116,24 @@ class FileTransferServiceAggregator:
             for elem in elems:
                 cells = elem.find_elements_by_tag_name('td')
                 if self.__targetregex.match(cells[1].text):
-                    # Click button to download file:
+                    # Click button to download file to temporary location:
                     a = cells[9].find_element_by_class_name('a')
                     a.find_element_by_tag_name("span").click()
             # Proceed to next page:
             movebutton.click()
+            movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
             currpage += 1
+        self.__driver.close()
+        self.__driver = None
         # Get all paths to downloaded xml files:
-        self.__GatherDownloadedFiles()
+        self__paths = set(FileConverter.GetAllFilePaths(self.__tempdir, FileTransferServiceAggregator.__xferFileSig))
 
     def __AggregateTransfers(self):
         """
         * Convert XML configs into json object.
         """
-        pass
-
-
-    def __GatherDownloadedFiles(self):
-        """
-        * Store all downloaded files.
-        """
-
-        pass
+        for path in self.__paths:
+            soup = Soup(open(path, 'xml'))
 
     def __Cleanup(self):
         """
