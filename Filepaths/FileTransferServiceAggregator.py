@@ -8,24 +8,34 @@
 from bs4 import Beautifulsoup as Soup
 import json
 import os
+import re
 from selenium import webdriver
+from Utilities.Helpers import IsRegex
 
 class FileTransferServiceAggregator:
     """
     * Aggregate all filepaths from FileTransferService to allow
     fast lookup for data source and output paths.
     """
-    def __init__(self, ftsurl, chromedriverpath):
+    __reType = type(re.compile('a'))
+    def __init__(self, ftsurl, chromedriverpath, groupregex):
         """
         * Open Selenium instance and aggregate
         all filetransfers.
+        Inputs:
+        * ftsurl: URL to gsfts web portal.
+        * chromedriverpath: Path to chromedriver.exe.
+        * groupregex: Regular expression object or string to determine which transfers to pull 
+        (ex: RiskDashboard). 
         """
-        FileTransferServiceAggregator.__Validate(ftsurl, chromedriverpath)
+        FileTransferServiceAggregator.__Validate(ftsurl, chromedriverpath, groupregex)
         self.__driver = None
         self.__paths = None
         self.__ftsurl = ftsurl
+        self.__driverpath = chromedriverpath
+        self.__targetregex = groupregex if isinstance(groupregex, FileTransferServiceAggregator.__reType) else re.compile(groupregex)
         self.__transfersjson = {}
-        self.__PullFromFTS(chromedriverpath)
+        self.__PullFromFTS()
 
     def __del__(self):
         """
@@ -48,7 +58,7 @@ class FileTransferServiceAggregator:
     ####################
     # Private Helpers:
     #################### 
-    def __PullFromFTS(self, chromedriverpath):
+    def __PullFromFTS(self):
         """
         * Open Chrome instance with Selenium to pull all existing
         filetransferservice paths.
@@ -83,17 +93,31 @@ class FileTransferServiceAggregator:
                 targetopt = option
         targetopt.click()
 
-    def __DownloadTargetTransfersToTemp(driver):
-        pageswitch = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
-        currpage = pageswitch.find_element_by_id('sp_1_xferpager').text
-        maxpage = 24
-        while currpage != maxpage:
-            elems = [elem for elem in driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
+    def __DownloadTargetTransfers(self):
+        """
+        * Pull all targeted XML transfer configs from 
+        gsfts url.
+        """
+        self.__paths = []
+        movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
+        pageindicator = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
+        currpage = int(pageindicator)
+        maxpage = int(pageindicator.find_element_by_id('sp_1_xferpager').text)
+        while currpage <= maxpage:
+            elems = [elem for elem in self.__driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
             for elem in elems:
-                pass
+                cells = elem.get_elements_by_tag_name('td')
+                if self.__targetregex.match(cells[2].text):
+                    elem.get_element_by_class_name("ui-icon ui-icon-arrowreturnthick-1-s").click()
+                self.__paths.append('')
+            # Proceed to next page:
+            movebutton.click()
+            currpage += 1
 
-                pageswitch.find_element_by_id('sp_1_xferpager').text
-    def __AggregateTransfers(self, paths):
+    def __AggregateTransfers(self):
+        """
+        * Convert XML configs into json object.
+        """
         pass
 
     def __Cleanup(self):
@@ -109,7 +133,7 @@ class FileTransferServiceAggregator:
             self.__driver.close()
 
     @staticmethod
-    def __Validate(ftsurl, chromedriverpath):
+    def __Validate(ftsurl, chromedriverpath, groupregex):
         """
         * Validate constructor parameters.
         """
@@ -122,5 +146,9 @@ class FileTransferServiceAggregator:
             errs.append('chromedriverpath must point to an executable.')
         elif not os.path.exists(chromedriverpath):
             errs.append('chromedriverpath file does not exist.')
+        if not isinstance(groupregex, (str, reType)):
+            errs.append('groupregex must be a string or regular expression object.')
+        elif isinstance(groupregex, str) and not IsRegex(groupregex):
+            errs.append('groupregex must be a valid regular expression string.')
         if errs:
             raise Exception('\n'.join(errs))
