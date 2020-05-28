@@ -57,6 +57,12 @@
     <Compile Include="Exceptions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filepaths\FileTransferServiceAggregator.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Filepaths\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
@@ -112,6 +118,7 @@
     <Folder Include="Exceptions\" />
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
+    <Folder Include="Filepaths\" />
     <Folder Include="Output\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
