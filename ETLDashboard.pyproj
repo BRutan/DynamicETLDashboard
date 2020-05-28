@@ -126,7 +126,6 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GenerateFileTransferConfig.json" />
     <Content Include="AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\config.json" />
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />

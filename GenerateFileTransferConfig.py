@@ -7,6 +7,7 @@
 # in summarized json file. 
 
 import os
+from Filepaths.FileTransferServiceAggregator import FileTransferServiceAggregator
 from Utilities.LoadArgs import ETLDashboardJsonArgs
 
 def GenerateFileTransferConfig():
@@ -17,6 +18,10 @@ def GenerateFileTransferConfig():
         print('Reason: %s' % str(ex))
         input('Press enter to exit.')
         os._exit(0)
+
+    # Pull all configuration files from web portal:
+    try:
+        FileTransferServiceAggregator(args[''])
 
 
 if __name__ == '__main__':
