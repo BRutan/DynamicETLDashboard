@@ -146,7 +146,7 @@
     "LOCAL": "c:\\\\temp"
   },
   "Servers": {
-    "PROD": "",
+    "PROD": "nj1sql13",
     "STG": "nj1stgsql13",
     "UAT": "nj1uatsql13",
     "QA": "nj1qasql13",

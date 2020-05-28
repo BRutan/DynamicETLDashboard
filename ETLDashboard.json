@@ -2,7 +2,7 @@
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
   "filewatcherappsettingstemplatepath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",
   "logpath": "C:\\logs\\",
-  "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\Service_Appsettings.json ",
+  "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\Service_Appsettings.json",
   "webapiurl": "http://localhost:23014/api/etljobs",
   "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
 }
