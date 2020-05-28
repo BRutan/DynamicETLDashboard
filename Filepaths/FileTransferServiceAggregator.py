@@ -78,7 +78,7 @@ class FileTransferServiceAggregator:
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
         self.__driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
-        self.__driver.get(ftsurl)
+        self.__driver.get(self.__ftsurl)
         
     def __MaximizeTransfersPerSheet(self):
         """
@@ -101,7 +101,7 @@ class FileTransferServiceAggregator:
         self.__paths = []
         movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
         pageindicator = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
-        currpage = int(pageindicator)
+        currpage = 1
         maxpage = int(pageindicator.find_element_by_id('sp_1_xferpager').text)
         while currpage <= maxpage:
             elems = [elem for elem in self.__driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
