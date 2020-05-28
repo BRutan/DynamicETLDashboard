@@ -21,8 +21,12 @@ class FileTransferServiceAggregator:
         all filetransfers.
         """
         FileTransferServiceAggregator.__Validate(ftsurl, chromedriverpath)
+        self.__ftsurl = ftsurl
         self.__transfersjson = {}
-        self.__PullFromFTS(ftsurl)
+        self.__PullFromFTS(chromedriverpath)
+
+    def __del__(self):
+        pass
 
     ####################
     # Interface Methods:
@@ -38,33 +42,32 @@ class FileTransferServiceAggregator:
     ####################
     # Private Helpers:
     #################### 
-    def __PullFromFTS(self, ftsurl, chromedriverpath):
+    def __PullFromFTS(self, chromedriverpath):
         """
         * Open Chrome instance with Selenium to pull all existing
         filetransferservice paths.
         """
         try:
-            driver.get(ftsurl)
-            __MaxTransfersPerSheet(driver)
-            paths = __DownloadTargetTransfers(driver)
-            self.__AggregateTransfers(paths)
+            self.__ConnectChromeDriver()
+            self.__MaximizeTransfersPerSheet()
+            self.__DownloadTargetTransfers()
+            self.__AggregateTransfers()
         except Exception as ex:
             pass
-        
-    @staticmethod
-    def __ConnectChromeDriver(ftsurl):
+
+    def __ConnectChromeDriver(self):
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
         driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
         driver.get(ftsurl)
         return driver
-    @staticmethod
-    def __MaximizeTransfersPerSheet(driver):
+
+    def __MaximizeTransfersPerSheet(self):
         """
         * Maximize number of transfers per sheet to minimize page 
         switching.
         """
-        selbox = driver.find_element_by_class_name('ui-pg-selbox')
+        selbox = self.__driver.find_element_by_class_name('ui-pg-selbox')
         options = selbox.find_elements_by_tag_name('option')
         targetopt = None
         for option in options:
@@ -73,7 +76,7 @@ class FileTransferServiceAggregator:
         targetopt.click()
     @staticmethod
     def __DownloadTargetTransfersToTemp(driver):
-        pageswitch = driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
+        pageswitch = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
         currpage = pageswitch.find_element_by_id('sp_1_xferpager').text
         maxpage = 24
         while currpage != maxpage:
@@ -84,6 +87,7 @@ class FileTransferServiceAggregator:
                 pageswitch.find_element_by_id('sp_1_xferpager').text
     def __AggregateTransfers(self, paths):
         pass
+
     @staticmethod
     def __Validate(ftsurl, chromedriverpath):
         """
