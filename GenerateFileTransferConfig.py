@@ -21,7 +21,13 @@ def GenerateFileTransferConfig():
 
     # Pull all configuration files from web portal:
     try:
-        FileTransferServiceAggregator(args[''])
+        agg = FileTransferServiceAggregator(args['filetransferurl'])
+        agg.OutputLookup()
+    except Exception as ex:
+        print('Failed to aggregate from filetransferurl.')
+        print('Reason: %s' % ex)
+        input('Press enter to exit.')
+        os._exit(0)
 
 
 if __name__ == '__main__':
