@@ -5,7 +5,7 @@
 # * Aggregate all filepaths from FileTransferService to allow
 # fast lookup for data source and output paths.
 
-from bs4 import Beautifulsoup as Soup
+from bs4 import BeautifulSoup as Soup
 import json
 import os
 import re
