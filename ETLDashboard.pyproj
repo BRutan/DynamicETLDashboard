@@ -63,6 +63,9 @@
     <Compile Include="Filepaths\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GenerateFileTransferConfig.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
@@ -123,6 +126,8 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GenerateFileTransferConfig.json" />
+    <Content Include="AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\config.json" />
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />

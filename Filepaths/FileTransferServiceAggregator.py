@@ -16,28 +16,30 @@ class FileTransferServiceAggregator:
     * Aggregate all filepaths from FileTransferService to allow
     fast lookup for data source and output paths.
     """
-    def __init__(self, ftsserver, grouping):
+    def __init__(self, ftsurl):
         """
         * Open Selenium instance and aggregate
         all filetransfers.
         """
-        FileTransferServiceAggregator.__Validate(ftsserver, grouping)
+        FileTransferServiceAggregator.__Validate(ftsurl)
         self.__transfersjson = {}
-        self.__PullFromFTS()
+        self.__PullFromFTS(ftsurl)
 
     ####################
     # Interface Methods:
     ####################
     def OutputLookup(self):
         """
-        * 
+        * Output lookup file into filetransferconfig.json.
         """
-        pass
+        if not os.path.exists('AppsettingsFiles\\'):
+            raise Exception('Local AppsettingsFiles\\ folder does not exist.')
+        json.dump(self.__transfersjson, open('AppsettingsFiles\\filetransferconfig.json', 'wb'), sort_keys = True)
 
     ####################
     # Private Helpers:
     #################### 
-    def __PullFromFTS(self):
+    def __PullFromFTS(self, ftsurl):
         """
         * Open Chrome instance with Selenium to pull all existing
         filetransferservice paths.
