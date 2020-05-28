@@ -21,7 +21,7 @@ def ETLDashboardJsonArgs():
     * Pull arguments from ETLDashboard.json file.
     """
     errs = []
-    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','logpath','serviceappsettingspath','webapipath','webapiurl'])
+    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
     if not os.path.exists('ETLDashboard.json'):
         errs.append('ETLDashboard.json file does not exist.')
     else:
