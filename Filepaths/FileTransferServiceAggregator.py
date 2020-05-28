@@ -21,12 +21,18 @@ class FileTransferServiceAggregator:
         all filetransfers.
         """
         FileTransferServiceAggregator.__Validate(ftsurl, chromedriverpath)
+        self.__driver = None
+        self.__paths = None
         self.__ftsurl = ftsurl
         self.__transfersjson = {}
         self.__PullFromFTS(chromedriverpath)
 
     def __del__(self):
-        pass
+        """
+        * Close chromedriver instance and delete downloaded xml files
+        if necessary.
+        """
+        self.__Cleanup()
 
     ####################
     # Interface Methods:
@@ -56,12 +62,14 @@ class FileTransferServiceAggregator:
             pass
 
     def __ConnectChromeDriver(self):
+        """
+        * Generate new Chrome instance, 
+        """
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
-        driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
-        driver.get(ftsurl)
-        return driver
-
+        self.__driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
+        self.__driver.get(ftsurl)
+        
     def __MaximizeTransfersPerSheet(self):
         """
         * Maximize number of transfers per sheet to minimize page 
@@ -74,7 +82,7 @@ class FileTransferServiceAggregator:
             if targetopt is None or (not targetopt is None and option.text.isnumeric() and int(option.text) > int(targetopt.text)):
                 targetopt = option
         targetopt.click()
-    @staticmethod
+
     def __DownloadTargetTransfersToTemp(driver):
         pageswitch = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
         currpage = pageswitch.find_element_by_id('sp_1_xferpager').text
@@ -87,6 +95,18 @@ class FileTransferServiceAggregator:
                 pageswitch.find_element_by_id('sp_1_xferpager').text
     def __AggregateTransfers(self, paths):
         pass
+
+    def __Cleanup(self):
+        """
+        * Delete downloaded xml files and close
+        Chrome window if necessary.
+        """
+        if not self.__paths is None:
+            for path in self.__paths:
+                os.rmdir(path)
+            self.__paths = None
+        if not self.__driver is None:
+            self.__driver.close()
 
     @staticmethod
     def __Validate(ftsurl, chromedriverpath):
