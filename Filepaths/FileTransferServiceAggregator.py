@@ -8,7 +8,7 @@
 from bs4 import Beautifulsoup as Soup
 import json
 import os
-import selenium
+from selenium import webdriver
 
 class FileTransferServiceAggregator:
     """
@@ -44,16 +44,22 @@ class FileTransferServiceAggregator:
         filetransferservice paths.
         """
         try:
-            selenobj = selenium.webdriver.Chrome(chromedriverpath)
+            chromeOptions = webdriver.ChromeOptions()
+            chromeOptions.add_experimental_option('useAutomationExtension', False)
+            driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
         except Exception as ex:
             errs.append('Missing chromedriver from PATH.')
-            errs.append('Please download from https://sites.google.com/a/chromium.org/chromedriver/downloads')
-            errs.append('and add to PATH variable.')
             raise Exception('\n'.join(errs))
         # Export all xml configs to temporary location:
         tempLoc = "Temp"
         if not os.path.exists(tempLoc):
             os.mkdir(tempLoc)
+        driver.get(ftsurl)
+        pageswitch = driver.find_element_by_id('')
+        while pageswitch.val != 24:
+            elems = [elem for elem in driver.find_elements_by_tag_name('tr') if elem.get_attribute('role') == 'row']   
+            for elem in elems:
+                pass
 
     @staticmethod
     def __Validate(ftsurl, chromedriverpath):
