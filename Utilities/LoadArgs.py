@@ -232,7 +232,8 @@ def GenerateFileTransferConfigJsonArgs():
     if not os.path.exists('GenerateFileTransferConfig.json'):
         raise Exception('GenerateFileTransferConfig.json does not exist.')
     try:
-        args = LoadJsonFile('GenerateFileTransferConfig.json')
+        args = ETLDashboardJsonArgs()
+        args.update(LoadJsonFile('GenerateFileTransferConfig.json'))
     except Exception as ex:
         errs.append('Failed to read GenerateFileTransferConfig.json')
         errs.append('Reason: %s' % str(ex))
@@ -240,6 +241,22 @@ def GenerateFileTransferConfigJsonArgs():
     missing = req_args - set(args)
     if missing:
         raise Exception('The following required arguments are missing: %s' % ','.join(missing))
+    
+    if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
+        errs.append('Local \\AppsettingsFiles\\ folder is missing.')
+    else:
+        if not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
+            errs.append('Local AppsettingsFiles\\config.json file is missing.')
+        else:
+            args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
+        if not os.path.exists(args['filewatcherappsettingstemplatepath']):
+            errs.append('Filewatcher Appsettings-Template.json file is missing.')
+        else:
+            args['filewatcherjson'] = LoadJsonFile(args['filewatcherappsettingstemplatepath'])
+            args['filewatcherjson'] = FillEnvironmentVariables(args['filewatcherjson'], args['config'], 'QA')
+    ############################
+    # Required arguments:
+    ############################
     if not isinstance(args['groupregex'], str):
         errs.append('(groupregex) Must be a string.')
     elif not IsRegex(args['groupregex']):

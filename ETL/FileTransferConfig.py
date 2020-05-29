@@ -15,6 +15,7 @@ class FileTransferConfig:
     * Gathers attributes from xml files containing 
     filetransfer configurations for a particular etl.
     """
+    __startTag = '<Transfer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></Transfer>'
     def __init__(self, filepath = None):
         """
         * Initialize empty configuration or 
@@ -42,6 +43,17 @@ class FileTransferConfig:
             raise Exception('filepath must be a string.')
         elif not filepath.endswith('.xml'):
             raise Exception('filepath must point to xml file.')
+        soup = Soup(FileTransferConfig.__startTag)
+        # Add all non-Source attributes
+        attrs = [attr for attr in dir(self) if not attr.startswith('_') and not attr in ["Sources", "RetryFailedOnly"]]
+        for attr in attrs:
+            tag = soup.new_tag(attr)
+            tag.insert(0, NavigableString(getattr(self, attr)))
+            soup.Transfer.append(tag)
+
+        # Add Sources:
+
+        # Output to file:
 
 
     def AsJSON(self):
@@ -247,3 +259,30 @@ class FileTransferConfig:
             raise Exception('RetriedFailedOnly must be a boolean.')
         self.__retriedfailedonly = val
     
+
+
+#############################
+# TransferSources:
+#############################
+class TransferSources:
+    """
+    * Attributes in the "Sources" tag of a 
+    transfer XML config.
+    """
+    def __init__(self, tag):
+        """
+        * Create new TransferSources object using passed
+        xml tag or json object.
+        """
+        TransferSources.__Validate(tag)
+        if isinstance(tag, str):
+            pass
+        elif isinstance(tag, dict):
+            pass
+
+    ################
+    # Properties:
+    ################
+    
+
+

@@ -40,6 +40,9 @@
     <Compile Include="ETL\FileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\LogFileReader.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ETL\NewETLAppender.py">
       <SubType>Code</SubType>
     </Compile>

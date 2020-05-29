@@ -101,12 +101,11 @@ class ETLJobLoader(object):
         if errs:
             raise Exception('\n'.join(errs))
 
-        issues = []
         # Read logfile, summarize issues:
-        with open(logpath, 'r') as log:
-            pass
-
-        return '\n'.join(issues)
+        if 'service' in logpath.lower():
+            return ETLJobLoader.__ReadServiceLog(logpath)
+        elif 'webapi' in logpath.lower():
+            return ETLJobLoader.__ReadWebAPILog(logpath)
 
     @classmethod
     def RequiredJSONFields(cls):
@@ -118,6 +117,16 @@ class ETLJobLoader(object):
     ######################
     # Private Helpers:
     ######################
+    @staticmethod
+    def __ReadServiceLog(logpath):
+        """
+        * Read DynamicETL.Service log.
+        """
+        issues = []
+
+        if 'KeyNotFound' in line:
+            issues.append('Issue with Transform() method. Check column mappings.')
+
     def __OpenWebAPI(self):
         """
         * Open DynamicETL.WebAPI instance if necessary.

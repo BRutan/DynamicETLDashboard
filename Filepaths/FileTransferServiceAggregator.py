@@ -6,6 +6,7 @@
 # fast lookup for data source and output paths.
 
 from bs4 import BeautifulSoup as Soup
+from ETL.FileTransferConfig import FileTransferConfig
 import json
 import os
 import re
@@ -20,20 +21,22 @@ class FileTransferServiceAggregator:
     """
     __xferFileSig = re.compile('TransferId_\d+.xml')
     __reType = type(re.compile('a'))
-    def __init__(self, ftsurl, chromedriverpath, groupregex):
+    def __init__(self, ftsurl, filewatcherjson, chromedriverpath, groupregex):
         """
         * Open Selenium instance and aggregate
         all filetransfers.
         Inputs:
         * ftsurl: URL to gsfts web portal.
+        * filewatcherjson: Json object filled with FileWatcher Appsettings-template.json.
         * chromedriverpath: Path to chromedriver.exe.
         * groupregex: Regular expression object or string to determine which transfers to pull 
         (ex: RiskDashboard). 
         """
-        FileTransferServiceAggregator.__Validate(ftsurl, chromedriverpath, groupregex)
+        FileTransferServiceAggregator.__Validate(ftsurl, filewatcherjson, chromedriverpath, groupregex)
         self.__driver = None
         self.__paths = None
         self.__ftsurl = ftsurl
+        self.__fwjson = filewatcherjson
         self.__driverpath = chromedriverpath
         self.__targetregex = groupregex if isinstance(groupregex, FileTransferServiceAggregator.__reType) else re.compile(groupregex)
         self.__transfersjson = {}
@@ -130,11 +133,16 @@ class FileTransferServiceAggregator:
 
     def __AggregateTransfers(self):
         """
-        * Convert XML configs into json object.
+        * Convert XML configs into json objects, link up to ETLs.
         """
         for path in self.__paths:
-            soup = Soup(open(path, 'xml'))
-
+            transferconfig = FileTransferConfig(path) 
+            # Lookup ETL associated to sources:
+            for etl in self.__fwjson:
+                if 1 == 1:
+                    self.__transfersjson[etlname] = transferconfig.Sources
+                    break
+            
     def __Cleanup(self):
         """
         * Delete downloaded xml files and close

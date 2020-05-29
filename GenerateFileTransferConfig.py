@@ -6,8 +6,9 @@
 # pull all transfers for all etls and place
 # in summarized json file. 
 
-import os
 from Filepaths.FileTransferServiceAggregator import FileTransferServiceAggregator
+import json
+import os
 from Utilities.LoadArgs import ETLDashboardJsonArgs, GenerateFileTransferConfigJsonArgs
 
 def GenerateFileTransferConfig():
@@ -16,8 +17,7 @@ def GenerateFileTransferConfig():
     print("------------------------------")
     try:
         print("Pulling arguments from ETLDashboard.json.")
-        args = ETLDashboardJsonArgs()
-        args.update(GenerateFileTransferConfigJsonArgs())
+        args = GenerateFileTransferConfigJsonArgs()
     except Exception as ex:
         print('Failed to pull arguments from ETLDashboard.json.')
         print('Reason: %s' % str(ex))
