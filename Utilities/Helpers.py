@@ -117,6 +117,31 @@ def TrimAll(val):
             val[num] = TrimAll(val[num])
     return val
 
+def FillUniversalEnvironmentVariables(target):
+    """
+    * Fill "universal" (do not depending upon a config file) environment
+    variables. 
+    Current universal variables are:
+    * {LocalPath}: Current working directory of __main__ method.
+    Inputs:
+    * target: dictionary or list containing strings, or individual
+    string.
+    """
+    if not isinstance(target, (str, list, dict)):
+        raise Exception('target must be one of (str, list, dict).')
+    if isinstance(target, str):
+        # Fill environment variables in string:
+        if '{LocalPath}' in target:
+            target = target.replace('{LocalPath}', os.getcwd())
+    elif isinstance(target, dict):
+        for key in target:
+            target[key] = FillUniversalEnvironmentVariables(target[key])
+    elif isinstance(target, list):
+        for num in range(0, len(target)):
+            target[num] = FillUniversalEnvironmentVariables(target[num])
+
+    return target
+
 def FillEnvironmentVariables(target, configjson, configval):
     """
     * Fill all environment variable strings using 
@@ -144,8 +169,6 @@ def FillEnvironmentVariables(target, configjson, configval):
             rep = configjson[key][configval]
             target = target.replace(var, rep)
         target = FixPath(target)
-        if '{LocalPath}' in target:
-            target = target.replace('{LocalPath}', os.getcwd())
     elif isinstance(target, dict):
         for key in target:
             target[key] = FillEnvironmentVariables(target[key], configjson, configval)

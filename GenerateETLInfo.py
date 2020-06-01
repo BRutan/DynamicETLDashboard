@@ -1,20 +1,20 @@
 #####################################
-# ViewETLInfo.py
+# GenerateETLInfo.py
 #####################################
 # Description:
-# * Look up information regarding ETLs.
+# * Generate report detailing useful information regarding ETLs.
 # (data folders for QA/UAT/STG, tablename on SQL Server, ).
 
 from ETL.ETLInfo import ETLInfo
 import os
 from Utilities.LoadArgs import GenerateETLInfoJsonArgs
 
-def ViewETLInfo():
+def GenerateETLInfo():
     """
     * Generate report with information regarding etls.
     """
     print("------------------------------")
-    print("GenerateETLInfoJsonArgs: ")
+    print("GenerateETLInfo: ")
     print("------------------------------")
     try:
         args = GenerateETLInfoJsonArgs()
@@ -27,6 +27,5 @@ def ViewETLInfo():
     info.GenerateSummaryReport(args['summarypath'])
     print(info.Summarize())
 
-
 if __name__ == '__main__':
-    ViewETLInfo()
+    GenerateETLInfo()

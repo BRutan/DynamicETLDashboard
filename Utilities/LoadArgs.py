@@ -21,7 +21,7 @@ def ETLDashboardJsonArgs():
     * Pull arguments from ETLDashboard.json file.
     """
     errs = []
-    req_args_fixed = set(['dynamicetlservicepath','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
+    req_args_fixed = set(['dynamicetlservicepath','chromedriverpath','config','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
     if not os.path.exists('ETLDashboard.json'):
         errs.append('ETLDashboard.json file does not exist.')
     else:
@@ -254,19 +254,6 @@ def GenerateFileTransferConfigJsonArgs():
     if missing:
         raise Exception('The following required arguments are missing: %s' % ','.join(missing))
     
-    if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
-        errs.append('Local \\AppsettingsFiles\\ folder is missing.')
-    else:
-        if not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json'):
-            errs.append('etlfilepaths.json file is missing.')
-        else:
-            args['etlpaths'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json')
-        if not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
-            errs.append('Local AppsettingsFiles\\config.json file is missing.')
-        else:
-            args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
-        if 'etlpaths' in args and 'config' in args:
-            args['etlpaths'] = FillEnvironmentVariables(args['etlpaths'], args['config'], "PROD")
     ############################
     # Required arguments:
     ############################
@@ -427,19 +414,19 @@ def TestETLPipelineJsonArgs():
 ############################
 def GenerateETLInfoJsonArgs():
     """
-    * Get and verify arguments from ViewETLInfo.json.
+    * Get and verify arguments from GenerateETLInfo.json.
     """
     reqArgs = set(['etlname','summarypath'])
     args = None
     errs = []
-    if not os.path.exists('ViewETLInfo.json'):
-        errs.append('ViewETLInfo.json does not exist.')
+    if not os.path.exists('GenerateETLInfo.json'):
+        errs.append('GenerateETLInfo.json does not exist.')
     else:
         try:
-            args = json.load(open('ViewETLInfo.json', 'rb'))
-            args.update(ETLDashboardJsonArgs())
+            args = ETLDashboardJsonArgs()
+            args.update(LoadJsonFile('GenerateETLInfo.json', args['config'], 'PROD'))
         except Exception as ex:
-            errs.append('Could not load ViewETLInfo.json. Reason: %s' % str(ex))
+            errs.append('Could not load GenerateETLInfo.json. Reason: %s' % str(ex))
         
     if not args is None:
         missing = reqArgs - set(args)
