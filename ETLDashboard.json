@@ -1,11 +1,11 @@
 {
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
-  "chromedriverpath": "Misc\\chromedriver.exe",
-  "etlfilepaths": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\etlfilepaths.json,",
-  "filewatcherappsettingstemplatepath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",
+  "chromedriverpath": "{LocalPath}\\Misc\\chromedriver.exe",
+  "etlfilepaths": "{LocalPath}\\AppsettingsFiles\\etlfilepaths.json,",
+  "filewatcherappsettingstemplatepath": "{LocalPath}\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",
   "filetransferurl": "http://gsfts/",
   "logpath": "C:\\logs\\",
-  "serviceappsettingspath": "C:\\Users\\berutan\\Desktop\\Projects\\ETLDashboard\\ETLDashboard\\AppsettingsFiles\\Service_Appsettings.json",
+  "serviceappsettingspath": "{LocalPath}\\AppsettingsFiles\\Service_Appsettings.json",
   "webapiurl": "http://localhost:23014/api/etljobs",
   "webapipath": "C:\\Users\\berutan\\Desktop\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
 }

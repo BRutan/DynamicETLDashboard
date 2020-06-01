@@ -144,6 +144,8 @@ def FillEnvironmentVariables(target, configjson, configval):
             rep = configjson[key][configval]
             target = target.replace(var, rep)
         target = FixPath(target)
+        if '{LocalPath}' in target:
+            target = target.replace('{LocalPath}', os.getcwd())
     elif isinstance(target, dict):
         for key in target:
             target[key] = FillEnvironmentVariables(target[key], configjson, configval)
