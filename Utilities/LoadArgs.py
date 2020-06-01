@@ -11,7 +11,7 @@ import json
 import re
 import os
 import sys
-from Utilities.Helpers import FillEnvironmentVariables, IsRegex, LoadJsonFile, StringIsDT
+from Utilities.Helpers import FillEnvironmentVariables, FillUniversalEnvironmentVariables, IsRegex, LoadJsonFile, StringIsDT
 
 ############################
 # ETLDashboard
@@ -31,9 +31,28 @@ def ETLDashboardJsonArgs():
             errs.append('The following required arguments are missing from ETLDashboard.json: %s' % ','.join(missing))
     if errs:
         raise Exception('\n'.join(errs))
+    args = FillUniversalEnvironmentVariables(args)
     #############################
     # Required Arguments:
     #############################
+    # config: 
+    if not isinstance(args['config'], str):
+        errs.append('(config) Must be a string.')
+    elif not args['config'].endswith('.json'):
+        errs.append('(config) Must point to json file.')
+    elif not os.path.exists(args['config']):
+        errs.append('(config) Does not exist.')
+    else:
+        args['config'] = FillUniversalEnvironmentVariables(LoadJsonFile(args['config']))
+
+    # chromedriverpath:
+    if not isinstance(args['chromedriverpath'], str):
+        errs.append('(chromedriverpath) Must be a string.')
+    elif not args['chromedriverpath'].endswith('.exe'):
+        errs.append('(chromedriverpath) Must point to executable.')
+    elif not os.path.exists(args['chromedriverpath']):
+        errs.append('(chromedriverpath) Does not exist.')
+
     # dynamicetlservicepath:
     if not os.path.exists(args['dynamicetlservicepath']):
         errs.append('(dynamicetlservicepath) Path does not exist.')
