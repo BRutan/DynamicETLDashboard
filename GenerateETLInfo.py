@@ -7,17 +7,17 @@
 
 from ETL.ETLInfo import ETLInfo
 import os
-from Utilities.LoadArgs import ViewETLInfoJsonArgs
+from Utilities.LoadArgs import GenerateETLInfoJsonArgs
 
 def ViewETLInfo():
     """
     * Generate report with information regarding etls.
     """
     print("------------------------------")
-    print("ViewETLInfo: ")
+    print("GenerateETLInfoJsonArgs: ")
     print("------------------------------")
     try:
-        args = ViewETLInfoJsonArgs()
+        args = GenerateETLInfoJsonArgs()
     except Exception as ex:
         msg = 'The following argument issues occurred:\n%s' % str(ex)
         print(msg)

@@ -5,9 +5,9 @@
 # * Aggregates all useful information about
 # an ETL (tablename, server, file locations).
 
-import csv
-from Helpers import FillEnvironmentVariables
 import json
+import xlsxwriter
+from Utilities.Helpers import FillEnvironmentVariables
 
 class ETLInfo:
     """
@@ -61,19 +61,26 @@ class ETLInfo:
         """
         * Generate report at path.
         Inputs:
-        * reportpath: Path to output report. Must point to .csv file.
+        * reportpath: Path to output report. Must point to .xlsx file.
         """
         if not isinstance(reportpath, str):
             raise Exception('reportpath must be a string.')
-        elif not reportpath.endswith('.csv'):
-            raise Exception('reportpath must point to .csv file.')
-        lines = []
-        with open(reportpath, 'w', newline = '') as f:
-            writer = csv.writer(f)
+        elif not reportpath.endswith('.xlsx'):
+            raise Exception('reportpath must point to .xlsx file.')
+        wb = xlsxwriter.Workbook(reportpath)
+        self.__WriteSummarySheet(wb)
+        wb.close()
 
     ###################
     # Private Helpers:
     ###################
+    def __WriteSummarySheet(self, wb):
+        """
+        * Write summary sheet for generated report.
+        """
+        sheet = wb.add_worksheet('%s Summary' % self.__etlname)
+
+
     def __CollectInfo(self, jsonpaths):
         """
         * Collect all information regarding etlname

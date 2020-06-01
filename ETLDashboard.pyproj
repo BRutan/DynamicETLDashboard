@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TestETLPipeline.py</StartupFile>
+    <StartupFile>GenerateETLInfo.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -111,7 +111,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Helpers.py" />
-    <Compile Include="ViewETLInfo.py">
+    <Compile Include="GenerateETLInfo.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="__init__.py">
@@ -152,7 +152,7 @@
     <Content Include="Columns\__pycache__\__init__.cpython-36.pyc" />
     <Content Include="ETL\default.xml" />
     <Content Include="ETL\ftsattrs.json" />
-    <Content Include="ViewETLInfo.json" />
+    <Content Include="GenerateETLInfo.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

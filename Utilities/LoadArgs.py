@@ -40,6 +40,7 @@ def ETLDashboardJsonArgs():
     elif not args['dynamicetlservicepath'].endswith('.exe'):
         errs.append('(dynamicetlservicepath) Path must point to an .exe.')
 
+    # etlfilepaths:
     if not isinstance(args['etlfilepaths'], str):
         errs.append('(etlfilepaths) Must be a string.')
     elif not args['etlfilepaths'].endswith('json'):
@@ -422,9 +423,9 @@ def TestETLPipelineJsonArgs():
     return args
 
 ############################
-# ViewETLInfo.py
+# GenerateETLInfo.py
 ############################
-def ViewETLInfoJsonArgs():
+def GenerateETLInfoJsonArgs():
     """
     * Get and verify arguments from ViewETLInfo.json.
     """

@@ -12,7 +12,7 @@ import os
 import re
 from selenium import webdriver
 from Utilities.FileConverter import FileConverter
-from Utilities.Helpers import IsRegex
+from Utilities.Helpers import IsRegex, LoadJsonFile
 
 class FileTransferServiceAggregator:
     """
@@ -70,7 +70,7 @@ class FileTransferServiceAggregator:
             raise Exception('filewatcherappsettingspath does not exist.')
 
         try:
-            fwargs = json.load(open(filewatcherappsettingspath, 'rb'))
+            fwargs = LoadJsonFile(filewatcherappsettingspath)
         except Exception as ex:
             errs = ['Could not load filewatcherappsettingspath json file.']
             errs.append('Reason: %s' % str(ex))
