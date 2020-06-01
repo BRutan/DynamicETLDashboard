@@ -139,6 +139,7 @@
     <Content Include="AppsettingsFiles\TransferId_297.xml" />
     <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
     <Content Include="ETLDashboard.json" />
+    <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="ETL\appsettings-template.json" />
     <Content Include="postargs.json" />
     <Content Include="GenerateFileTransferConfig.json" />

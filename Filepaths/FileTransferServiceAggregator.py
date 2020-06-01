@@ -21,13 +21,13 @@ class FileTransferServiceAggregator:
     """
     __xferFileSig = re.compile('TransferId_\d+.xml')
     __reType = type(re.compile('a'))
-    def __init__(self, ftsurl, filewatcherjson, chromedriverpath, groupregex):
+    def __init__(self, ftsurl, etlpathsjson, chromedriverpath, groupregex):
         """
         * Open Selenium instance and aggregate
         all filetransfers.
         Inputs:
         * ftsurl: URL to gsfts web portal.
-        * filewatcherjson: Json object filled with FileWatcher Appsettings-template.json.
+        * etlpathsjson: Json object filled with data in etlfilepaths.json.
         * chromedriverpath: Path to chromedriver.exe.
         * groupregex: Regular expression object or string to determine which transfers to pull 
         (ex: RiskDashboard). 
@@ -52,6 +52,38 @@ class FileTransferServiceAggregator:
     ####################
     # Interface Methods:
     ####################
+    @staticmethod
+    def GenerateETLFilePathsJson(filewatcherappsettingspath):
+        """
+        * Convert FileWatcher appsettings-template.json file into
+        an etlfilepaths.json file (replaces a few environment
+        variables).
+        Inputs:
+        * filewatcherappsettingspath: path to FileWatcher appsettings-template.json
+        file.
+        """
+        if not isinstance(filewatcherappsettingspath, str):
+            raise Exception('filewatcherappsettingspath must be a string.')
+        elif not filewatcherappsettingspath.endswith('json'):
+            raise Exception('filewatcherappsettingspath must point to json file.')
+        elif not os.path.exists(filewatcherappsettingspath):
+            raise Exception('filewatcherappsettingspath does not exist.')
+
+        try:
+            fwargs = json.load(open(filewatcherappsettingspath, 'rb'))
+        except Exception as ex:
+            errs = ['Could not load filewatcherappsettingspath json file.']
+            errs.append('Reason: %s' % str(ex))
+            raise Exception('\n'.join(errs))
+        if not 'files' in fwargs:
+            raise Exception('Missing required "files" key in json file.')
+        out = {}
+        out['files'] = []
+        for etlgroup in fwargs['files']:
+            etlgroup['inbound'] = etlgroup['inbound'].replace('{Inbound_Folder}', '{CC_Source_Path}')
+            out['files'].apend(etlgroup)
+        json.dump(out, open(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json', 'wb'))
+        
     def OutputLookup(self):
         """
         * Output lookup file into filetransferconfig.json.

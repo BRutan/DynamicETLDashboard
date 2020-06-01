@@ -135,7 +135,6 @@
     "QA": "\"http://DynamicEtlQA/api/EtlJobs\"",
     "CI": "\"http://localhost/DynamicEtl/api/EtlJobs\"",
     "LOCAL": "\"http://localhost/DynamicEtl/api/EtlJobs\""
-
   },
   "CC_Source_Path": {
     "PROD": "\\\\\\\\wanlink\\\\dfsroot\\\\Apps\\\\GS",

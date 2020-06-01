@@ -166,7 +166,6 @@ class Arguments(object):
         if errs:
             raise Exception("\n".join(errs))
 
-
 def GenerateColumnAttributesReportCMDLineArgs():
     """
     * Get command line arguments for GenerateColumnAttributesReport.py script.
@@ -245,18 +244,20 @@ def GenerateFileTransferConfigJsonArgs():
     if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
         errs.append('Local \\AppsettingsFiles\\ folder is missing.')
     else:
+        if not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json'):
+            errs.append('etlfilepaths.json file is missing.')
+        else:
+            args['etlpaths'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json')
         if not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
             errs.append('Local AppsettingsFiles\\config.json file is missing.')
         else:
             args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
-        if not os.path.exists(args['filewatcherappsettingstemplatepath']):
-            errs.append('Filewatcher Appsettings-Template.json file is missing.')
-        else:
-            args['filewatcherjson'] = LoadJsonFile(args['filewatcherappsettingstemplatepath'])
-            args['filewatcherjson'] = FillEnvironmentVariables(args['filewatcherjson'], args['config'], 'QA')
+        if 'etlpaths' in args and 'config' in args:
+            args['etlpaths'] = FillEnvironmentVariables(args['etlpaths'], args['config'], "PROD")
     ############################
     # Required arguments:
     ############################
+    # groupregex: 
     if not isinstance(args['groupregex'], str):
         errs.append('(groupregex) Must be a string.')
     elif not IsRegex(args['groupregex']):

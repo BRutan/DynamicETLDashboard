@@ -28,7 +28,7 @@ def GenerateFileTransferConfig():
     try:
         print("Aggregating all transfers from web portal at")
         print("%s" % args['filetransferurl'])
-        agg = FileTransferServiceAggregator(args['filetransferurl'], args['chromedriverpath'], args['groupregex'])
+        agg = FileTransferServiceAggregator(args['filetransferurl'], args['etlpaths'], args['chromedriverpath'], args['groupregex'])
         agg.OutputLookup()
     except Exception as ex:
         print('Failed to aggregate from filetransferurl.')
