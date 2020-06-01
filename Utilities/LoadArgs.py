@@ -416,7 +416,7 @@ def ViewETLInfoJsonArgs():
     """
     * Get and verify arguments from ViewETLInfo.json.
     """
-    reqArgs = set(['etlname', 'summarypath'])
+    reqArgs = set(['etlname','summarypath'])
     args = None
     errs = []
     if not os.path.exists('ViewETLInfo.json'):
@@ -424,15 +424,34 @@ def ViewETLInfoJsonArgs():
     else:
         try:
             args = json.load(open('ViewETLInfo.json', 'rb'))
+            args.update(ETLDashboardJsonArgs())
         except Exception as ex:
             errs.append('Could not load ViewETLInfo.json. Reason: %s' % str(ex))
+        
     if not args is None:
         missing = reqArgs - set(args)
         if missing:
             errs.append('The following required args are missing: %s' % ','.join(missing))
-    if 'summarypath' in args and not args['summarypath'].endswith('.csv'):
-        errs.append('(summarypath) Must point to .csv file.')
+    ##################################
+    # Required Arguments:
+    ##################################
+    # summarypath:
+    if 'summarypath' in args and not args['summarypath'].endswith('.xlsx'):
+        errs.append('(summarypath) Must point to .xlsx file.')
 
+    ##################################
+    # Optional:
+    ##################################
+    # openfileexplorerpaths:
+    if 'openfileexplorerpaths' in args:
+        args['openfileexplorerpaths'] = args['openfileexplorerpaths'].lower()
+        if not args['openfileexplorerpaths'] in ['true', 'false']:
+            errs.append('(openfileexplorerpaths) Must be true/false (case insensitive).')
+        elif args['openfileexplorerpaths'] == 'true':
+            args['openfileexplorerpaths'] = True
+        else:
+            args['openfileexplorerpaths'] = False
+            
     if errs:
         raise Exception('\n'.join(errs))
     

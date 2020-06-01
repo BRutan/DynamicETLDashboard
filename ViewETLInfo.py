@@ -11,7 +11,7 @@ from Utilities.LoadArgs import ViewETLInfoJsonArgs
 
 def ViewETLInfo():
     """
-    * Display useful information regarding etlname.
+    * Generate report with information regarding etls.
     """
     print("------------------------------")
     print("ViewETLInfo: ")
