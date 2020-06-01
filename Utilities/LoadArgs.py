@@ -81,7 +81,7 @@ def ETLDashboardJsonArgs():
             if not 'files' in fwconfig:
                 errs.append('(filewatcherappsettingstemplatepath) "files" key is missing from .json file.')
             else:
-                args['filewatcher'] = fwconfig
+                args['filewatcher'] = FillUniversalEnvironmentVariables(fwconfig)
         except Exception as ex:
             errs.append('(filewatcherappsettingstemplatepath) Issue with json file: %s' % str(ex))
             
@@ -98,7 +98,7 @@ def ETLDashboardJsonArgs():
         errs.append('(serviceappsettingspath) Must point to .json file.')
     else:
         try:
-            args['appsettings'] = LoadJsonFile(args['serviceappsettingspath'])
+            args['serviceappsettings'] = FillUniversalEnvironmentVariables(LoadJsonFile(args['serviceappsettingspath']))
         except Exception as ex:
             errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
 
@@ -436,13 +436,12 @@ def GenerateETLInfoJsonArgs():
     * Get and verify arguments from GenerateETLInfo.json.
     """
     reqArgs = set(['etlname','summarypath'])
-    args = None
+    args = ETLDashboardJsonArgs()
     errs = []
     if not os.path.exists('GenerateETLInfo.json'):
         errs.append('GenerateETLInfo.json does not exist.')
     else:
         try:
-            args = ETLDashboardJsonArgs()
             args.update(LoadJsonFile('GenerateETLInfo.json', args['config'], 'PROD'))
         except Exception as ex:
             errs.append('Could not load GenerateETLInfo.json. Reason: %s' % str(ex))

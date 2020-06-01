@@ -14,17 +14,20 @@ class ETLInfo:
     * Immutable object with aggregated information 
     regarding ETLs present in various appsettings files.
     """
-    def __init__(self, etlname, jsonpaths):
+    def __init__(self, etlname, configjson, etlfilepathsjson, filewatcherjson, servicejson):
         """
         * Collect all information regarding passed etl.
         Inputs:
         * etlname: String name of ETL want information about.
-        * jsonpaths: Dictionary with following keys:
-        - 
+        * configjson: Dictionary containing json object loaded
+        with "config.json" environment variables.
+        * etlfilepathsjson: Dictionary containing filepaths listed
+        in "etlfilepaths.json":
+        * servicejson: Dictionary containing DynamicETL.Service Appsettings.json data.
         """
-        ETLInfo.__Validate(etlname, jsonpaths)
+        ETLInfo.__Validate(etlname, configjson, etlfilepathsjson, filewatcherjson, servicejson)
         self.__etlname = etlname
-        self.__CollectInfo(etlname, jsonpaths)
+        self.__CollectInfo(configjson, etlfilepathsjson, filewatcherjson, servicejson)
 
     ###################
     # Properties:
@@ -81,7 +84,7 @@ class ETLInfo:
         sheet = wb.add_worksheet('%s Summary' % self.__etlname)
 
 
-    def __CollectInfo(self, jsonpaths):
+    def __CollectInfo(self, configjson, etlfilepathsjson, filewatcherjson, servicejson):
         """
         * Collect all information regarding etlname
         using appsettings files indicated in paths.
@@ -90,55 +93,57 @@ class ETLInfo:
         self.__inputfolders = None
         self.__servername = None
         self.__tablename = None
-        errs = []
-        errs.extend(self.__CollectInfoFileWatcher(jsonpaths['filewatcherappsettingstemplatepath']))
-        errs.extend(self.__CollectInfoDynamicETLService(jsonpaths['dynamicetlservicepath']))
-        
-        if errs:
-            raise Exception('\n'.join(errs))
+        try:
+            self.__CollectInfoETLPaths(etlfilepathsjson)
+            self.__CollectInfoFileWatcher(filewatcherjson)
+            self.__CollectInfoDynamicETLService(servicejson)
+        except Exception as ex:
+            pass
 
-    def __CollectInfoFileWatcher(self, appsettingspath):
+
+    def __CollectInfoETLPaths(self, etlpathsjson):
+        """
+        * Collect information from json object loaded with etlpaths.json.
+        """
+        # Loop through to find etl:
+        target = None
+        for config in etlpathsjson['files']:
+            if config['subject'].lower() == self.__etlname.lower():
+                target = config
+                break
+        if target is None:
+            raise Exception('ETL %s not present in etlpaths.json.' % self.__etlname)
+
+        
+
+    def __CollectInfoFileWatcher(self, filewatcherjson):
         """
         * Collect useful info from FileWatcher appsettings file.
         """
-        errs = []
-        try:
-            serviceAppsettings = json.load(open(appsettingspath, 'rb'))
-        except Exception as ex:
-            errs.append('Could not read FileWatcher appsettings-template.json.')
-            errs.append('Reason: %s' % str(ex))
-            return errs
+        pass
 
-        return errs
-
-    def __CollectInfoDynamicETLService(self, appsettingspath):
+    def __CollectInfoDynamicETLService(self, servicejson):
         """
         * Collect useful info from DynamicETL.Service appsettings file.
         """
-        errs = []
-        try:
-            serviceAppsettings = json.load(open(appsettingspath, 'rb'))
-        except Exception as ex:
-            errs.append('Could not read Service appsettings.json.')
-            errs.append('Reason: %s' % str(ex))
-            return errs
+        pass
 
-        return errs
-
+    
     @staticmethod
-    def __Validate(etlname, jsonpaths):
+    def __Validate(etlname, configjson, etlfilepathsjson, filewatcherjson, servicejson):
         """
         * Validate constructor arguments.
         """
         errs = []
         if not isinstance(etlname, str):
             errs.append('etlname must be a string.')
-        if not isinstance(jsonpaths, dict):
-            errs.append('jsonpaths must be a dictionary.')
-        else:
-            req = set(['filewatcherappsettingstemplatepath', 'dynamicetlservicepath'])
-            missing = req - set(jsonpaths)
-            if missing:
-                errs.append('The following required keys missing from args: %s' % ','.join(missing))
+        if not isinstance(configjson, dict):
+            errs.append('configjson must be a dictionary.')
+        if not isinstance(etlfilepathsjson, dict):
+            errs.append('etlfilepathsjson must be a dictionary.')
+        if not isinstance(filewatcherjson, dict):
+            errs.append('filewatcherjson must be a dictionary.')
+        if not isinstance(servicejson, dict):
+            errs.append('servicejson must be a dictionary.')
         if errs:
             raise Exception('\n'.join(errs))

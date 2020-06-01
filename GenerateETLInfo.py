@@ -23,7 +23,7 @@ def GenerateETLInfo():
         print(msg)
         os._exit(0)
     # Aggregate info, generate report and display information:
-    info = ETLInfo(args['etlname'], args)
+    info = ETLInfo(args['etlname'], args['config'], args['etlfilepaths'], args['filewatcher'], args['serviceappsettings'])
     info.GenerateSummaryReport(args['summarypath'])
     print(info.Summarize())
 
