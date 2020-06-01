@@ -62,8 +62,8 @@ def TestETLPipeline():
         argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
         print('Removing data with fileDate %s from %s::%s::%s' % argTup)
         try:
-            interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
-            query = "DELETE FROM [%s] WHERE fileDate = '%s'" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
+            interface = TSQLInterface(argTup[1], argTup[2])
+            query = "DELETE FROM [%s] WHERE fileDate = '%s';" % (argTup[3], argTup[0])
             interface.Execute(query)
         except Exception as ex:
             print('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
@@ -85,11 +85,10 @@ def TestETLPipeline():
             os._exit(0)
     # Query server to get uploaded data:
     try:
-        interface = TSQLInterface(args['testetlargs']['server'], args['testetlargs']['database'])
-        query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (args['testetlargs']['tablename'], args['testetlargs']['filedate'].strftime('%Y-%m-%d'))
+        query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (argTup[3], argTup[0])
         data_test = interface.Select(query)
     except Exception as ex:
-        print('Could not query %s::%s::%s' % (args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename']))
+        print('Could not query %s::%s::%s' % (argTup[1], argTup[2], argTup[3]))
         print('Reason: %s' % str(ex))
         input('Press enter to exit.')
         os._exit(0)
