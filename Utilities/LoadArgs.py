@@ -21,7 +21,7 @@ def ETLDashboardJsonArgs():
     * Pull arguments from ETLDashboard.json file.
     """
     errs = []
-    req_args_fixed = set(['dynamicetlservicepath','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
+    req_args_fixed = set(['dynamicetlservicepath','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
     if not os.path.exists('ETLDashboard.json'):
         errs.append('ETLDashboard.json file does not exist.')
     else:
@@ -31,11 +31,23 @@ def ETLDashboardJsonArgs():
             errs.append('The following required arguments are missing from ETLDashboard.json: %s' % ','.join(missing))
     if errs:
         raise Exception('\n'.join(errs))
+    #############################
+    # Required Arguments:
+    #############################
     # dynamicetlservicepath:
     if not os.path.exists(args['dynamicetlservicepath']):
         errs.append('(dynamicetlservicepath) Path does not exist.')
     elif not args['dynamicetlservicepath'].endswith('.exe'):
         errs.append('(dynamicetlservicepath) Path must point to an .exe.')
+
+    if not isinstance(args['etlfilepaths'], str):
+        errs.append('(etlfilepaths) Must be a string.')
+    elif not args['etlfilepaths'].endswith('json'):
+        errs.append('(etlfilepaths) Must point to .json file.')
+    elif not os.path.exists(args['etlfilepaths']):
+        errs.append('(etlfilepaths) Does not exist.')
+    else:
+        args['etlfilepaths'] = LoadJsonFile(args['etlfilepaths'])
 
     # filewatcherappsettingstemplatepath:
     if not os.path.exists(args['filewatcherappsettingstemplatepath']):
