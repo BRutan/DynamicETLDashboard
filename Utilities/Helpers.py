@@ -13,7 +13,7 @@ import re
 from time import sleep
 from tqdm import trange
 
-def Countdown(numSeconds, terminatecondition = None):
+def Countdown(numSeconds, terminatecondition = None, predicate_will_return = False):
     """
     * Print countdown sequence while waiting for event to occur.
     Inputs:
@@ -22,6 +22,8 @@ def Countdown(numSeconds, terminatecondition = None):
     Optional:
     * terminatecondition: Predicate where if true will terminate
     the wait sequence early.
+    * predicate_will_return: Put True if terminatecondition returns a variable. If True,
+    then terminatecondition must return either None or an object.
     """
     errs = []
     if not isinstance(numSeconds, (int, float)):
@@ -30,17 +32,29 @@ def Countdown(numSeconds, terminatecondition = None):
         errs.append('numSeconds must be positive.')
     if not terminatecondition is None and not hasattr(terminatecondition, '__call__'):
         errs.append('terminatecondition must be callable if provided.')
+    if not isinstance(predicate_will_return, bool):
+        errs.append('predicate_will_return must be a boolean.')
+    elif predicate_will_return and not hasattr(terminatecondition, '__call__'):
+        errs.append('terminatecondition must be provided if predicate_will_return is True.')
     if errs:
         raise Exception('\n'.join(errs))
     numSeconds = int(numSeconds)
     if terminatecondition is None:
         for i in trange(numSeconds):
             sleep(1)
-    else:
+    elif not predicate_will_return:
         for i in trange(numSeconds * 100):
             sleep(1/100)
-            if terminatecondition:
+            if terminatecondition():
                 break
+    else:
+        result = None
+        for i in trange(numSeconds * 100):
+            sleep(1/100)
+            result = terminatecondition()
+            if not result is None:
+                return result
+        return result
 
 def CheckPath(path, argname, exists = True, pathtype = None):
     errs = []
@@ -72,6 +86,19 @@ def IsRegex(regStr):
     except:
         return False
     return True
+
+def IsNumeric(value):
+    """
+    * Determine if string is numeric.
+    """
+    if not isinstance(value, str):
+        raise Exception('value must be a string.')
+    try:
+        value = int(value)
+        value = float(value)
+        return True
+    except:
+        return False
 
 def StringIsDT(dateString, returnval = False):
     """

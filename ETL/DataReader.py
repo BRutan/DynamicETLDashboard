@@ -4,8 +4,12 @@
 # Description:
 # * Convert data in format into pandas DataFrame.
 
-from pandas import DataFrame, read_csv, read_excel
+import dateutil.parser as dtparser
+import numpy as np
+from pandas import DataFrame, isnull, read_csv, read_excel
+import re
 import os
+from Utilities.Helpers import IsNumeric, StringIsDT
 
 class DataReader:
     """
@@ -57,9 +61,54 @@ class DataReader:
         * Read data at path.
         """
         if path.endswith('.csv'):
-            return read_csv(path, delimiter = (',' if delim is None else delim))
+            data = read_csv(path, delimiter = (',' if delim is None else delim))
         elif path.endswith('.xls') or path.endswith('.xlsx'):
-            return read_excel(path, sheet_name = (0 if sheetName is None else sheetName ))
+            data = read_excel(path, sheet_name = (0 if sheetName is None else sheetName ))
         else:
             ext = os.path.split(path)
             raise Exception('%s extension is invalid.' % ext)
+        # Convert data into suitable types:
+        return DataReader.__ConvertAll(data)
+
+    @staticmethod
+    def __ConvertAll(data):
+        """
+        * Convert all columns into most appropriate type.
+        """
+        for col in data.columns:
+            if DataReader.__IsInt(data[col]):
+                data[col] = data[col].astype('int64')
+            elif DataReader.__IsFloat(data[col]):
+                data[col] = data[col].astype('float64')
+            elif DataReader.__IsDT(data[col]):
+                data[col] = data[col].astype('datetime64')
+        return data
+
+    @staticmethod
+    def __IsInt(series):
+        """
+        * Determine if TimeSeries object could be integer type.
+        """
+        for val in series:
+            if not str(val).isnumeric() and not isnull(val):
+                return False
+        return True
+    @staticmethod
+    def __IsFloat(series):
+        """
+        * Determine if TimeSeries object is floating point.
+        """
+        isfloat = re.compile('^[0-9]+.?[0-9]*$')
+        for val in series:
+            if not isfloat.match(str(val)) and not isnull(val):
+                return False
+        return True
+    @staticmethod
+    def __IsDT(series):
+        """
+        * Determine if is datetime.
+        """
+        for val in series:
+            if not StringIsDT(str(val)) and not isnull(val):
+                return False
+        return True
