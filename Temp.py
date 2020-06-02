@@ -2,6 +2,7 @@
 from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
+from ETL.DynamicETLIssueParser import DynamicETLIssueParser
 
 def compare():
     interface = TSQLInterface('nj1qasql13', 'MetricsDyetl')
@@ -47,6 +48,9 @@ def pulldata():
         pass
 
     
+def testlogreader():
+    reader = DynamicETLIssueParser('\\nj1qaapp20\logs')
+    reader.GenerateFile('test.csv')
 
 if __name__ == '__main__':
-    pulldata()
+    testlogreader()

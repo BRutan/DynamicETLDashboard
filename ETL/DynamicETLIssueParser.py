@@ -2,7 +2,7 @@
 # DynamicETLIssueParser.py
 #####################################
 # Description:
-# * Determine where filevault issues have
+# * Determine where DynamicETL.Service issues have
 # occurred in DynamicETL.Service log file.
 
 import csv
@@ -25,7 +25,7 @@ class DynamicETLIssueParser:
         Inputs:
         * servicelogfolder: Path to DynamicETL.Service logfile.
         """
-        FileVaultIssueParser.__Validate(servicelogfolder)
+        DynamicETLIssueParser.__Validate(servicelogfolder)
         self.__FindIssues(servicelogfolder)
 
     ##################
@@ -34,7 +34,7 @@ class DynamicETLIssueParser:
     def GenerateFile(self, outpath):
         """
         * Generate file containing detailed info
-        about filevault issues.
+        about DynamicETL.Service issues.
         Input:
         * outpath: String pointing to csv file.
         """
@@ -53,7 +53,7 @@ class DynamicETLIssueParser:
         """
         # Find matching files:
         data = DynamicETLIssueParser.__dataDict
-        files = FileConverter.GetAllFilePaths(servicelogfolder, FileVaultIssueParser.__logfileSig)
+        files = FileConverter.GetAllFilePaths(servicelogfolder, DynamicETLIssueParser.__logfileSig)
         stackTraceIndic = 'System.Net.WebException: The remote server returned an error: (500) Internal Server Error.'
         # {'TimeStamp' : [], 'ETLName' : [], 'StackTrace' : []}
         timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
