@@ -1,0 +1,15 @@
+2020-06-02 07:36:02,276 [85] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.Hires.v1`
+2020-06-02 07:36:02,276 [85] DEBUG DynamicEtl.Service - Fetching data for `GS.Hires.v1` with arg `{fileid:'BB570973D176EDEF221E55FAD0B6568EB6CC04B61B965274D6E99049FD6C00CD'}`
+2020-06-02 07:36:09,129 [85] DEBUG DynamicEtl.Service - Executing pre operations for `GS.Hires.v1`
+2020-06-02 07:36:09,129 [85] DEBUG DynamicEtl.Service - Reading data for `GS.Hires.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\46d9e6c0-a475-4812-845d-7d9785acf27a.csv`
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.Hires.v1`
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Writing data to destination for `GS.Hires.v1`
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,ConvertToUTC
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Columns in data: MostRecentPullDate,Employee ID,Name,Legal Name - Last Name,Legal Name - First Name,Employee or Contingent Worker Type,Corp Title,Functional Title,Operating Group,Company,Business Unit,Location,Meta BU,HIRE (Month/Day/Year),Termination Date,Contract End Date,Contract End Date (Month/Day/Year),Termination Reason,Worker Type,Manager,Work Phone,Work Email,Hire/Term,Date BP Completed in Workday,Currently Active,RunDate
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Columns: MostRecentPullDate,Employee ID,Name,Legal Name - Last Name,Legal Name - First Name,Employee or Contingent Worker Type,Corp Title,Functional Title,Operating Group,Company,Business Unit,Location,Meta BU,HIRE (Month/Day/Year),Termination Date,Contract End Date,Contract End Date (Month/Day/Year),Termination Reason,Worker Type,Manager,Work Phone,Work Email,Hire/Term,Date BP Completed in Workday,Currently Active,RunDate
+2020-06-02 07:36:09,754 [85] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,ConvertToUTC
+2020-06-02 07:36:10,117 [85] INFO  DynamicEtl.Service - Inserting 971 rows into destination tbl_GS_HumanResources_Hires
+2020-06-02 07:36:10,194 [85] DEBUG DynamicEtl.Service - Applying post operations for `GS.Hires.v1`
+2020-06-02 07:36:10,225 [85] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.Hires.v1` in 7 secs, 940 msecs
+2020-06-02 07:36:10,225 [85] INFO  DynamicEtl.Service - Finished Etl for `GS.Hires.v1` with arg `{fileid:'BB570973D176EDEF221E55FAD0B6568EB6CC04B61B965274D6E99049FD6C00CD'}`

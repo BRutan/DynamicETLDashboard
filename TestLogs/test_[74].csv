@@ -1,0 +1,32 @@
+2020-06-02 06:39:21,709 [74] DEBUG DynamicEtl.Service - Loading etl configuration for `TransactionCashCancelRebill.v1`
+2020-06-02 06:39:21,710 [74] DEBUG DynamicEtl.Service - Fetching data for `TransactionCashCancelRebill.v1` with arg `{fileid:'B4338E873BB0DACA9B911028D4065622371EF154ABF8A2C06522387F75F4346A'}`
+2020-06-02 06:39:28,696 [74] DEBUG DynamicEtl.Service - Executing pre operations for `TransactionCashCancelRebill.v1`
+2020-06-02 06:39:28,696 [74] DEBUG DynamicEtl.Service - Reading data for `TransactionCashCancelRebill.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\e4172618-e3f0-4aa8-a8ca-905c4d0b7bc8.csv`
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `TransactionCashCancelRebill.v1`
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Writing data to destination for `TransactionCashCancelRebill.v1`
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate,ConvertDateTime
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Columns in data: TRANS DATE #,TRADER,TR TYP,AMT,SECURITY NAME,CUSIP,DEPOSITORY,PRICE,CUSTOMER NAME,INTEREST,MONEY,TOTAL MONEY,T/D,S/D,SALES,COMM,CN/RV,SYS TIME,User Login ID,fileDate,TransDatePure,Rundate
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Columns: TRANS DATE #,TRADER,TR TYP,AMT,SECURITY NAME,CUSIP,DEPOSITORY,PRICE,CUSTOMER NAME,INTEREST,MONEY,TOTAL MONEY,T/D,S/D,SALES,COMM,CN/RV,SYS TIME,User Login ID,fileDate,TransDatePure,Rundate
+2020-06-02 06:39:28,740 [74] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate,ConvertDateTime
+2020-06-02 06:39:28,743 [74] INFO  DynamicEtl.Service - Inserting 14 rows into destination tbl_Operations_Repo_TransactionCashCancelRebill
+2020-06-02 06:39:28,860 [74] DEBUG DynamicEtl.Service - Applying post operations for `TransactionCashCancelRebill.v1`
+2020-06-02 06:39:30,019 [74] INFO  DynamicEtl.Service - Etl finished with status Success for `TransactionCashCancelRebill.v1` in 8 secs, 309 msecs
+2020-06-02 06:39:30,019 [74] INFO  DynamicEtl.Service - Finished Etl for `TransactionCashCancelRebill.v1` with arg `{fileid:'B4338E873BB0DACA9B911028D4065622371EF154ABF8A2C06522387F75F4346A'}`
+2020-06-02 07:36:05,282 [74] INFO  DynamicEtl.Service - Starting Etl for `GS.Terms.v1` with arg `{fileid:'2F5B6BFA658A3442FAD13EC42ECA7953BBC523A666F347860E077D78C0FB6A79'}`
+2020-06-02 07:36:05,282 [74] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.Terms.v1`
+2020-06-02 07:36:05,282 [74] DEBUG DynamicEtl.Service - Fetching data for `GS.Terms.v1` with arg `{fileid:'2F5B6BFA658A3442FAD13EC42ECA7953BBC523A666F347860E077D78C0FB6A79'}`
+2020-06-02 07:36:14,385 [74] DEBUG DynamicEtl.Service - Executing pre operations for `GS.Terms.v1`
+2020-06-02 07:36:14,385 [74] DEBUG DynamicEtl.Service - Reading data for `GS.Terms.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\655fdacb-c331-4e34-8757-047dd7864665.csv`
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Loading external libs with pattern *-InputOperations.dll. Found (1) assemblies.
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.Terms.v1`
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Writing data to destination for `GS.Terms.v1`
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,ConvertToUTC
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Columns in data: MostRecentPullDate,Employee ID,Name,Legal Name - Last Name,Legal Name - First Name,Employee or Contingent Worker Type,Corp Title,Functional Title,Operating Group,Company,Business Unit,Location,Meta BU,HIRE (Month/Day/Year),Termination Date,Contract End Date,Contract End Date (Month/Day/Year),Termination Reason,Worker Type,Manager,Work Phone,Work Email,Hire/Term,Date BP Completed in Workday,Currently Active,RunDate
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Columns: MostRecentPullDate,Employee ID,Name,Legal Name - Last Name,Legal Name - First Name,Employee or Contingent Worker Type,Corp Title,Functional Title,Operating Group,Company,Business Unit,Location,Meta BU,HIRE (Month/Day/Year),Termination Date,Contract End Date,Contract End Date (Month/Day/Year),Termination Reason,Worker Type,Manager,Work Phone,Work Email,Hire/Term,Date BP Completed in Workday,Currently Active,RunDate
+2020-06-02 07:36:14,820 [74] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,ConvertToUTC
+2020-06-02 07:36:15,101 [74] INFO  DynamicEtl.Service - Inserting 832 rows into destination tbl_GS_HumanResources_Terms
+2020-06-02 07:36:15,197 [74] DEBUG DynamicEtl.Service - Applying post operations for `GS.Terms.v1`
+2020-06-02 07:36:15,197 [74] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.Terms.v1` in 9 secs, 922 msecs
+2020-06-02 07:36:15,197 [74] INFO  DynamicEtl.Service - Finished Etl for `GS.Terms.v1` with arg `{fileid:'2F5B6BFA658A3442FAD13EC42ECA7953BBC523A666F347860E077D78C0FB6A79'}`

@@ -1,0 +1,39 @@
+2020-06-02 06:09:32,974 [29] DEBUG DynamicEtl.Service - Loading etl configuration for `CC.EmployeeTrades.v1`
+2020-06-02 06:09:32,974 [29] DEBUG DynamicEtl.Service - Fetching data for `CC.EmployeeTrades.v1` with arg `{fileid:'119059019C01228F25AF06605593D3816F5C9E6CC573C42057CCD4C456E5FE01'}`
+2020-06-02 06:09:43,256 [29] DEBUG DynamicEtl.Service - Executing pre operations for `CC.EmployeeTrades.v1`
+2020-06-02 06:09:43,256 [29] DEBUG DynamicEtl.Service - Reading data for `CC.EmployeeTrades.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\7b618400-adb3-495b-9e79-cdb3b1f705eb.csv`
+2020-06-02 06:10:02,327 [29] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `CC.EmployeeTrades.v1`
+2020-06-02 06:10:02,328 [29] DEBUG DynamicEtl.Service - Writing data to destination for `CC.EmployeeTrades.v1`
+2020-06-02 06:10:02,328 [29] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 06:10:02,423 [29] DEBUG DynamicEtl.Service - Columns in data: ReportDate,UniqueId,ReferenceCode,TransactionType,SecurityDescription,Quantity,ExecutionDateTime,PriceAmount,IsSpouseTrade,Symbol,Cusip,Sedol,Isin,BloombergTicker,UserAccountStatus,EmployeeCode,OfficeVisibilityId,UserAccountVisibilityId,Broker,AccountTypeCode,SecurityType,IsNonReportable,PreApprovalScope,BusinessUnit,BusinessUnitName,LegalEntity,LegalEntityName,ManagerSupervisorName,ManagerSupervisorEmployeeCode,TotalAmount,UserName,RunDate,FirstName,LastName,BrokerAccountName,PriceCurrencyCode,BusinessUnitNameDuringExecutionDate,BusinessUnitNameChangeDate,AccountTypeChangeDate,LegalEntityNameDuringExecutionDate,DirectIssuerDUNSNumber,DirectIssuerTradeName,DirectIssuerCompanyName,DirectIssuerCompanyWebsite,UltimateIssuerDUNSNumber,UltimateIssuerTradeName,UltimateIssuerCompanyName,UltimateIssuerCompanyWebsite,AccountDisplayName,BusinessUnitDuringExecutionDate,BusinessUnitChangeDate,AccountTypeDuringExecutionDate
+2020-06-02 06:10:02,423 [29] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 06:10:02,423 [29] DEBUG DynamicEtl.Service - Columns: ReportDate,UniqueId,ReferenceCode,TransactionType,SecurityDescription,Quantity,ExecutionDateTime,PriceAmount,IsSpouseTrade,Symbol,Cusip,Sedol,Isin,BloombergTicker,UserAccountStatus,EmployeeCode,OfficeVisibilityId,UserAccountVisibilityId,Broker,AccountTypeCode,SecurityType,IsNonReportable,PreApprovalScope,BusinessUnit,BusinessUnitName,LegalEntity,LegalEntityName,ManagerSupervisorName,ManagerSupervisorEmployeeCode,TotalAmount,UserName,RunDate,FirstName,LastName,BrokerAccountName,PriceCurrencyCode,BusinessUnitNameDuringExecutionDate,BusinessUnitNameChangeDate,AccountTypeChangeDate,LegalEntityNameDuringExecutionDate,DirectIssuerDUNSNumber,DirectIssuerTradeName,DirectIssuerCompanyName,DirectIssuerCompanyWebsite,UltimateIssuerDUNSNumber,UltimateIssuerTradeName,UltimateIssuerCompanyName,UltimateIssuerCompanyWebsite,AccountDisplayName,BusinessUnitDuringExecutionDate,BusinessUnitChangeDate,AccountTypeDuringExecutionDate
+2020-06-02 06:10:02,423 [29] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 06:10:32,664 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:34,080 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:35,473 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:36,913 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:38,232 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:39,565 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:40,952 [29] INFO  DynamicEtl.Service - Inserting 10000 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:41,762 [29] INFO  DynamicEtl.Service - Inserting 635 rows into destination dbo.EmployeeTrades
+2020-06-02 06:10:41,818 [29] DEBUG DynamicEtl.Service - Applying post operations for `CC.EmployeeTrades.v1`
+2020-06-02 06:10:43,762 [29] INFO  DynamicEtl.Service - Etl finished with status Success for `CC.EmployeeTrades.v1` in 1 mins, 10 secs, 786 msecs
+2020-06-02 06:10:43,762 [29] INFO  DynamicEtl.Service - Finished Etl for `CC.EmployeeTrades.v1` with arg `{fileid:'119059019C01228F25AF06605593D3816F5C9E6CC573C42057CCD4C456E5FE01'}`
+2020-06-02 13:23:41,839 [29] INFO  DynamicEtl.Service - Starting Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:23:41,839 [29] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.SecurityExceptions.v1`
+2020-06-02 13:23:41,839 [29] DEBUG DynamicEtl.Service - Fetching data for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:23:48,575 [29] DEBUG DynamicEtl.Service - Executing pre operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:23:48,575 [29] DEBUG DynamicEtl.Service - Reading data for `GS.SecurityExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\c7411071-b051-4089-90ed-483e255a326d.xlsx`
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Writing data to destination for `GS.SecurityExceptions.v1`
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Columns in data: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Columns: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:23:48,618 [29] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:23:48,618 [29] INFO  DynamicEtl.Service - Inserting 88 rows into destination tbl_CyberSecurity_Exceptions_GS
+2020-06-02 13:23:48,634 [29] DEBUG DynamicEtl.Service - Applying post operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:23:48,634 [29] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 13:23:50,791 [29] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.SecurityExceptions.v1` in 8 secs, 945 msecs
+2020-06-02 13:23:50,791 [29] INFO  DynamicEtl.Service - Finished Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`

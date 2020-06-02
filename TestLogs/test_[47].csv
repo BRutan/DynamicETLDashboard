@@ -1,0 +1,17 @@
+2020-06-02 12:47:54,505 [47] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.ExceptionReport.Reboot.v1`
+2020-06-02 12:47:54,505 [47] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.ExceptionReport.Reboot.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 12:48:01,268 [47] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.ExceptionReport.Reboot.v1`
+2020-06-02 12:48:01,268 [47] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.ExceptionReport.Reboot.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\d92be122-885f-4822-9acd-ceecd2491127.xlsx`
+2020-06-02 12:48:02,315 [47] INFO  DynamicEtl.Service - Worksheet with this name is not found.
+Parameter name: name
+System.ArgumentOutOfRangeException: Worksheet with this name is not found.
+Parameter name: name
+   at DevExpress.Office.Utils.Exceptions.ThrowArgumentOutOfRangeException(String parameterName, String message)
+   at DevExpress.XtraSpreadsheet.API.Native.Implementation.NativeWorksheetCollection.get_Item(String name)
+   at DynamicEtl.Service.Extensions.WorkbookExtensions.TryLoadWorksheet(IWorkbook wb, Worksheet& ws, String sheetName) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Extensions\WorkbookExtensions.cs:line 13
+   at DynamicEtl.Service.DataReader.Excel.ExcelReader.Read(String filepath) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\DataReader\Excel\ExcelReader.cs:line 25
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 132
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+2020-06-02 12:48:02,315 [47] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 12:48:02,315 [47] INFO  DynamicEtl.Service - Etl finished with status Error for `GEMS.DyEtl.ExceptionReport.Reboot.v1` in 7 secs, 810 msecs
+2020-06-02 12:48:02,315 [47] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.ExceptionReport.Reboot.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`

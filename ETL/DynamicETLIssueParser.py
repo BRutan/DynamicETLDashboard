@@ -6,6 +6,7 @@
 # occurred in DynamicETL.Service log file.
 
 import csv
+import dateutil.parser as dtparser
 import os
 from pandas import DataFrame
 import re
@@ -16,7 +17,10 @@ class DynamicETLIssueParser:
     * Summarize issues that occur with ETLs.
     """
     __logfileSig = 'DynamicEtl.Service.log'
-    __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'StackTrace' : []}
+    __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'ErrorMessage' : [], 'StackTrace' : []}
+    __timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
+    __etlnameRE = re.compile("['`].+['`]")
+    __keymatchRE = re.compile('\[\d+\]')
     def __init__(self, servicelogfolder):
         """
         * Determine where all issues occurred and
@@ -33,8 +37,8 @@ class DynamicETLIssueParser:
     ##################
     def GenerateFile(self, outpath):
         """
-        * Generate file containing detailed info
-        about DynamicETL.Service issues.
+        * Generate file containing detailed info about 
+        DynamicETL.Service issues.
         Input:
         * outpath: String pointing to csv file.
         """
@@ -42,7 +46,7 @@ class DynamicETLIssueParser:
             raise Exception('outpath must be a string.')
         elif not outpath.endswith('.csv'):
             raise Exception('outpath must point to csv file.')
-        self.__data.to_csv(outpath)
+        self.__data.to_csv(outpath, index = False)
 
     ##################
     # Private Helpers:
@@ -52,32 +56,62 @@ class DynamicETLIssueParser:
         * Find all 500 issues that occurred.
         """
         # Find matching files:
-        data = DynamicETLIssueParser.__dataDict
+        self.__data = DynamicETLIssueParser.__dataDict
         files = FileConverter.GetAllFilePaths(servicelogfolder, DynamicETLIssueParser.__logfileSig)
-        stackTraceIndic = 'System.Net.WebException: The remote server returned an error: (500) Internal Server Error.'
-        timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
         for file in files:
             with open(files[file], 'r') as f:
-                lines = [line for line in f]
-                for num, line in enumerate(lines):
-                    if '(500) Internal Server Error' in line:
-                        # Get the stack trace:
-                        stackTrace = ''
-                        row = num + 1
-                        stackTrace = lines[row]
-                        while stackTraceIndic not in stackTrace:
-                            stackTrace = lines[row]
-                            row += 1
-                        # Find the corresponding ETL:
-                        row = num - 1
-                        etlname = lines[row]
-                        while 'ETL' not in etlname:
-                            etlname = lines[row]
-                            row -= 1
-                        data['StackTrace'] = stackTrace
-                        data['ETLName'] = etlname
-                        data['TimeStamp'] = timestampRE.search(line)
-        self.__data = DataFrame(data)
+                groups = DynamicETLIssueParser.__GroupAllJobs(f)
+                for jobkey in groups:
+                    self.__DetermineIssue(jobkey, groups[jobkey])
+        self.__data = DataFrame(self.__data).sort_values('TimeStamp')
+
+    @staticmethod
+    def __GroupAllJobs(file):
+        """
+        * Group all issues by job key.
+        """
+        groups = {}
+        prevGroup = None
+        for line in file:
+            if DynamicETLIssueParser.__keymatchRE.search(line):
+                jobKey = DynamicETLIssueParser.__keymatchRE.search(line)[0]
+                if jobKey not in groups:
+                    groups[jobKey] = []
+                else:
+                    groups[jobKey].append(line)
+                prevGroup = jobKey
+            else:
+                groups[prevGroup].append(line)
+        return groups
+    
+    def __DetermineIssue(self, jobKey, grouplines):
+        """
+        * Determine issues for each job.
+        """
+        if not os.path.exists('TestLogs\\test_%s.csv' % jobKey):
+            with open('TestLogs\\test_%s.csv' % jobKey, 'w') as f:
+                f.write('\n'.join([line.strip('\n') for line in grouplines]))
+        lineNum = 0
+        etls = set()
+        # etlsearchstop = ['Etl finished with status Error', 'Error with ETL', 'ERROR DynamicEtl.Service']
+        msgsearchstop = ['INFO', 'ERROR']
+        while lineNum < len(grouplines):
+            line = grouplines[lineNum]
+            if 'Etl finished with status Error' in line:
+                etlname = DynamicETLIssueParser.__etlnameRE.search(line)[0].strip("'`")
+                row = lineNum - 1
+                errorMessage = grouplines[row]
+                stackTrace = []
+                while (not any([val in errorMessage for val in msgsearchstop]) or 'Email' in errorMessage) and row >= 0:
+                    if 'at' in errorMessage:
+                        stackTrace.append(errorMessage)
+                    row -= 1
+                    errorMessage = grouplines[row]
+                self.__data['ETLName'].append(etlname)
+                self.__data['ErrorMessage'].append(errorMessage.strip('\n'))
+                self.__data['StackTrace'].append(''.join(stackTrace))
+                self.__data['TimeStamp'].append(dtparser.parse(DynamicETLIssueParser.__timestampRE.search(errorMessage)[0]))
+            lineNum += 1
                
     @staticmethod
     def __Validate(servicelogfolder):

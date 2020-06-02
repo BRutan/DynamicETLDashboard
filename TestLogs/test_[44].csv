@@ -1,0 +1,35 @@
+2020-06-02 10:04:20,796 [44] DEBUG DynamicEtl.Service - Loading etl configuration for `RiskLiquidityReport.v1`
+2020-06-02 10:04:20,796 [44] DEBUG DynamicEtl.Service - Fetching data for `RiskLiquidityReport.v1` with arg `{fileid:'857C5335804975A4AEB96E00E2754AFB3DB95415F83C037CF7D9CFA4755401A2'}`
+2020-06-02 10:04:23,888 [44] DEBUG DynamicEtl.Service - Executing pre operations for `RiskLiquidityReport.v1`
+2020-06-02 10:04:23,888 [44] DEBUG DynamicEtl.Service - Reading data for `RiskLiquidityReport.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\7cc2564c-2b56-45f9-bbd7-0e5045bafb89.xlsm`
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Loading external libs with pattern *-InputOperations.dll. Found (1) assemblies.
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `RiskLiquidityReport.v1`
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Writing data to destination for `RiskLiquidityReport.v1`
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate,RiskLiquidityReport
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Columns in data: ReportDate,Pershing Borrowing Capacity 2,Pershing Equity,Pershing Positions Fully Paid,Pershing Margin,Pershing,Harris,Barclays,BoNY,Long-Term Liquidity,Pershing Borrowing Capacity,Repo Liquidity,Bilateral NFE,BoNY Margin,FICC Required Fund Deposit Margin,Net Excess / (Deficit) Margin,Short-Term Liquidity,Available Liquidity,Repo Funding,FICC Requirement (stress incremental),FICC VaR,Blackout Charge,High Leverage Premium,FICC Requirement Rebate,Bilateral Margin Rebate,Margin Rebate,Inventory,Repo Inventory Funding,Pershing Deposit Stress,Trading Stress,Contractual Obligations,Total Reserves,Available Liquidity (net of stress),FICC Requirement - Total 3d,FICC Requirement - Total 3d (No Vol),FICC Requirement - Blackout,FICC Requirement - Max Factor,FICC Requirement - Stress Factor,FICC Requirement - Stress Blackout,rundate,CCLF Margin
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Columns: ReportDate,Pershing Borrowing Capacity 2,Pershing Equity,Pershing Positions Fully Paid,Pershing Margin,Pershing,Harris,Barclays,BoNY,Long-Term Liquidity,Pershing Borrowing Capacity,Repo Liquidity,Bilateral NFE,BoNY Margin,FICC Required Fund Deposit Margin,Net Excess / (Deficit) Margin,Short-Term Liquidity,Available Liquidity,Repo Funding,FICC Requirement (stress incremental),FICC VaR,Blackout Charge,High Leverage Premium,FICC Requirement Rebate,Bilateral Margin Rebate,Margin Rebate,Inventory,Repo Inventory Funding,Pershing Deposit Stress,Trading Stress,Contractual Obligations,Total Reserves,Available Liquidity (net of stress),FICC Requirement - Total 3d,FICC Requirement - Total 3d (No Vol),FICC Requirement - Blackout,FICC Requirement - Max Factor,FICC Requirement - Stress Factor,FICC Requirement - Stress Blackout,rundate,CCLF Margin
+2020-06-02 10:04:27,413 [44] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate,RiskLiquidityReport
+2020-06-02 10:04:27,646 [44] INFO  DynamicEtl.Service - Inserting 326 rows into destination tbl_FinancialRisk_Liquidity_Report 
+2020-06-02 10:04:27,708 [44] DEBUG DynamicEtl.Service - Applying post operations for `RiskLiquidityReport.v1`
+2020-06-02 10:04:27,708 [44] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 10:04:27,954 [44] INFO  DynamicEtl.Service - Etl finished with status Success for `RiskLiquidityReport.v1` in 7 secs, 148 msecs
+2020-06-02 10:04:27,954 [44] INFO  DynamicEtl.Service - Finished Etl for `RiskLiquidityReport.v1` with arg `{fileid:'857C5335804975A4AEB96E00E2754AFB3DB95415F83C037CF7D9CFA4755401A2'}`
+2020-06-02 12:47:38,768 [44] INFO  DynamicEtl.Service - Starting Etl for `GEMS.DyEtl.ExceptionReport.Website.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 12:47:38,768 [44] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.ExceptionReport.Website.v1`
+2020-06-02 12:47:38,784 [44] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.ExceptionReport.Website.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 12:47:42,696 [44] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.ExceptionReport.Website.v1`
+2020-06-02 12:47:42,696 [44] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.ExceptionReport.Website.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\0ad6fcbb-34ff-408a-a8f6-83989447211d.xlsx`
+2020-06-02 12:47:43,511 [44] INFO  DynamicEtl.Service - Worksheet with this name is not found.
+Parameter name: name
+System.ArgumentOutOfRangeException: Worksheet with this name is not found.
+Parameter name: name
+   at DevExpress.Office.Utils.Exceptions.ThrowArgumentOutOfRangeException(String parameterName, String message)
+   at DevExpress.XtraSpreadsheet.API.Native.Implementation.NativeWorksheetCollection.get_Item(String name)
+   at DynamicEtl.Service.Extensions.WorkbookExtensions.TryLoadWorksheet(IWorkbook wb, Worksheet& ws, String sheetName) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Extensions\WorkbookExtensions.cs:line 13
+   at DynamicEtl.Service.DataReader.Excel.ExcelReader.Read(String filepath) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\DataReader\Excel\ExcelReader.cs:line 25
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 132
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+2020-06-02 12:47:43,689 [44] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 12:47:43,689 [44] INFO  DynamicEtl.Service - Etl finished with status Error for `GEMS.DyEtl.ExceptionReport.Website.v1` in 4 secs, 906 msecs
+2020-06-02 12:47:43,689 [44] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.ExceptionReport.Website.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`

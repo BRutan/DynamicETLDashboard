@@ -1,0 +1,49 @@
+2020-06-02 04:19:10,768 [81] DEBUG DynamicEtl.Service - Loading etl configuration for `MarketDataImpact.v1`
+2020-06-02 04:19:10,768 [81] DEBUG DynamicEtl.Service - Fetching data for `MarketDataImpact.v1` with arg `{fileid:'124A12FA31DB21BA040B898314827BFD29CE951D12AC5C866E7EF97B1B2FCC2E'}`
+2020-06-02 04:19:17,527 [81] DEBUG DynamicEtl.Service - Executing pre operations for `MarketDataImpact.v1`
+2020-06-02 04:19:17,527 [81] DEBUG DynamicEtl.Service - Reading data for `MarketDataImpact.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\b2dbbf4b-ea0b-484c-bdf4-88cf72692428.csv`
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Loading external libs with pattern *-InputOperations.dll. Found (1) assemblies.
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `MarketDataImpact.v1`
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Writing data to destination for `MarketDataImpact.v1`
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Input operations: AddRunDate,MarketDataImpact,AddFileDate
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Columns in data: Trade Type,Cusip,Security Description,Customer,Trader,Rate,Money With Interest To Date,Finance Date,Open Date,Return Date,Haircut,User Id,Net Price,Original Price,Market Price,Amount,Money,End Money,MARKET_VALUE,Account Number,fileDate,Type,Type 1,Rundate
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Columns: Trade Type,Cusip,Security Description,Customer,Trader,Rate,Money With Interest To Date,Finance Date,Open Date,Return Date,Haircut,User Id,Net Price,Original Price,Market Price,Amount,Money,End Money,MARKET_VALUE,Account Number,fileDate,Type,Type 1,Rundate
+2020-06-02 04:19:17,631 [81] DEBUG DynamicEtl.Service - Input operations: AddRunDate,MarketDataImpact,AddFileDate
+2020-06-02 04:19:17,740 [81] INFO  DynamicEtl.Service - Inserting 516 rows into destination tbl_Operations_Repo_MarketDataImpact
+2020-06-02 04:19:19,550 [81] DEBUG DynamicEtl.Service - Applying post operations for `MarketDataImpact.v1`
+2020-06-02 04:19:20,714 [81] INFO  DynamicEtl.Service - Etl finished with status Success for `MarketDataImpact.v1` in 9 secs, 947 msecs
+2020-06-02 04:19:20,714 [81] INFO  DynamicEtl.Service - Finished Etl for `MarketDataImpact.v1` with arg `{fileid:'124A12FA31DB21BA040B898314827BFD29CE951D12AC5C866E7EF97B1B2FCC2E'}`
+2020-06-02 07:04:22,265 [81] INFO  DynamicEtl.Service - Starting Etl for `FidessaMarketMaker.v1` with arg `{fileid:'22D4DC42C0393C20F5C1884F453AD5E976C4BF81F7EA7BB79075A2D7A3758554'}`
+2020-06-02 07:04:22,281 [81] DEBUG DynamicEtl.Service - Loading etl configuration for `FidessaMarketMaker.v1`
+2020-06-02 07:04:22,281 [81] DEBUG DynamicEtl.Service - Fetching data for `FidessaMarketMaker.v1` with arg `{fileid:'22D4DC42C0393C20F5C1884F453AD5E976C4BF81F7EA7BB79075A2D7A3758554'}`
+2020-06-02 07:04:26,533 [81] DEBUG DynamicEtl.Service - Executing pre operations for `FidessaMarketMaker.v1`
+2020-06-02 07:04:26,533 [81] DEBUG DynamicEtl.Service - Reading data for `FidessaMarketMaker.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\769e0b36-fab3-466c-8cf2-6b74248d440d.csv`
+2020-06-02 07:04:26,568 [81] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `FidessaMarketMaker.v1`
+2020-06-02 07:04:26,568 [81] DEBUG DynamicEtl.Service - Writing data to destination for `FidessaMarketMaker.v1`
+2020-06-02 07:04:37,577 [81] INFO  DynamicEtl.Service - Cannot open database "FidessaRaw" requested by the login. The login failed.
+Login failed for user 'WANLINK\AppNJ1QAAPP20svc'.
+System.Data.SqlClient.SqlException (0x80131904): Cannot open database "FidessaRaw" requested by the login. The login failed.
+Login failed for user 'WANLINK\AppNJ1QAAPP20svc'.
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, DbConnectionPool pool, String accessToken, Boolean applyTransientFaultHandling, SqlAuthenticationProviderManager sqlAuthProviderManager)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at DynamicEtl.Service.Destination.SqlMetaProvider.getMeta(String connString, String tableName) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Destination\SqlMetaProvider.cs:line 62
+   at DynamicEtl.Service.Destination.SqlMetaProvider.GetMeta() in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Destination\SqlMetaProvider.cs:line 37
+   at DynamicEtl.Service.Destination.SqlDestinationWriter.Write(IEnumerable`1 data, Int32 batchSize) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Destination\SqlDestinationWriter.cs:line 28
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 146
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+ClientConnectionId:37d14246-b2a4-4cad-9d56-cad746c7cc53
+Error Number:4060,State:1,Class:11
+2020-06-02 07:04:37,578 [81] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 07:04:37,578 [81] INFO  DynamicEtl.Service - Etl finished with status Error for `FidessaMarketMaker.v1` in 15 secs, 297 msecs
+2020-06-02 07:04:37,578 [81] INFO  DynamicEtl.Service - Finished Etl for `FidessaMarketMaker.v1` with arg `{fileid:'22D4DC42C0393C20F5C1884F453AD5E976C4BF81F7EA7BB79075A2D7A3758554'}`

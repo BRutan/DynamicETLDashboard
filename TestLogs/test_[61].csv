@@ -1,0 +1,10 @@
+2020-06-02 06:09:18,862 [61] DEBUG DynamicEtl.Service - Loading etl configuration for `CC.UserGroups.v1`
+2020-06-02 06:09:18,862 [61] DEBUG DynamicEtl.Service - Fetching data for `CC.UserGroups.v1` with arg `{fileid:'07184645ABFA975D6A65312556596EFD4FF0D384E28DF0FC8A9E06DC1F2911B7'}`
+2020-06-02 06:09:21,942 [61] ERROR DynamicEtl.Service - Error with ETL 'CC.UserGroups.v1' - The remote server returned an error: (500) Internal Server Error.
+System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at DynamicEtl.Service.SourceFetcher.FileVault.FileVaultFetcher.Fetch(String argJson) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\SourceFetcher\FileVault\FileVaultFetcher.cs:line 43
+   at DynamicEtl.Service.EtlRunner.RunPreOperations(EtlConfig etlConfig, String identifier, String arg, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 115
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 79
+2020-06-02 06:09:21,946 [61] INFO  DynamicEtl.Service - Etl finished with status Error for `CC.UserGroups.v1` in 3 secs, 83 msecs
+2020-06-02 06:09:21,946 [61] INFO  DynamicEtl.Service - Finished Etl for `CC.UserGroups.v1` with arg `{fileid:'07184645ABFA975D6A65312556596EFD4FF0D384E28DF0FC8A9E06DC1F2911B7'}`

@@ -1,0 +1,16 @@
+2020-06-02 13:32:19,328 [17] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.SecurityExceptions.v1`
+2020-06-02 13:32:19,328 [17] DEBUG DynamicEtl.Service - Fetching data for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:32:26,086 [17] DEBUG DynamicEtl.Service - Executing pre operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:32:26,086 [17] DEBUG DynamicEtl.Service - Reading data for `GS.SecurityExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\f16647e2-cd1b-456f-a291-3167ea8643d8.xlsx`
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Writing data to destination for `GS.SecurityExceptions.v1`
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Columns in data: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Columns: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:32:26,117 [17] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:32:26,133 [17] INFO  DynamicEtl.Service - Inserting 88 rows into destination tbl_CyberSecurity_Exceptions_GS
+2020-06-02 13:32:26,133 [17] DEBUG DynamicEtl.Service - Applying post operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:32:26,133 [17] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 13:32:28,315 [17] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.SecurityExceptions.v1` in 8 secs, 977 msecs
+2020-06-02 13:32:28,315 [17] INFO  DynamicEtl.Service - Finished Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`

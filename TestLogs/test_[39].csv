@@ -1,0 +1,15 @@
+2020-06-02 07:34:17,244 [39] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1`
+2020-06-02 07:34:17,244 [39] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1` with arg `{fileid:'F3C11F7456744E76633AC7BF1EBCC0DF11F2373C0EDF0B50C7146F730F86C873'}`
+2020-06-02 07:34:22,397 [39] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1`
+2020-06-02 07:34:22,397 [39] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\44ca6458-8b1f-419b-999f-980734e226b9.CSV`
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1`
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1`
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Columns in data: fileDate,#,ENTERED_DATETIME,TRADING_ENTITY_ID,CWC_COMBINED_VALUE,CWC_NET_VALUE,CWC_LONG_VALUE,CWC_SHORT_VALUE,LIMIT_CURRENCY_ID,ENTERED_BY,RunDate
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Columns: fileDate,#,ENTERED_DATETIME,TRADING_ENTITY_ID,CWC_COMBINED_VALUE,CWC_NET_VALUE,CWC_LONG_VALUE,CWC_SHORT_VALUE,LIMIT_CURRENCY_ID,ENTERED_BY,RunDate
+2020-06-02 07:34:22,467 [39] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:34:22,467 [39] INFO  DynamicEtl.Service - Inserting 1 rows into destination tbl_FinancialRisk_Fidessa_MAEntityLimitsEOD
+2020-06-02 07:34:22,482 [39] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1`
+2020-06-02 07:34:22,529 [39] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1` in 5 secs, 292 msecs
+2020-06-02 07:34:22,529 [39] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1` with arg `{fileid:'F3C11F7456744E76633AC7BF1EBCC0DF11F2373C0EDF0B50C7146F730F86C873'}`

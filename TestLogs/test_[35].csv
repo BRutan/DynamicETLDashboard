@@ -1,0 +1,15 @@
+2020-06-02 14:24:32,288 [35] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1`
+2020-06-02 14:24:32,288 [35] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1` with arg `{fileid:'57F94949A3E180B78DC5F3915990C6F586B00D654075E3D28DA45A32370E29B9'}`
+2020-06-02 14:24:39,075 [35] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1`
+2020-06-02 14:24:39,075 [35] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\59f92c36-2a51-47bf-a230-fb50ddc95781.xlsx`
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1`
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1`
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Columns in data: Employee ID,Rationale,RunDate,fileDate
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Columns: Employee ID,Rationale,RunDate,fileDate
+2020-06-02 14:24:39,106 [35] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 14:24:39,122 [35] INFO  DynamicEtl.Service - Inserting 111 rows into destination InternalAudit_GSIBPhysicalAccessKnownExceptions
+2020-06-02 14:24:39,122 [35] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1`
+2020-06-02 14:24:39,138 [35] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1` in 6 secs, 842 msecs
+2020-06-02 14:24:39,138 [35] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1` with arg `{fileid:'57F94949A3E180B78DC5F3915990C6F586B00D654075E3D28DA45A32370E29B9'}`

@@ -1,0 +1,70 @@
+2020-06-02 06:29:14,992 [11] DEBUG DynamicEtl.Service - Loading etl configuration for `GTXCustomerPopulation.v1`
+2020-06-02 06:29:14,992 [11] DEBUG DynamicEtl.Service - Fetching data for `GTXCustomerPopulation.v1` with arg `{fileid:'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855'}`
+2020-06-02 06:29:21,936 [11] DEBUG DynamicEtl.Service - Executing pre operations for `GTXCustomerPopulation.v1`
+2020-06-02 06:29:21,936 [11] DEBUG DynamicEtl.Service - Reading data for `GTXCustomerPopulation.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\aeb34339-542a-4b79-81bd-9ff524705be2.csv`
+2020-06-02 06:29:21,963 [11] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GTXCustomerPopulation.v1`
+2020-06-02 06:29:21,964 [11] DEBUG DynamicEtl.Service - Writing data to destination for `GTXCustomerPopulation.v1`
+2020-06-02 06:29:21,964 [11] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 06:29:23,124 [11] INFO  DynamicEtl.Service - Value cannot be null.
+Parameter name: source
+System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Any[TSource](IEnumerable`1 source)
+   at DynamicEtl.Service.Destination.SqlDestinationWriter.Write(IEnumerable`1 data, Int32 batchSize) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Destination\SqlDestinationWriter.cs:line 31
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 146
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+2020-06-02 06:29:23,124 [11] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 06:29:23,125 [11] INFO  DynamicEtl.Service - Etl finished with status Error for `GTXCustomerPopulation.v1` in 8 secs, 133 msecs
+2020-06-02 06:29:23,125 [11] INFO  DynamicEtl.Service - Finished Etl for `GTXCustomerPopulation.v1` with arg `{fileid:'E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855'}`
+2020-06-02 07:34:17,229 [11] INFO  DynamicEtl.Service - Starting Etl for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1` with arg `{fileid:'32D35736AD9E3952875713C2DB07B08778395EC85ABD2320139A1DE36E2DC341'}`
+2020-06-02 07:34:17,244 [11] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1`
+2020-06-02 07:34:17,244 [11] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1` with arg `{fileid:'32D35736AD9E3952875713C2DB07B08778395EC85ABD2320139A1DE36E2DC341'}`
+2020-06-02 07:34:22,451 [11] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1`
+2020-06-02 07:34:22,451 [11] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\31d32543-c278-4ce2-8246-6aff5994bbe6.CSV`
+2020-06-02 07:34:24,499 [11] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1`
+2020-06-02 07:34:24,499 [11] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1`
+2020-06-02 07:34:24,499 [11] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:34:24,515 [11] DEBUG DynamicEtl.Service - Columns in data: fileDate,#,CPTY_ID,CPTY_DESC,CPTY_TYPE,CPTY_TYPE_QUAL,ETC_SERVICE,PRIM_SLS_TRADER,CPTY_GROUP_ID,ADP_CODE,AIM_CODE,ATR_CODE,BDA_CODE,BEOR_CODE,BETA_CODE,BIC_CODE,BIOE_CODE,BOI_CODE,CID_CODE,CLR_CODE,CLRF_CODE,CRD_CODE,DTC_CODE,EDT_CODE,GCID_CODE,GEN_CODE,INQT_CODE,ITG_CODE,JVLN_CODE,LINE_CODE,MFN_CODE,NEOV_CODE,NFIX_CODE,PERS_CODE,RIMS_CODE,SDI_CODE,STN_CODE,TNS_CODE,VIEW_CODE,REPRESENTATIVE_ID,STATUS,CPTY_PERMISSION,DEFAULT_ORDER_FLAGS,CUST_CODE,DMA_CODE,EMS_CODE,FDSA_CODE,CPTY_COUNTRY_OF_ORIGIN,INTL_CODE,EXPR_CODE,TRDW_CODE,MIC_CODE,OVERRIDE_EXECUTION_VENUE,SEND_NOE_LIQ_IND,SEND_NOE_ALGO,SEND_NOE_CAPACITY,SEND_NOE_EXECUTION_VENUE,SEND_NOE_ROUTED_DEST,ATRLIVE_CODE,BLOK_CODE,BMFIX_CODE,BNET_CODE,BSCS_CODE,CIBC_CODE,CIK_CODE,CMEC_CODE,CON_CODE,CREF_CODE,CSL_CODE,CSZ_CODE,CTM_CODE,DVX_CODE,ENXP_CODE,EZX_CODE,FFLY_CODE,FLTD_CODE,FRN_CODE,GFCM_CODE,GLTD_CODE,GSCS_CODE,ICMA_CODE,INCA_CODE,INDI_CODE,INFO_CODE,LAVA_CODE,LQBK_CODE,MCC_CODE,MIXT_CODE,MLCS_CODE,NEXS_CODE,NFS_CODE,PENS_CODE,PHAS_CODE,RAPT_CODE,REDI_CODE,RUT_CODE,STAR_CODE,STRL_CODE,SWFT_CODE,SWIM_CODE,TAL_CODE,TORA_CODE,TRDS_CODE,TRX2_CODE,ULLK_CODE,UNX_CODE,WEX_CODE,CPTY_LINKED_BROKER,CPTY_LINKED_BROKER_CLEARING,DEFAULT_DEALING_INSTRUCTIONS,RunDate
+2020-06-02 07:34:24,515 [11] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:34:24,515 [11] DEBUG DynamicEtl.Service - Columns: fileDate,#,CPTY_ID,CPTY_DESC,CPTY_TYPE,CPTY_TYPE_QUAL,ETC_SERVICE,PRIM_SLS_TRADER,CPTY_GROUP_ID,ADP_CODE,AIM_CODE,ATR_CODE,BDA_CODE,BEOR_CODE,BETA_CODE,BIC_CODE,BIOE_CODE,BOI_CODE,CID_CODE,CLR_CODE,CLRF_CODE,CRD_CODE,DTC_CODE,EDT_CODE,GCID_CODE,GEN_CODE,INQT_CODE,ITG_CODE,JVLN_CODE,LINE_CODE,MFN_CODE,NEOV_CODE,NFIX_CODE,PERS_CODE,RIMS_CODE,SDI_CODE,STN_CODE,TNS_CODE,VIEW_CODE,REPRESENTATIVE_ID,STATUS,CPTY_PERMISSION,DEFAULT_ORDER_FLAGS,CUST_CODE,DMA_CODE,EMS_CODE,FDSA_CODE,CPTY_COUNTRY_OF_ORIGIN,INTL_CODE,EXPR_CODE,TRDW_CODE,MIC_CODE,OVERRIDE_EXECUTION_VENUE,SEND_NOE_LIQ_IND,SEND_NOE_ALGO,SEND_NOE_CAPACITY,SEND_NOE_EXECUTION_VENUE,SEND_NOE_ROUTED_DEST,ATRLIVE_CODE,BLOK_CODE,BMFIX_CODE,BNET_CODE,BSCS_CODE,CIBC_CODE,CIK_CODE,CMEC_CODE,CON_CODE,CREF_CODE,CSL_CODE,CSZ_CODE,CTM_CODE,DVX_CODE,ENXP_CODE,EZX_CODE,FFLY_CODE,FLTD_CODE,FRN_CODE,GFCM_CODE,GLTD_CODE,GSCS_CODE,ICMA_CODE,INCA_CODE,INDI_CODE,INFO_CODE,LAVA_CODE,LQBK_CODE,MCC_CODE,MIXT_CODE,MLCS_CODE,NEXS_CODE,NFS_CODE,PENS_CODE,PHAS_CODE,RAPT_CODE,REDI_CODE,RUT_CODE,STAR_CODE,STRL_CODE,SWFT_CODE,SWIM_CODE,TAL_CODE,TORA_CODE,TRDS_CODE,TRX2_CODE,ULLK_CODE,UNX_CODE,WEX_CODE,CPTY_LINKED_BROKER,CPTY_LINKED_BROKER_CLEARING,DEFAULT_DEALING_INSTRUCTIONS,RunDate
+2020-06-02 07:34:24,515 [11] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:34:31,566 [11] INFO  DynamicEtl.Service - Inserting 10000 rows into destination tbl_FinancialRisk_Fidessa_CustomerDetailReport
+2020-06-02 07:34:32,212 [11] INFO  DynamicEtl.Service - Inserting 1372 rows into destination tbl_FinancialRisk_Fidessa_CustomerDetailReport
+2020-06-02 07:34:32,368 [11] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1`
+2020-06-02 07:34:37,948 [11] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1` in 20 secs, 692 msecs
+2020-06-02 07:34:37,948 [11] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1` with arg `{fileid:'32D35736AD9E3952875713C2DB07B08778395EC85ABD2320139A1DE36E2DC341'}`
+2020-06-02 12:52:33,511 [11] INFO  DynamicEtl.Service - Starting Etl for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 12:52:33,511 [11] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1`
+2020-06-02 12:52:33,511 [11] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 12:52:40,338 [11] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1`
+2020-06-02 12:52:40,338 [11] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\c80820f9-a2a4-4121-b17c-46646e890845.xlsx`
+2020-06-02 12:52:42,467 [11] INFO  DynamicEtl.Service - Worksheet with this name is not found.
+Parameter name: name
+System.ArgumentOutOfRangeException: Worksheet with this name is not found.
+Parameter name: name
+   at DevExpress.Office.Utils.Exceptions.ThrowArgumentOutOfRangeException(String parameterName, String message)
+   at DevExpress.XtraSpreadsheet.API.Native.Implementation.NativeWorksheetCollection.get_Item(String name)
+   at DynamicEtl.Service.Extensions.WorkbookExtensions.TryLoadWorksheet(IWorkbook wb, Worksheet& ws, String sheetName) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Extensions\WorkbookExtensions.cs:line 13
+   at DynamicEtl.Service.DataReader.Excel.ExcelReader.Read(String filepath) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\DataReader\Excel\ExcelReader.cs:line 25
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 132
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+2020-06-02 12:52:42,467 [11] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 12:52:42,467 [11] INFO  DynamicEtl.Service - Etl finished with status Error for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1` in 8 secs, 945 msecs
+2020-06-02 12:52:42,467 [11] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1` with arg `{fileid:'8098318B5DBF9B82644BDA26FEC7BAC4D67C59FBDAA02A3338103990FB446B8C'}`
+2020-06-02 15:21:43,162 [11] INFO  DynamicEtl.Service - Starting Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 15:21:43,162 [11] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.SecurityExceptions.v1`
+2020-06-02 15:21:43,162 [11] DEBUG DynamicEtl.Service - Fetching data for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 15:21:50,675 [11] DEBUG DynamicEtl.Service - Executing pre operations for `GS.SecurityExceptions.v1`
+2020-06-02 15:21:50,675 [11] DEBUG DynamicEtl.Service - Reading data for `GS.SecurityExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\d416da38-29af-4eca-ba16-08eba0b01bec.xlsx`
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.SecurityExceptions.v1`
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Writing data to destination for `GS.SecurityExceptions.v1`
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Columns in data: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Columns: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 15:21:50,712 [11] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 15:21:50,728 [11] INFO  DynamicEtl.Service - Inserting 88 rows into destination tbl_CyberSecurity_Exceptions_GS
+2020-06-02 15:21:50,728 [11] DEBUG DynamicEtl.Service - Applying post operations for `GS.SecurityExceptions.v1`
+2020-06-02 15:21:50,728 [11] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 15:21:52,873 [11] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.SecurityExceptions.v1` in 9 secs, 715 msecs
+2020-06-02 15:21:52,873 [11] INFO  DynamicEtl.Service - Finished Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`

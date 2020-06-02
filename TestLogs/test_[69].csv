@@ -1,0 +1,11 @@
+2020-06-02 07:54:17,318 [69] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.ExceptionReport.CitrixToLocal.v1`
+2020-06-02 07:54:17,318 [69] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.ExceptionReport.CitrixToLocal.v1` with arg `{fileid:'CDF996C52CCC04C0B6AF8DC3AF790D09BC38C5DFAED1D7D5DBA97702EB597278'}`
+2020-06-02 07:54:18,523 [69] INFO  DynamicEtl.Service - The remote server returned an error: (500) Internal Server Error.
+System.Net.WebException: The remote server returned an error: (500) Internal Server Error.
+   at System.Net.HttpWebRequest.GetResponse()
+   at DynamicEtl.Service.SourceFetcher.FileVault.FileVaultFetcher.Fetch(String argJson) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\SourceFetcher\FileVault\FileVaultFetcher.cs:line 43
+   at DynamicEtl.Service.EtlRunner.RunPreOperations(EtlConfig etlConfig, String identifier, String arg, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 115
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 79
+2020-06-02 07:54:18,523 [69] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 07:54:18,523 [69] INFO  DynamicEtl.Service - Etl finished with status Error for `GEMS.DyEtl.ExceptionReport.CitrixToLocal.v1` in 1 secs, 202 msecs
+2020-06-02 07:54:18,523 [69] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.ExceptionReport.CitrixToLocal.v1` with arg `{fileid:'CDF996C52CCC04C0B6AF8DC3AF790D09BC38C5DFAED1D7D5DBA97702EB597278'}`

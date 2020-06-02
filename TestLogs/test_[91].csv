@@ -1,0 +1,18 @@
+2020-06-02 07:36:02,292 [91] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1`
+2020-06-02 07:36:02,292 [91] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1` with arg `{fileid:'3CE2AB526BD44AB0DC70DCCD5231283BB509AAD683F082B2E9E47A2D483C7CF5'}`
+2020-06-02 07:36:09,129 [91] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1`
+2020-06-02 07:36:09,129 [91] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\dfeebb95-3714-4342-806c-06bec7d990ae.CSV`
+2020-06-02 07:36:09,191 [91] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1`
+2020-06-02 07:36:09,191 [91] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1`
+2020-06-02 07:36:09,191 [91] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:10,241 [91] INFO  DynamicEtl.Service - Value cannot be null.
+Parameter name: source
+System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Any[TSource](IEnumerable`1 source)
+   at DynamicEtl.Service.Destination.SqlDestinationWriter.Write(IEnumerable`1 data, Int32 batchSize) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\Destination\SqlDestinationWriter.cs:line 31
+   at DynamicEtl.Service.EtlRunner.RunEtl(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 146
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 80
+2020-06-02 07:36:10,241 [91] INFO  DynamicEtl.Service - Email sent to ITAppDevelopmentGSAll@guggenheimpartners.com 
+2020-06-02 07:36:10,241 [91] INFO  DynamicEtl.Service - Etl finished with status Error for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1` in 7 secs, 959 msecs
+2020-06-02 07:36:10,241 [91] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1` with arg `{fileid:'3CE2AB526BD44AB0DC70DCCD5231283BB509AAD683F082B2E9E47A2D483C7CF5'}`

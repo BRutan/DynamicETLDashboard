@@ -1,0 +1,15 @@
+2020-06-02 07:36:02,292 [92] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1`
+2020-06-02 07:36:02,292 [92] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1` with arg `{fileid:'A8C34000AD841BD9E4BFA2CE7C7961060211AF92697727205747B400C898EDAC'}`
+2020-06-02 07:36:09,129 [92] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1`
+2020-06-02 07:36:09,129 [92] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\748c2c03-69e0-4544-b353-28507314f751.CSV`
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1`
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1`
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Columns in data: fileDate,ACCOUNT_ID,COUNTERPARTY_CODE,DESCRIPTION,RunDate
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Columns: fileDate,ACCOUNT_ID,COUNTERPARTY_CODE,DESCRIPTION,RunDate
+2020-06-02 07:36:09,661 [92] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:09,848 [92] INFO  DynamicEtl.Service - Inserting 2821 rows into destination tbl_FinancialRisk_Fidessa_CounterpartyAccount
+2020-06-02 07:36:09,895 [92] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1`
+2020-06-02 07:36:10,435 [92] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1` in 8 secs, 141 msecs
+2020-06-02 07:36:10,435 [92] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1` with arg `{fileid:'A8C34000AD841BD9E4BFA2CE7C7961060211AF92697727205747B400C898EDAC'}`

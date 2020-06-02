@@ -1,0 +1,16 @@
+2020-06-02 09:49:16,910 [107] DEBUG DynamicEtl.Service - Loading etl configuration for `PershingPrePost.v1`
+2020-06-02 09:49:16,910 [107] DEBUG DynamicEtl.Service - Fetching data for `PershingPrePost.v1` with arg `{fileid:'949D5D0051304105B229A756F187DC345C8CF0C65A630BA6A53AEB9C55B3BEF9'}`
+2020-06-02 09:49:19,614 [107] DEBUG DynamicEtl.Service - Executing pre operations for `PershingPrePost.v1`
+2020-06-02 09:49:19,614 [107] DEBUG DynamicEtl.Service - Reading data for `PershingPrePost.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\c2afa94e-205b-450b-ad7f-148d090aa9a0.xlsx`
+2020-06-02 09:49:19,692 [107] DEBUG DynamicEtl.Service - Loading external libs with pattern *-InputOperations.dll. Found (1) assemblies.
+2020-06-02 09:49:19,692 [107] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `PershingPrePost.v1`
+2020-06-02 09:49:19,692 [107] DEBUG DynamicEtl.Service - Writing data to destination for `PershingPrePost.v1`
+2020-06-02 09:49:19,692 [107] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,PershingPrePost
+2020-06-02 09:49:19,708 [107] DEBUG DynamicEtl.Service - Columns in data: OIT,Account,ACCT Sht Name,TD,SD,Current Quantity,Description,Cusip,Isin,Current Amount,CCY,Set Loc,Origin Quantity,Price,Orgin Amount,Affirm Date,ID Ctrl Number,Exec Bkr,Sub Acct,DTC,DTC#,Pff,OLC Ref,P&S Ref,PS,SS,RR,X,File Date,DailyFailStatus,Age,Rundate,fileDate
+2020-06-02 09:49:19,708 [107] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 09:49:19,708 [107] DEBUG DynamicEtl.Service - Columns: OIT,Account,ACCT Sht Name,TD,SD,Current Quantity,Description,Cusip,Isin,Current Amount,CCY,Set Loc,Origin Quantity,Price,Orgin Amount,Affirm Date,ID Ctrl Number,Exec Bkr,Sub Acct,DTC,DTC#,Pff,OLC Ref,P&S Ref,PS,SS,RR,X,File Date,DailyFailStatus,Age,Rundate,fileDate
+2020-06-02 09:49:19,708 [107] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate,PershingPrePost
+2020-06-02 09:49:19,880 [107] INFO  DynamicEtl.Service - Inserting 186 rows into destination tbl_Operations_FixedIncome_PershingPrePost
+2020-06-02 09:49:19,989 [107] DEBUG DynamicEtl.Service - Applying post operations for `PershingPrePost.v1`
+2020-06-02 09:49:24,593 [107] INFO  DynamicEtl.Service - Etl finished with status Success for `PershingPrePost.v1` in 7 secs, 673 msecs
+2020-06-02 09:49:24,593 [107] INFO  DynamicEtl.Service - Finished Etl for `PershingPrePost.v1` with arg `{fileid:'949D5D0051304105B229A756F187DC345C8CF0C65A630BA6A53AEB9C55B3BEF9'}`

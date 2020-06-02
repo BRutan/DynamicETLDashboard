@@ -1,0 +1,15 @@
+2020-06-02 07:36:03,280 [86] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1`
+2020-06-02 07:36:03,280 [86] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1` with arg `{fileid:'1D62CE07A1569E3B00F809BE5CB3B0F37239B69DDAB7746B95DE792045AD56C2'}`
+2020-06-02 07:36:14,354 [86] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1`
+2020-06-02 07:36:14,354 [86] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\4d023b36-5d67-4c87-bec7-1bd14888a086.CSV`
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1`
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1`
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Columns in data: fileDate,#,BOOK_PRIMARY_TRADER,BOOK_CODE,FIRM_ACCOUNT,INSTRUMENT_CODE,CUSIP_CODE,DESCRIPTION,NET_POSITION,AVERAGE_COST,VALUATION_PRICE,NET_PL,REALISED_PL,UNREALISED_PL,MTD_PL,DAILY_SC,MTD_SC,COMM,MTD_COMM,CLOSING_BID,CLOSING_OFFER,LAST_TRADE_PRICE,MARKED,YTD_PL,YTD_SC,YTD_COMM,VALUATION_STRATEGY,AVERAGE_PRICE,TRUE_AVERAGE_PRICE,VALUE,LONG_PRICE,SHORT_PRICE,PRE_ROLLOVER_REALISED_PL,CURRENCY,INSTRUMENT_ID,SEDL_CODE,ISIN_CODE,YESTERDAY_REALISED_PL,YESTERDAY_NET_PL,RunDate
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Columns: fileDate,#,BOOK_PRIMARY_TRADER,BOOK_CODE,FIRM_ACCOUNT,INSTRUMENT_CODE,CUSIP_CODE,DESCRIPTION,NET_POSITION,AVERAGE_COST,VALUATION_PRICE,NET_PL,REALISED_PL,UNREALISED_PL,MTD_PL,DAILY_SC,MTD_SC,COMM,MTD_COMM,CLOSING_BID,CLOSING_OFFER,LAST_TRADE_PRICE,MARKED,YTD_PL,YTD_SC,YTD_COMM,VALUATION_STRATEGY,AVERAGE_PRICE,TRUE_AVERAGE_PRICE,VALUE,LONG_PRICE,SHORT_PRICE,PRE_ROLLOVER_REALISED_PL,CURRENCY,INSTRUMENT_ID,SEDL_CODE,ISIN_CODE,YESTERDAY_REALISED_PL,YESTERDAY_NET_PL,RunDate
+2020-06-02 07:36:15,869 [86] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:17,887 [86] INFO  DynamicEtl.Service - Inserting 5245 rows into destination tbl_FinancialRisk_Fidessa_TradingPosition
+2020-06-02 07:36:18,106 [86] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1`
+2020-06-02 07:36:21,749 [86] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1` in 18 secs, 462 msecs
+2020-06-02 07:36:21,749 [86] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.TradingPosition.v1` with arg `{fileid:'1D62CE07A1569E3B00F809BE5CB3B0F37239B69DDAB7746B95DE792045AD56C2'}`

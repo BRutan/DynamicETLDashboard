@@ -1,0 +1,15 @@
+2020-06-02 07:39:29,839 [88] DEBUG DynamicEtl.Service - Loading etl configuration for `GI.Roster.v1`
+2020-06-02 07:39:29,839 [88] DEBUG DynamicEtl.Service - Fetching data for `GI.Roster.v1` with arg `{fileid:'B3C362B5A26767E24878F34AAA51E93F6D08E36B46F2A7BC0573423C14CA1304'}`
+2020-06-02 07:39:36,706 [88] DEBUG DynamicEtl.Service - Executing pre operations for `GI.Roster.v1`
+2020-06-02 07:39:36,706 [88] DEBUG DynamicEtl.Service - Reading data for `GI.Roster.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\4c583f96-7c47-4b4e-ae75-1f66be3ae9d4.csv`
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GI.Roster.v1`
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Writing data to destination for `GI.Roster.v1`
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Columns in data: Employee,BU,Meta BU,Hire Date,Cont Service Date,Length of Service in Months from Original Hire Date,Emp ID,Corporate Title,Functional Title,Work Phone,Type,Location,Location City,Location State,Non Company City,Non Company State,Email,Manager Legal Name Reporting,Gender,Regulatory Manager Name,Regulatory Manager ID,fileDate,RunDate
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Columns: Employee,BU,Meta BU,Hire Date,Cont Service Date,Length of Service in Months from Original Hire Date,Emp ID,Corporate Title,Functional Title,Work Phone,Type,Location,Location City,Location State,Non Company City,Non Company State,Email,Manager Legal Name Reporting,Gender,Regulatory Manager Name,Regulatory Manager ID,fileDate,RunDate
+2020-06-02 07:39:37,189 [88] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 07:39:37,415 [88] INFO  DynamicEtl.Service - Inserting 994 rows into destination tbl_GI_HumanResources_Roster
+2020-06-02 07:39:37,456 [88] DEBUG DynamicEtl.Service - Applying post operations for `GI.Roster.v1`
+2020-06-02 07:39:41,084 [88] INFO  DynamicEtl.Service - Etl finished with status Success for `GI.Roster.v1` in 11 secs, 245 msecs
+2020-06-02 07:39:41,084 [88] INFO  DynamicEtl.Service - Finished Etl for `GI.Roster.v1` with arg `{fileid:'B3C362B5A26767E24878F34AAA51E93F6D08E36B46F2A7BC0573423C14CA1304'}`

@@ -1,0 +1,98 @@
+2020-06-02 04:14:15,298 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `MarketDataImpact.v1`
+2020-06-02 04:14:15,298 [31] DEBUG DynamicEtl.Service - Fetching data for `MarketDataImpact.v1` with arg `{fileid:'124A12FA31DB21BA040B898314827BFD29CE951D12AC5C866E7EF97B1B2FCC2E'}`
+2020-06-02 04:14:18,004 [31] DEBUG DynamicEtl.Service - Executing pre operations for `MarketDataImpact.v1`
+2020-06-02 04:14:18,004 [31] DEBUG DynamicEtl.Service - Reading data for `MarketDataImpact.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\03434d7b-ea84-4492-ae96-d2fe3e71802f.csv`
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Loading external libs with pattern *-InputOperations.dll. Found (1) assemblies.
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `MarketDataImpact.v1`
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Writing data to destination for `MarketDataImpact.v1`
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,MarketDataImpact,AddFileDate
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Columns in data: Trade Type,Cusip,Security Description,Customer,Trader,Rate,Money With Interest To Date,Finance Date,Open Date,Return Date,Haircut,User Id,Net Price,Original Price,Market Price,Amount,Money,End Money,MARKET_VALUE,Account Number,fileDate,Type,Type 1,Rundate
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Columns: Trade Type,Cusip,Security Description,Customer,Trader,Rate,Money With Interest To Date,Finance Date,Open Date,Return Date,Haircut,User Id,Net Price,Original Price,Market Price,Amount,Money,End Money,MARKET_VALUE,Account Number,fileDate,Type,Type 1,Rundate
+2020-06-02 04:14:18,098 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,MarketDataImpact,AddFileDate
+2020-06-02 04:14:18,207 [31] INFO  DynamicEtl.Service - Inserting 516 rows into destination tbl_Operations_Repo_MarketDataImpact
+2020-06-02 04:14:19,707 [31] DEBUG DynamicEtl.Service - Applying post operations for `MarketDataImpact.v1`
+2020-06-02 04:14:19,739 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `MarketDataImpact.v1` in 4 secs, 437 msecs
+2020-06-02 04:14:19,739 [31] INFO  DynamicEtl.Service - Finished Etl for `MarketDataImpact.v1` with arg `{fileid:'124A12FA31DB21BA040B898314827BFD29CE951D12AC5C866E7EF97B1B2FCC2E'}`
+2020-06-02 06:34:13,266 [31] INFO  DynamicEtl.Service - Starting Etl for `PC.UserGroupAudit.v2` with arg `{fileid:'6F9A42E77FA76F6C392E58491898E54854E1D35287108C257FF700705B8E7E59'}`
+2020-06-02 06:34:13,273 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `PC.UserGroupAudit.v2`
+2020-06-02 06:34:13,273 [31] DEBUG DynamicEtl.Service - Fetching data for `PC.UserGroupAudit.v2` with arg `{fileid:'6F9A42E77FA76F6C392E58491898E54854E1D35287108C257FF700705B8E7E59'}`
+2020-06-02 06:34:20,069 [31] DEBUG DynamicEtl.Service - Executing pre operations for `PC.UserGroupAudit.v2`
+2020-06-02 06:34:20,069 [31] DEBUG DynamicEtl.Service - Reading data for `PC.UserGroupAudit.v2` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\5c1180cd-744f-4a10-8cb6-d8d7449ed25a.csv`
+2020-06-02 06:34:20,069 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `PC.UserGroupAudit.v2`
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Writing data to destination for `PC.UserGroupAudit.v2`
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Columns in data: ReportDate,GroupAdded,GroupRemoved,ChangeDate,RunDate,EmployeeCode
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Columns: ReportDate,GroupAdded,GroupRemoved,ChangeDate,RunDate,EmployeeCode
+2020-06-02 06:34:20,070 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 06:34:20,074 [31] INFO  DynamicEtl.Service - Inserting 65 rows into destination dbo.UserGroupAudit
+2020-06-02 06:34:20,166 [31] DEBUG DynamicEtl.Service - Applying post operations for `PC.UserGroupAudit.v2`
+2020-06-02 06:34:20,398 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `PC.UserGroupAudit.v2` in 7 secs, 125 msecs
+2020-06-02 06:34:20,398 [31] INFO  DynamicEtl.Service - Finished Etl for `PC.UserGroupAudit.v2` with arg `{fileid:'6F9A42E77FA76F6C392E58491898E54854E1D35287108C257FF700705B8E7E59'}`
+2020-06-02 07:34:17,229 [31] INFO  DynamicEtl.Service - Starting Etl for `GS.Roster.v1` with arg `{fileid:'14FD3C6AC3D243C49EC620AEBB9539FC416860D2ECC06832FC864FCC866A42D7'}`
+2020-06-02 07:34:17,244 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.Roster.v1`
+2020-06-02 07:34:17,244 [31] DEBUG DynamicEtl.Service - Fetching data for `GS.Roster.v1` with arg `{fileid:'14FD3C6AC3D243C49EC620AEBB9539FC416860D2ECC06832FC864FCC866A42D7'}`
+2020-06-02 07:34:22,423 [31] DEBUG DynamicEtl.Service - Executing pre operations for `GS.Roster.v1`
+2020-06-02 07:34:22,423 [31] DEBUG DynamicEtl.Service - Reading data for `GS.Roster.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\ae9360f9-9efd-454e-a32c-8b3c61686b14.csv`
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.Roster.v1`
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Writing data to destination for `GS.Roster.v1`
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Columns in data: Employee,BU,Meta BU,Hire Date,Cont Service Date,Length of Service in Months from Original Hire Date,Emp ID,Corporate Title,Functional Title,Type,Location,Location City,Location State,Non Company City,Non Company State,Email,Manager Legal Name Reporting,Gender,fileDate,Work Phone,Home Phone,Regulatory Manager Name,Regulatory Manager ID,RunDate,BU #
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Columns: Employee,BU,Meta BU,Hire Date,Cont Service Date,Length of Service in Months from Original Hire Date,Emp ID,Corporate Title,Functional Title,Type,Location,Location City,Location State,Non Company City,Non Company State,Email,Manager Legal Name Reporting,Gender,fileDate,Work Phone,Home Phone,Regulatory Manager Name,Regulatory Manager ID,RunDate,BU #
+2020-06-02 07:34:22,842 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 07:34:23,064 [31] INFO  DynamicEtl.Service - Inserting 719 rows into destination tbl_GS_HumanResources_Roster
+2020-06-02 07:34:23,111 [31] DEBUG DynamicEtl.Service - Applying post operations for `GS.Roster.v1`
+2020-06-02 07:35:52,260 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.Roster.v1` in 1 mins, 35 secs, 5 msecs
+2020-06-02 07:35:52,261 [31] INFO  DynamicEtl.Service - Finished Etl for `GS.Roster.v1` with arg `{fileid:'14FD3C6AC3D243C49EC620AEBB9539FC416860D2ECC06832FC864FCC866A42D7'}`
+2020-06-02 07:36:02,276 [31] INFO  DynamicEtl.Service - Starting Etl for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1` with arg `{fileid:'192DBE4613F6A27415F9326C6943EF899559FEFA7754B06E3F3D55FAF0DD8090'}`
+2020-06-02 07:36:02,276 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1`
+2020-06-02 07:36:02,276 [31] DEBUG DynamicEtl.Service - Fetching data for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1` with arg `{fileid:'192DBE4613F6A27415F9326C6943EF899559FEFA7754B06E3F3D55FAF0DD8090'}`
+2020-06-02 07:36:09,129 [31] DEBUG DynamicEtl.Service - Executing pre operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1`
+2020-06-02 07:36:09,129 [31] DEBUG DynamicEtl.Service - Reading data for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\2c1a2a04-a824-47f5-94b5-7bd709812e36.CSV`
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1`
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Writing data to destination for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1`
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Columns in data: fileDate,#,COUNTERPARTY_CODE,ENTERED_BY,ACCEPT_NEW_ORDERS,EXPRESS_DESTINATION_ID,STRAIGHT_ORDER_CONSIDERATION_LIMIT,STRAIGHT_DAILY_CONSIDERATION_LIMIT,STRAIGHT_DAILY_CONSIDERATION_TOTAL,DISCRETIONARY_ORDER_CONSIDERATION_LIMIT,DISCRETIONARY_DAILY_CONSIDERATION_LIMIT,DISCRETIONARY_DAILY_CONSIDERATION_TOTAL,OPENING_CONSIDERATION,CURRENCY_ID,NUM_ORDERS,NUM_AMENDED_ORDERS,NUM_CANCELLED_ORDERS,VERSION,STATUS,COMBINED_ORDER_CONSIDERATION_LIMIT,COMBINED_DAILY_CONSIDERATION_LIMIT,COMBINED_BUY_ORDER_CONSIDERATION_LIMIT,COMBINED_BUY_DAILY_CONSIDERATION_LIMIT,COMBINED_SELL_ORDER_CONSIDERATION_LIMIT,COMBINED_SELL_DAILY_CONSIDERATION_LIMIT,COMB_DAILY_CONSID_TOTAL,TIMESTAMP,COUNTERPARTY_GROUP_ID,COMBINED_ORDER_PERCENT_ADV_LIMIT,COMBINED_BUY_ORDER_PERCENT_ADV_LIMIT,COMBINED_SELL_ORDER_PERCENT_ADV_LIMIT,CARE_ORDER_PERCENT_ADV_LIMIT,DISCRETIONARY_ORDER_PERCENT_ADV_LIMIT,COMBINED_ORDER_QUANTITY_LIMIT,COMBINED_BUY_ORDER_QUANTITY_LIMIT,COMBINED_SELL_ORDER_QUANTITY_LIMIT,CARE_ORDER_QUANTITY_LIMIT,DISCRETIONARY_ORDER_QUANTITY_LIMIT,RunDate
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Columns: fileDate,#,COUNTERPARTY_CODE,ENTERED_BY,ACCEPT_NEW_ORDERS,EXPRESS_DESTINATION_ID,STRAIGHT_ORDER_CONSIDERATION_LIMIT,STRAIGHT_DAILY_CONSIDERATION_LIMIT,STRAIGHT_DAILY_CONSIDERATION_TOTAL,DISCRETIONARY_ORDER_CONSIDERATION_LIMIT,DISCRETIONARY_DAILY_CONSIDERATION_LIMIT,DISCRETIONARY_DAILY_CONSIDERATION_TOTAL,OPENING_CONSIDERATION,CURRENCY_ID,NUM_ORDERS,NUM_AMENDED_ORDERS,NUM_CANCELLED_ORDERS,VERSION,STATUS,COMBINED_ORDER_CONSIDERATION_LIMIT,COMBINED_DAILY_CONSIDERATION_LIMIT,COMBINED_BUY_ORDER_CONSIDERATION_LIMIT,COMBINED_BUY_DAILY_CONSIDERATION_LIMIT,COMBINED_SELL_ORDER_CONSIDERATION_LIMIT,COMBINED_SELL_DAILY_CONSIDERATION_LIMIT,COMB_DAILY_CONSID_TOTAL,TIMESTAMP,COUNTERPARTY_GROUP_ID,COMBINED_ORDER_PERCENT_ADV_LIMIT,COMBINED_BUY_ORDER_PERCENT_ADV_LIMIT,COMBINED_SELL_ORDER_PERCENT_ADV_LIMIT,CARE_ORDER_PERCENT_ADV_LIMIT,DISCRETIONARY_ORDER_PERCENT_ADV_LIMIT,COMBINED_ORDER_QUANTITY_LIMIT,COMBINED_BUY_ORDER_QUANTITY_LIMIT,COMBINED_SELL_ORDER_QUANTITY_LIMIT,CARE_ORDER_QUANTITY_LIMIT,DISCRETIONARY_ORDER_QUANTITY_LIMIT,RunDate
+2020-06-02 07:36:09,519 [31] DEBUG DynamicEtl.Service - Input operations: AddFileDate,AddRunDate
+2020-06-02 07:36:10,978 [31] INFO  DynamicEtl.Service - Inserting 2793 rows into destination tbl_FinancialRisk_Fidessa_CounterpartyControl
+2020-06-02 07:36:11,057 [31] DEBUG DynamicEtl.Service - Applying post operations for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1`
+2020-06-02 07:36:12,046 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1` in 9 secs, 762 msecs
+2020-06-02 07:36:12,046 [31] INFO  DynamicEtl.Service - Finished Etl for `GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1` with arg `{fileid:'192DBE4613F6A27415F9326C6943EF899559FEFA7754B06E3F3D55FAF0DD8090'}`
+2020-06-02 13:22:33,814 [31] INFO  DynamicEtl.Service - Starting Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:22:33,814 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.SecurityExceptions.v1`
+2020-06-02 13:22:33,814 [31] DEBUG DynamicEtl.Service - Fetching data for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:22:40,578 [31] DEBUG DynamicEtl.Service - Executing pre operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:22:40,578 [31] DEBUG DynamicEtl.Service - Reading data for `GS.SecurityExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\52e566f7-c42e-4030-8d90-b48e9eacc5e2.xlsx`
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Writing data to destination for `GS.SecurityExceptions.v1`
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Columns in data: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Columns: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:22:40,615 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:22:40,631 [31] INFO  DynamicEtl.Service - Inserting 88 rows into destination tbl_CyberSecurity_Exceptions_GS
+2020-06-02 13:22:40,631 [31] DEBUG DynamicEtl.Service - Applying post operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:22:40,646 [31] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 13:22:42,821 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.SecurityExceptions.v1` in 9 secs, 1 msecs
+2020-06-02 13:22:42,821 [31] INFO  DynamicEtl.Service - Finished Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:24:20,833 [31] INFO  DynamicEtl.Service - Starting Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:24:20,833 [31] DEBUG DynamicEtl.Service - Loading etl configuration for `GS.SecurityExceptions.v1`
+2020-06-02 13:24:20,833 [31] DEBUG DynamicEtl.Service - Fetching data for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
+2020-06-02 13:24:27,667 [31] DEBUG DynamicEtl.Service - Executing pre operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:24:27,667 [31] DEBUG DynamicEtl.Service - Reading data for `GS.SecurityExceptions.v1` from file at `E:\Services\Guggenheim.Services.DynamicEtl\Temp\11b9011f-461d-4c11-a5c7-e6858e50bb9d.xlsx`
+2020-06-02 13:24:27,708 [31] DEBUG DynamicEtl.Service - Transforming data from input to output after applying input operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:24:27,708 [31] DEBUG DynamicEtl.Service - Writing data to destination for `GS.SecurityExceptions.v1`
+2020-06-02 13:24:27,709 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:24:27,709 [31] DEBUG DynamicEtl.Service - Columns in data: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:24:27,709 [31] DEBUG DynamicEtl.Service - Adding columns for writing.
+2020-06-02 13:24:27,709 [31] DEBUG DynamicEtl.Service - Columns: Group,Employee ID,Display Name,SamAccountName,Direct Manager,Business Unit,Business Unit Description,Meta Business Unit,Operating Group,Legal Entity,Legal Entity Name,Cloud Storage Reason,Mass Media Reason,fileDate,RunDate
+2020-06-02 13:24:27,709 [31] DEBUG DynamicEtl.Service - Input operations: AddRunDate,AddFileDate
+2020-06-02 13:24:27,718 [31] INFO  DynamicEtl.Service - Inserting 88 rows into destination tbl_CyberSecurity_Exceptions_GS
+2020-06-02 13:24:27,726 [31] DEBUG DynamicEtl.Service - Applying post operations for `GS.SecurityExceptions.v1`
+2020-06-02 13:24:27,726 [31] DEBUG DynamicEtl.Service - Loading external libs with pattern *-PostOperations.dll. Found (1) assemblies.
+2020-06-02 13:24:29,820 [31] INFO  DynamicEtl.Service - Etl finished with status Success for `GS.SecurityExceptions.v1` in 8 secs, 987 msecs
+2020-06-02 13:24:29,820 [31] INFO  DynamicEtl.Service - Finished Etl for `GS.SecurityExceptions.v1` with arg `{fileid:'666BE849869C5631AB4DE0671F267F37C10D71552E3199FEDED74EF6163AE0F1'}`
