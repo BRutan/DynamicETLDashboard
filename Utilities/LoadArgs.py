@@ -308,7 +308,7 @@ def TestETLPipelineJsonArgs():
     if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
         errs.append('Local \\AppsettingsFiles\\ folder is missing.')
     elif not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
-        errs.append('Local AppsettingsFiles\\config.json file is missing.')
+        errs.append('Local \\AppsettingsFiles\\config.json file is missing.')
     else:
         try:
             args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
@@ -356,33 +356,33 @@ def TestETLPipelineJsonArgs():
     # etlname: ensure etl is present in appsettings file. 
     # If present then get etl's database and table names from the 
     # appsettings file:
-    if 'appsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['appsettings']['Etls']:
-        errs.append('(etlname) ETL %s not in appsettings file.' % args['testetlargs']['etlname'])
-    elif 'appsettings' in args['fixedargs']:
+    if 'serviceappsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['serviceappsettings']['Etls']:
+        errs.append('(etlname) ETL %s not in DynamicETL.Service Appsettings.json file.' % args['testetlargs']['etlname'])
+    elif 'serviceappsettings' in args['fixedargs']:
         etl = args['testetlargs']['etlname']
-        # Ensure that service appsettings json file has all necessary keys:
-        if 'TableName' not in args['fixedargs']['appsettings']['Etls'][etl]:
+        # Ensure that service serviceappsettingspath json file has all necessary keys:
+        if 'TableName' not in args['fixedargs']['serviceappsettings']['Etls'][etl]:
             errs.append('(serviceappsettingspath) Missing "TableName" property key for %s etl.' % etl)
         else:
-            args['testetlargs']['tablename'] = args['fixedargs']['appsettings']['Etls'][etl]['TableName']
-        if 'Destination' not in args['fixedargs']['appsettings']['Etls'][etl]:
+            args['testetlargs']['tablename'] = args['fixedargs']['serviceappsettings']['Etls'][etl]['TableName']
+        if 'Destination' not in args['fixedargs']['serviceappsettings']['Etls'][etl]:
             errs.append('(serviceappsettingspath) Missing "Destination" property key for %s etl.' % etl)
-        elif 'Destinations' not in args['fixedargs']['appsettings']:
+        elif 'Destinations' not in args['fixedargs']['serviceappsettings']:
             errs.append('(serviceappsettingspath) Missing "Destinations" property key in json file.')
         else:
-            dbHandle = args['fixedargs']['appsettings']['Etls'][etl]['Destination']
-            if dbHandle not in args['fixedargs']['appsettings']['Destinations']:
+            dbHandle = args['fixedargs']['serviceappsettings']['Etls'][etl]['Destination']
+            if dbHandle not in args['fixedargs']['serviceappsettings']['Destinations']:
                 errs.append('(serviceappsettingspath) Missing %s handle in "Sources".' % dbHandle)
-            elif 'ConfigValue' not in args['fixedargs']['appsettings']['Destinations'][dbHandle]:
+            elif 'ConfigValue' not in args['fixedargs']['serviceappsettings']['Destinations'][dbHandle]:
                 errs.append('(serviceappsettingspath) Missing "ConfigValue" key in "Destinations" key in json file.')
             else:
-                config = args['fixedargs']['appsettings']['Destinations'][dbHandle]['ConfigValue']
+                config = args['fixedargs']['serviceappsettings']['Destinations'][dbHandle]['ConfigValue']
                 source = re.search("Data Source=[aA-zZ]+;", config)
                 if not source:
                     errs.append('(serviceappsettingspath) Missing "Data Source" in "Destinations::%s::ConfigValue".' % dbHandle)
                 else:
                     dbName = source[0].split('=')[1].strip(';')
-                    args['testetlargs']['database'] = dbName   
+                    args['testetlargs']['database'] = dbName
     if not args['testetlargs']['testmode'] is None and 'filewatcher' in args['fixedargs'] and 'files' in args['fixedargs']['filewatcher']:
        # Get etl output path using filewatcher config:
        path = None
