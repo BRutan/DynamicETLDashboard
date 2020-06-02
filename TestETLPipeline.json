@@ -1,8 +1,10 @@
 {
-  "etlname": "GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1",
-  "filedate": "2020-01-15",
-  "reportpath": "GSIBPhysicalAccessKnownExceptions_DataComparison_STG.xlsx",
+  "etlname": "GS.SecurityExceptions.v1",
+  "filedate": "2020-04-13",
+  "reportpath": "GSSecurityExceptions_DataComparison_QA.xlsx",
   "postargspath": "postargs.json",
-  "testmode": "STG",
-  "pkey": "Employee ID"
+  "testmode": "QA",
+  "pkey": [ "Group", "Employee ID" ],
+  "ignorecols": [ "ID" ],
+  "comparefile": "SecurityExceptionsComp.csv"
 }

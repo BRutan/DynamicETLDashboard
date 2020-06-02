@@ -89,6 +89,8 @@ class DataReader:
         """
         * Determine if TimeSeries object could be integer type.
         """
+        if all(isnull(series)):
+            return False
         for val in series:
             if not str(val).isnumeric() and not isnull(val):
                 return False
@@ -98,6 +100,8 @@ class DataReader:
         """
         * Determine if TimeSeries object is floating point.
         """
+        if all(isnull(series)):
+            return False
         isfloat = re.compile('^[0-9]+.?[0-9]*$')
         for val in series:
             if not isfloat.match(str(val)) and not isnull(val):
@@ -108,6 +112,8 @@ class DataReader:
         """
         * Determine if is datetime.
         """
+        if all(isnull(series)):
+            return False
         for val in series:
             if not StringIsDT(str(val)) and not isnull(val):
                 return False
