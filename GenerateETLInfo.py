@@ -22,10 +22,16 @@ def GenerateETLInfo():
         msg = 'The following argument issues occurred:\n%s' % str(ex)
         print(msg)
         os._exit(0)
+    # Generate FileTransfer json file if does not exist:
+    if not os.path.exists():
+        pass
     # Aggregate info, generate report and display information:
-    info = ETLInfo(args['etlname'], args['config'], args['etlfilepaths'], args['filewatcher'], args['serviceappsettings'])
-    info.GenerateSummaryReport(args['summarypath'])
-    print(info.Summarize())
-
+    try:
+        info = ETLInfo(args['etlname'], args['config'], args['etlfilepaths'], args['filewatcher'], args['serviceappsettings'])
+        info.GenerateSummaryReport(args['summarypath'])
+        print(info.Summarize())
+    except Exception as ex:
+        pass
+    
 if __name__ == '__main__':
     GenerateETLInfo()
