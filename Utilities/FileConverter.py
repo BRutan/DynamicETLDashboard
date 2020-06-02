@@ -8,6 +8,7 @@ from argparse import ArgumentParser
 from cmd2 import with_argparser
 import shutil
 import os
+import re
 from Utilities.Helpers import IsRegex
 
 class FileConverter:
@@ -39,8 +40,10 @@ class FileConverter:
             errs.append('folderpath must point to a folder.')
         elif not os.path.exists(folderpath):
             errs.append('folderpath does not exist.')
-        if not IsRegex(filereg):
+        if isinstance(filereg, str) and not IsRegex(filereg):
             errs.append('filereg must be a valid regular expression string or object.')
+        elif isinstance(filereg, str):
+            filereg = re.compile(filereg)
         if not subdirs is None and not isinstance(subdirs, bool):
             errs.append('subdirs must be a boolean.')
         if errs:

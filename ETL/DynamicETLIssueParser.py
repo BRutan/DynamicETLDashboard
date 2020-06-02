@@ -55,10 +55,9 @@ class DynamicETLIssueParser:
         data = DynamicETLIssueParser.__dataDict
         files = FileConverter.GetAllFilePaths(servicelogfolder, DynamicETLIssueParser.__logfileSig)
         stackTraceIndic = 'System.Net.WebException: The remote server returned an error: (500) Internal Server Error.'
-        # {'TimeStamp' : [], 'ETLName' : [], 'StackTrace' : []}
         timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
         for file in files:
-            with open(file, 'r') as f:
+            with open(files[file], 'r') as f:
                 lines = [line for line in f]
                 for num, line in enumerate(lines):
                     if '(500) Internal Server Error' in line:

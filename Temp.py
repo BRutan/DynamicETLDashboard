@@ -49,7 +49,7 @@ def pulldata():
 
     
 def testlogreader():
-    reader = DynamicETLIssueParser('\\nj1qaapp20\logs')
+    reader = DynamicETLIssueParser('\\\\nj1qaapp20\\logs')
     reader.GenerateFile('test.csv')
 
 if __name__ == '__main__':
