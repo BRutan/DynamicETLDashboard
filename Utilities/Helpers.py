@@ -13,18 +13,34 @@ import re
 from time import sleep
 from tqdm import trange
 
-def Countdown(numSeconds):
+def Countdown(numSeconds, terminatecondition = None):
     """
-    * Print countdown sequence
-    for waiting.
+    * Print countdown sequence while waiting for event to occur.
+    Inputs:
+    * numSeconds: Positive numeric for number of seconds
+    to wait.
+    Optional:
+    * terminatecondition: Predicate where if true will terminate
+    the wait sequence early.
     """
+    errs = []
     if not isinstance(numSeconds, (int, float)):
-        raise Exception('numSeconds must be numeric.')
+        errs.append('numSeconds must be numeric.')
     elif int(numSeconds) <= 0:
-        raise Exception('numSeconds must be positive.')
+        errs.append('numSeconds must be positive.')
+    if not terminatecondition is None and not hasattr(terminatecondition, '__call__'):
+        errs.append('terminatecondition must be callable if provided.')
+    if errs:
+        raise Exception('\n'.join(errs))
     numSeconds = int(numSeconds)
-    for i in trange(numSeconds):
-        sleep(1)
+    if terminatecondition is None:
+        for i in trange(numSeconds):
+            sleep(1)
+    else:
+        for i in trange(numSeconds * 100):
+            sleep(1/100)
+            if terminatecondition:
+                break
 
 def CheckPath(path, argname, exists = True, pathtype = None):
     errs = []
