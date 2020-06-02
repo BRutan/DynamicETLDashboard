@@ -36,6 +36,14 @@ def TestETLPipeline():
         print(msg)
         input('Press enter to exit.')
         os._exit(0)
+    argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
+    try:
+        interface = TSQLInterface(argTup[1], argTup[2])
+    except Exception as ex:
+        print("Could not connect to %s::%s" % (argTup[1], argTup[2]))
+        print("Reason: %s" % str(ex))
+        input('Press enter to exit.')
+        os._exit(0)
     if args['testetlargs']['testmode'] == 'LOCAL':
         # Open DynamicETL.WebApi and post test ETL job:
         print("Loading ETL %s test job to WebAPI at" % args['testetlargs']['postargs']['subject'])
@@ -59,10 +67,8 @@ def TestETLPipeline():
             os._exit(0)
     elif args['testetlargs']['testmode'] != 'STG':
         # Remove data with filedate from server:
-        argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
         print('Removing data with fileDate %s from %s::%s::%s' % argTup)
         try:
-            interface = TSQLInterface(argTup[1], argTup[2])
             query = "DELETE FROM [%s] WHERE fileDate = '%s';" % (argTup[3], argTup[0])
             interface.Execute(query)
         except Exception as ex:
@@ -70,20 +76,20 @@ def TestETLPipeline():
             print('Reason: %s' % str(ex))
             input('Press enter to exit.')
             os._exit(0)
-        # Output sample file to FileWatcher folder, wait for sample file to be sucked
-        # up by etl. If does not suck up, notify user:
-        waittime = 40
-        print('Outputting data file to')
-        print('%s' % args['testetlargs']['etlfolder'])
-        print('Will wait up to %d seconds to allow data to be implemented...' % waittime)
-        sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
-        filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'], sampleFileName)
-        copyfile(args['testetlargs']['samplefile'], filewatcherPath)
-        Countdown(waittime, lambda path = filewatcherPath : not os.path.exists(filewatcherPath))
-        if os.path.exists(filewatcherPath):
-            print('File was not implemented into etl after %d seconds.' % waittime)
-            input('Press enter to exit.')
-            os._exit(0)
+    # Output sample file to FileWatcher folder, wait for sample file to be sucked
+    # up by etl. If does not suck up, notify user:
+    waittime = 40
+    print('Outputting data file to')
+    print('%s' % args['testetlargs']['etlfolder'])
+    print('Will wait up to %d seconds to allow data to be implemented...' % waittime)
+    sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
+    filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'], sampleFileName)
+    copyfile(args['testetlargs']['samplefile'], filewatcherPath)
+    Countdown(waittime, lambda path = filewatcherPath : not os.path.exists(filewatcherPath))
+    if os.path.exists(filewatcherPath):
+        print('File was not implemented into etl after %d seconds.' % waittime)
+        input('Press enter to exit.')
+        os._exit(0)
     # Query server to get uploaded data:
     try:
         query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (argTup[3], argTup[0])

@@ -102,6 +102,9 @@ class DataComparer(object):
         if missingCols:
             missingColsMsg = ','.join(missingCols)
             data_valid = data_valid[[col for col in data_valid if not col in missingCols]]
+        # Remove duplicate rows from each dataset:
+        data_test = data_test.drop_duplicates()
+        data_valid = data_valid.drop_duplicates()
         # Perform comparison:
         if not pKey is None:
             # Compare using primary key(s):
