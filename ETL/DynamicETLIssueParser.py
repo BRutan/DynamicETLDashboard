@@ -62,8 +62,8 @@ class DynamicETLIssueParser:
             with open(files[file], 'r') as f:
                 groups = DynamicETLIssueParser.__GroupAllJobs(f)
                 for jobkey in groups:
-                    self.__DetermineIssue(jobkey, groups[jobkey])
-        self.__data = DataFrame(self.__data).sort_values('TimeStamp')
+                    self.__DetermineIssues(jobkey, groups[jobkey])
+        self.__data = DataFrame(self.__data).sort_values('TimeStamp', ascending = False)
 
     @staticmethod
     def __GroupAllJobs(file):
@@ -84,16 +84,11 @@ class DynamicETLIssueParser:
                 groups[prevGroup].append(line)
         return groups
     
-    def __DetermineIssue(self, jobKey, grouplines):
+    def __DetermineIssues(self, jobKey, grouplines):
         """
         * Determine issues for each job.
         """
-        if not os.path.exists('TestLogs\\test_%s.csv' % jobKey):
-            with open('TestLogs\\test_%s.csv' % jobKey, 'w') as f:
-                f.write('\n'.join([line.strip('\n') for line in grouplines]))
         lineNum = 0
-        etls = set()
-        # etlsearchstop = ['Etl finished with status Error', 'Error with ETL', 'ERROR DynamicEtl.Service']
         msgsearchstop = ['INFO', 'ERROR']
         while lineNum < len(grouplines):
             line = grouplines[lineNum]
