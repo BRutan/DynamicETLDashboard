@@ -40,7 +40,7 @@
     <Compile Include="ETL\FileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ETL\FileVaultIssueParser.py">
+    <Compile Include="ETL\DynamicETLIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\LogFileReader.py">

@@ -1,5 +1,5 @@
 #####################################
-# FileVaultIssueParser.py
+# DynamicETLIssueParser.py
 #####################################
 # Description:
 # * Determine where filevault issues have
@@ -7,12 +7,13 @@
 
 import csv
 import os
+from pandas import DataFrame
 import re
 from Utilities.FileConverter import FileConverter
 
-class FileVaultIssueParser:
+class DynamicETLIssueParser:
     """
-    * 
+    * Summarize issues that occur with ETLs.
     """
     __logfileSig = 'DynamicEtl.Service.log'
     __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'StackTrace' : []}
@@ -34,14 +35,14 @@ class FileVaultIssueParser:
         """
         * Generate file containing detailed info
         about filevault issues.
+        Input:
+        * outpath: String pointing to csv file.
         """
         if not isinstance(outpath, str):
             raise Exception('outpath must be a string.')
         elif not outpath.endswith('.csv'):
             raise Exception('outpath must point to csv file.')
-        
-
-
+        self.__data.to_csv(outpath)
 
     ##################
     # Private Helpers:
@@ -51,10 +52,11 @@ class FileVaultIssueParser:
         * Find all 500 issues that occurred.
         """
         # Find matching files:
-        data = FileVaultIssueParser.__dataDict
+        data = DynamicETLIssueParser.__dataDict
         files = FileConverter.GetAllFilePaths(servicelogfolder, FileVaultIssueParser.__logfileSig)
         stackTraceIndic = 'System.Net.WebException: The remote server returned an error: (500) Internal Server Error.'
         # {'TimeStamp' : [], 'ETLName' : [], 'StackTrace' : []}
+        timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
         for file in files:
             with open(file, 'r') as f:
                 lines = [line for line in f]
@@ -63,13 +65,21 @@ class FileVaultIssueParser:
                         # Get the stack trace:
                         stackTrace = ''
                         row = num + 1
+                        stackTrace = lines[row]
                         while stackTraceIndic not in stackTrace:
                             stackTrace = lines[row]
                             row += 1
                         # Find the corresponding ETL:
-                        row = num
-                        
-                
+                        row = num - 1
+                        etlname = lines[row]
+                        while 'ETL' not in etlname:
+                            etlname = lines[row]
+                            row -= 1
+                        data['StackTrace'] = stackTrace
+                        data['ETLName'] = etlname
+                        data['TimeStamp'] = timestampRE.search(line)
+        self.__data = DataFrame(data)
+               
     @staticmethod
     def __Validate(servicelogfolder):
         """
