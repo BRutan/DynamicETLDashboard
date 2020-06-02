@@ -3,7 +3,7 @@
 #####################################
 # Description:
 # * Determine where DynamicETL.Service issues have
-# occurred in DynamicETL.Service log file.
+# occurred with particular etls in log file.
 
 import csv
 import dateutil.parser as dtparser
@@ -53,7 +53,7 @@ class DynamicETLIssueParser:
     ##################
     def __FindIssues(self, servicelogfolder):
         """
-        * Find all 500 issues that occurred.
+        * Find all etl issues that occurred.
         """
         # Find matching files:
         self.__data = DynamicETLIssueParser.__dataDict
