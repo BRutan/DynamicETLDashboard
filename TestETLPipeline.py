@@ -57,7 +57,7 @@ def TestETLPipeline():
             print(message)
             input('Press enter to exit.')
             os._exit(0)
-    else:
+    elif args['testetlargs']['testmode'] != 'STG':
         # Remove data with filedate from server:
         argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
         print('Removing data with fileDate %s from %s::%s::%s' % argTup)
@@ -67,12 +67,12 @@ def TestETLPipeline():
             interface.Execute(query)
         except Exception as ex:
             print('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
-            print('Reason: %s' % str(err))
+            print('Reason: %s' % str(ex))
             input('Press enter to exit.')
             os._exit(0)
         # Output sample file to FileWatcher folder, wait for sample file to be sucked
         # up by etl. If does not suck up, notify user:
-        waittime = 25
+        waittime = 40
         print('Outputting data file to')
         print('%s' % args['testetlargs']['etlfolder'])
         print('Will wait up to %d seconds to allow data to be implemented...' % waittime)

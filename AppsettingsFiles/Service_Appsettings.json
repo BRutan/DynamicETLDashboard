@@ -955,6 +955,32 @@
         "ConfigValue": "{HeaderRow:1,MarginTop:1,MarginBottom:1,SheetName:'GS Detail'}"
       }
     },
+    "GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1": {
+      "Source": "FileVault1",
+      "Destination": "SqlMetricsDyetl",
+      "TableName": "InternalAudit_GSIBPhysicalAccessKnownExceptions",
+      "OnError": {
+        "Method": "Email",
+        "EmailFrom": "Ben.Rutan@guggenheimpartners.com",
+        "EmailTo": "Ben.Rutan@guggenheimpartners.com"
+      },
+      "DataReader": {
+        "TypeName": "Excel"
+      },
+      "InputOperations": [
+        { "TypeName": "AddRunDate" },
+        { "TypeName": "AddFileDate" }
+      ],
+      "PreOperations": [
+        {
+          "TypeName": "AddFileDate",
+          "ConfigValue": "{RegPattern:'(?<date>[0-9]{8})', DateFormat:'yyyyMMdd'}"
+        }
+      ],
+      "PostOperations": [
+        { "TypeName": "DeleteDuplicateRecords" }
+      ]
+    },
     "HeadCountDetail.v1": {
       "Source": "Network",
       "Destination": "SqlMetricsDyetl",
