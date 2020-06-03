@@ -5,7 +5,6 @@
 # * Convert all files matching regular expression to path.
 
 from argparse import ArgumentParser
-from cmd2 import with_argparser
 import shutil
 import os
 import re
@@ -13,13 +12,15 @@ from Utilities.Helpers import IsRegex
 
 class FileConverter:
     """
-    * Empty singleton-like class.
+    * Empty singleton-like class that pulls in files (GetAllFilePaths())
+    or converts large number of files to particular extension.
     """
     def __init__(self):
         """
         * 
         """
         pass
+
     @classmethod
     def GetAllFilePaths(cls, folderpath, filereg, subdirs = False):
         """
@@ -54,6 +55,7 @@ class FileConverter:
         else:
             filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file))}
         return filePaths
+
     @classmethod
     def ConvertAllFilePaths(cls, outfolder, new_ext, folderpath = None, filereg = None, paths = None, subdirs = False):
         """

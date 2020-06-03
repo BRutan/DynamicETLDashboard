@@ -1,0 +1,35 @@
+TimeStamp,ETLName,FileId,ErrorMessage,StackTrace
+6/20/2003 7:19,InternalTraining.v1,7CE31BA2EC0AEBB71BE6DF3F4982B4908003CB5CFB6048303BEC5234E0A90ACC,"2020-06-03 07:19:03,319 [72] INFO  DynamicEtl.Service - Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.","Error Number:-2,State:0,Class:11
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 81
+   at DynamicEtl.Service.EtlRunner.RunPostOperations(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 159
+   at DynamicEtl.Service.PostOperations.DeleteDuplicateRecords.Execute(Dictionary`2 processInfo, Dictionary`2 mappings) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\PostOperations\DeleteDuplicateRecords.cs:line 38
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+System.Data.SqlClient.SqlException (0x80131904): Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding. ---> System.ComponentModel.Win32Exception (0x80004005): The wait operation timed out
+"
+6/20/2003 6:33,GTXCustomerPopulation.v1,01FF84A4F346F344F8EDC5CE4964E64FA0E85388AE6C6288381DE166B7B46E49,"2020-06-03 06:33:30,817 [73] INFO  DynamicEtl.Service - Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.","Error Number:-2,State:0,Class:11
+   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 81
+   at DynamicEtl.Service.EtlRunner.RunPostOperations(EtlConfig etlConfig, String identifier, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 159
+   at DynamicEtl.Service.PostOperations.DeleteDuplicateRecords.Execute(Dictionary`2 processInfo, Dictionary`2 mappings) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\PostOperations\DeleteDuplicateRecords.cs:line 38
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async, Int32 timeout, Boolean asyncWrite)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+System.Data.SqlClient.SqlException (0x80131904): Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding. ---> System.ComponentModel.Win32Exception (0x80004005): The wait operation timed out
+"
+6/20/2003 6:17,UserAccountsWithExtProps.v1,0C985771DB773A25B0547E96BF80242370AC09A9649EEE1577347ADFB3000F99,"2020-06-03 06:17:52,699 [12] INFO  DynamicEtl.Service - The remote server returned an error: (500) Internal Server Error.","   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 79
+   at DynamicEtl.Service.EtlRunner.RunPreOperations(EtlConfig etlConfig, String identifier, String arg, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 115
+   at DynamicEtl.Service.SourceFetcher.FileVault.FileVaultFetcher.Fetch(String argJson) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\SourceFetcher\FileVault\FileVaultFetcher.cs:line 43
+   at System.Net.HttpWebRequest.GetResponse()
+"
+6/20/2003 6:12,CC.UserGroups.v1,0C985771DB773A25B0547E96BF80242370AC09A9649EEE1577347ADFB3000F99,"2020-06-03 06:12:51,413 [13] ERROR DynamicEtl.Service - Error with ETL 'CC.UserGroups.v1' - The remote server returned an error: (500) Internal Server Error.","   at DynamicEtl.Service.EtlRunner.RunJob(String identifier, String arg) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 79
+   at DynamicEtl.Service.EtlRunner.RunPreOperations(EtlConfig etlConfig, String identifier, String arg, Dictionary`2 processInfo) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\EtlRunner.cs:line 115
+   at DynamicEtl.Service.SourceFetcher.FileVault.FileVaultFetcher.Fetch(String argJson) in E:\agent\GuggenheimSecurities2018\_work\18\s\src\DynamicEtl.Service\SourceFetcher\FileVault\FileVaultFetcher.cs:line 43
+   at System.Net.HttpWebRequest.GetResponse()
+"

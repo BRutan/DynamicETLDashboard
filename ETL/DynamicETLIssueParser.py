@@ -17,10 +17,11 @@ class DynamicETLIssueParser:
     * Summarize issues that occur with ETLs.
     """
     __logfileSig = 'DynamicEtl.Service.log'
-    __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'ErrorMessage' : [], 'StackTrace' : []}
+    __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'FileId' : [], 'ErrorMessage' : [], 'StackTrace' : []}
     __timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
     __etlnameRE = re.compile("['`].+['`]")
     __keymatchRE = re.compile('\[\d+\]')
+    __fileIDRE = re.compile("{fileid:'.+'}")
     def __init__(self, servicelogfolder):
         """
         * Determine where all issues occurred and
@@ -102,7 +103,21 @@ class DynamicETLIssueParser:
                         stackTrace.append(errorMessage)
                     row -= 1
                     errorMessage = grouplines[row]
+                # Get the fileid used in the etl:
+                row = lineNum
+                fileidsearchstop = 'Finished Etl for `%s` with arg' % etlname
+                line = grouplines[row]
+                while not fileidsearchstop in line and row <= len(grouplines):
+                    row += 1
+                    line = grouplines[row]
+                matches = DynamicETLIssueParser.__fileIDRE.search(line)
+                if matches:
+                    fileid = matches[0]
+                    fileid = re.search("'.+'", fileid)[0].strip("'")
+                else:
+                    fileid = ''
                 self.__data['ETLName'].append(etlname)
+                self.__data['FileId'].append(fileid)
                 self.__data['ErrorMessage'].append(errorMessage.strip('\n'))
                 self.__data['StackTrace'].append(''.join(stackTrace))
                 self.__data['TimeStamp'].append(dtparser.parse(DynamicETLIssueParser.__timestampRE.search(errorMessage)[0]))
