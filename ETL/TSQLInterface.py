@@ -78,19 +78,60 @@ class TSQLInterface:
             raise Exception('query must be a SELECT statement.')
         return read_sql(query, self.__connection)
 
-    def Execute(self, query):
+    def Execute(self, query, returnsvals = False):
         """
         * Execute non-SELECT/INSERT query.
         Inputs:
         * query: string SQL query.
+        Optional:
+        * returnsvals: Put True if expecting query to return
+        values.
         """
+        errs = []
         if not isinstance(query, str):
-            raise Exception('query must be a string.')
+            errs.append('query must be a string.')
         elif 'select' in query.lower() or 'insert' in query.lower():
-            raise Exception('Use Insert/Select if making an insert/select query.')
-        cursor = self.__connection.cursor()
-        cursor.execute(query)
-        cursor.commit()
+            errs.append('Use Insert/Select if making an insert/select query.')
+        if not isinstance(returnsvals, bool):
+            errs.append('returnsvals must be a boolean.')
+        if errs:
+            raise Exception('\n'.join(errs))
+        if not returnsvals:
+            cursor = self.__connection.cursor()
+            cursor.execute(query)
+            cursor.commit()
+        else:
+            return read_sql(query, self.__connection)
+
+    def ExecuteStoredProcedure(self, procname, params = None, returnsvals = False):
+        """
+        * Execute stored procedure with or without parameters.
+        Inputs:
+        * procname: String procedure to execute.
+        Optional:
+        * params: Parameters to use in procedure.
+        * returnsvals: Put True if should return values.
+        """
+        errs = []
+        if not isinstance(procname, str):
+            errs.append('procname must be a string.')
+        if not params is None and not hasattr(params, '__iter__'):
+            errs.append('params must be an iterable if provided.')
+        elif not params is None:
+            params = [str(param) for param in params]
+        if not isinstance(returnsvals, bool):
+            errs.append('returnsvals must be a boolean.')
+        if errs:
+            raise Exception('\n'.join(errs))
+        query = "EXEC %s" % procname
+        if not params is None:
+            query += "'%s'" % ','.join(params)
+        if not returnsvals:
+            cursor = self.__connection.cursor()
+            cursor.execute(query)
+            cursor.commit()
+        else:
+            return read_sql(query, self.__connection)
 
     def Insert(self, data, table, identity_insert = False):
         """

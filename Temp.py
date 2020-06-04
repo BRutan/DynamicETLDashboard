@@ -35,22 +35,18 @@ def insert():
     return out
 
 def pulldata():
-    # Pull all missing tbl_CyberSecurity_Exceptions_GS filedates from Metrics
-    # to later input into production folder:
     interface = TSQLInterface('nj1sql13', 'Metrics')
-    results = interface.Select("SELECT DISTINCT fileDate FROM tbl_CyberSecurity_Exceptions_GS")
-    existingfiles_metrics = set(results['fileDate'])
-    interface = TSQLInterface('nj1sql13', 'MetricsDyetl')
-    results = interface.Select("SELECT DISTINCT fileDate FROM tbl_CyberSecurity_Exceptions_GS")
-    existingfiles_metricsdyetl = set(results['fileDate'])
-    missing = existingfiles_metrics - existingfiles_metricsdyetl
-    if missing:
-        pass
+    query = "EXEC dbo.AdHocReport_StuDurnin_DeskVolumes '2020-05-29'"
+    results = interface.Execute(query, True)
+    results.to_csv("StuDurninResults.csv")
 
     
 def testlogreader():
-    reader = DynamicETLIssueParser('\\\\nj1qaapp20\\logs')
-    reader.GenerateFile('test.csv')
+    reader = DynamicETLIssueParser('\\\\nj1app20\\logs')
+    reader.GenerateFile('FileVaultETLErrors_6_4_2020.csv')
+
+
 
 if __name__ == '__main__':
-    testlogreader()
+    #testlogreader()
+    pulldata()

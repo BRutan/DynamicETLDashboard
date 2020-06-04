@@ -5,9 +5,9 @@
 # * Convert all files matching regular expression to path.
 
 from argparse import ArgumentParser
-import shutil
 import os
 import re
+import shutil
 from Utilities.Helpers import IsRegex
 
 class FileConverter:
@@ -17,7 +17,7 @@ class FileConverter:
     """
     def __init__(self):
         """
-        * 
+        * Initialize singleton object.
         """
         pass
 

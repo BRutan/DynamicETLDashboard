@@ -75,6 +75,9 @@
     <Compile Include="GenerateFileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PullData.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>

@@ -272,6 +272,9 @@ def GenerateFileTransferConfigJsonArgs():
     missing = req_args - set(args)
     if missing:
         raise Exception('The following required arguments are missing: %s' % ','.join(missing))
+
+    # Fill environment variables in 'etlfilepaths':
+    args['etlfilepaths'] = FillEnvironmentVariables(args['etlfilepaths'], args['config'], 'PROD') 
     
     ############################
     # Required arguments:

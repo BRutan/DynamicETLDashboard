@@ -18,7 +18,7 @@ class DynamicETLIssueParser:
     """
     __logfileSig = 'DynamicEtl.Service.log'
     __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'FileId' : [], 'ErrorMessage' : [], 'StackTrace' : []}
-    __timestampRE = re.compile('\d{2}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
+    __timestampRE = re.compile('\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}')
     __etlnameRE = re.compile("['`].+['`]")
     __keymatchRE = re.compile('\[\d+\]')
     __fileIDRE = re.compile("{fileid:'.+'}")
