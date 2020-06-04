@@ -101,8 +101,27 @@ class FileTransferConfig:
         * Convert passed xml file to transfer object.
         """
         filevals = FileTransferConfig.__CleanFile(filepath)
-        soup = Soup(filevals)
+        soup = Soup(filevals, features = "html.parser")
+        self.__transferid = int(soup.find("transferid").text)
+        self.__transfertimelimitseconds = int(soup.find("transfertimelimitseconds").text)
+        self.__lastattempt = dtparser.parse(soup.find("lastattempt").text)
+        self.__pollingfrequencyseconds = int(soup.find("pollingfrequencyseconds").text)
+        self.__isdeleted = True if soup.find("isdeleted").text.lower().strip() == 'true' else False
+        self.__isdisabled = True if soup.find("isdisabled").text.lower().strip() == 'true' else False
+        self.__description = soup.find("description").text
+        self.__lastupdatetime = dtparser.parse(soup.find("lastupdatetime").text)
+        self.__expirationtime = dtparser.parse(soup.find("expirationtime").text)
+        self.__lastmodifieduser = soup.find("lastmodifieduser").text
+        self.__ParseSources(soup)
+        self.__retriedfailedonly = True if soup.find("retriedfailedonly").text.lower().strip() == 'true' else False
 
+    def __ParseSources(soup):
+        """
+        * Parse the "Sources" attribute.
+        """
+        sources = soup.find_all("source")
+        for source in sources:
+            self.__sources[''] = {}
 
     @staticmethod
     def __Validate(filepath):
@@ -130,7 +149,9 @@ class FileTransferConfig:
             lines = f.readlines()
             for line in lines:
                 # Remove non-ascii characters:
-                cleanedLines.append(''.join([ch for ch in line if ord(ch) < 128]))
+                cleanedLine = ''.join([ch.strip('\x00\n') for ch in line if ord(ch) < 128])
+                if cleanedLine:
+                    cleanedLines.append(cleanedLine)
         return '\n'.join(cleanedLines)
 
     def __DefaultInitialize(self):
@@ -138,9 +159,9 @@ class FileTransferConfig:
         * Initialize all members to default values.
         """
         self.__transferid = 0
-        self.__transferidtimelimitseconds = 0
+        self.__transfertimelimitseconds = 0
         self.__lastattempt = None
-        self.__pollingfreqseconds = 0
+        self.__pollingfrequencyseconds = 0
         self.__isdeleted = False
         self.__isdisabled = False
         self.__description = ''
@@ -158,13 +179,13 @@ class FileTransferConfig:
         return self.__transferid
     @property
     def TransferTimeLimitSeconds(self):
-        return self.__transferidtimelimitseconds
+        return self.__transfertimelimitseconds
     @property
     def LastAttempt(self):
         return self.__lastattempt
     @property
     def PollingFreqSeconds(self):
-        return self.__pollingfreqseconds
+        return self.__pollingfrequencyseconds
     @property
     def IsDeleted(self):
         return self.__isdeleted
@@ -202,7 +223,7 @@ class FileTransferConfig:
             raise Exception('TransferTimeLimitSeconds must be numeric.')
         elif not val > 0:
             raise Exception('TransferTimeLimitSeconds must be positive.')
-        self.__transferidtimelimitseconds = int(val)
+        self.__transfertimelimitseconds = int(val)
     @LastAttempt.setter
     def LastAttempt(self, val):
         if not isinstance(val, (str, datetime)):
@@ -218,7 +239,7 @@ class FileTransferConfig:
             raise Exception('PollingFreqSeconds must be numeric.')
         elif not val > 0:
             raise Exception('PollingFreqSeconds must be positive.')
-        self.__pollingfreqseconds = int(val)
+        self.__pollingfrequencyseconds = int(val)
     @IsDeleted.setter
     def IsDeleted(self, val):
         if not isinstance(val, bool):

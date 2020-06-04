@@ -89,9 +89,9 @@ class FileTransferServiceAggregator:
         """
         * Output lookup file into filetransferconfig.json.
         """
-        if not os.path.exists('AppsettingsFiles\\'):
-            raise Exception('Local AppsettingsFiles\\ folder does not exist.')
-        json.dump(self.__transfersjson, open('AppsettingsFiles\\filetransferconfig.json', 'wb'), sort_keys = True)
+        if not os.path.exists('%s\\AppsettingsFiles\\' % os.getcwd()):
+            raise Exception('Local \\AppsettingsFiles\\ folder does not exist.')
+        json.dump(self.__transfersjson, open('%s\\AppsettingsFiles\\filetransferconfig.json' % os.getcwd(), 'wb'), sort_keys = True)
 
     ####################
     # Private Helpers:
@@ -115,13 +115,16 @@ class FileTransferServiceAggregator:
         * Generate new Chrome instance, 
         """
         # Output downloaded transfers to temporary directory:
-        self.__downloaddir = "C:\\Users\\berutan\\Downloads"
+        drive = re.search('[A-Z]:', os.getcwd())[0]
+        self.__downloaddir = "%s\\Users\\%s\\Downloads" % (drive, os.getlogin().lower())
+        if not os.path.exists(self.__downloaddir):
+            raise Exception('Download directory %s does not exist.' % self.__downloaddir)
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
         #chromeOptions.add_argument("download.default_directory=%s" % self.__tempdir)
-        self.__driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
+        self.__driver = webdriver.Chrome('%s\\Misc\\chromedriver.exe' % os.getcwd(), chrome_options = chromeOptions)
         self.__driver.get(self.__ftsurl)
-        sleep(5)
+        sleep(3)
         
     def __MaximizeTransfersPerSheet(self):
         """
@@ -135,7 +138,7 @@ class FileTransferServiceAggregator:
             if targetopt is None or (not targetopt is None and option.text.isnumeric() and int(option.text) > int(targetopt.text)):
                 targetopt = option
         targetopt.click()
-        sleep(5)
+        sleep(3)
 
     def __DownloadTargetTransfers(self):
         """
@@ -159,7 +162,7 @@ class FileTransferServiceAggregator:
             movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
             currpage += 1
         # Wait so all files are downloaded:
-        sleep(5)
+        sleep(3)
         self.__driver.close()
         self.__driver = None
         # Get all paths to downloaded xml files:
@@ -170,7 +173,7 @@ class FileTransferServiceAggregator:
         * Convert XML configs into json objects, link up to ETLs.
         """
         for path in self.__paths:
-            transferconfig = FileTransferConfig(path) 
+            transferconfig = FileTransferConfig(self.__paths[path]) 
             # Lookup ETL associated to sources:
             for etl in self.__etlpathsjson:
                 if etl == 1:
@@ -183,8 +186,8 @@ class FileTransferServiceAggregator:
         Chrome window if necessary.
         """
         if not self.__paths is None:
-            for path in self.__paths:
-                os.rmdir(path)
+            for filename in self.__paths:
+                os.remove(self.__paths[filename])
         if not self.__driver is None:
             self.__driver.close()
             self.__driver = None
