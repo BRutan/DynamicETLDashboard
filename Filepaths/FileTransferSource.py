@@ -5,6 +5,7 @@
 # * Object contains all attributes in "source" tag
 # in file transfer xml file.
 
+from bs4 import BeautifulSoup as Soup
 
 class FileTransferSource:
     """
@@ -14,11 +15,39 @@ class FileTransferSource:
     def __init__(self, tag = None):
         FileTransferSource.__Validate(tag)
         if isinstance(tag, str):
-            tag = None
+            tag = Soup(tag, features = "html.parser")
         if not tag is None:
             self.__ConvertSourceTag(tag)
         else:
             self.__DefaultInitialize()
+    def __hash__(self):
+        """
+        * Allow to be used as a key in dictionary.
+        """
+        attrs = [attr for attr in dir(self) if not attr.startswith('_')]
+        return hash(tuple(attrs))
+    def __eq__(self, ftsource):
+        """
+        * Equality boolean operator.
+        """
+        if not isinstance(ftsource, FileTransferSource):
+            raise Exception('Not a FileTransferSource object.')
+        testattrs = [attr for attr in dir(self) if not attr.startswith('_')]
+        for attr in testattrs:
+            thisattr = getattr(self, attr)
+            compareattr = getattr(ftsource, attr)
+            if compareattr is None or thisattr is None:
+                return False
+            elif compareattr != thisattr:
+                return False
+        return True
+    def __ne__(self, ftsource):
+        """
+        * Inequality boolean operator.
+        """
+        if not isinstance(ftsource, FileTransferSource):
+            raise Exception('Not a FileTransferSource object.')
+        return not self == ftsource
     ################
     # Properties:
     ################
@@ -155,6 +184,6 @@ class FileTransferSource:
         """
         * Validate constructor arguments.
         """
-        if not tag is None and not isinstance(tag, (str)):
+        if not tag is None and not (isinstance(tag, str) or str(type(tag)) == "<class 'bs4.element.Tag'>"):
             raise Exception('tag must be an html string or BeautifulSoup tag if provided.')
         

@@ -66,6 +66,9 @@
     <Compile Include="Exceptions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Filepaths\FileTransferDestination.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Filepaths\FileTransferServiceAggregator.py">
       <SubType>Code</SubType>
     </Compile>

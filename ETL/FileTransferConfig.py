@@ -6,7 +6,10 @@
 # filetransfer configurations for a particular etl.
 
 from bs4 import BeautifulSoup as Soup
+from datetime import datetime
 import dateutil.parser as dtparser
+from Filepaths.FileTransferSource import FileTransferSource
+from Filepaths.FileTransferDestination import FileTransferDestination
 import os
 from Utilities.Helpers import StringIsDT
 
@@ -102,26 +105,31 @@ class FileTransferConfig:
         """
         filevals = FileTransferConfig.__CleanFile(filepath)
         soup = Soup(filevals, features = "html.parser")
-        self.__transferid = int(soup.find("transferid").text)
-        self.__transfertimelimitseconds = int(soup.find("transfertimelimitseconds").text)
-        self.__lastattempt = dtparser.parse(soup.find("lastattempt").text)
-        self.__pollingfrequencyseconds = int(soup.find("pollingfrequencyseconds").text)
-        self.__isdeleted = True if soup.find("isdeleted").text.lower().strip() == 'true' else False
-        self.__isdisabled = True if soup.find("isdisabled").text.lower().strip() == 'true' else False
-        self.__description = soup.find("description").text
-        self.__lastupdatetime = dtparser.parse(soup.find("lastupdatetime").text)
-        self.__expirationtime = dtparser.parse(soup.find("expirationtime").text)
-        self.__lastmodifieduser = soup.find("lastmodifieduser").text
+        self.TransferID = soup.find("transferid").text
+        self.TransferTimeLimitSeconds = soup.find("transfertimelimitseconds").text
+        self.LastAttempt = soup.find("lastattempt").text
+        self.PollingFreqSeconds = soup.find("pollingfrequencyseconds").text
+        self.IsDeleted = soup.find("isdeleted").text
+        self.IsDisabled = soup.find("isdisabled").text
+        self.Description = soup.find("description").text
+        self.LastUpdateTime = soup.find("lastupdatetime").text
+        self.ExpirationTime = soup.find("expirationtime").text
+        self.LastModifiedByUser = soup.find("lastmodifiedbyuser").text
         self.__ParseSources(soup)
-        self.__retriedfailedonly = True if soup.find("retriedfailedonly").text.lower().strip() == 'true' else False
+        self.RetriedFailedOnly = soup.find("retriedfailedonly").text
 
-    def __ParseSources(soup):
+    def __ParseSources(self, soup):
         """
         * Parse the "Sources" attribute.
         """
         sources = soup.find_all("source")
         for source in sources:
-            self.__sources[''] = {}
+            converted = FileTransferSource(source)
+            desttags = source.find_all("destination")
+            destinations = []
+            for tag in desttags:
+                destinations.append(FileTransferDestination(tag))
+            self.__sources[converted.Path] = desttags
 
     @staticmethod
     def __Validate(filepath):
@@ -152,24 +160,31 @@ class FileTransferConfig:
                 cleanedLine = ''.join([ch.strip('\x00\n') for ch in line if ord(ch) < 128])
                 if cleanedLine:
                     cleanedLines.append(cleanedLine)
-        return '\n'.join(cleanedLines)
+        # Fix <source/> and <destination/> tags being ill defined:
+        soup = Soup('\n'.join(cleanedLines), features = 'html.parser')
+        sources = soup.find_all('source')
+        sourcetags = set([attr.lower() for attr in dir(FileTransferSource) if not attr.startswith('_')])
+        desttags = set([attr.lower() for attr in dir(FileTransferDestination) if not attr.startswith('_')])
+        for source in sources:
+            currsourcetags = []
+        return soup
 
     def __DefaultInitialize(self):
         """
         * Initialize all members to default values.
         """
         self.__transferid = 0
-        self.__transfertimelimitseconds = 0
+        self.__transfertimelimitseconds = None
         self.__lastattempt = None
-        self.__pollingfrequencyseconds = 0
-        self.__isdeleted = False
-        self.__isdisabled = False
-        self.__description = ''
+        self.__pollingfrequencyseconds = None
+        self.__isdeleted = None
+        self.__isdisabled = None
+        self.__description = None
         self.__lastupdate = None
         self.__expirationtime = None
-        self.__lastmodifieduser = ''
-        self.__sources = {}
-        self.__retriedfailedonly = False
+        self.__lastmodifieduser = None
+        self.__sources = None
+        self.__retriedfailedonly = None
 
     ##################
     # Properties:
@@ -212,60 +227,84 @@ class FileTransferConfig:
         return self.__retriedfailedonly
     @TransferID.setter
     def TransferID(self, val):
-        if not isinstance(val, (int, float)):
-            raise Exception('TransferID must be numeric.')
-        elif not val > 0:
+        if not isinstance(val, (int, float, str)) and not val is None:
+            raise Exception('TransferID must be an integer string, numeric or None.')
+        elif isinstance(val, (int, float)) and not val > 0:
             raise Exception('TransferID must be positive.')
         self.__transferid = int(val)
     @TransferTimeLimitSeconds.setter
     def TransferTimeLimitSeconds(self, val):
-        if not isinstance(val, (int, float)):
-            raise Exception('TransferTimeLimitSeconds must be numeric.')
-        elif not val > 0:
+        if not isinstance(val, (int, float, str)) and not val is None:
+            raise Exception('TransferTimeLimitSeconds must be an integer string, numeric or None.')
+        elif isinstance(val, (int, float)) and not val > 0:
             raise Exception('TransferTimeLimitSeconds must be positive.')
         self.__transfertimelimitseconds = int(val)
     @LastAttempt.setter
     def LastAttempt(self, val):
-        if not isinstance(val, (str, datetime)):
-            raise Exception('LastAttempt must be a convertible string or datetime object.')
+        if not isinstance(val, (str, datetime)) and not val is None:
+            raise Exception('LastAttempt must be a convertible string, datetime object or None.')
         elif isinstance(val, str) and not StringIsDT(val):
             raise Exception('LastAttempt could not be converted to datetime object.')
         elif isinstance(val, str):
-            val = dtparser.parse(val)
+            val = None if not val else dtparser.parse(val)
         self.__lastattempt = val
     @PollingFreqSeconds.setter
     def PollingFreqSeconds(self, val):
-        if not isinstance(val, (int, float)):
-            raise Exception('PollingFreqSeconds must be numeric.')
-        elif not val > 0:
+        if not isinstance(val, (int, float, str)) and not val is None:
+            raise Exception('PollingFreqSeconds must be an integer string, numeric or None or None.')
+        elif isinstance(val, (int, float)) and not val > 0:
             raise Exception('PollingFreqSeconds must be positive.')
+        elif isinstance(val, str):
+            val = None if not val else int(val)
         self.__pollingfrequencyseconds = int(val)
     @IsDeleted.setter
     def IsDeleted(self, val):
-        if not isinstance(val, bool):
-            raise Exception('IsDeleted must be boolean.')
+        if not isinstance(val, (str, bool)) and not val is None:
+            raise Exception('IsDeleted must be boolean, "true"/"false" string or None.')
+        elif isinstance(val, str):
+            val = val.lower().strip()
+            if not val in ['true', 'false']:
+                raise Exception('IsDeleted must be boolean, "true"/"false" string or None.')
+            val = True if val == 'true' else False
         self.__isdeleted = val
     @IsDisabled.setter
     def IsDisabled(self, val):
-        if not isinstance(val, bool):
+        if not isinstance(val, (str, bool)) and not val is None:
             raise Exception('IsDisabled must be boolean.')
+        elif isinstance(val, str):
+            val = val.lower().strip()
+            if not val in ['true', 'false']:
+                raise Exception('IsDisabled must be boolean, "true"/"false" string or None.')
+            val = True if val == 'true' else False
         self.__isdisabled = val
     @Description.setter
     def Description(self, val):
-        if not isinstance(val, str):
-            raise Exception('Description must be a string.')
+        if not isinstance(val, str) and not val is None:
+            raise Exception('Description must be a string or None.')
         self.__description = val
     @LastUpdateTime.setter
-    def LastUpdateTime(self):
-        if not isinstance(val, (str, datetime)):
-            raise Exception('LastUpdateTime must be a convertible string or datetime object.')
-        elif isinstance(val, str) and not StringIsDT(val):
-            raise Exception('LastUpdateTime could not be converted to datetime object.')
+    def LastUpdateTime(self, val):
+        if not isinstance(val, (str, datetime)) and not val is None:
+            raise Exception('LastUpdateTime must be a convertible string, datetime object or None.')
         elif isinstance(val, str):
-            val = dtparser.parse(val)
+            if not val:
+                val = None
+            elif not StringIsDT(val):
+                raise Exception('LastUpdateTime could not be converted to datetime object.')
+            else:
+                val = dtparser.parse(val)
         self.__lastupdate = val
     @ExpirationTime.setter
     def ExpirationTime(self, val):
+        if not isinstance(val, (str, datetime)) and not val is None:
+            raise Exception('ExpirationTime must be a convertible string, datetime object or None.')
+        elif isinstance(val, str):
+            if not val:
+                val = None
+            elif not StringIsDT(val):
+                raise Exception('LastUpdateTime could not be converted to datetime object.')
+            else:
+                val = dtparser.parse(val)
         self.__expirationtime = val
     @LastModifiedByUser.setter
     def LastModifiedByUser(self, val):
@@ -274,38 +313,23 @@ class FileTransferConfig:
         self.__lastmodifieduser = val
     @Sources.setter
     def Sources(self, val):
-        FileTransferConfig.__VerifySource(val)
+        if not isinstance(val, dict) and not val is None:
+            raise Exception('Sources must be a dictionary mapping {Sources -> [Destinations]} or None.')
+        elif any([not isinstance(key, FileTransferSource) for key in val]):
+            raise Exception('All of the keys in Sources must be FileTransferSource objects.')
+        elif any([not isinstance(value, List) for value in val.values()]):
+            raise Exception('All of values in Sources must be lists of FileTransferDestination objects.')
         self.__sources = val
     @RetriedFailedOnly.setter
     def RetriedFailedOnly(self, val):
-        if not isinstance(val, bool):
-            raise Exception('RetriedFailedOnly must be a boolean.')
-        self.__retriedfailedonly = val
-    
-
-
-#############################
-# TransferSources:
-#############################
-class TransferSources:
-    """
-    * Attributes in the "Sources" tag of a 
-    transfer XML config.
-    """
-    def __init__(self, tag):
-        """
-        * Create new TransferSources object using passed
-        xml tag or json object.
-        """
-        TransferSources.__Validate(tag)
-        if isinstance(tag, str):
-            pass
-        elif isinstance(tag, dict):
-            pass
-
-    ################
-    # Properties:
-    ################
-    
-
+        if not isinstance(val, (bool,str)) and not val is None:
+            raise Exception('RetriedFailedOnly must be a boolean, string or None.')
+        elif isinstance(val, str):
+            val = val.lower()
+            if not val in ['true', 'false']:
+                raise Exception('RetriedFailedOnly must be "true"/"false" if string.')
+            else:
+                self.__retriedfailedonly = True if val == 'true' else False
+        elif isinstance(val, bool) or val is None:
+            self.__retriedfailedonly = val
 
