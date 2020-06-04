@@ -32,7 +32,7 @@ class FileTransferServiceAggregator:
         * groupregex: Regular expression object or string to determine which transfers to pull 
         (ex: RiskDashboard). 
         """
-        FileTransferServiceAggregator.__Validate(ftsurl, filewatcherjson, chromedriverpath, groupregex)
+        FileTransferServiceAggregator.__Validate(ftsurl, etlpathsjson, chromedriverpath, groupregex)
         self.__driver = None
         self.__paths = None
         self.__ftsurl = ftsurl
@@ -191,13 +191,15 @@ class FileTransferServiceAggregator:
             self.__driver = None
 
     @staticmethod
-    def __Validate(ftsurl, chromedriverpath, groupregex):
+    def __Validate(ftsurl, etlpathsjson, chromedriverpath, groupregex):
         """
         * Validate constructor parameters.
         """
         errs = []
         if not isinstance(ftsurl, str):
             errs.append('ftsurl must be a string.')
+        if not isinstance(etlpathsjson, dict):
+            errs.append('etlpathsjson must be a json dictionary.')
         if not isinstance(chromedriverpath, str):
             errs.append('chromedriverpath must be a string.')
         elif not chromedriverpath.endswith('.exe'):
