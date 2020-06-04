@@ -1,9 +1,9 @@
 {
   "etlname": "GS.SecurityExceptions.v1",
   "filedate": "2020-04-13",
-  "reportpath": "GSSecurityExceptions_DataComparison_QA.xlsx",
+  "reportpath": "GSSecurityExceptions_DataComparison_UAT.xlsx",
   "postargspath": "postargs.json",
-  "testmode": "QA",
+  "testmode": "UAT",
   "pkey": [ "Group", "Employee ID" ],
   "ignorecols": [ "ID" ],
   "comparefile": "SecurityExceptionsComp.csv"

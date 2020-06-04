@@ -85,7 +85,7 @@ def TestETLPipeline():
             os._exit(0)
     # Output sample file to FileWatcher folder, wait for sample file to be sucked
     # up by etl. If does not suck up, notify user:
-    waittime = 40
+    waittime = 20
     print('Outputting data file to')
     print('%s' % args['testetlargs']['etlfolder'])
     print('Will wait up to %d seconds to allow data to be implemented...' % waittime)

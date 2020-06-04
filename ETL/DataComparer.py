@@ -12,6 +12,7 @@ class DataComparer(object):
     """
     * Compare two DataFrames.
     """
+    __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
     def __init__(self):
         """
         * Create empty object that can generate reports.
@@ -50,15 +51,16 @@ class DataComparer(object):
         """
         * Generate summary page in workbook.
         """
+        headerFormat = wb.add_format(DataComparer.__headerFormat)
         summarySheet = wb.add_worksheet('Summary')
-        summarySheet.write(0, 0, 'Missing Columns')
-        summarySheet.write(0, 1, missingColsMsg)
-        summarySheet.write(1, 0, '# of Differing Rows')
-        summarySheet.write(1, 1, len(compData))
+        summarySheet.write(0, 0, 'Missing Columns', headerFormat)
+        summarySheet.write(0, 1, 'None' if not missingColsMsg else missingColsMsg)
+        summarySheet.write(1, 0, '# of Differing Rows', headerFormat)
+        summarySheet.write(1, 1, len(compData), headerFormat)
         # Write # of differences for each column:
-        summarySheet.write(2, 0, '# of Differences by Column')
+        summarySheet.write(2, 0, '# of Differences by Column', headerFormat)
         for num, col in enumerate(compData.columns):
-            summarySheet.write(3, num, col)
+            summarySheet.write(3, num, col, headerFormat)
             summarySheet.write(4, num, len([val for val in compData[col] if val]))
 
     @classmethod
@@ -70,6 +72,7 @@ class DataComparer(object):
         # Do not generate sheet if no differences occurred.
         if len(compData) == 0:
             return
+        headerFormat = wb.add_format(DataComparer.__headerFormat)
         diffSheet = wb.add_worksheet('Differences')
         # Write all rows with differing column values:
         for rowNum in range(0, len(compData)):
@@ -78,7 +81,7 @@ class DataComparer(object):
                     diffSheet.write(rowNum, colNum, compData[col][rowNum - 1])
                 else:
                     # Write headers:
-                    diffSheet.write(rowNum, colNum, col)
+                    diffSheet.write(rowNum, colNum, col, headerFormat)
     @classmethod
     def __Compare(cls, data_test, data_valid, ignoreCols, pKey):
         """
