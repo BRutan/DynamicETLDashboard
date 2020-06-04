@@ -11,6 +11,7 @@ import json
 import os
 import re
 from selenium import webdriver
+from time import sleep
 from Utilities.FileConverter import FileConverter
 from Utilities.Helpers import IsRegex, LoadJsonFile
 
@@ -36,7 +37,7 @@ class FileTransferServiceAggregator:
         self.__driver = None
         self.__paths = None
         self.__ftsurl = ftsurl
-        self.__fwjson = filewatcherjson
+        self.__etlpathsjson = etlpathsjson
         self.__driverpath = chromedriverpath
         self.__targetregex = groupregex if isinstance(groupregex, FileTransferServiceAggregator.__reType) else re.compile(groupregex)
         self.__transfersjson = {}
@@ -114,14 +115,13 @@ class FileTransferServiceAggregator:
         * Generate new Chrome instance, 
         """
         # Output downloaded transfers to temporary directory:
-        self.__tempdir = os.getcwd() + '\\Temp\\'
-        if not os.path.exists(self.__tempdir):
-            os.mkdir(self.__tempdir)
+        self.__downloaddir = "C:\\Users\\berutan\\Downloads"
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
-        chromeOptions.add_argument("download.default_directory=%s" % self.__tempdir)
+        #chromeOptions.add_argument("download.default_directory=%s" % self.__tempdir)
         self.__driver = webdriver.Chrome('Misc\\chromedriver.exe', chrome_options = chromeOptions)
         self.__driver.get(self.__ftsurl)
+        sleep(5)
         
     def __MaximizeTransfersPerSheet(self):
         """
@@ -135,13 +135,13 @@ class FileTransferServiceAggregator:
             if targetopt is None or (not targetopt is None and option.text.isnumeric() and int(option.text) > int(targetopt.text)):
                 targetopt = option
         targetopt.click()
+        sleep(5)
 
     def __DownloadTargetTransfers(self):
         """
         * Pull all targeted XML transfer configs from 
         gsfts url.
         """
-        self.__paths = set()
         movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
         pageindicator = self.__driver.find_element_by_xpath('//*[@id="xferpager_center"]/table/tbody/tr/td[4]')
         currpage = 1
@@ -152,16 +152,18 @@ class FileTransferServiceAggregator:
                 cells = elem.find_elements_by_tag_name('td')
                 if self.__targetregex.match(cells[1].text):
                     # Click button to download file to temporary location:
-                    a = cells[9].find_element_by_class_name('a')
+                    a = cells[9].find_element_by_tag_name('a')
                     a.find_element_by_tag_name("span").click()
             # Proceed to next page:
             movebutton.click()
             movebutton = self.__driver.find_element_by_xpath('//*[@id="next_xferpager"]/span')
             currpage += 1
+        # Wait so all files are downloaded:
+        sleep(5)
         self.__driver.close()
         self.__driver = None
         # Get all paths to downloaded xml files:
-        self__paths = set(FileConverter.GetAllFilePaths(self.__tempdir, FileTransferServiceAggregator.__xferFileSig))
+        self.__paths = FileConverter.GetAllFilePaths(self.__downloaddir, FileTransferServiceAggregator.__xferFileSig)
 
     def __AggregateTransfers(self):
         """
@@ -170,8 +172,8 @@ class FileTransferServiceAggregator:
         for path in self.__paths:
             transferconfig = FileTransferConfig(path) 
             # Lookup ETL associated to sources:
-            for etl in self.__fwjson:
-                if 1 == 1:
+            for etl in self.__etlpathsjson:
+                if etl == 1:
                     self.__transfersjson[etlname] = transferconfig.Sources
                     break
             
@@ -183,9 +185,6 @@ class FileTransferServiceAggregator:
         if not self.__paths is None:
             for path in self.__paths:
                 os.rmdir(path)
-            self.__paths = None
-        if os.path.exists(self.__tempdir):
-            os.rmdir(path)
         if not self.__driver is None:
             self.__driver.close()
             self.__driver = None

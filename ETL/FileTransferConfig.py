@@ -125,11 +125,13 @@ class FileTransferConfig:
         * Clean strings in file before converting into
         BeautifulSoup object.
         """
-        lines = []
+        cleanedLines = []
         with open(filepath, 'r') as f:
-            line = f.readline()
-            lines.append(''.join([ch for ch in line if ord(ch) < 128]))
-        return '\n'.join(lines)
+            lines = f.readlines()
+            for line in lines:
+                # Remove non-ascii characters:
+                cleanedLines.append(''.join([ch for ch in line if ord(ch) < 128]))
+        return '\n'.join(cleanedLines)
 
     def __DefaultInitialize(self):
         """
