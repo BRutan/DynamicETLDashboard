@@ -103,8 +103,7 @@ class FileTransferConfig:
         """
         * Convert passed xml file to transfer object.
         """
-        filevals = FileTransferConfig.__CleanFile(filepath)
-        soup = Soup(filevals, features = "html.parser")
+        soup = FileTransferConfig.__CleanFile(filepath)
         self.TransferID = soup.find("transferid").text
         self.TransferTimeLimitSeconds = soup.find("transfertimelimitseconds").text
         self.LastAttempt = soup.find("lastattempt").text
@@ -162,11 +161,21 @@ class FileTransferConfig:
                     cleanedLines.append(cleanedLine)
         # Fix <source/> and <destination/> tags being ill defined:
         soup = Soup('\n'.join(cleanedLines), features = 'html.parser')
-        sources = soup.find_all('source')
-        sourcetags = set([attr.lower() for attr in dir(FileTransferSource) if not attr.startswith('_')])
+        sourcetags = soup.find_all('source')
+        sourceattrs = set([attr.lower() for attr in dir(FileTransferSource) if not attr.startswith('_')])
         desttags = set([attr.lower() for attr in dir(FileTransferDestination) if not attr.startswith('_')])
-        for source in sources:
+        for tag in sources:
+            # Collect all source attributes:
             currsourcetags = []
+            innertag = tag.find()
+            while 'limitgethours' not in str(innertag):
+                if innertag.name in sourcetags:
+                    currsourcetags.append(innertag)
+                innertag = innertag.find()
+            section = soup.new_tag('source')
+            for innertag in currsourcetags:
+                section.append(innertag)
+        
         return soup
 
     def __DefaultInitialize(self):

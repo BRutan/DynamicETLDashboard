@@ -2,12 +2,19 @@
 # TestETLPipeline.py
 #####################################
 # Description:
-# 1) Open test version of WebAPI, execute post request using args specified in
+# * If 'testmode' is "LOCAL":
+# 1) Open test version of WebAPI, execute post request using arguments specified in
 # postargs.json. 
 # 2) Execute DynamicETL.Service to run ETL pipeline with local database.
 # 3) Query local MetricsDYETL database, compare uploaded contents to original sample file.
 # 4) Generate report accounting for exceptions thrown by DynamicETL.Service or any source data versus
 # uploaded data discrepancies.
+# * else if 'testmode' is in ['QA','UAT','STG']:
+# 1) Drop source file specified in postargs.json at ETL drop path based upon test mode.
+# 2) Query relevant table in MetricsDyetl at server based upon mode after data has been
+# sucked up.
+# 3) Generate report accounting for differences between data in table versus
+# source file.
 
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader

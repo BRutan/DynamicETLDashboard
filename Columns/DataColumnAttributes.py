@@ -358,8 +358,8 @@ class DataColumnAttributes(object):
             attr = attributes.Attributes[name]
             nullable = 'NOT NULL' if not attr.IsNullable else 'NULL'
             file.write('[%s] %s %s,\n' % (attr.ColumnName, attr.Type, nullable))
-        file.write('[FileDate] datetime NOT NULL,\n')
-        file.write('[RunDate] datetime NOT NULL\n')
+        file.write('[FileDate] datetime NULL,\n')
+        file.write('[RunDate] datetime NULL\n')
         file.write(') ON [PRIMARY];\n\nGO\n')
 
     @classmethod
