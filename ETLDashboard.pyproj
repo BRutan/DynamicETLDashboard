@@ -150,6 +150,7 @@
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="AppsettingsFiles\TransferId_297.xml" />
     <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
+    <Content Include="Documentation.docx" />
     <Content Include="ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="ETL\appsettings-template.json" />

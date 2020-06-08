@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-16"?>
+<transfer xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<transferid>297</transferid>
+<transfertimelimitseconds>60</transfertimelimitseconds>
+<lastattempt>2020-05-27T17:30:04.347</lastattempt>
+<pollingfrequencyseconds>600</pollingfrequencyseconds>
+<isdeleted>false</isdeleted>
+<isdisabled>false</isdisabled>
+<description>RiskDashboard Transfers</description>
+<lastupdatetime>2019-11-21T11:14:04.837</lastupdatetime>
+<expirationtime xsi:nil="true"></expirationtime>
+<lastmodifiedbyuser>WANLINK\JIYu</lastmodifiedbyuser>
+<pollingtimes></pollingtimes>
+<sources>
+<source/>
+<sourceid>688</sourceid>
+<transferid>297</transferid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2204</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\Enterprise Risk Dashboard\Cyber Security\Data</path>
+<filenamemask>GS_InfoSec_Exceptions*</filenamemask>
+<shoulddelete>false</shoulddelete>
+<limitgethours>0</limitgethours>
+<destinations>
+<destination>
+<destinationid>1468</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>688</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2205</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\QA\Risk Dashboard\CyberSecurity</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1512</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>688</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2300</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GS\Risk Dashboard\CyberSecurity</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1513</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>688</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2301</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\UAT\Risk Dashboard\CyberSecurity</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1514</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>688</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2302</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\STG\Risk Dashboard\CyberSecurity</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+</destinations>
+<backupinsteadofdelete>false</backupinsteadofdelete>
+<shouldignoredownloadedtransfers>true</shouldignoredownloadedtransfers>
+<ignorenewfileversions>false</ignorenewfileversions>
+<name>RiskDashboard Transfers</name>
+<source/>
+<sourceid>689</sourceid>
+<transferid>297</transferid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2206</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\Enterprise Risk Dashboard\Credit\Data\Loans</path>
+<filenamemask>^(?!~).+</filenamemask>
+<shoulddelete>false</shoulddelete>
+<limitgethours>0</limitgethours>
+<destinations>
+<destination>
+<destinationid>1469</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>689</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2207</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\QA\Risk Dashboard\Loans</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1515</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>689</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2303</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\UAT\Risk Dashboard\Loans</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1516</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>689</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2304</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\STG\Risk Dashboard\Loans</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1517</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>689</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2305</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GS\Risk Dashboard\Loans</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+</destinations>
+<backupinsteadofdelete>false</backupinsteadofdelete>
+<shouldignoredownloadedtransfers>true</shouldignoredownloadedtransfers>
+<ignorenewfileversions>false</ignorenewfileversions>
+<name>SentryLoanData</name>
+<source/>
+<sourceid>690</sourceid>
+<transferid>297</transferid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2208</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\Enterprise Risk Dashboard\Credit\Data\Probability</path>
+<filenamemask>Probability*</filenamemask>
+<shoulddelete>false</shoulddelete>
+<limitgethours>0</limitgethours>
+<destinations>
+<destination>
+<destinationid>1470</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>690</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2209</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\QA\Risk Dashboard\CreditProbability</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1518</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>690</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2306</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\UAT\Risk Dashboard\CreditProbability</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1519</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>690</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2307</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\STG\Risk Dashboard\CreditProbability</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1520</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>690</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2308</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GS\Risk Dashboard\CreditProbability</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+</destinations>
+<backupinsteadofdelete>false</backupinsteadofdelete>
+<shouldignoredownloadedtransfers>true</shouldignoredownloadedtransfers>
+<ignorenewfileversions>false</ignorenewfileversions>
+<name>CustomerBooks</name>
+<source/>
+<sourceid>692</sourceid>
+<transferid>297</transferid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2212</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\Enterprise Risk Dashboard\Human Resources\Data\DetailedHeadcount</path>
+<filenamemask>DetailedHeadcount*</filenamemask>
+<shoulddelete>false</shoulddelete>
+<limitgethours>0</limitgethours>
+<destinations>
+<destination>
+<destinationid>1472</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>692</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2213</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\QA\Risk Dashboard\HeadCount_Detail</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1524</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>692</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2312</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\UAT\Risk Dashboard\HeadCount_Detail</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1525</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>692</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2313</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\STG\Risk Dashboard\HeadCount_Detail</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1526</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>692</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2314</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GS\Risk Dashboard\HeadCount_Detail</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+</destinations>
+<backupinsteadofdelete>false</backupinsteadofdelete>
+<shouldignoredownloadedtransfers>true</shouldignoredownloadedtransfers>
+<ignorenewfileversions>false</ignorenewfileversions>
+<name>DetailedHeadCount</name>
+<source/>
+<sourceid>693</sourceid>
+<transferid>297</transferid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2214</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\Enterprise Risk Dashboard\Operations\New Accounts\Data</path>
+<filenamemask>GTX Customer Population*</filenamemask>
+<shoulddelete>false</shoulddelete>
+<limitgethours>0</limitgethours>
+<destinations>
+<destination>
+<destinationid>1473</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>693</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2215</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\QA\Risk Dashboard\GTXCustomerData</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1527</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>693</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2315</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\UAT\Risk Dashboard\GTXCustomerData</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1528</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>693</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2316</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GCM Feeds\STG\Risk Dashboard\GTXCustomerData</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+<destination>
+<destinationid>1529</destinationid>
+<appendtempext>true</appendtempext>
+<sourceid>693</sourceid>
+<transfertypename>Windows</transfertypename>
+<fileinfoid>2317</fileinfoid>
+<path>\\wanlink.us\dfsroot\APPS\GS\Risk Dashboard\GTXCustomerData</path>
+<filenamemask>%ORIG%</filenamemask>
+</destination>
+</destinations>
+<backupinsteadofdelete>false</backupinsteadofdelete>
+<shouldignoredownloadedtransfers>true</shouldignoredownloadedtransfers>
+<ignorenewfileversions>false</ignorenewfileversions>
+<name>GTXCustomerPopulation</name>
+</sources>
+<retryfailedonly>false</retryfailedonly>
+</transfer>
