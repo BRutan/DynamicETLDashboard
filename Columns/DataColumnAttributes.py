@@ -348,7 +348,7 @@ class DataColumnAttributes(object):
             table_fixed = DataColumnAttributes.__FixName(table)
         else:
             table_fixed = '<FillTableHere>'
-        file.write('USE [MetricsDyetl];\nGO\nSET ANSI_NULLS ON\nGO\n\n')
+        file.write('USE [MetricsDyetl];\nGO\n\n')
         file.write('SET ANSI_NULLS ON;\nGO\n\n')
         file.write('SET QUOTED_IDENTIFIER ON;\nGO\n\n')
         file.write('/****** Object: Table [dbo].[%s] Script Date: %s ******/\n\n' % (table_fixed, datetime.today().strftime('%m %d %Y %H:%M:%S %p')))

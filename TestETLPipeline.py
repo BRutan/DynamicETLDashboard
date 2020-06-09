@@ -43,7 +43,7 @@ def TestETLPipeline():
         print(msg)
         input('Press enter to exit.')
         os._exit(0)
-    argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'), args['testetlargs']['server'], args['testetlargs']['database'], args['testetlargs']['tablename'])
+    argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'),args['testetlargs']['server'],args['testetlargs']['database'],args['testetlargs']['tablename'])
     try:
         interface = TSQLInterface(argTup[1], argTup[2])
     except Exception as ex:

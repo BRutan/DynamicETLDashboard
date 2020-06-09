@@ -3,17 +3,17 @@
 #####################################
 # Description:
 # * Generate report detailing column attributes of
-# columns in file to assist in creating SQL table to
-# hold said columns.
+# columns in file, and SQL table definition(s)
+# recommended for dataset based upon report.
 
 from argparse import ArgumentParser, ArgumentError
 from Columns.DataColumnAttributes import DataColumnAttributes
-from Utilities.LoadArgs import GenerateColumnAttributesReportJsonArgs
 import json
 import os
 import re
-from Utilities.Helpers import IsRegex
 from Utilities.FileConverter import FileConverter
+from Utilities.Helpers import IsRegex
+from Utilities.LoadArgs import GenerateColumnAttributesReportJsonArgs
 
 def GenerateColumnAttributesReport():
     print("------------------------------")
