@@ -2,14 +2,12 @@
 # setup.py
 #####################################
 # Description:
-# * 
+# * Generate pip package for project.
 
-from Utilities.Helpers import GetDocumentText
 import setuptools
+from Utilities.Helpers import GetDocumentText
 
-#with open("README.md", "r") as fh:
-#    long_description = fh.read()
-long_description = ''
+long_description = GetDocumentText("Documentation.docx")
 
 setuptools.setup(
     name="example-pkg-YOUR-USERNAME-HERE", # Replace with your own username

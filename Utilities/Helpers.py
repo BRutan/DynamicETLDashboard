@@ -96,8 +96,9 @@ def IsNumeric(value):
     if not isinstance(value, str):
         raise Exception('value must be a string.')
     try:
-        value = int(value)
-        value = float(value)
+        valtxt = value
+        value = int(valtxt)
+        value = float(valtxt)
         return True
     except:
         return False
