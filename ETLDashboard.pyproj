@@ -84,6 +84,9 @@
     <Compile Include="PullData.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="setup.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
