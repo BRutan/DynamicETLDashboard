@@ -5,15 +5,30 @@
 # * GUI for ETL dashboard, contains all sub
 # windows.
 
-from ETLViewer import ETLViewer
-from tkinter import Tk
-from tkinter.ttk import Button, Checkbutton, Combobox, Frame, Entry, Label, PanedWindow, RadioButton, OptionMenu
 
-class Dashboard(object):
+from tkinter import Tk
+from tkinter.ttk import Notebook
+from GUI.ETLInfoWindow import ETLInfoWindow
+from GUI.ETLInfoWindow import ETLInfoWindow
+
+class ETLDashboard(object):
     """
-    * Dashboard for ETL addition and checking process.
+    * Main window grouping for script windows.
     """
-    def __init__(self):
-        self.__window = Tk(className = 'Dashboard')
-        self.__window.title("New ETL Deployer")
+    def __init__(self, windows):
+        self.__etldashboard = Tk("ETLDashboard", "ETLDashboard", "ETLDashboard")
+        self.__windows = Notebook(self.__etldashboard)
+        self.__testetlpipelinewindow = None
+        self.__etlinfowindow  = ETLInfoWindow()
+
+        self.__window.title("ETLDashboard")
         self.__window.mainloop()
+    ##############
+    # Interface Methods:
+    ##############
+
+    ##############
+    # Private Helpers:
+    ##############
+
+

@@ -81,6 +81,18 @@
     <Compile Include="GenerateFileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GUI\GenerateColumnAttributesReportWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUI\PullDataWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUI\ScriptWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUI\TestETLPipelineWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PullData.py">
       <SubType>Code</SubType>
     </Compile>
@@ -119,7 +131,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GenerateColumnAttributesReport.py" />
-    <Compile Include="GUI\ETLViewer.py">
+    <Compile Include="GUI\ETLInfoWindow.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\FileConverter.py">
