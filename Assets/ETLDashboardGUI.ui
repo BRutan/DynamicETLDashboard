@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.0">
+  <object class="tk.Toplevel" id="ETLDashboard">
+    <property name="height">400</property>
+    <property name="width">400</property>
+    <child>
+      <object class="ttk.Notebook" id="ETLDashboardNotebook">
+        <property name="height">400</property>
+        <property name="width">400</property>
+        <layout manager="pack">
+          <property name="propagate">True</property>
+          <property name="side">top</property>
+        </layout>
+        <child>
+          <object class="ttk.Notebook.Tab" id="ETLInfoTab">
+            <property name="compound">top</property>
+            <property name="text" translatable="yes">ETL Info</property>
+            <child>
+              <object class="ttk.Frame" id="frame_8">
+                <property name="height">200</property>
+                <property name="text" translatable="yes">ETL Name</property>
+                <property name="width">200</property>
+                <layout manager="pack">
+                  <property name="propagate">True</property>
+                  <property name="side">top</property>
+                </layout>
+                <child>
+                  <object class="ttk.Entry" id="entry_2">
+                    <property name="text" translatable="yes">entry_2</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Button" id="GetETLInfoButton">
+                    <property name="cursor">arrow</property>
+                    <property name="state">normal</property>
+                    <property name="takefocus">true</property>
+                    <property name="text" translatable="yes">Get ETL Info</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="tk.Text" id="text_2">
+                    <property name="height">10</property>
+                    <property name="text" translatable="yes">text_2</property>
+                    <property name="width">50</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Notebook.Tab" id="ColumnAttributesTab">
+            <property name="text" translatable="yes">Get Column Attributes
+</property>
+            <child>
+              <object class="ttk.Frame" id="frame_9">
+                <property name="height">200</property>
+                <property name="width">200</property>
+                <layout manager="pack">
+                  <property name="propagate">True</property>
+                  <property name="side">top</property>
+                </layout>
+                <child>
+                  <object class="ttk.Entry" id="entry_3">
+                    <property name="text" translatable="yes">entry_3</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="entry_4">
+                    <property name="text" translatable="yes">entry_4</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="label_2">
+                    <property name="text" translatable="yes">label_2</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="label_3">
+                    <property name="text" translatable="yes">label_3</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Notebook.Tab" id="TestPipelineTab">
+            <property name="text" translatable="yes">Test Pipeline
+</property>
+            <child>
+              <object class="ttk.Frame" id="frame_7">
+                <property name="height">200</property>
+                <property name="width">200</property>
+                <layout manager="pack">
+                  <property name="propagate">True</property>
+                  <property name="side">top</property>
+                </layout>
+                <child>
+                  <object class="ttk.Button" id="button_7">
+                    <property name="text" translatable="yes">button_7</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
