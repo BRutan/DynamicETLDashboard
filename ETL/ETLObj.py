@@ -6,6 +6,7 @@
 # appsettings-template.json file
 
 from abc import ABC, abstractmethod
+import copy
 import json
 import os
 import re
@@ -44,7 +45,7 @@ class ETLObj(object):
     ####################
     @property
     def Fields(self):
-        return self.__fields.copy()
+        return copy.deepcopy(self.__fields)
     @property
     def Source(self):
         return self.__fields['Source']
@@ -57,27 +58,27 @@ class ETLObj(object):
     @property
     def OnError(self):
         if 'OnError' in self.__fields:
-            return self.__fields['OnError']
+            return copy.deepcopy(self.__fields['OnError'])
         else:
             return None
     @property
     def FieldOverride(self):
         if 'FieldOverride' in self.__fields:
-            return self.__fields['FieldOverride']
+            return copy.deepcopy(self.__fields['FieldOverride'])
         else:
             return None
     @property
     def DataReader(self):
-        return self.__fields['DataReader']
+        return copy.deepcopy(self.__fields['DataReader'])
     @property
     def InputOperations(self):
-        return self.__fields['InputOperations']
+        return copy.deepcopy(self.__fields['InputOperations'])
     @property
     def PreOperations(self):
-        return self.__fields['PreOperations']
+        return copy.deepcopy(self.__fields['PreOperations'])
     @property
     def PostOperations(self):
-        return self.__fields['PostOperations']
+        return copy.deepcopy(self.__fields['PostOperations'])
     @Source.setter
     def Source(self, val):
         if not isinstance(val, str):
@@ -196,7 +197,7 @@ class ETLObj(object):
             errs.append("Top key must be the ETL name.")
         else:
             name = keys[0]
-            req = ETLObj.__ReqFields.copy()
+            req = copy.deepcopy(ETLObj.__ReqFields)
             invalid = []
             for field in req:
                 if field in jsonVals:

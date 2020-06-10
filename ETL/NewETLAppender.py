@@ -4,6 +4,7 @@
 # Description:
 # * Validate new ETL and append to build script for use in DynamicETL.Service.
 
+import copy
 from ETL.ETLObj import ETLObj
 import json
 import os
@@ -29,7 +30,8 @@ class NewETLAppender:
         NewETLAppender.__Validate(etlname, appsettingsobj, configobj, kwargs)
         self.__config = configobj
         self.__appsettingstemplate = json.load(open(appsettingsobj, 'rb')) if isinstance(appsettingsobj, str) else appsettingsobj
-        self.__appsettings = NewETLAppender.__FillValues(self.__appsettingstemplate.copy())
+        self.__appsettings = copy.deepcopy(self.__appsettingstemplate)
+        self.__appsettings = NewETLAppender.__FillValues(self.__appsettings)
         self.__AppendNewETL(etlname, kwargs)
 
     ####################
@@ -94,10 +96,10 @@ class NewETLAppender:
         newETL = ETLObj(kwargs)
         self.__appsettingstemplate['Etls'][etlname] = newETL.ToJson()
         kwargs['Source'] = 'Network'
-        newETL = ETLObj(kwargs)
-        self.__appsettings['Etls'][etlname] = newETL.ToJson()
+        newETLjson = ETLObj(kwargs).ToJson()
         if not self.__config is None:
-            self.__appsettings = FillEnvironmentVariables(self.__appsettings, self.__config, 'UAT')
+            newETLjson = FillEnvironmentVariables(newETLjson, self.__config, 'LOCAL')
+        self.__appsettings['Etls'][etlname] = newETLjson
     
     @staticmethod
     def __FillValues(appsettingstemplatejson):
@@ -109,6 +111,8 @@ class NewETLAppender:
         etls = [etl for etl in appsettingstemplatejson['Etls']]
         for etl in etls:
             appsettingstemplatejson['Etls'][etl]['Source'] = 'Network'
+        if not self.__config is None:
+            appsettingstemplatejson = FillEnvironmentVariables(appsettingstemplatejson, self.__config, 'LOCAL')
 
         return appsettingstemplatejson
     

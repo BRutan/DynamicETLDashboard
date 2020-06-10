@@ -159,5 +159,202 @@
     "QA": "\\\\nj1qaapp20\\logs",
     "CI": "",
     "LOCAL": "."
+  },
+  "ServiceName": {
+    "PROD": "Guggenheim.Services.DynamicEtl",
+    "STG": "Guggenheim.Services.DynamicEtl",
+    "UAT": "Guggenheim.Services.DynamicEtl",
+    "QA": "Guggenheim.Services.DynamicEtl",
+    "CI": "Guggenheim.Services.DynamicEtl",
+    "LOCAL": "Guggenheim.Services.DynamicEtl"
+  },
+
+  "EnvironmentExtension": {
+    "PROD": "",
+    "STG": "STG",
+    "UAT": "UAT",
+    "QA": "QA",
+    "CI": "CI",
+    "LOCAL": ""
+  },
+  "ApplicationName": {
+    "PROD": "DynamicEtl.Service",
+    "STG": "DynamicEtl.Service",
+    "UAT": "DynamicEtl.Service",
+    "QA": "DynamicEtl.Service",
+    "CI": "DynamicEtl.Service",
+    "LOCAL": "DynamicEtl.Service"
+  },
+  "ApplicationServer": {
+    "PROD": "localhost",
+    "STG": "localhost",
+    "UAT": "localhost",
+    "QA": "localhost",
+    "CI": "LOCALHOST",
+    "LOCAL": "LOCALHOST"
+  },
+
+
+  "DeploymentPath": {
+    "PROD": "e:\\Services",
+    "STG": "e:\\Services",
+    "UAT": "e:\\Services",
+    "QA": "e:\\Services",
+    "CI": "e:\\Services",
+    "LOCAL": "c:\\Services"
+  },
+  "DeployDirectory": {
+    "PROD": "e:\\Services",
+    "STG": "e:\\Services",
+    "UAT": "e:\\Services",
+    "QA": "e:\\Services",
+    "CI": "e:\\Services",
+    "LOCAL": "c:\\Services"
+  },
+  "LogDir": {
+    "PROD": "e:\\deploy\\logs",
+    "STG": "e:\\deploy\\logs",
+    "UAT": "e:\\deploy\\logs",
+    "QA": "e:\\deploy\\logs",
+    "CI": "e:\\deploy\\logs",
+    "LOCAL": "c:\\logs"
+  },
+  "StartServiceOnInstall": {
+    "PROD": "true",
+    "STG": "true",
+    "UAT": "true",
+    "QA": "true",
+    "CI": "true",
+    "LOCAL": "true"
+  },
+
+  "RootLoggerLevel": {
+    "PROD": "INFO",
+    "STG": "INFO",
+    "UAT": "INFO",
+    "QA": "DEBUG",
+    "CI": "DEBUG",
+    "LOCAL": "DEBUG"
+  },
+
+  "SyslogServer": {
+    "PROD": "GSSYSLOG",
+    "STG": "GSSYSLOGTST",
+    "UAT": "GSSYSLOGTST",
+    "QA": "GSSYSLOGTST",
+    "CI": "localhost",
+    "LOCAL": "GSSYSLOGTST"
+  },
+  "DynamicEtlWebApiUrl": {
+    "PROD": "http://DynamicEtl/api/",
+    "STG": "http://DynamicEtlStg/api/",
+    "UAT": "http://DynamicEtlUat/api/",
+    "QA": "http://DynamicEtlQa/api/",
+    "CI": "http://localhost/DynamicEtl/api/",
+    "LOCAL": "http://localhost/DynamicEtl/api/"
+  },
+  "FileVaultUrl": {
+    "PROD": "https://FileVault/api/",
+    "STG": "https://FileVaultStg/api/",
+    "UAT": "https://FileVaultUat/api/",
+    "QA": "https://FileVaultQa/api/",
+    "CI": "https://FileVaultQa/api/",
+    "LOCAL": "https://FileVaultQa/api/"
+  },
+  "DbServer": {
+    "PROD": "AComplSql",
+    "STG": "AStgComplSql",
+    "UAT": "AUatComplSql",
+    "QA": "AQaComplSql",
+    "CI": "localhost",
+    "LOCAL": "AQaComplSql"
+  },
+  "Sql04Db": {
+    "PROD": "AGSSQL",
+    "STG": "ASTGGSSQL",
+    "UAT": "AUATGSSQL",
+    "QA": "AQAGSSQL",
+    "CI": "localhost",
+    "LOCAL": "."
+  },
+  "PluginDir": {
+    "PROD": "E:\\\\ProgramData\\\\DynamicEtl\\\\Plugins",
+    "STG": "E:\\\\ProgramData\\\\DynamicEtl\\\\Plugins",
+    "UAT": "E:\\\\ProgramData\\\\DynamicEtl\\\\Plugins",
+    "QA": "E:\\\\ProgramData\\\\DynamicEtl\\\\Plugins",
+    "CI": "C:\\\\ProgramData\\\\DynamicEtl\\\\Plugins",
+    "LOCAL": "C:\\\\ProgramData\\\\DynamicEtl\\\\Plugins"
+  },
+  "ExecutedTradesArchivePath": {
+    "PROD": "E:\\\\\\\\ExecutedTrades",
+    "STG": "E:\\\\\\\\ExecutedTrades",
+    "UAT": "E:\\\\\\\\ExecutedTrades",
+    "QA": "E:\\\\\\\\ExecutedTrades",
+    "CI": "C:\\\\\\\\ExecutedTrades",
+    "LOCAL": "C:\\\\\\\\ExecutedTrades"
+  },
+  "DynamicEtl_PluginsDir": {
+    "LOCAL": "C:\\ProgramData\\DynamicEtl\\Plugins",
+    "CI": "E:\\ProgramData\\DynamicEtl\\Plugins",
+    "QA": "E:\\ProgramData\\DynamicEtl\\Plugins",
+    "UAT": "E:\\ProgramData\\DynamicEtl\\Plugins",
+    "STG": "E:\\ProgramData\\DynamicEtl\\Plugins",
+    "PROD": "E:\\ProgramData\\DynamicEtl\\Plugins"
+  },
+  "TaskmanagerUrl": {
+    "PROD": "http://TaskManager",
+    "STG": "http://TaskManagerpreprod",
+    "UAT": "http://TaskManageruat",
+    "QA": "http://TaskManagerqa",
+    "CI": "http://localhost/taskmanager",
+    "LOCAL": "http://localhost/taskmanager"
+  },
+  "SmtpServer": {
+    "PROD": "smtp.wanlink.us",
+    "STG": "smtp.wanlink.us",
+    "UAT": "smtp.wanlink.us",
+    "QA": "smtp.wanlink.us",
+    "CI": "smtp.wanlink.us",
+    "LOCAL": "smtp.wanlink.us"
+  },
+  "EmailFrom": {
+    "PROD": "gssystemsdevelopment@guggenheimpartners.com",
+    "STG": "gssystemsdevelopment_STG@guggenheimpartners.com",
+    "UAT": "gssystemsdevelopment_uat@guggenheimpartners.com",
+    "QA": "gssystemsdevelopment_qa@guggenheimpartners.com",
+    "CI": "Rajmohan.Manickam@guggenheimpartners.com",
+    "LOCAL": "Rajmohan.Manickam@guggenheimpartners.com"
+  },
+  "SecurityExceptionEmail": {
+    "PROD": "gssystemsdevelopment@guggenheimpartners.com",
+    "STG": "gssystemsdevelopment@guggenheimpartners.com",
+    "UAT": "gssystemsdevelopment@guggenheimpartners.com",
+    "QA": "Rajmohan.Manickam@guggenheimpartners.com",
+    "CI": "Rajmohan.Manickam@guggenheimpartners.com",
+    "LOCAL": "Rajmohan.Manickam@guggenheimpartners.com"
+  },
+  "Central": {
+    "PROD": "gssystemsdevelopment@guggenheimpartners.com",
+    "STG": "gssystemsdevelopment@guggenheimpartners.com",
+    "UAT": "gssystemsdevelopment@guggenheimpartners.com",
+    "QA": "Rajmohan.Manickam@guggenheimpartners.com",
+    "CI": "Rajmohan.Manickam@guggenheimpartners.com",
+    "LOCAL": "Rajmohan.Manickam@guggenheimpartners.com"
+  },
+  "DefaultErrorEmailFrom": {
+    "PROD": "gssystemsdevelopment@guggenheimpartners.com",
+    "STG": "gssystemsdevelopment_stg@guggenheimpartners.com",
+    "UAT": "gssystemsdevelopment_uat@guggenheimpartners.com",
+    "QA": "gssystemsdevelopment_qa@guggenheimpartners.com",
+    "CI": "gssystemsdevelopment_qa@guggenheimpartners.com",
+    "LOCAL": "gssystemsdevelopment_qa@guggenheimpartners.com"
+  },
+  "RiskDashboardEmailTo": {
+    "PROD": "ITEnterpriseRiskIntelligence@guggenheimpartners.com",
+    "STG": "ITAppDevelopmentGSAll@guggenheimpartners.com",
+    "UAT": "ITAppDevelopmentGSAll@guggenheimpartners.com",
+    "QA": "ITAppDevelopmentGSAll@guggenheimpartners.com",
+    "CI": "ITAppDevelopmentGSAll@guggenheimpartners.com",
+    "LOCAL": "ITAppDevelopmentGSAll@guggenheimpartners.com"
   }
 }
