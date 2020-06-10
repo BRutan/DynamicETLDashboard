@@ -27,6 +27,7 @@ class NewETLAppender:
         """
         NewETLAppender.__Validate(etlname, appsettingsobj, kwargs)
         self.__appsettingstemplate = json.load(open(appsettingsobj, 'rb')) if isinstance(appsettingsobj, str) else appsettingsobj
+        self.__appsettings = NewETLAppender.__FillValues(self.__appsettingstemplate.copy())
         self.__AppendNewETL(etlname, kwargs)
 
     ####################
@@ -51,7 +52,7 @@ class NewETLAppender:
             errs.append('kwargs must be a dictionary if provided.')
         self.__AppendNewETL(newetlname, kwargs)
 
-    def OutputUpdatedFile(self, path):
+    def OutputUpdatedTemplateFile(self, path):
         """
         * Output updated appsettings-template.json file 
         to json file at path.
@@ -64,16 +65,46 @@ class NewETLAppender:
             raise Exception('path must point to .json file.')
         json.dump(self.__appsettingstemplate, open(path, 'w'), indent = 4)
 
+    def OutputUpdatedAppsettingsFile(self, path):
+        """
+        * Output updated Appsettings.json file 
+        to json file at path.
+        Inputs;
+        * path: String pointing to output .json file.
+        """
+        if not isinstance(path, str):
+            raise Exception('path must be a string.')
+        elif not path.endswith('.json'):
+            raise Exception('path must point to .json file.')
+        json.dump(self.__appsettings, open(path, 'w'), indent = 4)
+
     ####################
     # Private Helpers:
     ####################
     def __AppendNewETL(self, etlname, kwargs):
         """
-        * Append new etl to appsettings-template.json file.
+        * Append new etl to appsettings-template.json and Appsettings.json
+        objects.
         """
         kwargs['etlname'] = etlname
         newETL = ETLObj(kwargs)
         self.__appsettingstemplate['Etls'][etlname] = newETL.ToJson()
+        kwargs['Source'] = 'Network'
+        newETL = ETLObj(kwargs)
+        self.__appsettings['Etls'][etlname] = newETL.ToJson()
+    
+    @staticmethod
+    def __FillValues(self, appsettingstemplatejson):
+        """
+        * Fill environment variables in appsettings-template.json
+        and replace "FileVault1" with "Network" as source so file can be used
+        for testing all ETLs locally.
+        """
+        etls = [etl for etl in appsettingstemplatejson['Etls']]
+        for etl in etls:
+            appsettingstemplatejson['Etls'][etl]['Source'] = 'Network'
+
+        return appsettingstemplatejson
     
     @staticmethod
     def __Validate(etlname, appsettingsobj, kwargs):

@@ -12,7 +12,7 @@ class PostArgsFactory:
     """
     * Singleton factory class to generate DynamicETL.WebAPI postargs.
     """
-    __req = set("outpath","datafilepath", "etlname")
+    __req = set(["outpath","datafilepath", "etlname"])
     ####################
     # Interface Methods:
     ####################

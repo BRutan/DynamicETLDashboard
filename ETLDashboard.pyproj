@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>GenerateNewETL.py</StartupFile>
+    <StartupFile>Temp.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -171,7 +171,6 @@
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="AppsettingsFiles\TransferId_297.xml" />
-    <Content Include="DefaultScriptConfigs\GenerateColumnAttributesReport.json" />
     <Content Include="Documentation.docx" />
     <Content Include="ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />

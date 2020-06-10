@@ -19,7 +19,7 @@ class ColumnAttribute(object):
     __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
     __floatPattern = re.compile('\.[0-9]')
     __datePattern = re.compile('^[0-9]{1,2}[//-_][0-9]{1,2}//[0-9]{2,4}$')
-    __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal' }
+    __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal(30,10)' }
 
     def __init__(self, name):
         """

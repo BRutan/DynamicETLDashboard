@@ -18,6 +18,15 @@ def compare():
     data_test = interface.Select(query)
     DataComparer.GenerateComparisonReport('CyberSecurityExceptionsDiff_Post.xlsx', data_test, data_valid, ignoreCols, pKey)
 
+def comparelocal():
+    interface = TSQLInterface('.', 'MetricsDyetl')
+    query = "SELECT * FROM [dbo].[TradeRequest];"
+    data_test = interface.Select(query)
+    data_valid = DataReader.Read("C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_2020_0608.xlsx")
+    ignoreCols = ['FileDate', 'RunDate']
+    pkey = ['User Name', 'First Name', 'Requested Date Time']
+    #pkey = TSQLInterface.PrimaryKeys(data_valid, 4, ignoreCols = ignoreCols, findFirst = True)
+    DataComparer.GenerateComparisonReport('TradeRequestDiff.xlsx', data_test, data_valid, ignoreCols = ignoreCols, pKey = pkey)
 
 def getdata():
     interface = TSQLInterface('.', 'MetricsDyetl')
@@ -47,6 +56,4 @@ def testlogreader():
 
 
 if __name__ == '__main__':
-    #testlogreader()
-    #pulldata()
-    getdata()
+    comparelocal()

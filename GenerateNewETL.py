@@ -40,13 +40,16 @@ def GenerateColumnAttributesReport():
     print (tableDefPath)
     attributes.CreateTableDefinitions(args.outputfolder, args.tablename)
     print ("Finished generating table definitions.")
-    # Generate new service appsettings file based upon new etl:
-    updatedAppSettingsPath = "%sappsettings-template.json" % args.outputfolder
+    # Generate new service appsettings-template.json (for committing to project) 
+    # and Appsettings.json (for testing locally) files based upon new etl:
+    updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
+    updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
     print ("Appending new ETL configuration to appsettings-template.json file at")
     print (updatedAppSettingsPath)
     kwargs = { 'tablename' : args.tablename }
     appender = NewETLAppender(args.etlname, args.appsettingstemplate, kwargs)
-    appender.OutputUpdatedFile(updatedAppSettingsPath)
+    appender.OutputUpdatedTemplateFile(updatedTemplatePath)
+    appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)
     # Generate postargs to folder:
     postargsPath = "%spostargs.json" % args.outputfolder
     print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
