@@ -17,3 +17,5 @@ __pycache__/
 *.xls
 *.xlsx
 *.csv
+# Copies of configuration files:
+* - Copy.*
