@@ -2,7 +2,16 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Python specific folders:
 __pycache__
+
+# Generated files by ETLDashboard:
 *.xls
 *.xlsx
 *.csv

@@ -11,9 +11,3 @@ def TestETLPipelineDescription():
     """
     pass
 
-def TestETLPipelineDescription():
-    """
-    * Describe TestETLPipeline and arguments.
-    """
-    pass
-

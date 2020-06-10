@@ -25,11 +25,13 @@
                   <property name="side">top</property>
                 </layout>
                 <child>
-                  <object class="ttk.Entry" id="entry_2">
-                    <property name="text" translatable="yes">entry_2</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                  <object class="ttk.Entry" id="ETLNameEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.4</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
@@ -39,20 +41,47 @@
                     <property name="state">normal</property>
                     <property name="takefocus">true</property>
                     <property name="text" translatable="yes">Get ETL Info</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">center</property>
+                      <property name="relx">0.50</property>
+                      <property name="rely">0.2</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
-                  <object class="tk.Text" id="text_2">
+                  <object class="tk.Text" id="ETLInfoBox">
                     <property name="height">10</property>
-                    <property name="text" translatable="yes">text_2</property>
                     <property name="width">50</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.36</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="ETLNameLabel">
+                    <property name="text" translatable="yes">ETL Name:</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.0</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Radiobutton" id="OpenFileExplorerPathsOption">
+                    <property name="text" translatable="yes">Open File Explorer Paths</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.31</property>
+                      <property name="rely">0.08</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
@@ -73,38 +102,158 @@
                   <property name="side">top</property>
                 </layout>
                 <child>
-                  <object class="ttk.Entry" id="entry_3">
-                    <property name="text" translatable="yes">entry_3</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                  <object class="ttk.Entry" id="SheetsEntry">
+                    <property name="text" translatable="yes">
+</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="rely">0.07</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Entry" id="entry_4">
-                    <property name="text" translatable="yes">entry_4</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                  <object class="ttk.Entry" id="DataPathEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="label_2">
-                    <property name="text" translatable="yes">label_2</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                  <object class="ttk.Label" id="DataPathLabel">
+                    <property name="text" translatable="yes">Data Path:
+</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="width">100</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Label" id="label_3">
-                    <property name="text" translatable="yes">label_3</property>
+                  <object class="ttk.Label" id="SheetsLabel">
+                    <property name="text" translatable="yes">Sheets (Optional):
+</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.07</property>
+                      <property name="width">100</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="ReportPathEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="rely">0.14</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="ReportPathLabel">
+                    <property name="text" translatable="yes">Report Path:
+	</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.14</property>
+                      <property name="width">100</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Button" id="GetColumnAttributesButton">
+                    <property name="text" translatable="yes">Get Column Attributes	</property>
                     <layout manager="pack">
+                      <property name="anchor">s</property>
                       <property name="propagate">True</property>
-                      <property name="side">top</property>
+                      <property name="side">bottom</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="FileDateRegEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="rely">0.21</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="FileDateRegexLabel">
+                    <property name="text" translatable="yes">File Date Regex:</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.21</property>
+                      <property name="width">100</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="FileNameRegexEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="rely">0.28</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="TableNameEntry">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.29</property>
+                      <property name="rely">0.35</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id=" FileNameRegexLabel">
+                    <property name="text" translatable="yes">File Name Regex:</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.0</property>
+                      <property name="rely">0.28</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="TableNameLabel">
+                    <property name="text" translatable="yes">Table Name:</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.35</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
@@ -125,8 +274,154 @@
                   <property name="side">top</property>
                 </layout>
                 <child>
-                  <object class="ttk.Button" id="button_7">
-                    <property name="text" translatable="yes">button_7</property>
+                  <object class="ttk.Button" id="TestETLPipelineButton">
+                    <property name="text" translatable="yes">Test Pipeline
+</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="ETLNameEntry">
+                    <property name="text" translatable="yes">
+</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="FileDateEntry">
+                    <property name="text" translatable="yes">	
+</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="ReportPathEntry">
+                    <property name="text" translatable="yes">entry_8</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="PostArgsPathEntry">
+                    <property name="text" translatable="yes">
+</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="TestModeEntry">
+                    <property name="text" translatable="yes">	
+</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="PKeyEntry">
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="IgnoreColsEntry">
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="CompareFileEntry">
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="ETLNameLabel">
+                    <property name="text" translatable="yes">ETL Name:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="FileDateLabel">
+                    <property name="text" translatable="yes">File Date:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="ReportPathLabel">
+                    <property name="text" translatable="yes">Report Path:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="PostArgsPathLabel">
+                    <property name="text" translatable="yes">Post Args Path:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="TestModeLabel">
+                    <property name="text" translatable="yes">Test Mode:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="PrimaryKeyLabel">
+                    <property name="text" translatable="yes">Primary Key(s):</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="IgnoreColsLabel">
+                    <property name="text" translatable="yes">Ignore Columns:</property>
+                    <layout manager="pack">
+                      <property name="propagate">True</property>
+                      <property name="side">top</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Label" id="CompareFileLabel">
+                    <property name="text" translatable="yes">Compare Custom File:</property>
                     <layout manager="pack">
                       <property name="propagate">True</property>
                       <property name="side">top</property>
@@ -135,6 +430,11 @@
                 </child>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="ttk.Notebook.Tab" id="Pull Data">
+            <property name="text" translatable="yes">tab_5</property>
           </object>
         </child>
       </object>

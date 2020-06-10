@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>TestETLPipeline.py</StartupFile>
+    <StartupFile>GenerateColumnAttributesReport.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -103,6 +103,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestETLPipeline.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArgumentFeeder.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Descriptions.py">

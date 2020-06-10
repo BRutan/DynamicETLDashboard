@@ -6,7 +6,7 @@
 
 from datetime import datetime
 import dateutil.parser as dateparse
-from docx import Document
+#from docx import Document
 import json
 from jsonargparse import ArgumentError
 import os
@@ -103,24 +103,24 @@ def IsNumeric(value):
     except:
         return False
 
-def GetDocumentText(path):
-    """
-    * Get text contained in document.
-    Inputs:
-    * path: Path to .txt, .csv, .docx file.
-    """
-    if not isinstance(path, str):
-        raise Exception('path must be a string.')
-    elif not os.path.isfile(path):
-        raise Exception('path does not point to valid file.')
-    if path.endswith('.docx'):
-        doc = docx.Document(filename)
-        fullText = []
-        for para in doc.paragraphs:
-            fullText.append(para.text)
-        return '\n'.join(fullText)
-    elif path.endswith('.txt'):
-        pass
+#def GetDocumentText(path):
+#    """
+#    * Get text contained in document.
+#    Inputs:
+#    * path: Path to .txt, .csv, .docx file.
+#    """
+#    if not isinstance(path, str):
+#        raise Exception('path must be a string.')
+#    elif not os.path.isfile(path):
+#        raise Exception('path does not point to valid file.')
+#    if path.endswith('.docx'):
+#        doc = docx.Document(filename)
+#        fullText = []
+#        for para in doc.paragraphs:
+#            fullText.append(para.text)
+#        return '\n'.join(fullText)
+#    elif path.endswith('.txt'):
+#        pass
 
 
 def StringIsDT(dateString, returnval = False):
