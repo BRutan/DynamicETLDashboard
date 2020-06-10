@@ -130,7 +130,7 @@ class Arguments(object):
     """
     * Validate and store script arguments.
     """
-    __reqArgs = set(['etlname','data','reportpath','filedatereg','tablename'])
+    __reqArgs = set(['etlname','data','outputfolder','filedatereg','tablename'])
     def __init__(self, args):
         args = { arg.lower() : args[arg] for arg in args }
         Arguments.__CheckArgs(args)
@@ -138,7 +138,7 @@ class Arguments(object):
         self.appsettingstemplate = fixedargs['serviceappsettingstemplate']
         self.etlname = args['etlname']
         self.datapath = args['data']['path'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
-        self.reportpath = args['reportpath']
+        self.outputfolder = args['outputfolder']
         self.filedateinfo = { key.lower() : args['filedatereg'][key] for key in args['filedatereg'] }
         self.filedateinfo['regex'] = re.compile(self.filedateinfo['regex'])
         self.tablename = args['tablename']
@@ -168,6 +168,7 @@ class Arguments(object):
         # "etlname":
         if not isinstance(args['etlname'], str):
             errs.append('etlname must be a string.')
+        
         # "data" arguments:
         if 'path' not in args['data']:
             missing.append('data::path')
@@ -177,22 +178,15 @@ class Arguments(object):
             errs.append(' '.join(['(data::path)', args['data']['path'], ' does not exist.']))
         if 'sheets' in args['data'] and not isinstance(args['data']['sheets'], list):
             errs.append('data::sheets must be a list.')
+        
         # "filedatereg" arguments:
         if not IsRegex(args['filedatereg']['Regex']):
             errs.append(' '.join(['(filedatereg)', args['filedatereg']['Regex'], 'Not a valid regular expression.']))
 
-        # "reportpath" arguments:
-        if '.' not in args['reportpath']:
-            errs.append('(reportpath) Must point to a file.')
-        elif '\\' in args['reportpath'] and not os.path.exists(args['reportpath'][0:args['reportpath'].rfind('\\')]):
-            errs.append('(reportpath) Enclosing folder does not exist.')
-        elif os.path.exists(args['reportpath']):
-            filename, extension = os.path.splitext(args['reportpath'])
-            count = 2
-            while os.path.exists(args['reportpath']):
-                args['reportpath'] = "%s_%d%s" % (filename, count, extension)
-                count += 1
-
+        # "outputfolder" arguments:
+        if not os.path.isdir(args['outputfolder']):
+           errs.append('(outputfolder) Folder does not exist.')
+        
         # "filenamereg" arguments:
         if 'filenamereg' in args and not IsRegex(args['filenamereg']):
             errs.append(' '.join(['(filenamereg) ', args['filenamereg'], ' is not a valid regular expression.']))
