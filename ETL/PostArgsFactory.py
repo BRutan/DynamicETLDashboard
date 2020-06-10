@@ -26,7 +26,7 @@ class PostArgsFactory:
         with following required keys:
             * outpath: String path to output postargs json file.
             * etlname: String name of ETL.
-            * datafilepath: Path to datafile to be posted to WebAPI.  
+            * datafilepath: String path to datafile to be posted to WebAPI.  
         """
         kwargs = { key.lower() : kwargs[key] for key in kwargs }
         PostArgsFactory.__Validate(kwargs)
@@ -45,7 +45,11 @@ class PostArgsFactory:
         missing = set(PostArgsFactory.__req) - set(kwargs)
         if missing:
             errs.append('The following required arguments are missing: %s' % ','.join(missing))
-        if 'datafilepath' in kwargs and not os.path.isfile(kwargs['datafilepath']):
+        elif any([not isinstance(kwargs[key],str) for key in kwargs]):
+            errs.append('All kwargs entries must be keys.')
+        if 'datafilepath' in kwargs and isinstance(kwargs['datafilepath'], str) and not os.path.isfile(kwargs['datafilepath']):
             errs.append('datafilepath does not point to existing file.')
+        if 'outpath' in kwargs and isinstance(kwargs['outpath'], str) and not kwargs['outpath'].endswith('.json'):
+            errs.append('outpath must point to json file.')
         if errs:
             raise Exception('\n'.join(errs))

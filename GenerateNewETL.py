@@ -9,6 +9,7 @@
 from argparse import ArgumentParser, ArgumentError
 from Columns.DataColumnAttributes import DataColumnAttributes
 from ETL.NewETLAppender import NewETLAppender
+from ETL.PostArgsFactory import PostArgsFactory
 import json
 import os
 import re
@@ -46,6 +47,11 @@ def GenerateColumnAttributesReport():
     kwargs = { 'tablename' : args.tablename }
     appender = NewETLAppender(args.etlname, args.appsettingstemplate, kwargs)
     appender.OutputUpdatedFile(updatedAppSettingsPath)
+    # Generate postargs to folder:
+    postargsPath = "%spostargs.json" % args.outputfolder
+    print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
+    print (postargsPath)
+    PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = None)
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()
