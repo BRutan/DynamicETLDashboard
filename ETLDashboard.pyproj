@@ -52,6 +52,9 @@
     <Compile Include="ETL\NewETLAppender.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\PostArgsFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ETL\TSQLInterface.py">
       <SubType>Code</SubType>
     </Compile>
