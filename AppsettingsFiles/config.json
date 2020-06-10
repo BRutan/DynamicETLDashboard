@@ -267,7 +267,7 @@
     "UAT": "AUatComplSql",
     "QA": "AQaComplSql",
     "CI": "localhost",
-    "LOCAL": "AQaComplSql"
+    "LOCAL": "."
   },
   "Sql04Db": {
     "PROD": "AGSSQL",
