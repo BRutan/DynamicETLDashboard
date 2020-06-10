@@ -13,26 +13,26 @@ class NewETLAppender:
     """
     * Append new ETL to existing DynamicETL.Service appsettings-template.json file.
     """
-    def __init__(self, etlname, appsettingspath, **kwargs = None):
+    def __init__(self, etlname, appsettingsobj, kwargs = None):
         """
         * Append new etl with name to appsettings-template.json
         file.
         Inputs:
         * etlname: String name of new ETL. Cannot be present already in appsettings-template.json
         file.
-        * appsettingspath: Path to .json file containing DynamicETL.Service appsettings-template.json
-        attributes.
+        * appsettingsobj: Path to .json file containing DynamicETL.Service appsettings-template.json
+        attributes, or json dictionary containing appsettings-template.json attributes.
         Optional Inputs:
         * kwargs: Dictionary containing attributes consistent with ETLObj class.
         """
-        NewETLAppender.__Validate(etlname, appsettingspath, kwargs)
-        self.__appsettingstemplate = json.load(open(appsettingspath, 'rb'))
-        self.__AppendNewETL(etlname, appsettingspath, kwargs)
+        NewETLAppender.__Validate(etlname, appsettingsobj, kwargs)
+        self.__appsettingstemplate = json.load(open(appsettingsobj, 'rb')) if isinstance(appsettingsobj, str) else appsettingsobj
+        self.__AppendNewETL(etlname, kwargs)
 
     ####################
     # Interface Methods:
     ####################
-    def AppendNewETL(self, newetlname, **kwargs = None):
+    def AppendNewETL(self, newetlname, kwargs = None):
         """
         * Append additional ETL to appsettings-template file.
         Inputs:
@@ -62,42 +62,48 @@ class NewETLAppender:
             raise Exception('path must be a string.')
         elif not path.endswith('.json'):
             raise Exception('path must point to .json file.')
-        json.dump(self.__appsettingstemplate, open(path, 'wb'))
+        json.dump(self.__appsettingstemplate, open(path, 'w'), indent = 4)
 
     ####################
     # Private Helpers:
     ####################
-    def __AppendNewETL(self, etlname, **kwargs):
+    def __AppendNewETL(self, etlname, kwargs):
         """
         * Append new etl to appsettings-template.json file.
         """
         kwargs['etlname'] = etlname
         newETL = ETLObj(kwargs)
-        this.__appsettingstemplate['Etls'][etlname] = newETL
+        self.__appsettingstemplate['Etls'][etlname] = newETL.ToJson()
     
     @staticmethod
-    def __Validate(etlname, appsettingspath, **kwargs):
+    def __Validate(etlname, appsettingsobj, kwargs):
         """
         * Validate constructor parameters.
         """
         errs = []
         if not isinstance(etlname, str):
             errs.append('etlname must be a string.')
-        if not isinstance(appsettingspath, str):
-            errs.append('appsettingspath must be a string.')
-        elif not appsettingspath.endswith('.json'):
-            errs.append('appsettingspath must point to a json file.')
-        elif not os.path.exists(appsettingspath):
-            errs.append('appsettings-template.json file at path does not exist.')
-        else:
-            try:
-                vals = json.load(open(appsettingspath, 'rb'))
-                if not 'Etls' in vals:
-                    errs.append('"Etls" attribute missing from appsettings-template.json file.')
-                elif isinstance(etlname, str) and etlname in vals['Etls']:
-                    errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
-            except Exception as ex:
-                errs.append('Could not load json file at appsettingspath. Reason: %s' % str(ex))
+        if not isinstance(appsettingsobj, (str, dict)):
+            errs.append('appsettingsobj must be a string or json dictionary.')
+        elif isinstance(appsettingsobj, str):
+            if not appsettingsobj.endswith('.json'):
+                errs.append('appsettingspath must point to a json file.')
+            elif not os.path.exists(appsettingsobj):
+                errs.append('appsettings-template.json file at path does not exist.')
+            else:
+                try:
+                    vals = json.load(open(appsettingsobj, 'rb'))
+                    if not 'Etls' in vals:
+                        errs.append('"Etls" attribute missing from appsettings-template.json file.')
+                    elif isinstance(etlname, str) and etlname in vals['Etls']:
+                        errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
+                except Exception as ex:
+                    errs.append('Could not load json file at appsettingspath. Reason: %s' % str(ex))
+        elif isinstance(appsettingsobj, dict):
+            if not 'Etls' in appsettingsobj:
+                errs.append('"Etls" attribute missing from appsettings json objecgt.')
+            elif isinstance(etlname, str) and etlname in appsettingsobj['Etls']:
+                errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
         if not kwargs is None and not isinstance(kwargs, dict):
             errs.append('kwargs must be a dictionary if provided.')
         if errs:

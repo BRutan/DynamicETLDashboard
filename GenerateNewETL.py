@@ -32,18 +32,20 @@ def GenerateColumnAttributesReport():
     attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets)
     attributes.GenerateReport(reportpath)
     print ("Finished generating report at")
-    print (args.reportpath)
+    print (reportpath)
     # Generate sql table definition based upon column attributes:
+    tableDefPath = "%s%s.sql" % (args.outputfolder, args.tablename)
     print ("Generating table definition for %s at " % args.tablename)
-    print (args.outputfolder)
+    print (tableDefPath)
     attributes.CreateTableDefinitions(args.outputfolder, args.tablename)
     print ("Finished generating table definitions.")
     # Generate new service appsettings file based upon new etl:
     updatedAppSettingsPath = "%sappsettings-template.json" % args.outputfolder
     print ("Appending new ETL configuration to appsettings-template.json file at")
     print (updatedAppSettingsPath)
-    args = {'tablename' : args.tablename}
-    appender = NewETLAppender(args.etlname, args.appsettingstemplate, args)
+    kwargs = { 'tablename' : args.tablename }
+    appender = NewETLAppender(args.etlname, args.appsettingstemplate, kwargs)
+    appender.OutputUpdatedFile(updatedAppSettingsPath)
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()

@@ -24,7 +24,7 @@ class ETLObj(object):
     __ValidDestinations = {"sqllocal" : "SqlLocal", "sqlmetricsdyetl" : "SqlMetricsDyetl", 
                            "sqlcentralcompliancemetrics" : "SqlCentralComplianceMetrics", "sqlcompl2" : "SqlCompl2",
                            "sqlpolicycoverage" : "SqlPolicyCoverage", "sqlfidessa" : "SqlFidessa" }
-    def __init__(self, **kwargs = None):
+    def __init__(self, kwargs = None):
         """
         * Create new ETL using fields listed in json file at path.
         Inputs;
@@ -135,9 +135,10 @@ class ETLObj(object):
     ####################
     # Interface Methods:
     ####################
+    @classmethod
     def LoadNewETLJSON(self, jsonObj):
         """
-        * Load ETL in json at path.
+        * Generate ETLObj from json at path.
         Inputs:
         * jsonObj: String pointing to .json file or dictionary containing
         json attributes.
@@ -150,15 +151,22 @@ class ETLObj(object):
             else:
                 try:
                     etlJSON = json.load(open(path, 'rb'))
+                    ETLObj.CheckFields(etlJSON)
                 except Exception as ex:
-                    raise Exception("Could not read json at path. Reason: %s" % str(ex))
+                    raise Exception("Invalid JSON at path. Reason: %s" % str(ex))
+                return ETLObj(etlJSON)
         else:
-            etlJSON = jsonObj
-
-        # Ensure all required fields were entered:
-        ETLObj.CheckFields(etlJSON)
-        self.__fields = {}
-        self.__FillSpecified(etlJSON)
+            return ETLObj(jsonObj)
+        
+    def ToJson(self):
+        """
+        * Generate json dict node object from attributes.
+        """
+        out = {}
+        for attr in ETLObj.__Fields:
+            if attr in self.__fields:
+                out[attr] = self.__fields[attr]
+        return out
 
     @classmethod
     def GenerateRawETL(cls, path):
@@ -178,7 +186,7 @@ class ETLObj(object):
         """
         * Ensure all fields are present and formatted correctly.
         """
-        keys = list(jsonVals.keys())
+        keys = list(jsonVals)
         errs = []
         name = "Unknown"
         if len(keys) > 1:
@@ -207,20 +215,20 @@ class ETLObj(object):
             if invalid:
                 errs.append(''.join(['The following fields are invalid: ', ','.join(invalid)]))
         if errs:
-            raise InvalidETL(name,'\n'.join(errs))
+            raise Exception('\n'.join(errs))
 
     #####################
     # Private Helpers:
     #####################
     @staticmethod
-    def __Validate(**kwargs):
+    def __Validate(kwargs):
         """
         * Validate constructor parameters.
         """
         if not kwargs is None and not isinstance(kwargs, dict):
             raise Exception('kwargs must be a dictionary if provided.')
 
-    def __FillDefault(self, **kwargs):
+    def __FillDefault(self, kwargs):
         """
         * Fill default values if not specified in
         parameters.
@@ -236,7 +244,7 @@ class ETLObj(object):
                 if not attr.lower() in kwargs:
                     setattr(self, attrs[attr.lower()], default[attrs[attr.lower()]])
 
-    def __FillSpecified(self, **kwargs):
+    def __FillSpecified(self, kwargs):
         """
         * Fill appropriate attributes with 
         values specified in arguments.

@@ -141,7 +141,7 @@ class DataColumnAttributes(object):
         Will create one table definition per sheet if file consists of 
         multiple sheets.
         Inputs:
-        * outputpath: Folder to output 
+        * outputpath: Folder to output one or more .sql files.
         * table: Name for table definition .sql file.
         """
         if not self.__dateToAttrs:
