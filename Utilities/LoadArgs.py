@@ -186,6 +186,8 @@ class Arguments(object):
         # "outputfolder" arguments:
         if not os.path.isdir(args['outputfolder']):
            errs.append('(outputfolder) Folder does not exist.')
+        elif not args['outputfolder'].endswith('\\'):
+            args['outputfolder'] = args['outputfolder'] + '\\'
         
         # "filenamereg" arguments:
         if 'filenamereg' in args and not IsRegex(args['filenamereg']):

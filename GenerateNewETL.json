@@ -3,7 +3,7 @@
   "data": {
     "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\"
   },
-  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\Exception_Daily_Report.xlsx",
+  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\",
   "filedatereg": {
     "Regex": "\\d{4}_\\d{2}\\d{2}",
     "DateFormat": "%Y_%m%d"

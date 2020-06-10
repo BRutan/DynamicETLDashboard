@@ -8,12 +8,13 @@
 
 from argparse import ArgumentParser, ArgumentError
 from Columns.DataColumnAttributes import DataColumnAttributes
+from ETL.NewETLAppender import NewETLAppender
 import json
 import os
 import re
 from Utilities.FileConverter import FileConverter
 from Utilities.Helpers import IsRegex
-from Utilities.LoadArgs import GenerateColumnAttributesReportJsonArgs
+from Utilities.LoadArgs import GenerateNewETLJsonArgs
 
 def GenerateColumnAttributesReport():
     print("------------------------------")
@@ -27,18 +28,22 @@ def GenerateColumnAttributesReport():
     print ("Reading all data files at")
     print (args.datapath)
     attributes = DataColumnAttributes()
+    reportpath = "%s%s.xlsx" % (args.outputfolder, args.etlname)
     attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets)
-    attributes.GenerateReport(args.reportpath)
+    attributes.GenerateReport(reportpath)
     print ("Finished generating report at")
     print (args.reportpath)
     # Generate sql table definition based upon column attributes:
-    tableDefOutput = args.reportpath[0:args.reportpath.rfind('\\')] + '\\'
     print ("Generating table definition for %s at " % args.tablename)
-    print (tableDefOutput)
-    attributes.CreateTableDefinitions(tableDefOutput, args.tablename)
+    print (args.outputfolder)
+    attributes.CreateTableDefinitions(args.outputfolder, args.tablename)
     print ("Finished generating table definitions.")
     # Generate new service appsettings file based upon new etl:
-    
+    updatedAppSettingsPath = "%sappsettings-template.json" % args.outputfolder
+    print ("Appending new ETL configuration to appsettings-template.json file at")
+    print (updatedAppSettingsPath)
+    args = {'tablename' : args.tablename}
+    appender = NewETLAppender(args.etlname, args.appsettingstemplate, args)
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()
