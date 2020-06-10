@@ -9,7 +9,9 @@
 *.sln.docstates
 
 # Python specific folders:
-__pycache__
+__pycache__/
+*/__pycache__/
+.vs/
 
 # Generated files by ETLDashboard:
 *.xls

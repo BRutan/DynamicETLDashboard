@@ -37,6 +37,9 @@
     <Compile Include="ETL\ETLInfo.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\ETLObj.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ETL\FileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
@@ -172,7 +175,6 @@
     <Content Include="Documentation.docx" />
     <Content Include="ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
-    <Content Include="ETL\appsettings-template.json" />
     <Content Include="postargs.json" />
     <Content Include="GenerateFileTransferConfig.json" />
     <Content Include="TestETLPipeline.json" />
