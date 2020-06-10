@@ -31,7 +31,7 @@ class NewETLAppender:
         self.__config = configobj
         self.__appsettingstemplate = json.load(open(appsettingsobj, 'rb')) if isinstance(appsettingsobj, str) else appsettingsobj
         self.__appsettings = copy.deepcopy(self.__appsettingstemplate)
-        self.__appsettings = NewETLAppender.__FillValues(self.__appsettings)
+        self.__appsettings = NewETLAppender.__FillValues(self.__appsettings, self.__config)
         self.__AppendNewETL(etlname, kwargs)
 
     ####################
@@ -102,7 +102,7 @@ class NewETLAppender:
         self.__appsettings['Etls'][etlname] = newETLjson
     
     @staticmethod
-    def __FillValues(appsettingstemplatejson):
+    def __FillValues(appsettingstemplatejson, config):
         """
         * Fill environment variables in appsettings-template.json
         and replace "FileVault1" with "Network" as source so file can be used
@@ -111,8 +111,8 @@ class NewETLAppender:
         etls = [etl for etl in appsettingstemplatejson['Etls']]
         for etl in etls:
             appsettingstemplatejson['Etls'][etl]['Source'] = 'Network'
-        if not self.__config is None:
-            appsettingstemplatejson = FillEnvironmentVariables(appsettingstemplatejson, self.__config, 'LOCAL')
+        if not config is None:
+            appsettingstemplatejson = FillEnvironmentVariables(appsettingstemplatejson, config, 'LOCAL')
 
         return appsettingstemplatejson
     
