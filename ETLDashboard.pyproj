@@ -123,9 +123,6 @@
     <Compile Include="Utilities\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ValidateAndAppendNewETL.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ETL\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -178,7 +175,6 @@
     <Content Include="postargs.json" />
     <Content Include="GenerateFileTransferConfig.json" />
     <Content Include="TestETLPipeline.json" />
-    <Content Include="ValidateAndAppendNewETL.json" />
     <Content Include="GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\ColumnAttributes.cpython-36.pyc" />

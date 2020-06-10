@@ -1,6 +1,0 @@
-{
-  "DynamicETLJsonPath": "appsettings-template.json",
-  "NewETLPath": { "VendorRisk" :  "VendorRisk.json" },
-  "OutputPath": "Output//appsettings-template.json",
-  "": ""
-}
