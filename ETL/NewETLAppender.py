@@ -7,13 +7,13 @@
 from ETL.ETLObj import ETLObj
 import json
 import os
-from Utilities.Helpers import LoadJsonFile
+from Utilities.Helpers import FillEnvironmentVariables, LoadJsonFile 
 
 class NewETLAppender:
     """
     * Append new ETL to existing DynamicETL.Service appsettings-template.json file.
     """
-    def __init__(self, etlname, appsettingsobj, kwargs = None):
+    def __init__(self, etlname, appsettingsobj, configobj = None, kwargs = None):
         """
         * Append new etl with name to appsettings-template.json
         file.
@@ -23,9 +23,11 @@ class NewETLAppender:
         * appsettingsobj: Path to .json file containing DynamicETL.Service appsettings-template.json
         attributes, or json dictionary containing appsettings-template.json attributes.
         Optional Inputs:
+        * configobj: json dictionary containing environment variable values.
         * kwargs: Dictionary containing attributes consistent with ETLObj class.
         """
-        NewETLAppender.__Validate(etlname, appsettingsobj, kwargs)
+        NewETLAppender.__Validate(etlname, appsettingsobj, configobj, kwargs)
+        self.__config = configobj
         self.__appsettingstemplate = json.load(open(appsettingsobj, 'rb')) if isinstance(appsettingsobj, str) else appsettingsobj
         self.__appsettings = NewETLAppender.__FillValues(self.__appsettingstemplate.copy())
         self.__AppendNewETL(etlname, kwargs)
@@ -92,6 +94,8 @@ class NewETLAppender:
         kwargs['Source'] = 'Network'
         newETL = ETLObj(kwargs)
         self.__appsettings['Etls'][etlname] = newETL.ToJson()
+        if not self.__config is None:
+            self.__appsettings = FillEnvironmentVariables(self.__appsettings, self.__config, 'UAT')
     
     @staticmethod
     def __FillValues(self, appsettingstemplatejson):
@@ -107,7 +111,7 @@ class NewETLAppender:
         return appsettingstemplatejson
     
     @staticmethod
-    def __Validate(etlname, appsettingsobj, kwargs):
+    def __Validate(etlname, appsettingsobj, configobj, kwargs):
         """
         * Validate constructor parameters.
         """
@@ -137,5 +141,7 @@ class NewETLAppender:
                 errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
         if not kwargs is None and not isinstance(kwargs, dict):
             errs.append('kwargs must be a dictionary if provided.')
+        if not configobj is None and not isinstance(configobj, dict):
+            errs.append('configobj must be a dictionary if provided.')
         if errs:
             raise Exception('\n'.join(errs))

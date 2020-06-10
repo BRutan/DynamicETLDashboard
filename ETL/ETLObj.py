@@ -5,8 +5,10 @@
 # * Object contains all fields used for ETLs in DynamicETL.Service 
 # appsettings-template.json file
 
+from abc import ABC, abstractmethod
 import json
 import os
+import re
 
 class ETLObj(object):
     """
@@ -265,3 +267,66 @@ class ETLObj(object):
             failed.insert(0, "The following arguments are invalid:")
             raise Exception('\n'.join(failed))
 
+
+class DateRegexPattern(ConfigVal):
+    """
+    * Regular expression pattern for dates used
+    in DynamicETL.Service appsettings files.
+    """
+    __reType = type(re.compile(''))
+    def __init__(self, pattern, dateformat):
+        """
+        * 
+        """
+        DateRegexPattern.__Validate(pattern, dateformat)
+        self.Pattern = pattern
+        self.DateFormat = dateformat
+
+    ##################
+    # Properties:
+    ##################
+    @property
+    def Pattern(self):
+        return self.__pattern
+    @property
+    def DateFormat(self):
+        return self.__dateformat
+    @Pattern.setter
+    def Pattern(self, val):
+        self.__pattern = val
+    @DateFormat.setter
+    def DateFormat(self, val):
+        self.__dateformat = val
+    ##################
+    # Interface Methods:
+    ##################
+    def ToJson(self):
+        """
+        * Convert to JSON attribute.
+        """
+        pass
+    ##################
+    # Private Helpers:
+    ##################
+    @staticmethod
+    def __Validate(pattern):
+        """
+        * Validate constructor parameters.
+        """
+        errs = []
+        if not isinstance(pattern, (str, ConfigVal.REType)):
+            raise Exception('pattern must be a string or regular expression object.')
+
+
+
+class ConfigVal(ABC):
+    """
+    * Abstract base class for ConfigVals in appsettings files.
+    """
+    REType = type(re.compile(''))
+    ##################
+    # Interface Methods:
+    ##################
+    @abstractmethod
+    def ToJSON(self):
+        pass
