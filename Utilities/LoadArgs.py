@@ -240,11 +240,11 @@ def GenerateColumnAttributesReportCMDLineArgs():
 
     return args
 
-def GenerateColumnAttributesReportJsonArgs():
+def GenerateNewETLJsonArgs():
     """
     * Pull script arguments from local json file.
     """
-    path = 'GenerateColumnAttributesReport.json'
+    path = 'GenerateNewETL.json'
     if not os.path.exists(path):
         raise Exception(''.join([path, ' does not exist.']))
     return Arguments(json.load(open(path, 'rb')))

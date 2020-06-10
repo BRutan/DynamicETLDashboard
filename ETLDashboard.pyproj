@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>GenerateColumnAttributesReport.py</StartupFile>
+    <StartupFile>GenerateNewETL.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -133,7 +133,7 @@
     <Compile Include="GUI\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GenerateColumnAttributesReport.py" />
+    <Compile Include="GenerateNewETL.py" />
     <Compile Include="GUI\ETLInfoWindow.py">
       <SubType>Code</SubType>
     </Compile>
@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AddFileWatcherConfig.json" />
+    <Content Include="AppsettingsFiles\appsettings-template.json" />
     <Content Include="AppsettingsFiles\config.json" />
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
@@ -176,7 +177,7 @@
     <Content Include="GenerateFileTransferConfig.json" />
     <Content Include="TestETLPipeline.json" />
     <Content Include="ValidateAndAppendNewETL.json" />
-    <Content Include="GenerateColumnAttributesReport.json" />
+    <Content Include="GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\ColumnAttributes.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\ColumnAttributesReport.cpython-36.pyc" />

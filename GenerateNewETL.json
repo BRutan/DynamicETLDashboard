@@ -1,4 +1,5 @@
 {
+  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
   "data": {
     "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\"
   },
@@ -8,5 +9,5 @@
     "DateFormat": "%Y_%m%d"
   },
   "filenamereg": "TradeRequests_2020_0608.xlsx",
-  "tablename": "GEMS.DyEtl.Regulatory.TradeRequests"
+  "tablename": "TradeRequests"
 }

@@ -1,5 +1,5 @@
 #####################################
-# GenerateColumnAttributesReport.py
+# GenerateNewETL.py
 #####################################
 # Description:
 # * Generate report detailing column attributes of
@@ -17,10 +17,10 @@ from Utilities.LoadArgs import GenerateColumnAttributesReportJsonArgs
 
 def GenerateColumnAttributesReport():
     print("------------------------------")
-    print("GenerateColumnAttributesReport")
+    print("GenerateNewETL")
     print("------------------------------")
     # Get script arguments:
-    args = GenerateColumnAttributesReportJsonArgs()
+    args = GenerateNewETLJsonArgs()
     ###############################
     # Get all column attributes for data file(s):
     ###############################
@@ -31,11 +31,14 @@ def GenerateColumnAttributesReport():
     attributes.GenerateReport(args.reportpath)
     print ("Finished generating report at")
     print (args.reportpath)
+    # Generate sql table definition based upon column attributes:
     tableDefOutput = args.reportpath[0:args.reportpath.rfind('\\')] + '\\'
     print ("Generating table definition for %s at " % args.tablename)
     print (tableDefOutput)
     attributes.CreateTableDefinitions(tableDefOutput, args.tablename)
     print ("Finished generating table definitions.")
+    # Generate new service appsettings file based upon new etl:
+    
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()
