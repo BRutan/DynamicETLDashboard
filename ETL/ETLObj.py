@@ -268,6 +268,19 @@ class ETLObj(object):
             raise Exception('\n'.join(failed))
 
 
+
+class ConfigVal(ABC):
+    """
+    * Abstract base class for ConfigVals in appsettings files.
+    """
+    REType = type(re.compile(''))
+    ##################
+    # Interface Methods:
+    ##################
+    @abstractmethod
+    def ToJSON(self):
+        pass
+
 class DateRegexPattern(ConfigVal):
     """
     * Regular expression pattern for dates used
@@ -316,17 +329,3 @@ class DateRegexPattern(ConfigVal):
         errs = []
         if not isinstance(pattern, (str, ConfigVal.REType)):
             raise Exception('pattern must be a string or regular expression object.')
-
-
-
-class ConfigVal(ABC):
-    """
-    * Abstract base class for ConfigVals in appsettings files.
-    """
-    REType = type(re.compile(''))
-    ##################
-    # Interface Methods:
-    ##################
-    @abstractmethod
-    def ToJSON(self):
-        pass

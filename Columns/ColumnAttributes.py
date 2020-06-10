@@ -30,9 +30,6 @@ class ColumnAttributes(object):
         self.__GetFileDate(fileDateFormat)
         self.__ParseFile()
 
-    def __iter__(self):
-        pass
-
     def __eq__(self, attributes):
         for attr in attributes.Attributes:
             if attr not in self.Attributes:
@@ -40,6 +37,10 @@ class ColumnAttributes(object):
             if attributes.Attributes[attr] != self.Attributes[attr]:
                 return False
         return True
+
+    ######################
+    # Properties:
+    ######################
     @property
     def Attributes(self):
         return self.__attributes

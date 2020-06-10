@@ -88,6 +88,8 @@ class NewETLAppender:
         * Append new etl to appsettings-template.json and Appsettings.json
         objects.
         """
+        if kwargs is None:
+            kwargs = {}
         kwargs['etlname'] = etlname
         newETL = ETLObj(kwargs)
         self.__appsettingstemplate['Etls'][etlname] = newETL.ToJson()
@@ -98,7 +100,7 @@ class NewETLAppender:
             self.__appsettings = FillEnvironmentVariables(self.__appsettings, self.__config, 'UAT')
     
     @staticmethod
-    def __FillValues(self, appsettingstemplatejson):
+    def __FillValues(appsettingstemplatejson):
         """
         * Fill environment variables in appsettings-template.json
         and replace "FileVault1" with "Network" as source so file can be used

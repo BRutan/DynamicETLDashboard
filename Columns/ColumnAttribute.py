@@ -119,7 +119,7 @@ class ColumnAttribute(object):
             else:
                 return 'tinyint'
         if 'float' in typeStr:
-            return 'decimal'
+            return 'decimal(30, 10)'
         if 'datetime' in typeStr:
             return 'datetime'
         if 'bool' in typeStr:

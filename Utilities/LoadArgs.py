@@ -136,6 +136,7 @@ class Arguments(object):
         Arguments.__CheckArgs(args)
         fixedargs = ETLDashboardJsonArgs()
         self.appsettingstemplate = fixedargs['serviceappsettingstemplate']
+        self.config = fixedargs['config']
         self.etlname = args['etlname']
         self.datapath = args['data']['path'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
         self.outputfolder = args['outputfolder']
@@ -257,7 +258,6 @@ def GenerateNewETLJsonArgs():
     if not os.path.exists(path):
         raise Exception(''.join([path, ' does not exist.']))
     return Arguments(json.load(open(path, 'rb')))
-
 
 ############################
 # GenerateFileTransferConfig.py

@@ -45,16 +45,16 @@ def GenerateColumnAttributesReport():
     updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
     updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
     print ("Appending new ETL configuration to appsettings-template.json file at")
-    print (updatedAppSettingsPath)
+    print (updatedTemplatePath)
     kwargs = { 'tablename' : args.tablename }
-    appender = NewETLAppender(args.etlname, args.appsettingstemplate, kwargs)
+    appender = NewETLAppender(args.etlname, args.appsettingstemplate, args.config, kwargs)
     appender.OutputUpdatedTemplateFile(updatedTemplatePath)
     appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)
     # Generate postargs to folder:
     postargsPath = "%spostargs.json" % args.outputfolder
     print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
     print (postargsPath)
-    PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = None)
+    # PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = None)
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()
