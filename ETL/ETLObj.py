@@ -18,7 +18,8 @@ class ETLObj(object):
     __DefaultFields = { "Source" : "FileVault1", "Destination" : "SqlMetricsDyetl", "TableName" : "", 
                         "OnError" : { "Method": "Email", "EmailFrom": "{DefaultErrorEmailFrom}","EmailTo": "{RiskDashboardEmailTo}"}, 
                         "DataReader" : { "TypeName":"Excel" },"InputOperations" : [{ "TypeName" : "AddRunDate"}, {"TypeName" : "AddFileDate"}],
-                        "PreOperations" : [], "PostOperations" : [{ "TypeName" : "DeleteDuplicateRecords"}]}
+                        "PreOperations" : [{"TypeName" : "AddFileDate", "ConfigValue": "{RegPattern:'(?<date>\\\\d{8})\\\\.', DateFormat:'yyyyMMdd'}"}], 
+                        "PostOperations" : [{ "TypeName" : "DeleteDuplicateRecords"}]}
     __ReqFields = { "Source" : False, "Destination" : False, "TableName" : False }
     __ValidSources = { "filevault1" : "FileVault1", "network" : "Network" }
     __ValidDestinations = {"sqllocal" : "SqlLocal", "sqlmetricsdyetl" : "SqlMetricsDyetl", 
