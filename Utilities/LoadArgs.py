@@ -132,7 +132,7 @@ class Arguments(object):
     """
     __reqArgs = set(['etlname','data','outputfolder','filedatereg','tablename'])
     def __init__(self, args):
-        args = { arg.lower() : args[arg] for arg in args }
+        args = FillUniversalEnvironmentVariables({ arg.lower() : args[arg] for arg in args })
         Arguments.__CheckArgs(args)
         fixedargs = ETLDashboardJsonArgs()
         self.appsettingstemplate = fixedargs['serviceappsettingstemplate']
