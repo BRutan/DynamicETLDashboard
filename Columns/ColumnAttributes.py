@@ -6,6 +6,7 @@
 # for single entity.
 
 from datetime import datetime
+import os
 import pandas
 from pandas import DataFrame
 from sortedcontainers import SortedDict
@@ -113,7 +114,11 @@ class ColumnAttributes(object):
         * Extract FileDate from file (every file must have a file date).
         """
         format = { arg.lower() : format[arg] for arg in format }
-        match = format['regex'].search(self.__path)[0]
+        filename = os.path.split(self.__path)[1]
+        try:
+            match = format['regex'].search(filename)[0]
+        except Exception as ex:
+            raise Exception('File regex does not work with one or more filepaths.')
         self.__fileDate = datetime.strptime(match, format['dateformat'])
 
     def __GetFileData(self):

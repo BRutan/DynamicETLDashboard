@@ -37,6 +37,5 @@ def GenerateColumnAttributesReport():
     attributes.CreateTableDefinitions(tableDefOutput, args.tablename)
     print ("Finished generating table definitions.")
 
-
 if __name__ == "__main__":
     GenerateColumnAttributesReport()

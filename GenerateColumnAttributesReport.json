@@ -2,9 +2,9 @@
   "data": {
     "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\"
   },
-  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\Exception_Daily_Report.xlsx",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\Exception_Daily_Report.xlsx",
   "filedatereg": {
-    "Regex": "\\d{4}_\\d{2}\\d{4}",
+    "Regex": "\\d{4}_\\d{2}\\d{2}",
     "DateFormat": "%Y_%m%d"
   },
   "filenamereg": "TradeRequests_2020_0608.xlsx",

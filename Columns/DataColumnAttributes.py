@@ -122,7 +122,9 @@ class DataColumnAttributes(object):
         if not self.__dateToAttrs:
             # Skip report if no column attributes could be generated:
             return
-        if isinstance(self.__dateToAttrs, dict):
+        # Generate one report per sheet in workbook if
+        # data workbooks consist of multiple sheets:
+        if not self.__sheets is None:
             self.__GenerateAllReports(path)
         else:
             wb = xlsxwriter.Workbook(path)
@@ -154,7 +156,7 @@ class DataColumnAttributes(object):
         outputpath += ('\\' if not outputpath.endswith('\\') else '')
         latest = max(self.__dateToAttrs)
         table = table.replace(' ', '') if not table is None else 'Tabledef'
-        if isinstance(self.__dateToAttrs, dict):
+        if not self.__sheets is None:
             # Create one table definition per sheet:
             for sheetname in self.__dateToAttrs[latest]:
                 attr = self.__dateToAttrs[latest][sheetname]
@@ -165,7 +167,8 @@ class DataColumnAttributes(object):
                     self.__WriteTableDef(f, attr, table_full)
         else:
             attr = self.__dateToAttrs[latest]
-            path = ('%s%s.sql' % (outputpath, table)).replace(' ', '')
+            tablename = table.replace(' ', '')
+            path = ('%s%s.sql' % (outputpath, tablename))
             with open(path, 'w') as f:
                 self.__WriteTableDef(f, attr, table)
 
@@ -176,7 +179,7 @@ class DataColumnAttributes(object):
         """
         * Extract data from single file.
         """
-        currAttrs = ColumnAttributes(path, self.__dateFormat, sheet)
+        currAttrs = ColumnAttributes(path, self.__dateFormat)
         if currAttrs.Error:
             self.__errors[file] = currAttrs.Error
         else:
