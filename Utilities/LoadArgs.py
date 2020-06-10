@@ -21,7 +21,7 @@ def ETLDashboardJsonArgs():
     * Pull arguments from ETLDashboard.json file.
     """
     errs = []
-    req_args_fixed = set(['dynamicetlservicepath','chromedriverpath','config','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','webapipath','webapiurl'])
+    req_args_fixed = set(['dynamicetlservicepath','chromedriverpath','config','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','serviceappsettingstemplatepath','webapipath','webapiurl'])
     if not os.path.exists('ETLDashboard.json'):
         errs.append('ETLDashboard.json file does not exist.')
     else:
@@ -102,6 +102,17 @@ def ETLDashboardJsonArgs():
         except Exception as ex:
             errs.append('(serviceappsettingspath) Appsettings json file has following issue: %s' % str(ex))
 
+    # serviceappsettingstemplatepath:
+    if not os.path.exists(args['serviceappsettingstemplatepath']):
+        errs.append('(serviceappsettingstemplatepath) Does not exist.')
+    elif not args['serviceappsettingstemplatepath'].endswith('.json'):
+        errs.append('(serviceappsettingstemplatepath) Must point to .json file.')
+    else:
+        try:
+            args['serviceappsettingstemplate'] = FillUniversalEnvironmentVariables(LoadJsonFile(args['serviceappsettingstemplatepath']))
+        except Exception as ex:
+            errs.append('(serviceappsettingstemplatepath) Appsettings json file has following issue: %s' % str(ex))
+
     # webapipath:
     if not os.path.exists(args['webapipath']):
         errs.append('(webapipath) Path does not exist.')
@@ -119,10 +130,13 @@ class Arguments(object):
     """
     * Validate and store script arguments.
     """
-    __ReqArgs = { 'data' : False, 'reportpath' : False, 'filedatereg' : False, 'tablename' : False }
+    __reqArgs = set(['etlname','data','reportpath','filedatereg','tablename'])
     def __init__(self, args):
         args = { arg.lower() : args[arg] for arg in args }
         Arguments.__CheckArgs(args)
+        fixedargs = ETLDashboardJsonArgs()
+        self.appsettingstemplate = fixedargs['serviceappsettingstemplate']
+        self.etlname = args['etlname']
         self.datapath = args['data']['path'].replace('R:\\', '\\\\wanlink.us\\dfsroot\\APPS\\')
         self.reportpath = args['reportpath']
         self.filedateinfo = { key.lower() : args['filedatereg'][key] for key in args['filedatereg'] }
@@ -146,15 +160,14 @@ class Arguments(object):
         * Check argument validity, throw exception if any are invalid.
         """
         errs = []
-        req = Arguments.__ReqArgs.copy()
-        for arg in args:
-            if arg.lower() in req:
-                req[arg.lower()] = True
-
-        missing = [arg for arg in req if not req[arg]]
+        req = Arguments.__reqArgs.copy()
+        missing = req - set(args)
         if missing:
             raise Exception(' '.join(['The following required arguments are missing:', ', '.join(missing)]))
 
+        # "etlname":
+        if not isinstance(args['etlname'], str):
+            errs.append('etlname must be a string.')
         # "data" arguments:
         if 'path' not in args['data']:
             missing.append('data::path')
