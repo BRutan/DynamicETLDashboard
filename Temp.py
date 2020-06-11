@@ -20,7 +20,7 @@ def compare():
 
 def comparelocal():
     interface = TSQLInterface('.', 'MetricsDyetl')
-    query = "SELECT * FROM [dbo].[TradeRequests];"
+    query = "SELECT * FROM [dbo].[RegulatoryTradeRequests];"
     data_test = interface.Select(query)
     data_valid = DataReader.Read("C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_2020_0608.xlsx")
     ignoreCols = ['FileDate', 'RunDate']

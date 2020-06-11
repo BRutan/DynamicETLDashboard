@@ -8,7 +8,7 @@ import copy
 from ETL.ETLObj import ETLObj
 import json
 import os
-from Utilities.Helpers import FillEnvironmentVariables, LoadJsonFile 
+from Utilities.Helpers import FillEnvironmentVariables, FixRegexPatterns, LoadJsonFile 
 
 class NewETLAppender:
     """
@@ -67,7 +67,9 @@ class NewETLAppender:
             raise Exception('path must be a string.')
         elif not path.endswith('.json'):
             raise Exception('path must point to .json file.')
-        json.dump(self.__appsettingstemplate, open(path, 'w'), indent = 4)
+        # Replace all \\d with \\\\d:
+        copied = FixRegexPatterns(copy.deepcopy(self.__appsettingstemplate))        
+        json.dump(copied, open(path, 'w'), indent = 4)
 
     def OutputUpdatedAppsettingsFile(self, path):
         """
@@ -80,7 +82,9 @@ class NewETLAppender:
             raise Exception('path must be a string.')
         elif not path.endswith('.json'):
             raise Exception('path must point to .json file.')
-        json.dump(self.__appsettings, open(path, 'w'), indent = 4)
+        # Replace all \\d with \\\\d:
+        copied = FixRegexPatterns(copy.deepcopy(self.__appsettings))
+        json.dump(copied, open(path, 'w'), indent = 4)
 
     ####################
     # Private Helpers:

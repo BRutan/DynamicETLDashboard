@@ -283,6 +283,24 @@ def FixPath(path):
         path = path.replace('\\\\', '\\')
     return path
 
+def FixRegexPatterns(obj):
+    """
+    * Fix regular expression patterns before
+    outputting to appsettings json files.
+    Input:
+    * obj: String, List or Dictionary.
+    """
+    if not isinstance(obj, (str, list, dict)):
+        raise Exception('obj must be a string, list or a dictionary.')
+    if isinstance(obj, str):
+        obj = obj.replace('\\d', '\\\\d')
+    elif isinstance(obj, list):
+        for num in range(0, len(obj)):
+            obj[num] = FixRegexPatterns(obj[num])
+    elif isinstance(obj, dict):
+        for key in obj:
+            obj[key] = FixRegexPatterns(obj[key])
+    return obj
 
 ################
 # Decorators:
