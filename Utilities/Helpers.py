@@ -244,6 +244,34 @@ def FillEnvironmentVariables(target, configjson, configval):
 
     return target
 
+def GetRegexPattern(reobj):
+    """
+    * Get the regex pattern string from
+    the regular expression.
+    Inputs:
+    * reobj: Regular expression object.
+    """
+    if not isinstance(reobj, type(re.compile(''))):
+        raise Exception('reobj must be a regular expression object.')
+    objstr = str(reobj).strip("re.compile()'")
+    return objstr
+
+def ConvertDateFormat(formatstr):
+    """
+    * Convert passed date format string
+    into form usable by appsettings files.
+    Inputs:
+    * formatstr: Python datetime format string. Ex: "%Y%M%d".
+    """
+    if not isinstance(formatstr, str):
+        raise Exception('formatstr must be a string.')
+    formatstr = formatstr.replace('%Y', 'yyyy')
+    formatstr = formatstr.replace('%y', 'yy')
+    formatstr = formatstr.replace('%m', 'MM')
+    formatstr = formatstr.replace('%d', 'dd')
+
+    return formatstr
+
 def FixPath(path):
     """
     * Fix too many backslash issue that occurs when reading

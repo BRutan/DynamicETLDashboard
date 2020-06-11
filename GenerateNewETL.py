@@ -14,7 +14,7 @@ import json
 import os
 import re
 from Utilities.FileConverter import FileConverter
-from Utilities.Helpers import IsRegex
+from Utilities.Helpers import ConvertDateFormat, GetRegexPattern, IsRegex
 from Utilities.LoadArgs import GenerateNewETLJsonArgs
 
 def GenerateColumnAttributesReport():
@@ -46,7 +46,9 @@ def GenerateColumnAttributesReport():
     updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
     print ("Appending new ETL configuration to appsettings-template.json file at")
     print (updatedTemplatePath)
-    kwargs = { 'tablename' : args.tablename }
+    dateConfigStr = "{RegPattern:'(?<date>%s)', DateFormat:'%s'}" % (GetRegexPattern(args.filedateinfo['regex']), ConvertDateFormat(args.filedateinfo['dateformat']))
+    preops = [{"TypeName" : "AddFileDate", "ConfigValue": dateConfigStr}]
+    kwargs = { 'tablename' : args.tablename, 'preoperations' : preops }
     appender = NewETLAppender(args.etlname, args.appsettingstemplate, args.config, kwargs)
     appender.OutputUpdatedTemplateFile(updatedTemplatePath)
     appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)

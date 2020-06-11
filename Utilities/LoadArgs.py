@@ -11,7 +11,7 @@ import json
 import re
 import os
 import sys
-from Utilities.Helpers import FillEnvironmentVariables, FillUniversalEnvironmentVariables, IsRegex, LoadJsonFile, StringIsDT
+from Utilities.Helpers import FillEnvironmentVariables, FillUniversalEnvironmentVariables, GetRegexPattern, IsRegex, LoadJsonFile, StringIsDT
 
 ############################
 # ETLDashboard
