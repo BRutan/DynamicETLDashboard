@@ -9,5 +9,5 @@
     "DateFormat": "%Y_%m%d"
   },
   "filenamereg": "TradeRequests_2020_0608.xlsx",
-  "tablename": "TradeRequests"
+  "tablename": "RegulatoryTradeRequests"
 }

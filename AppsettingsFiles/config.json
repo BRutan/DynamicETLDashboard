@@ -193,8 +193,6 @@
     "CI": "LOCALHOST",
     "LOCAL": "LOCALHOST"
   },
-
-
   "DeploymentPath": {
     "PROD": "e:\\Services",
     "STG": "e:\\Services",
@@ -227,7 +225,6 @@
     "CI": "true",
     "LOCAL": "true"
   },
-
   "RootLoggerLevel": {
     "PROD": "INFO",
     "STG": "INFO",
@@ -236,7 +233,6 @@
     "CI": "DEBUG",
     "LOCAL": "DEBUG"
   },
-
   "SyslogServer": {
     "PROD": "GSSYSLOG",
     "STG": "GSSYSLOGTST",
@@ -251,7 +247,7 @@
     "UAT": "http://DynamicEtlUat/api/",
     "QA": "http://DynamicEtlQa/api/",
     "CI": "http://localhost/DynamicEtl/api/",
-    "LOCAL": "http://localhost/DynamicEtl/api/"
+    "LOCAL": "http://localhost:23014/api/"
   },
   "FileVaultUrl": {
     "PROD": "https://FileVault/api/",

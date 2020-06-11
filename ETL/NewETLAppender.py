@@ -93,10 +93,10 @@ class NewETLAppender:
         if kwargs is None:
             kwargs = {}
         kwargs['etlname'] = etlname
-        newETL = ETLObj(kwargs)
-        self.__appsettingstemplate['Etls'][etlname] = newETL.ToJson()
+        newETL = ETLObj(copy.deepcopy(kwargs))
+        self.__appsettingstemplate['Etls'][etlname] = copy.deepcopy(newETL.ToJson())
         kwargs['Source'] = 'Network'
-        newETLjson = ETLObj(kwargs).ToJson()
+        newETLjson = ETLObj(copy.deepcopy(kwargs)).ToJson()
         if not self.__config is None:
             newETLjson = FillEnvironmentVariables(newETLjson, self.__config, 'LOCAL')
         self.__appsettings['Etls'][etlname] = newETLjson
