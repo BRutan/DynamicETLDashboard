@@ -25,17 +25,6 @@
                   <property name="side">top</property>
                 </layout>
                 <child>
-                  <object class="ttk.Entry" id="ETLNameEntry">
-                    <layout manager="place">
-                      <property name="anchor">nw</property>
-                      <property name="relx">0.4</property>
-                      <property name="width">200</property>
-                      <property name="x">0</property>
-                      <property name="y">0</property>
-                    </layout>
-                  </object>
-                </child>
-                <child>
                   <object class="ttk.Button" id="GetETLInfoButton">
                     <property name="cursor">arrow</property>
                     <property name="state">normal</property>
@@ -80,6 +69,17 @@
                       <property name="anchor">nw</property>
                       <property name="relx">0.31</property>
                       <property name="rely">0.08</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
+                    </layout>
+                  </object>
+                </child>
+                <child>
+                  <object class="ttk.Entry" id="ETLNameEntry_ETLInfo">
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.31</property>
+                      <property name="width">200</property>
                       <property name="x">0</property>
                       <property name="y">0</property>
                     </layout>
@@ -277,19 +277,27 @@
                   <object class="ttk.Button" id="TestETLPipelineButton">
                     <property name="text" translatable="yes">Test Pipeline
 </property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="height">25</property>
+                      <property name="relx">0.33</property>
+                      <property name="rely">0.49</property>
+                      <property name="width">40</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
-                  <object class="ttk.Entry" id="ETLNameEntry">
+                  <object class="ttk.Entry" id="ETLNameEntry_TestETLPipeline">
                     <property name="text" translatable="yes">
 </property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="relx">0.4</property>
+                      <property name="width">200</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
@@ -359,18 +367,22 @@
                 <child>
                   <object class="ttk.Label" id="ETLNameLabel">
                     <property name="text" translatable="yes">ETL Name:</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="width">100</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>
                 <child>
                   <object class="ttk.Label" id="FileDateLabel">
                     <property name="text" translatable="yes">File Date:</property>
-                    <layout manager="pack">
-                      <property name="propagate">True</property>
-                      <property name="side">top</property>
+                    <layout manager="place">
+                      <property name="anchor">nw</property>
+                      <property name="rely">0.21</property>
+                      <property name="x">0</property>
+                      <property name="y">0</property>
                     </layout>
                   </object>
                 </child>

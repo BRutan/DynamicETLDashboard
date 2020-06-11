@@ -1,10 +1,8 @@
 {
-  "etlname": "GS.SecurityExceptions.v1",
-  "filedate": "2020-04-13",
-  "reportpath": "GSSecurityExceptions_DataComparison_QA.xlsx",
+  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "filedate": "2020-06-08",
+  "reportpath": "TradeRequests_Comparison_QA.xlsx",
   "postargspath": "postargs.json",
   "testmode": "QA",
-  "pkey": [ "Group", "Employee ID" ],
-  "ignorecols": [ "ID" ],
-  "comparefile": "SecurityExceptionsComp.csv"
+  "pkey": [ "User Name", "First Name", "Requested Date Time" ]
 }

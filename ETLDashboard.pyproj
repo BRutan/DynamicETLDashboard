@@ -152,6 +152,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AppsettingsFiles\DynamicETL.Service\" />
+    <Folder Include="AppsettingsFiles\FileTransfer.Service\" />
+    <Folder Include="AppsettingsFiles\FileWatcher\" />
     <Folder Include="Columns\" />
     <Folder Include="Columns\__pycache__\" />
     <Folder Include="Data\" />
@@ -168,6 +171,8 @@
     <Content Include="AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\appsettings-template.json" />
     <Content Include="AppsettingsFiles\config.json" />
+    <Content Include="AppsettingsFiles\DynamicETL.Service\appsettings-template.json" />
+    <Content Include="AppsettingsFiles\FileWatcher\AppSettings-template.json" />
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="AppsettingsFiles\TransferId_297.xml" />

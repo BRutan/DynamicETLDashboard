@@ -5,9 +5,11 @@
   },
   "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\",
   "filedatereg": {
-    "Regex": "\\d{4}_\\d{2}\\d{2}",
+    "Regex": "\\d{4}_\\d{4}",
     "DateFormat": "%Y_%m%d"
   },
   "filenamereg": "TradeRequests_2020_0608.xlsx",
-  "tablename": "RegulatoryTradeRequests"
+  "tablename": "RegulatoryTradeRequests",
+  "datasourcepath": "R:\\",
+  "createpaths" :  "true"
 }

@@ -1,7 +1,7 @@
 {
   "id": 10,
   "fileid": 10,
-  "subject": "GS.SecurityExceptions.v1",
-  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GS.SecurityExceptions.v1\\GS_InfoSec_Exceptions_2020-04-13-06-35-25.xlsx'}",
-  "fileName": "GS_InfoSec_Exceptions_2020-04-13-06-35-25.xlsx"
+  "subject": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_2020_0608.xlsx'}",
+  "fileName": "TradeRequests_2020_0608.xlsx"
 }

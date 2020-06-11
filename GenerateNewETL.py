@@ -40,8 +40,9 @@ def GenerateColumnAttributesReport():
     print (tableDefPath)
     attributes.CreateTableDefinitions(args.outputfolder, args.tablename)
     print ("Finished generating table definitions.")
-    # Generate new service appsettings-template.json (for committing to project) 
-    # and Appsettings.json (for testing locally) files based upon new etl:
+    # Generate new DynamicETL.Service appsettings-template.json (for committing to project) 
+    # Appsettings.json (for testing locally), and FileWatcher AppSettings-template.json files 
+    # based upon new etl:
     updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
     updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
     print ("Appending new ETL configuration to appsettings-template.json file at")
