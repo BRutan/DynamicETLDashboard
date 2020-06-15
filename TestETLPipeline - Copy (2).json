@@ -1,5 +1,5 @@
 {
-  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "etlname": "GEMS.DyEtl.InternalAudit.IADKnownExceptionList.v1",
   "filedate": "2020-02-18",
   "reportpath": "IADKnownExceptionList_Comparison_QA.xlsx",
   "postargspath": "postargs.json",

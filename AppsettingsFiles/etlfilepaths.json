@@ -498,7 +498,7 @@
       "outbound": [
         "{CC_Job_Url}"
       ]
-    },    
+    },
     {
       "subject": "GP.Roster.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GP Roster\\RevisedGPRosterUpdated*.csv",
@@ -568,7 +568,8 @@
       "outbound": [
         "{CC_Job_Url}"
       ]
-    },{
+    },
+    {
       "subject": "HeadCountDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\HeadCount_Detail\\DetailedHeadcount*.xlsx",
       "outbound": [
@@ -1103,7 +1104,7 @@
       "outbound": [
         "{CC_Job_Url}"
       ]
-    },   
+    },
     {
       "subject": "GEMS.DyEtl.GS.IB.MnA.Dealogic.LastWeekDeals.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\M&A\\Last Week Deals\\Dealogic Data - Weekly M&A_*.xlsx",
@@ -1125,14 +1126,14 @@
         "{FileDistributor}"
       ]
     },
-	  {
+    {
       "subject": "GEMS.DyEtl.RiskManagement.VendorRisk.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Vendor Risk\\Data\\66908_*.csv",
       "outbound": [
         "{CC_Job_Url}"
       ]
     },
-	  {
+    {
       "subject": "GEMS.DyEtl.InternalAudit.IADKnownExceptionList.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\IAD Known Exception List\\IAD Known Exceptions List -*.xlsx",
       "outbound": [
@@ -1147,7 +1148,7 @@
       ]
     },
     {
-	    "subject": "GEMS.DyEtl.ExceptionReport.AllowPST.v1",
+      "subject": "GEMS.DyEtl.ExceptionReport.AllowPST.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\AllowPST\\*.xlsx",
       "outbound": [
         "{CC_Job_Url}"
@@ -1226,6 +1227,34 @@
     {
       "subject": "GEMS.DyEtl.ExceptionReport.Website.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\Website\\*.xlsx",
+      "outbound": [
+        "{CC_Job_Url}"
+      ]
+    },
+    {
+      "subject": "CoveredPersonLifeCycle.WorkerChangeHistoryRaw.v1",
+      "inbound": "{CC_Source_Path}\\Workday\\WorkerChangeHistory\\WorkdayWorkerChangeHistory*.csv",
+      "outbound": [
+        "{CC_Job_Url}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.Phishing.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Phishing\\Phishing Data*.csv",
+      "outbound": [
+        "{CC_Job_Url}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.OutlookAddins.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\OutlookAddins\\OutlookAddins_*.csv",
+      "outbound": [
+        "{CC_Job_Url}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.Regulatory.TradeRequests",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\Trade Requests\\TradeRequests_*.xlsx",
       "outbound": [
         "{CC_Job_Url}"
       ]

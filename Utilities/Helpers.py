@@ -138,6 +138,40 @@ def StringIsDT(dateString, returnval = False):
     except:
         return False
 
+def LoadAppsettingsJson(jsonpath):
+    """
+    * Load raw appsettings-type files, wrap 
+    environment variables in special characters
+    to facilitate loading.
+    Inputs:
+    * jsonpath: String path to json file.
+    """
+    if not isinstance(jsonpath, str):
+        raise Exception('jsonpath must be a string.')
+    elif not jsonpath.endswith('.json'):
+        raise Exception('jsonpath must point to a json file.')
+    elif not os.path.exists(jsonpath):
+        raise Exception('File at jsonpath does not exist.')
+    envRE = re.compile('{.+}')
+    out = []
+    with open(jsonpath, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            if '"' not in line:
+                matches = envRE.search(line)
+                if matches:
+                    matches = set([val for val in matches])
+                    for match in matches:
+                        line = line.replace(match, '"%s"' % match)
+                    out.append(line)
+                else:
+                    out.append(line)
+            else:
+                out.append(line)
+
+    return json.loads('\n'.join(out))
+
+
 def LoadJsonFile(jsonpath, config = None, configval = None):
     """
     * Load json file and optionally fill in environment variables using
