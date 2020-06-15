@@ -1,15 +1,27 @@
 {
-  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "etlname": "GEMS.DyEtl.ExceptionReport",
   "data": {
-    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\"
+    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\",
+    "sheets": [
+      "Website",
+      "Mass Media",
+      "Local Admin",
+      "Local Admin Filter",
+      "RDP",
+      "RDP Filter",
+      "Reboot",
+      "Citrix to Local",
+      "Allow PST",
+      "Password Never Expires",
+      "Screensaver Timeout",
+      "Non-IT Admin"
+    ]
   },
-  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\",
+  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\",
   "filedatereg": {
-    "Regex": "\\d{4}_\\d{4}",
-    "DateFormat": "%Y_%m%d"
+    "Regex": "\\d{2}_\\d{2}_\\d{4}",
+    "DateFormat": "%m_%d_%Y"
   },
-  "filenamereg": "TradeRequests_2020_0608.xlsx",
-  "tablename": "RegulatoryTradeRequests",
-  "datasourcepath": "R:\\",
-  "createpaths" :  "true"
+  "filenamereg": "Exception_Daily Report_05_11_2020.xlsx",
+  "tablename": "GEMS.DyEtl.ExceptionReport"
 }

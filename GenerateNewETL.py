@@ -18,9 +18,9 @@ from Utilities.Helpers import ConvertDateFormat, GetRegexPattern, IsRegex
 from Utilities.LoadArgs import GenerateNewETLJsonArgs
 
 def GenerateColumnAttributesReport():
-    print("------------------------------")
-    print("GenerateNewETL")
-    print("------------------------------")
+    print ("------------------------------")
+    print ("GenerateNewETL")
+    print ("------------------------------")
     # Get script arguments:
     args = GenerateNewETLJsonArgs()
     ###############################
@@ -43,21 +43,34 @@ def GenerateColumnAttributesReport():
     # Generate new DynamicETL.Service appsettings-template.json (for committing to project) 
     # Appsettings.json (for testing locally), and FileWatcher AppSettings-template.json files 
     # based upon new etl:
-    updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
     updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
-    print ("Appending new ETL configuration to appsettings-template.json file at")
+    updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
+    print ("Appending new ETL configuration to Appsettings.json and appsettings-template.json files at")
+    print (updatedAppsettingsPath)
     print (updatedTemplatePath)
     dateConfigStr = "{RegPattern:'(?<date>%s)', DateFormat:'%s'}" % (GetRegexPattern(args.filedateinfo['regex']), ConvertDateFormat(args.filedateinfo['dateformat']))
     preops = [{"TypeName" : "AddFileDate", "ConfigValue": dateConfigStr}]
-    kwargs = { 'tablename' : args.tablename, 'preoperations' : preops }
-    appender = NewETLAppender(args.etlname, args.appsettingstemplate, args.config, kwargs)
+    kwargs = { 'preoperations' : preops }
+    # Append one new ETL per sheet if data file consists of multiple sheets:
+    if not attributes.Sheets is None:
+        appender = None
+        for sheet in attributes.Sheets:
+            etlname = "%s.%s" % (args.etlname, sheet)
+            kwargs['tablename'] = "%s.%s" % (args.tablename, sheet.replace(' ', ''))
+            if not appender is None:
+                appender.AppendNewETL(etlname, kwargs) 
+            else:
+                appender = NewETLAppender(etlname, args.appsettingstemplate, args.config, kwargs)
+    else:
+        kwargs['tablename'] = args.tablename
+        appender = NewETLAppender(args.etlname, args.appsettingstemplate, args.config, kwargs)
     appender.OutputUpdatedTemplateFile(updatedTemplatePath)
     appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)
     # Generate postargs to folder:
     postargsPath = "%spostargs.json" % args.outputfolder
     print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
     print (postargsPath)
-    # PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = None)
+    PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = attributes.FilePaths[0])
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()

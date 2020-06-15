@@ -6,6 +6,7 @@
 
 from Columns.ColumnAttributes import ColumnAttributes
 from Columns.ColumnRelationships import ColumnRelationships
+import copy
 import csv
 from datetime import datetime, date
 import dateutil.parser as dtparse
@@ -41,12 +42,19 @@ class DataColumnAttributes(object):
         self.__dateToAttrs = SortedDict()
         self.__columnChgDates = SortedDict()
         self.__errors = {}
+        self.__filepaths = set()
     ###################
     # Properties:
     ###################
     @property
+    def FilePaths(self):
+        return copy.deepcopy(self.__filepaths)
+    @property
     def HasErrors(self):
         return len(self.__errors) > 0
+    @property
+    def Sheets(self):
+        return copy.deepcopy(self.__sheets)
     ###################
     # Interface Methods:
     ###################
@@ -77,7 +85,6 @@ class DataColumnAttributes(object):
             errs.append('sheets must be a list if provided.')
         if errs:
             raise Exception("\n".join(errs))
-        
         self.__hasuniques = { sheet : False for sheet in sheets } if not sheets is None else self.__hasuniques
         self.__sheets = sheets
         self.__dateFormat = dateFormat
@@ -85,7 +92,7 @@ class DataColumnAttributes(object):
         if filePaths is None:
             filePaths = FileConverter.GetAllFilePaths(path, fileExp)
             if len(filePaths) == 0:
-                raise Exception('Could not find any matching files.')
+                raise Exception('Could not find any matching files matching regex.')
         # Get column attributes of all target files:
         for file in filePaths:
             path = filePaths[file]
@@ -93,6 +100,7 @@ class DataColumnAttributes(object):
                 self.__ExtractFile(path)
             else:
                 self.__ExtractAllSheets(path)
+        self.__filepaths = set([filePaths[key] for key in filePaths])
         # Determine if columns have changed:
         prevAttrs = None
         if len(self.__dateToAttrs) > 1 and self.__sheets is None:
