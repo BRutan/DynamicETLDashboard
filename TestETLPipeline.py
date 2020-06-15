@@ -85,7 +85,7 @@ def TestETLPipeline():
             os._exit(0)
     # Output sample file to FileWatcher folder, wait for sample file to be sucked
     # up by ETL. If does not suck up, notify user:
-    waittime = 20
+    waittime = 40
     print ('Outputting data file to')
     print ('%s' % args['testetlargs']['etlfolder'])
     print ('Will wait up to %d seconds to allow data to be implemented...' % waittime)
@@ -94,13 +94,13 @@ def TestETLPipeline():
     copyfile(args['testetlargs']['samplefile'], filewatcherPath)
     Countdown(waittime, lambda path = filewatcherPath : not os.path.exists(filewatcherPath))
     if os.path.exists(filewatcherPath):
-        print('File was not implemented into etl after %d seconds.' % waittime)
-        input('Press enter to exit.')
+        print ('File was not implemented into ETL %s after %d seconds.' % (args['testargs']['etlname'], waittime))
+        input ('Press enter to exit.')
         os._exit(0)
     # Query server to get uploaded data:
     try:
         query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (argTup[3], argTup[0])
-        print('Waiting %d seconds to allow data to be pulled and transformed...' % waittime)
+        print ('Waiting %d seconds to allow data to be pulled and transformed...' % waittime)
         # Keep pulling from server until data has been uploaded:
         Countdown(waittime)
         data_test = interface.Select(query)

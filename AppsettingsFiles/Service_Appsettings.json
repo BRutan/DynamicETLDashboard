@@ -3329,6 +3329,123 @@
       "PostOperations": [
         { "TypeName": "DeleteDuplicateRecords" }
       ]
+    },
+    "GEMS.DyEtl.Phishing.v1": {
+      "Source": "FileVault1",
+      "Destination": "SqlMetricsDyetl",
+      "TableName": "Phishing",
+      "OnError": {
+        "Method": "Email",
+        "EmailFrom": "{DefaultErrorEmailFrom}",
+        "EmailTo": "{RiskDashboardEmailTo}"
+      },
+      "DataReader": {
+        "TypeName": "Excel"
+      },
+      "InputOperations": [
+        { "TypeName": "AddRunDate" },
+        { "TypeName": "AddFileDate" }
+      ],
+      "PreOperations": [
+        {
+          "TypeName": "AddFileDate",
+          "ConfigValue": "{RegPattern:'(?<date>\\\\d{8})\\\\.', DateFormat:'MMddyyyy'}"
+        }
+      ],
+      "PostOperations": [
+        { "TypeName": "DeleteDuplicateRecords" }
+      ]
+    },
+    "GEMS.DyEtl.OutlookAddins.v1": {
+      "Source": "FileVault1",
+      "Destination": "SqlMetricsDyetl",
+      "TableName": "OutlookAddins",
+      "OnError": {
+        "Method": "Email",
+        "EmailFrom": "{DefaultErrorEmailFrom}",
+        "EmailTo": "{RiskDashboardEmailTo}"
+      },
+      "DataReader": {
+        "TypeName": "Excel"
+      },
+      "InputOperations": [
+        { "TypeName": "AddRunDate" },
+        { "TypeName": "AddFileDate" }
+      ],
+      "PreOperations": [
+        {
+          "TypeName": "AddFileDate",
+          "ConfigValue": "{RegPattern:'(?<date>(\\\\d{4})[-](\\\\d+)[-](\\\\d+))', DateFormat:'yyyy-M-d'}"
+        }
+      ],
+      "PostOperations": [
+        { "TypeName": "DeleteDuplicateRecords" }
+      ]
+    },
+    "CoveredPersonLifeCycle.WorkerChangeHistoryRaw.v1": {
+      "Source": "FileVault1",
+      "Destination": "SqlPolicyCoverage",
+      "TableName": "WorkerChangeHistoryRaw",
+      "OnError": {
+        "Method": "Email",
+        "EmailFrom": "{DefaultErrorEmailFrom}",
+        "EmailTo": "{RiskDashboardEmailTo}"
+      },
+      "DataReader": {
+        "TypeName": "Csv",
+        "ConfigValue": "{delimiter:',', hasHeaders:true}"
+      },
+      "InputOperations": [
+        { "TypeName": "AddRunDate" },
+        { "TypeName": "AddFileDate" },
+        {
+          "TypeName": "SkipIfNoDataFoundOperation",
+          "ConfigValue": "{excludedColumns:'RunDate,FileDate'}"
+        },
+        {
+          "TypeName": "ConvertBetweenTimeZonesWithOffsetOperation",
+          "ConfigValue": "{columnNames: 'WorkdayServiceRunDateTime,TransactionEntryMoment', sourceDateFormat: 'yyyy-MM-ddTHH:mm:ss.fffzzzz', targetTimeZone: 'Eastern Standard Time'}"
+        },
+        { "TypeName": "WorkerChangeHistoryRawSetComputedFieldsOperation" }
+      ],
+      "PreOperations": [
+        {
+          "TypeName": "AddFileDate",
+          "ConfigValue": "{RegPattern:'(?<date>[0-9]{8})', DateFormat:'yyyyMMdd'}"
+        },
+        {
+          "TypeName": "ColumnNameToTrackSkipIfNoDataFound",
+          "ConfigValue": "{columnName:'ShouldBeSkipped'}"
+        }
+      ],
+      "PostOperations": [
+      ]
+    },
+    "GEMS.DyEtl.Regulatory.TradeRequests": {
+      "Source": "FileVault1",
+      "Destination": "SqlMetricsDyetl",
+      "TableName": "RegulatoryTradeRequests",
+      "OnError": {
+        "Method": "Email",
+        "EmailFrom": "{DefaultErrorEmailFrom}",
+        "EmailTo": "{RiskDashboardEmailTo}"
+      },
+      "DataReader": {
+        "TypeName": "Excel"
+      },
+      "InputOperations": [
+        { "TypeName": "AddRunDate" },
+        { "TypeName": "AddFileDate" }
+      ],
+      "PreOperations": [
+        {
+          "TypeName": "AddFileDate",
+          "ConfigValue": "{RegPattern:'(?<date>\\\\d{4}_\\\\d{4})', DateFormat:'yyyy_MMdd'}"
+        }
+      ],
+      "PostOperations": [
+        { "TypeName": "DeleteDuplicateRecords" }
+      ]
     }
   }
 }

@@ -365,7 +365,7 @@ def TestETLPipelineJsonArgs():
     if not args['testetlargs']['testmode'] is None:
         args['testetlargs']['server'] = args['config']['Servers'][args['testetlargs']['testmode']]
 
-    # etlname: ensure etl is present in appsettings file. 
+    # etlname: ensure etl is present in appsettings files. 
     # If present then get etl's database and table names from the 
     # appsettings file:
     if 'serviceappsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['serviceappsettings']['Etls']:
