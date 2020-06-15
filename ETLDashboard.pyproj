@@ -117,6 +117,9 @@
     <Compile Include="Utilities\Descriptions.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\CacheBuilder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\LoadArgs.py">
       <SubType>Code</SubType>
     </Compile>

@@ -30,9 +30,9 @@ from Utilities.Helpers import Countdown
 from Utilities.LoadArgs import TestETLPipelineJsonArgs
 
 def TestETLPipeline():
-    print("------------------------------")
-    print("TestETLPipeline: ")
-    print("------------------------------")
+    print ("------------------------------")
+    print ("TestETLPipeline: ")
+    print ("------------------------------")
     # Ensure all AppSettings json files can be uploaded:
     #FixJsonConfigs()
     # Pull and verify script parameters:
@@ -47,21 +47,21 @@ def TestETLPipeline():
     try:
         interface = TSQLInterface(argTup[1], argTup[2])
     except Exception as ex:
-        print("Could not connect to %s::%s" % (argTup[1], argTup[2]))
-        print("Reason: %s" % str(ex))
-        input('Press enter to exit.')
+        print ("Could not connect to %s::%s" % (argTup[1], argTup[2]))
+        print ("Reason: %s" % str(ex))
+        input ('Press enter to exit.')
         os._exit(0)
     if args['testetlargs']['testmode'] == 'LOCAL':
         # Open DynamicETL.WebApi and post test ETL job:
-        print("Loading ETL %s test job to WebAPI at" % args['testetlargs']['postargs']['subject'])
-        print(args['fixedargs']['webapipath'])
+        print ("Loading ETL %s test job to WebAPI at" % args['testetlargs']['postargs']['subject'])
+        print (args['fixedargs']['webapipath'])
         try:
             loader = ETLJobLoader(args['fixedargs']['webapipath'],args['fixedargs']['dynamicetlservicepath'],args['fixedargs']['logpath'],args['fixedargs']['webapiurl'])
             loader.RunETL(args['testetlargs']['postargs'])
         except Exception as ex:
-            print('ETL could not be run:')
-            print(str(ex))
-            input('Press enter to exit.')
+            print ('ETL could not be run:')
+            print (str(ex))
+            input ('Press enter to exit.')
             os._exit(0)
         # Determine if any issues occurred in the WebAPI/Service log file.
         # Exit application if issues occurred:
@@ -69,8 +69,8 @@ def TestETLPipeline():
         messages.append(loader.ReadLogFile())
         messages.append(loader.ReadLogFile())
         if message:
-            print(message)
-            input('Press enter to exit.')
+            print (message)
+            input ('Press enter to exit.')
             os._exit(0)
     elif args['testetlargs']['testmode'] != 'STG':
         # Remove data with filedate from server:
@@ -79,16 +79,16 @@ def TestETLPipeline():
             query = "DELETE FROM [%s] WHERE fileDate = '%s';" % (argTup[3], argTup[0])
             interface.Execute(query)
         except Exception as ex:
-            print('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
-            print('Reason: %s' % str(ex))
-            input('Press enter to exit.')
+            print ('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
+            print ('Reason: %s' % str(ex))
+            input ('Press enter to exit.')
             os._exit(0)
     # Output sample file to FileWatcher folder, wait for sample file to be sucked
-    # up by etl. If does not suck up, notify user:
+    # up by ETL. If does not suck up, notify user:
     waittime = 20
-    print('Outputting data file to')
-    print('%s' % args['testetlargs']['etlfolder'])
-    print('Will wait up to %d seconds to allow data to be implemented...' % waittime)
+    print ('Outputting data file to')
+    print ('%s' % args['testetlargs']['etlfolder'])
+    print ('Will wait up to %d seconds to allow data to be implemented...' % waittime)
     sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
     filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'], sampleFileName)
     copyfile(args['testetlargs']['samplefile'], filewatcherPath)
@@ -107,9 +107,9 @@ def TestETLPipeline():
         if len(data_test) == 0:
             raise Exception('No data uploaded to server after dropping to etlfolder.')
     except Exception as ex:
-        print('Could not query %s::%s::%s' % (argTup[1], argTup[2], argTup[3]))
-        print('Reason: %s' % str(ex))
-        input('Press enter to exit.')
+        print ('Could not query %s::%s::%s' % (argTup[1], argTup[2], argTup[3]))
+        print ('Reason: %s' % str(ex))
+        input ('Press enter to exit.')
         os._exit(0)
     # Pull data from test file:
     compareFile = args['testetlargs']['comparefile'] if 'comparefile' in args['testetlargs'] else args['testetlargs']['samplefile']
@@ -125,12 +125,12 @@ def TestETLPipeline():
     try:
         tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols, pkeys)
     except Exception as ex:
-        print('Could not generate report.')
-        print('Reason: %s' % str(ex))
-        input('Press enter to exit.')
+        print ('Could not generate report.')
+        print ('Reason: %s' % str(ex))
+        input ('Press enter to exit.')
         os._exit(0)
-    print('Finished generating report at')
-    print(args['testetlargs']['reportpath'])
+    print ('Finished generating report at')
+    print (args['testetlargs']['reportpath'])
 
 if __name__ == "__main__":
     TestETLPipeline()

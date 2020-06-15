@@ -1,7 +1,7 @@
 {
   "id": 10,
   "fileid": 10,
-  "subject": "GEMS.DyEtl.InternalAudit.IADKnownExceptionList.v1",
-  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.IADKnownExceptionList.v1\\IAD Known Exceptions List - 20200218.xlsx'}",
-  "fileName": "IAD Known Exceptions List - 20200218.xlsx"
+  "subject": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "arg": "{'FilePath':'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_2020_0608.xlsx'}",
+  "fileName": "TradeRequests_2020_0608.xlsx"
 }

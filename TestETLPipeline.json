@@ -1,8 +1,8 @@
 {
   "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
-  "filedate": "2020-02-18",
-  "reportpath": "IADKnownExceptionList_Comparison_QA.xlsx",
+  "filedate": "2020-06-08",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\Diff_Report_QA.xlsx",
   "postargspath": "postargs.json",
   "testmode": "QA",
-  "pkey": [ "Employee ID", "Rationale" ]
+  "pkey": [ "User Name", "First Name", "Requested Date Time" ]
 }
