@@ -153,12 +153,12 @@
     "LOCAL": "."
   },
   "ServerLogs": {
-    "PROD": "",
+    "PROD": "\\\\nj1app20\\logs",
     "STG": "",
     "UAT": "",
     "QA": "\\\\nj1qaapp20\\logs",
     "CI": "",
-    "LOCAL": "."
+    "LOCAL": "C:\\logs"
   },
   "ServiceName": {
     "PROD": "Guggenheim.Services.DynamicEtl",

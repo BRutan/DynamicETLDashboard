@@ -5,7 +5,7 @@
   "etlfilepaths": "{LocalPath}\\AppsettingsFiles\\etlfilepaths.json",
   "filewatcherappsettingstemplatepath": "{LocalPath}\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",
   "filetransferurl": "http://gsfts/",
-  "logpath": "C:\\logs\\",
+  "logpath": "{ServerLogs}",
   "serviceappsettingspath": "{LocalPath}\\AppsettingsFiles\\Service_Appsettings.json",
   "serviceappsettingstemplatepath": "{LocalPath}\\AppsettingsFiles\\DynamicETL.Service\\appsettings-template.json",
   "webapiurl": "http://localhost:23014/api/etljobs",

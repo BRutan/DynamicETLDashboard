@@ -71,6 +71,7 @@ class DynamicETLIssueParser:
             elif any([not isinstance(elem, datetime) for elem in timerange]):
                 errs.append('timerange must only contain datetime objects.')
             elif timerange[0] > timerange[1]:
+                # Swap time interval if out of order:
                 copy = timerange[0]
                 timerange[0] = timerange[1]
                 timerange[1] = copy
