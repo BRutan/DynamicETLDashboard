@@ -79,8 +79,9 @@ class DynamicETLIssueParser:
             raise Exception('\n'.join(errs))
         # Search for particular issues:
         data = self.__data.loc[self.__data['ETLName'].str.lower() == etlname.lower()]
+        data = data.set_index(['TimeStamp'])
         if not timerange is None:
-            data = data.loc[data['TimeStamp'] >= timerange[0] and data['TimeStamp'] <= timerange[1]]
+            data = data[timerange[0]:timerange[1]].reset_index()
         if len(data) > 0:
             lines = ['The following issues occurred for %s:' % etlname]
             for row in range(0, len(data)):
