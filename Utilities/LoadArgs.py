@@ -86,11 +86,9 @@ def ETLDashboardJsonArgs():
             errs.append('(filewatcherappsettingstemplatepath) Issue with json file: %s' % str(ex))
             
     # logpath:
-    if not os.path.isdir(args['logpath']):
-        errs.append('(logpath) Must point to a folder.')
-    elif not os.path.exists(args['logpath']):
-        errs.append('(logpath) Folder does not exist.')
-
+    if not isinstance(args['logpath'], str):
+        errs.append('(logpath) Must be a string.')
+    
     # serviceappsettingspath:
     if not os.path.exists(args['serviceappsettingspath']):
         errs.append('(serviceappsettingspath) Does not exist.')
