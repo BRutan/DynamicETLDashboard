@@ -278,6 +278,18 @@ def FillEnvironmentVariables(target, configjson, configval):
 
     return target
 
+def PrintExceptionAndExit(msg):
+    """
+    * Print exception message and exit application.
+    Inputs:
+    * msg: String message.
+    """
+    if not isinstance(msg, str):
+        raise Exception('msg must be a string.')
+    print (msg)
+    input ("Press enter to exit application.")
+    os._exit(0)
+
 def GetRegexPattern(reobj):
     """
     * Get the regex pattern string from

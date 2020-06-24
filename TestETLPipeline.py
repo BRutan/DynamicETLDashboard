@@ -16,6 +16,7 @@
 # 3) Generate report accounting for differences between data in table versus
 # source file.
 
+from datetime import datetime
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
 from ETL.DynamicETLIssueParser import DynamicETLIssueParser
@@ -95,15 +96,20 @@ def TestETLPipeline():
     sampleFileName = os.path.split(args['testetlargs']['samplefile'])[1]
     filewatcherPath = "%s%s" % (args['testetlargs']['etlfolder'], sampleFileName)
     copyfile(args['testetlargs']['samplefile'], filewatcherPath)
+    startTime = datetime.now()
     Countdown(waittime, lambda path = filewatcherPath : not os.path.exists(filewatcherPath))
+    interval = (startTime, datetime.now())
     if os.path.exists(filewatcherPath):
         print ('File was not implemented into ETL %s after %d seconds.' % (args['testargs']['etlname'], waittime))
         input ('Press enter to exit.')
         os._exit(0)
-    else:
-        # Ensure that no DynamicETL.Service issues occurred:
-        issues = DynamicETLIssueParser()
-
+    elif os.path.exists(args['fixedargs']['logpath']):
+        # Notify user if any DynamicETL.Service issues occured in logfile:
+        issues = DynamicETLIssueParser(args['fixedargs']['logpath']).ETLHasIssues(args['testargs']['etlname'], interval)
+        if not issues is None:
+            print ("The following issues occurred in DynamicETL.Service: %s" % issues)
+            input ('Press enter to exit.')
+            os._exit(0)
     # Query server to get uploaded data:
     try:
         query = "SELECT * FROM [%s] WHERE [%s] = '%s'" % (argTup[3], argTup[4], argTup[0])
