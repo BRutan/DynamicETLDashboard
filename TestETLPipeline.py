@@ -103,9 +103,9 @@ def TestETLPipeline():
         print ('File was not implemented into ETL %s after %d seconds.' % (args['testargs']['etlname'], waittime))
         input ('Press enter to exit.')
         os._exit(0)
-    elif os.path.exists(args['fixedargs']['logpath']):
+    elif os.path.exists(args['testetlargs']['logpath']):
         # Notify user if any DynamicETL.Service issues occured in logfile:
-        issues = DynamicETLIssueParser(args['fixedargs']['logpath']).ETLHasIssues(args['testargs']['etlname'], interval)
+        issues = DynamicETLIssueParser(args['testetlargs']['logpath']).ETLHasIssues(args['testargs']['etlname'], interval)
         if not issues is None:
             print ("The following issues occurred in DynamicETL.Service: %s" % issues)
             input ('Press enter to exit.')

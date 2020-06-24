@@ -362,6 +362,7 @@ def TestETLPipelineJsonArgs():
         args['fixedargs']['filewatcher'] = FillEnvironmentVariables(args['fixedargs']['filewatcher'],args['config'],args['testetlargs']['testmode'])
     if not args['testetlargs']['testmode'] is None:
         args['testetlargs']['server'] = args['config']['Servers'][args['testetlargs']['testmode']]
+        args['testetlargs']['logpath'] = FillEnvironmentVariables(args['fixedargs']['logpath'],args['config'],args['testetlargs']['testmode'])
 
     # etlname: ensure etl is present in appsettings files. 
     # If present then get etl's database, table names and filedate column from the 
