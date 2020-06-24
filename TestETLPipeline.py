@@ -18,6 +18,7 @@
 
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
+from ETL.DynamicETLIssueParser import DynamicETLIssueParser
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
 import json
@@ -99,6 +100,10 @@ def TestETLPipeline():
         print ('File was not implemented into ETL %s after %d seconds.' % (args['testargs']['etlname'], waittime))
         input ('Press enter to exit.')
         os._exit(0)
+    else:
+        # Ensure that no DynamicETL.Service issues occurred:
+        issues = DynamicETLIssueParser()
+
     # Query server to get uploaded data:
     try:
         query = "SELECT * FROM [%s] WHERE [%s] = '%s'" % (argTup[3], argTup[4], argTup[0])

@@ -6,6 +6,7 @@
 # occurred with particular etls in log file.
 
 import csv
+from datetime import datetime
 import dateutil.parser as dtparser
 import os
 from pandas import DataFrame
@@ -48,6 +49,44 @@ class DynamicETLIssueParser:
         elif not outpath.endswith('.csv'):
             raise Exception('outpath must point to csv file.')
         self.__data.to_csv(outpath, index = False)
+
+    def ETLHasIssues(self, etlname, timerange = None):
+        """
+        * Determine if ETL experienced issues, optionally in some
+        time frame. 
+        If true, then return a summary string, otherwise return None.
+        Inputs:
+        * etlname: String name of ETL.
+        Optional:
+        * timerange: Tuple containing two datetimes,
+        (LowerBound, UpperBound) to see if issues occurred
+        within some interval.
+        """
+        errs = []
+        if not isinstance(etlname, str):
+            errs.append('etlname must be a string.')
+        elif not timerange is None:
+            if not isinstance(timerange, tuple):
+                errs.append('timerange must be a tuple if provided.')
+            elif any([not isinstance(elem, datetime) for elem in timerange]):
+                errs.append('timerange must only contain datetime objects.')
+            elif timerange[0] > timerange[1]:
+                copy = timerange[0]
+                timerange[0] = timerange[1]
+                timerange[1] = copy
+        if errs:
+            raise Exception('\n'.join(errs))
+        # Search for particular issues:
+        data = self.__data.loc[self.__data['ETLName'].str.lower() == etlname.lower()]
+        if not timerange is None:
+            data = data.loc[data['TimeStamp'] >= timerange[0] and data['TimeStamp'] <= timerange[1]]
+        if len(data) > 0:
+            lines = ['The following issues occurred for %s:' % etlname]
+            for row in range(0, len(data)):
+                lines.append(data.iloc[row]['ErrorMessage'])
+            return '\n'.join(lines)
+        else:
+            return None
 
     ##################
     # Private Helpers:
