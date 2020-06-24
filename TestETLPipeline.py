@@ -43,7 +43,9 @@ def TestETLPipeline():
         print(msg)
         input('Press enter to exit.')
         os._exit(0)
-    argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'),args['testetlargs']['server'],args['testetlargs']['database'],args['testetlargs']['tablename'])
+    # (0, 1, 2, 3, 4)
+    # (FileDateVal, Server, DataBase, TableName, FileDateColumnName)
+    argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'),args['testetlargs']['server'],args['testetlargs']['database'],args['testetlargs']['tablename'],args['testetlargs']['filedatecolname'])
     try:
         interface = TSQLInterface(argTup[1], argTup[2])
     except Exception as ex:
@@ -76,10 +78,10 @@ def TestETLPipeline():
         # Remove data with filedate from server:
         print('Removing data with fileDate %s from %s::%s::%s' % argTup)
         try:
-            query = "DELETE FROM [%s] WHERE fileDate = '%s';" % (argTup[3], argTup[0])
+            query = "DELETE FROM [%s] WHERE [%s] = '%s';" % (argTup[3], argTup[4], argTup[0])
             interface.Execute(query)
         except Exception as ex:
-            print ('Could not delete data with fileDate %s from %s::%s::%s.' % argTup)
+            print ('Could not delete data with [%s] %s from %s::%s::%s.' % argTup[4], argTup[1], argTup[2], argTup[3])
             print ('Reason: %s' % str(ex))
             input ('Press enter to exit.')
             os._exit(0)
@@ -99,7 +101,7 @@ def TestETLPipeline():
         os._exit(0)
     # Query server to get uploaded data:
     try:
-        query = "SELECT * FROM [%s] WHERE [fileDate] = '%s'" % (argTup[3], argTup[0])
+        query = "SELECT * FROM [%s] WHERE [%s] = '%s'" % (argTup[3], argTup[4], argTup[0])
         print ('Waiting %d seconds to allow data to be pulled and transformed...' % waittime)
         # Keep pulling from server until data has been uploaded:
         Countdown(waittime)
@@ -117,7 +119,7 @@ def TestETLPipeline():
     # Compare test file data versus output etl data:
     print('Generating comparison report...')
     tester = DataComparer()
-    ignoreCols = ['FileDate', 'RunDate']
+    ignoreCols = ['%s' % argTup[4], 'RunDate']
     if 'ignorecols' in args['testetlargs']:
         ignoreCols.extend(args['testetlargs']['ignorecols'])
     ignoreCols = set([col.strip() for col in ignoreCols if col.strip()])

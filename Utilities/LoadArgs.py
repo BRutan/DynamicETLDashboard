@@ -366,17 +366,19 @@ def TestETLPipelineJsonArgs():
         args['testetlargs']['server'] = args['config']['Servers'][args['testetlargs']['testmode']]
 
     # etlname: ensure etl is present in appsettings files. 
-    # If present then get etl's database and table names from the 
+    # If present then get etl's database, table names and filedate column from the 
     # appsettings file:
     if 'serviceappsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['serviceappsettings']['Etls']:
         errs.append('(etlname) ETL %s not in DynamicETL.Service Appsettings.json file.' % args['testetlargs']['etlname'])
     elif 'serviceappsettings' in args['fixedargs']:
         etl = args['testetlargs']['etlname']
         # Ensure that service serviceappsettingspath json file has all necessary keys:
+        # Pull SQL table used for ETL:
         if 'TableName' not in args['fixedargs']['serviceappsettings']['Etls'][etl]:
             errs.append('(serviceappsettingspath) Missing "TableName" property key for %s etl.' % etl)
         else:
             args['testetlargs']['tablename'] = args['fixedargs']['serviceappsettings']['Etls'][etl]['TableName']
+        # Get database used for ETL:
         if 'Destination' not in args['fixedargs']['serviceappsettings']['Etls'][etl]:
             errs.append('(serviceappsettingspath) Missing "Destination" property key for %s etl.' % etl)
         elif 'Destinations' not in args['fixedargs']['serviceappsettings']:
@@ -395,8 +397,22 @@ def TestETLPipelineJsonArgs():
                 else:
                     dbName = source[0].split('=')[1].strip(';')
                     args['testetlargs']['database'] = dbName
+        # Get FileDate column used for ETL if a mapping exists:
+        if 'FieldOverride' in args['fixedargs']['serviceappsettings']['Etls'][etl]:
+            if not 'Fields' in args['fixedargs']['serviceappsettings']['Etls'][etl]['FieldOverride']:
+                errs.append('(serviceappsettingspath) Missing "Fields" attribute in "FieldOverride" for etl %s.' % etl)
+            else:
+                # Get the mapped FileDate column if specified:
+                for elem in args['fixedargs']['serviceappsettings']['Etls'][etl]['FieldOverride']['Fields']:
+                    if elem['From'].lower() == 'filedate':
+                        args['testetlargs']['filedatecolname'] = elem['To']
+                        break
+        if 'filedatecolname' not in args['testetlargs']:
+            # Use default if not mapped:
+            args['testetlargs']['filedatecolname'] = 'FileDate'
+
+    # Get etl output path using filewatcher config:
     if not args['testetlargs']['testmode'] is None and 'filewatcher' in args['fixedargs'] and 'files' in args['fixedargs']['filewatcher']:
-       # Get etl output path using filewatcher config:
        path = None
        for config in args['fixedargs']['filewatcher']['files']:
            if 'subject' in config and args['testetlargs']['etlname'] == config['subject']:
