@@ -83,6 +83,7 @@ class DynamicETLIssueParser:
         if not timerange is None:
             data = data[timerange[0]:timerange[1]].reset_index()
         if len(data) > 0:
+            # Summarize all issues that occurred:
             lines = ['The following issues occurred for %s:' % etlname]
             for row in range(0, len(data)):
                 lines.append(data.iloc[row]['ErrorMessage'])

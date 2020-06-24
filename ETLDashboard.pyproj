@@ -46,6 +46,9 @@
     <Compile Include="ETL\DynamicETLIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ETL\LocalLargeDataJobPoster.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ETL\LogFileReader.py">
       <SubType>Code</SubType>
     </Compile>
