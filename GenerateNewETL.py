@@ -56,7 +56,8 @@ def GenerateColumnAttributesReport():
         appender = None
         for sheet in attributes.Sheets:
             etlname = "%s.%s" % (args.etlname, sheet)
-            kwargs['tablename'] = "%s.%s" % (args.tablename, sheet.replace(' ', ''))
+            etlname = etlname.replace(' ', '').replace('-', '')
+            kwargs['tablename'] = "%s.%s" % (args.tablename, sheet.replace(' ', '').replace('-', ''))
             if not appender is None:
                 appender.AppendNewETL(etlname, kwargs) 
             else:
@@ -68,9 +69,9 @@ def GenerateColumnAttributesReport():
     appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)
     # Generate postargs to folder:
     postargsPath = "%spostargs.json" % args.outputfolder
-    print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
-    print (postargsPath)
-    PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = attributes.FilePaths[0])
+    #print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
+    #print (postargsPath)
+    #PostArgsFactory.GeneratePostArgs(outpath = postargsPath, etlname = args.etlname, datafilepath = attributes.FilePaths[0])
 
 if __name__ == "__main__":
     GenerateColumnAttributesReport()

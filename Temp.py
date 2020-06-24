@@ -4,6 +4,12 @@ from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
 from ETL.DynamicETLIssueParser import DynamicETLIssueParser
 
+def storedprocfix():
+    interface = TSQLInterface('nj1sql13', 'MetricsDyetl')
+    query = "select Report_Date,Type from tbl_Finance_GS_SalesTrading_Equity_PnL where Report_Date>='2020-1-1';"
+    data = interface.Select(query)
+    data.to_csv("C:\\Users\\berutan\\Desktop\\Projects\\Fix ETLs\\FinanceGSSalesTradingequityPnL.v1\\tbl_Finance_GS_SalesTrading_equity_PnL_Duplicates.csv")
+
 def compare():
     interface = TSQLInterface('nj1qasql13', 'MetricsDyetl')
     query = ['select * ']
@@ -51,9 +57,8 @@ def pulldata():
     
 def testlogreader():
     reader = DynamicETLIssueParser('\\\\nj1app20\\logs')
-    reader.GenerateFile('FileVaultETLErrors_6_4_2020.csv')
-
-
+    reader.GenerateFile('DynamicETL_ServiceIssues6_23_2020.csv')
 
 if __name__ == '__main__':
-    comparelocal()
+    #testlogreader()
+    storedprocfix()

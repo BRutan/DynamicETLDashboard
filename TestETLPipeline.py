@@ -72,7 +72,7 @@ def TestETLPipeline():
             print (message)
             input ('Press enter to exit.')
             os._exit(0)
-    elif args['testetlargs']['testmode'] != 'STG':
+    elif args['testetlargs']['testmode'] != 'STG' and args['testetlargs']['removeprevfiledate']:
         # Remove data with filedate from server:
         print('Removing data with fileDate %s from %s::%s::%s' % argTup)
         try:

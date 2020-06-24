@@ -1,0 +1,27 @@
+{
+  "etlname": "GEMS.DyEtl.ExceptionReport",
+  "data": {
+    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\",
+    "sheets": [
+      "Website",
+      "Mass Media",
+      "Local Admin",
+      "Local Admin Filter",
+      "RDP",
+      "RDP Filter",
+      "Reboot",
+      "Citrix to Local",
+      "Allow PST",
+      "Password Never Expires",
+      "Screensaver Timeout",
+      "Non-IT Admin"
+    ]
+  },
+  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.ExceptionReport\\",
+  "filedatereg": {
+    "Regex": "\\d{2}_\\d{2}_\\d{4}",
+    "DateFormat": "%m_%d_%Y"
+  },
+  "filenamereg": "Exception_Daily Report_05_11_2020.xlsx",
+  "tablename": "GEMS.DyEtl.ExceptionReport"
+}

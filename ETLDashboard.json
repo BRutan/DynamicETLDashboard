@@ -1,5 +1,5 @@
 {
-  "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
+  "dynamicetlservicepath": "H:\\Projects\\Prev\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
   "chromedriverpath": "{LocalPath}\\Misc\\chromedriver.exe",
   "config": "{LocalPath}\\AppsettingsFiles\\config.json",
   "etlfilepaths": "{LocalPath}\\AppsettingsFiles\\etlfilepaths.json",

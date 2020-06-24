@@ -435,6 +435,17 @@ def TestETLPipelineJsonArgs():
         elif not isinstance(args['testetlargs']['pkey'], list):
             errs.append('pkey must be a string or a list.')
 
+    # removeprevfiledate (optional):
+    if 'removeprevfiledate' in args['testetlargs']:
+        if not isinstance(args['testetlargs']['removeprevfiledate'], str):
+            errs.append('(removeprevfiledate) Must be a string.')
+        elif not args['testetlargs']['removeprevfiledate'].lower() in ['true', 'false']:
+            errs.append('(removeprevfiledate) Must be a "TRUE"/"FALSE" (case insensitive) string.')
+        else:
+            args['testetlargs']['removeprevfiledate'] = True if args['testetlargs']['removeprevfiledate'].lower() == 'true' else False
+    else:
+        args['testetlargs']['removeprevfiledate'] = True
+    
     if errs:
         raise Exception('\n'.join(errs))
 

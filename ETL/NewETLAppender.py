@@ -94,8 +94,10 @@ class NewETLAppender:
         * Append new etl to appsettings-template.json and Appsettings.json
         objects.
         """
-        if kwargs is None:
-            kwargs = {}
+        # Skip appending if ETL by name already exists in appsettings files:
+        if etlname in self.__appsettingstemplate['Etls'] or etlname in self.__appsettings['Etls']:
+            return
+        kwargs = {} if kwargs is None else copy.deepcopy(kwargs)
         kwargs['etlname'] = etlname
         newETL = ETLObj(copy.deepcopy(kwargs))
         self.__appsettingstemplate['Etls'][etlname] = copy.deepcopy(newETL.ToJson())
