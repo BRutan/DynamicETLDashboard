@@ -100,12 +100,12 @@ def TestETLPipeline():
     Countdown(waittime, lambda path = filewatcherPath : not os.path.exists(filewatcherPath))
     interval = (startTime, datetime.now())
     if os.path.exists(filewatcherPath):
-        print ('File was not implemented into ETL %s after %d seconds.' % (args['testargs']['etlname'], waittime))
+        print ('File was not implemented into ETL %s after %d seconds.' % (args['testetlargs']['etlname'], waittime))
         input ('Press enter to exit.')
         os._exit(0)
     elif os.path.exists(args['testetlargs']['logpath']):
         # Notify user if any DynamicETL.Service issues occured in logfile:
-        issues = DynamicETLIssueParser(args['testetlargs']['logpath']).ETLHasIssues(args['testargs']['etlname'], interval)
+        issues = DynamicETLIssueParser(args['testetlargs']['logpath']).ETLHasIssues(args['testetlargs']['etlname'], interval)
         if not issues is None:
             print ("The following issues occurred in DynamicETL.Service: %s" % issues)
             input ('Press enter to exit.')

@@ -242,7 +242,7 @@ def FillUniversalEnvironmentVariables(target):
 
     return target
 
-def FillEnvironmentVariables(target, configjson, configval):
+def FillEnvironmentVariables(target, configjson, configval, fixPath = True):
     """
     * Fill all environment variable strings using 
     values in configjson dictionary, using configval.
@@ -250,6 +250,8 @@ def FillEnvironmentVariables(target, configjson, configval):
     * target: dictionary, list or string containing variables to fill.
     * configjson: dictionary containing environment variables.
     * configval: string containing configuration value to set environment variables.
+    Optional:
+    * fixPath: Fix too many backslashes being used in some json files.
     """
     errs = []
     if not isinstance(target, (str, list, dict)):
@@ -268,7 +270,8 @@ def FillEnvironmentVariables(target, configjson, configval):
             var = var + '}' if not var.endswith('}') else var
             rep = configjson[key][configval]
             target = target.replace(var, rep)
-        target = FixPath(target)
+        if fixPath:
+            target = FixPath(target)
     elif isinstance(target, dict):
         for key in target:
             target[key] = FillEnvironmentVariables(target[key], configjson, configval)
