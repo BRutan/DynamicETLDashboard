@@ -76,7 +76,7 @@ def TestETLPipeline():
             os._exit(0)
     elif args['testetlargs']['testmode'] != 'STG' and args['testetlargs']['removeprevfiledate']:
         # Remove data with filedate from server:
-        print('Removing data with fileDate %s from %s::%s::%s' % argTup)
+        print('Removing data with [%s] %s from %s::%s::%s' % (argTup[4], argTup[0], argTup[1], argTup[2], argTup[3]))
         try:
             query = "DELETE FROM [%s] WHERE [%s] = '%s';" % (argTup[3], argTup[4], argTup[0])
             interface.Execute(query)
