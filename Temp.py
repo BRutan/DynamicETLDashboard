@@ -3,6 +3,21 @@ from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
 from ETL.DynamicETLIssueParser import DynamicETLIssueParser
+from ETL.LocalLargeDataJobPoster import LocalLargeDataJobPoster
+from Utilities.Helpers import LoadJsonFile
+import json
+import re
+import os
+
+def postlargejobstest():
+    serviceappsettings = LoadJsonFile("%s%s" % (os.getcwd(), "\\AppsettingsFiles\\appsettings-template.json"))
+    config = LoadJsonFile("%s%s" % (os.getcwd(), "\\AppsettingsFiles\\config.json"))
+    webapipath = "H:\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
+    servicepath = "H:\\Projects\\Prev\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe"
+    poster = LocalLargeDataJobPoster(webapipath, servicepath, serviceappsettings, config)
+    regex = re.compile('BlotterPivotTable\d{2}.\d{2}.\d{2}.xlsx')
+    poster.PostAllFiles('FinanceGSSalesTradingequityPnL.v1', 'R:\\Enterprise Risk Dashboard\\Finance\\Equity Daily PnL\\', regex)
+
 
 def storedprocfix():
     interface = TSQLInterface('nj1sql13', 'MetricsDyetl')
@@ -61,4 +76,5 @@ def testlogreader():
 
 if __name__ == '__main__':
     #testlogreader()
-    storedprocfix()
+    #storedprocfix()
+    postlargejobstest()

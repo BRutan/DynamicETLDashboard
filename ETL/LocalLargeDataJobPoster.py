@@ -6,6 +6,7 @@
 # and run DynamicETL.Service to insert all data into
 # MetricsDyETL locally.
 
+import clr
 import copy
 import os
 import re
@@ -23,7 +24,7 @@ class LocalLargeDataJobPoster:
     """
     __postargs = {"id": 10, "fileid": 10, "subject": None, "arg": "{'FilePath':'%s\\%s'}", "fileName": None}
     __reType = type(re.compile(''))
-    def __init__(self, webapipath, servicepath, serviceappsettings, config = None):
+    def __init__(self, webapipath, servicepath, serviceappsettings, config):
         """
         * Initialize object to begin posting for particular ETL with PostAllFiles().
         Inputs:
@@ -35,12 +36,11 @@ class LocalLargeDataJobPoster:
         * config: JSON dictionary to fill serviceappsettings environment variables with.
         * waittime: Number of seconds to wait to allow data to be pulled into DynamicETL.Service.
         """
-        self.__Validate(webapipath, servicepath, serviceappsettings, config)
+        LocalLargeDataJobPoster.__Validate(webapipath, servicepath, serviceappsettings, config)
         self.__webapipath = webapipath
         self.__servicepath = servicepath
-        self.__serviceappsettings = serviceappsettings
-        if not config is None:
-            self.__serviceappsettings = FillEnvironmentVariables(self.__serviceappsettings, config, "LOCAL")
+        self.__serviceappsettings = FillEnvironmentVariables(serviceappsettings, config, "LOCAL")
+        self.__webapiurl = self.__serviceappsettings["EtlJobsUrl"]
 
     ##################
     # Interface Methods:
@@ -93,6 +93,7 @@ class LocalLargeDataJobPoster:
     ##################
     # Private Helpers:
     ##################
+    @staticmethod
     def __Validate(webapipath, servicepath, serviceappsettings, config):
         """
         * Validate constructor parameters.
@@ -100,13 +101,13 @@ class LocalLargeDataJobPoster:
         errs = []
         if not isinstance(webapipath, str):
             errs.append('webapipath must be a string.')
-        elif webapipath.endswith('.exe'):
-            errs.append('webapipath must point to an executable.')
+        elif not webapipath.endswith('.dll'):
+            errs.append('webapipath must point to a dll.')
         elif not os.path.exists(webapipath):
             errs.append('File at webapipath does not exist.')
         if not isinstance(servicepath, str):
             errs.append('servicepath must be a string.')
-        elif servicepath.endswith('.exe'):
+        elif not servicepath.endswith('.exe'):
             errs.append('servicepath must point to an executable.')
         elif not os.path.exists(servicepath):
             errs.append('File at servicepath does not exist.')
@@ -133,16 +134,22 @@ class LocalLargeDataJobPoster:
         """
         * Open DynamicETL.WebAPI instance.
         """
-        self.__webapiprocess = subprocess.Popen(self.__webapipath, stdout=subprocess.PIPE, creationflags=0x08000000)
-        self.__webapiprocess.wait()
+        # Skip opening if already open:
+        result = requests.get(self.__webapiurl)
+        if result.status_code == 200:
+            return
+        else:
+            pass
+            #self.__webapiprocess = subprocess.Popen(self.__webapipath, stdout=subprocess.PIPE, creationflags=0x08000000)
+            #self.__webapiprocess.wait()
 
     def __PostAllJobs(self, etlname, files):
         """
         * Post all files matching fileregex to
         DynamicETL.WebAPI.
         """
-        for path in files:
-            folderpath, filename = os.path.split(path)
+        for file in files:
+            folderpath, filename = os.path.split(files[file])
             args = copy.deepcopy(LocalLargeDataJobPoster.__postargs)
             args['subject'] = etlname
             args['arg'] = args['arg'] % (folderpath, filename)
@@ -155,12 +162,12 @@ class LocalLargeDataJobPoster:
         push all files to appropriate ETL table.
         """
         self.__serviceprocess = subprocess.Popen(self.__servicepath, stdout=subprocess.PIPE, creationflags=0x08000000)
-        self.__serviceprocess.wait()
+        #self.__serviceprocess 
 
     def __CloseAllInstances(self, waitseconds):
         """
         * Close all external programs after waiting for some time.
         """
         sleep(waitseconds)
-        self.__webapiprocess
-        self.__serviceprocess
+        #self.__webapiprocess.terminate()
+        self.__serviceprocess.terminate()

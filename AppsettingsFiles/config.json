@@ -246,8 +246,8 @@
     "STG": "http://DynamicEtlStg/api/",
     "UAT": "http://DynamicEtlUat/api/",
     "QA": "http://DynamicEtlQa/api/",
-    "CI": "http://localhost/DynamicEtl/api/",
-    "LOCAL": "http://localhost:23014/api/"
+    "CI": "http://localhost:23014/api/etljobs",
+    "LOCAL": "http://localhost:23014/api/etljobs"
   },
   "FileVaultUrl": {
     "PROD": "https://FileVault/api/",
