@@ -197,7 +197,8 @@ class TSQLInterface:
         if errs:
             raise Exception('\n'.join(errs))
         checkCols = set(data.columns) - set(ignoreCols if not ignoreCols is None else [])
-        data = data[checkCols]
+        # Replace nas with blanks:
+        data = data[checkCols].replace(np.nan, '', regex=True)
         maxCombs = (len(checkCols) if maxCombs is None else maxCombs) + 1
         maxCombs = min(len(checkCols), maxCombs) + 1
         pKeys = []

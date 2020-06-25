@@ -134,7 +134,12 @@ def TestETLPipeline():
     if 'ignorecols' in args['testetlargs']:
         ignoreCols.extend(args['testetlargs']['ignorecols'])
     ignoreCols = set([col.strip() for col in ignoreCols if col.strip()])
-    pkeys = args['testetlargs']['pkey'] if 'pkey' in args['testetlargs'] else None
+    if 'pkey' in args['testetlargs']:
+        pkeys = args['testetlargs']['pkey'] 
+    else:
+        print ("Finding appropriate primary key(s) to compare datasets using input file...")
+        pkeys = TSQLInterface.PrimaryKeys(data_valid, 4, ignoreCols, True)
+        print ("Using: {%s} as primary key(s)..." % ', '.join(pkeys))
     try:
         tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols, pkeys)
     except Exception as ex:

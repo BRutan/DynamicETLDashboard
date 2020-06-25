@@ -12,11 +12,12 @@ import os
 def postlargejobstest():
     serviceappsettings = LoadJsonFile("%s%s" % (os.getcwd(), "\\AppsettingsFiles\\appsettings-template.json"))
     config = LoadJsonFile("%s%s" % (os.getcwd(), "\\AppsettingsFiles\\config.json"))
+    etlpaths = LoadJsonFile('%s%s' % (os.getcwd(), "\\AppsettingsFiles\\etlfilepaths.json"))
     webapipath = "H:\\Projects\\DynamicEtl.WebApi\\src\\DynamicEtl.WebApi\\bin\\Debug\\netcoreapp2.1\\DynamicEtl.WebApi.dll"
     servicepath = "H:\\Projects\\Prev\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe"
-    poster = LocalLargeDataJobPoster(webapipath, servicepath, serviceappsettings, config)
+    poster = LocalLargeDataJobPoster(webapipath, servicepath, serviceappsettings, config, etlpaths)
     regex = re.compile('BlotterPivotTable\d{2}.\d{2}.\d{2}.xlsx')
-    poster.PostAllFiles('FinanceGSSalesTradingequityPnL.v1', 'R:\\Enterprise Risk Dashboard\\Finance\\Equity Daily PnL\\', regex)
+    poster.PostAllFiles('FinanceGSSalesTradingequityPnL.v1', 'R:\\Enterprise Risk Dashboard\\Finance\\Equity Daily PnL\\', regex, "QA")
 
 
 def storedprocfix():
@@ -49,6 +50,11 @@ def comparelocal():
     #pkey = TSQLInterface.PrimaryKeys(data_valid, 4, ignoreCols = ignoreCols, findFirst = True)
     DataComparer.GenerateComparisonReport('TradeRequestDiff.xlsx', data_test, data_valid, ignoreCols = ignoreCols, pKey = pkey)
 
+def getpkey():
+    data = DataReader.Read("C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_2020_0608.xlsx")
+    pkey = TSQLInterface.PrimaryKeys(data, 5, findFirst = False)
+    return pkey
+
 def getdata():
     interface = TSQLInterface('.', 'MetricsDyetl')
     query = "SELECT * FROM tbl_CyberSecurity_Exceptions_GS WHERE fileDate = '2020-04-13'"
@@ -77,4 +83,5 @@ def testlogreader():
 if __name__ == '__main__':
     #testlogreader()
     #storedprocfix()
-    postlargejobstest()
+    #postlargejobstest()
+    getpkey()

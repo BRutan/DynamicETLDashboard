@@ -4,6 +4,7 @@
 # Description:
 # * General helper functions for various classes. 
 
+import copy
 from datetime import datetime
 import dateutil.parser as dateparse
 #from docx import Document
@@ -14,7 +15,27 @@ import re
 from time import sleep
 from tqdm import trange
 
+def FullCopy(obj):
+    """
+    * Return full copy of passed object.
+    Inputs:
+    * obj: Any object.
+    """
+    if hasattr(obj, '__enum__'):
+        if isinstance(obj, dict):
+            copyObj = {}
+            for key in obj:
+                copyObj[copy.deepcopy(key)] = FullCopy(obj)
+        else:
+            copyObj = getattr(str(type(obj)))
+            for elem in obj:
+                pass
+    else:
+        copyObj = copy.deepcopy(obj)
 
+    return copyObj
+                
+                
 def Countdown(numSeconds, terminatecondition = None, predicate_will_return = False):
     """
     * Print countdown sequence while waiting for event to occur.

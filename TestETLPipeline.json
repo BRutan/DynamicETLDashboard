@@ -1,9 +1,8 @@
 {
-  "etlname": "FinanceGSSalesTradingequityPnL.v1",
-  "filedate": "2020-01-21",
-  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\Fix ETLs\\FinanceGSSalesTradingequityPnL.v1\\Comparison_QA.xlsx",
+  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "filedate": "2020-06-08",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_Comp_QA.xlsx",
   "postargspath": "postargs.json",
   "testmode": "QA",
-  "pkey": [ "User Name", "First Name", "Requested Date Time" ],
-  "removeprevfiledate" : "TRUE"
+  "removeprevfiledate": "TRUE"
 }
