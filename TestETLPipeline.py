@@ -19,9 +19,9 @@
 from datetime import datetime
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
-from ETL.DynamicETLIssueParser import DynamicETLIssueParser
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
+from Log.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 import json
 import os
 from shutil import copyfile
@@ -62,18 +62,10 @@ def TestETLPipeline():
         try:
             loader = ETLJobLoader(args['fixedargs']['webapipath'],args['fixedargs']['dynamicetlservicepath'],args['fixedargs']['logpath'],args['fixedargs']['webapiurl'])
             loader.RunETL(args['testetlargs']['postargs'])
+            # Check log file for issues, throw exception if occurred:
+
         except Exception as ex:
-            print ('ETL could not be run:')
-            print (str(ex))
-            input ('Press enter to exit.')
-            os._exit(0)
-        # Determine if any issues occurred in the WebAPI/Service log file.
-        # Exit application if issues occurred:
-        messages = []
-        messages.append(loader.ReadLogFile())
-        messages.append(loader.ReadLogFile())
-        if message:
-            print (message)
+            print ('ETL could not be run. Reason: %s' % str(ex))
             input ('Press enter to exit.')
             os._exit(0)
     elif args['testetlargs']['testmode'] != 'STG' and args['testetlargs']['removeprevfiledate']:
@@ -105,7 +97,7 @@ def TestETLPipeline():
         os._exit(0)
     elif os.path.exists(args['testetlargs']['logpath']):
         # Notify user if any DynamicETL.Service issues occured in logfile:
-        issues = DynamicETLIssueParser(args['testetlargs']['logpath']).ETLHasIssues(args['testetlargs']['etlname'], interval)
+        issues = DynamicETLServiceIssueParser(args['testetlargs']['logpath']).ETLHasIssues(args['testetlargs']['etlname'], interval)
         if not issues is None:
             print ("The following issues occurred in DynamicETL.Service: %s" % issues)
             input ('Press enter to exit.')

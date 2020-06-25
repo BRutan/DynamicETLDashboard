@@ -43,13 +43,13 @@
     <Compile Include="ETL\FileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ETL\DynamicETLIssueParser.py">
+    <Compile Include="Log\DynamicETLServiceIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\LocalLargeDataJobPoster.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ETL\LogFileReader.py">
+    <Compile Include="Log\AllLogReader.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\NewETLAppender.py">
@@ -100,6 +100,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GUI\TestETLPipelineWindow.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Log\DynamicETLWebAPIIssueParser.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Log\FileWatcherIssueParser.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Log\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PullData.py">
@@ -170,6 +179,7 @@
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
+    <Folder Include="Log\" />
     <Folder Include="Output\" />
     <Folder Include="Utilities\" />
   </ItemGroup>

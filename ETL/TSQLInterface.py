@@ -274,6 +274,7 @@ class TSQLInterface:
             if len(key - comb) == 0:
                 return False
         return True
+
     @staticmethod
     @jit(nopython=True)
     def __CheckCombNumba(cls, comb, pKeys):
@@ -288,6 +289,7 @@ class TSQLInterface:
             if len(key - comb) == 0:
                 return False
         return True
+
     def __CloseConnection(self):
         """
         * Close connection if opened.
@@ -299,11 +301,13 @@ class TSQLInterface:
             self.__connection.close()
             self.__connection = None
         self.__connectString = None
+
     def __IsConnected(self):
         """
         * Determine if connected to instance.
         """
         return not self.__connection is None
+
     def __Validate(self, server, database):
         """
         * Validate construction parameters.
@@ -315,6 +319,7 @@ class TSQLInterface:
             errs.append('database must be a string.')
         if errs:
             raise Exception('\n'.join(errs))  
+
     def __PandasInsert(self, table, data):
         """
         * Insert using Pandas Dataframe and Sqlalchemy engine. 
@@ -322,6 +327,7 @@ class TSQLInterface:
         table = TSQLInterface.__WrapName(self.__database) + '.' + TSQLInterface.__WrapName(table)
         engine = create_engine('mssql+pyodbc:///?odbc_connect=%s' % self.__connectString)
         data.to_sql(name=table, con=engine)
+
     @classmethod
     def __CleanData(cls, data):
         """
@@ -333,6 +339,7 @@ class TSQLInterface:
 #            if data[col].dtype.type == np.datetime64:
 #                data[col] = [val if not val == np.datetime64('NaT') else None for val in data[col]]
         return data.fillna('')
+
     @classmethod
     def __WrapName(cls, name):
         """

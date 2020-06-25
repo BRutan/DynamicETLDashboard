@@ -1,5 +1,5 @@
 #####################################
-# DynamicETLIssueParser.py
+# DynamicETLServiceIssueParser.py
 #####################################
 # Description:
 # * Determine where DynamicETL.Service issues have
@@ -13,9 +13,9 @@ from pandas import DataFrame
 import re
 from Utilities.FileConverter import FileConverter
 
-class DynamicETLIssueParser:
+class DynamicETLServiceIssueParser:
     """
-    * Summarize issues that occur with ETLs.
+    * Summarize issues that occur with ETLs in DynamicETL.Service.
     """
     __logfileSig = 'DynamicEtl.Service.log'
     __dataDict = {'TimeStamp' : [], 'ETLName' : [], 'FileId' : [], 'ErrorMessage' : [], 'StackTrace' : []}
@@ -31,7 +31,7 @@ class DynamicETLIssueParser:
         Inputs:
         * servicelogfolder: Path to DynamicETL.Service logfile.
         """
-        DynamicETLIssueParser.__Validate(servicelogfolder)
+        DynamicETLServiceIssueParser.__Validate(servicelogfolder)
         self.__FindIssues(servicelogfolder)
 
     ##################
@@ -99,11 +99,11 @@ class DynamicETLIssueParser:
         * Find all etl issues that occurred.
         """
         # Find matching files:
-        self.__data = DynamicETLIssueParser.__dataDict
-        files = FileConverter.GetAllFilePaths(servicelogfolder, DynamicETLIssueParser.__logfileSig)
+        self.__data = DynamicETLServiceIssueParser.__dataDict
+        files = FileConverter.GetAllFilePaths(servicelogfolder, DynamicETLServiceIssueParser.__logfileSig)
         for file in files:
             with open(files[file], 'r') as f:
-                groups = DynamicETLIssueParser.__GroupAllJobs(f)
+                groups = DynamicETLServiceIssueParser.__GroupAllJobs(f)
                 for jobkey in groups:
                     self.__DetermineIssues(jobkey, groups[jobkey])
         self.__data = DataFrame(self.__data).sort_values('TimeStamp', ascending = False)
@@ -116,8 +116,8 @@ class DynamicETLIssueParser:
         groups = {}
         prevGroup = None
         for line in file:
-            if DynamicETLIssueParser.__keymatchRE.search(line):
-                jobKey = DynamicETLIssueParser.__keymatchRE.search(line)[0]
+            if DynamicETLServiceIssueParser.__keymatchRE.search(line):
+                jobKey = DynamicETLServiceIssueParser.__keymatchRE.search(line)[0]
                 if jobKey not in groups:
                     groups[jobKey] = []
                 else:
@@ -136,7 +136,7 @@ class DynamicETLIssueParser:
         while lineNum < len(grouplines):
             line = grouplines[lineNum]
             if 'Etl finished with status Error' in line:
-                etlname = DynamicETLIssueParser.__etlnameRE.search(line)[0].strip("'`")
+                etlname = DynamicETLServiceIssueParser.__etlnameRE.search(line)[0].strip("'`")
                 row = lineNum - 1
                 errorMessage = grouplines[row]
                 stackTrace = []
@@ -152,7 +152,7 @@ class DynamicETLIssueParser:
                 while not fileidsearchstop in line and row <= len(grouplines):
                     row += 1
                     line = grouplines[row]
-                matches = DynamicETLIssueParser.__fileIDRE.search(line)
+                matches = DynamicETLServiceIssueParser.__fileIDRE.search(line)
                 if matches:
                     fileid = matches[0]
                     fileid = re.search("'.+'", fileid)[0].strip("'")
@@ -162,7 +162,7 @@ class DynamicETLIssueParser:
                 self.__data['FileId'].append(fileid)
                 self.__data['ErrorMessage'].append(errorMessage.strip('\n'))
                 self.__data['StackTrace'].append(''.join(stackTrace))
-                self.__data['TimeStamp'].append(dtparser.parse(DynamicETLIssueParser.__timestampRE.search(errorMessage)[0]))
+                self.__data['TimeStamp'].append(dtparser.parse(DynamicETLServiceIssueParser.__timestampRE.search(errorMessage)[0]))
             lineNum += 1
                
     @staticmethod

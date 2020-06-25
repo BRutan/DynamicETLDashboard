@@ -2,8 +2,8 @@
 from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
-from ETL.DynamicETLIssueParser import DynamicETLIssueParser
 from ETL.LocalLargeDataJobPoster import LocalLargeDataJobPoster
+from Log.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 from Utilities.Helpers import LoadJsonFile
 import json
 import re
@@ -77,7 +77,7 @@ def pulldata():
 
     
 def testlogreader():
-    reader = DynamicETLIssueParser('\\\\nj1app20\\logs')
+    reader = DynamicETLServiceIssueParser('\\\\nj1app20\\logs')
     reader.GenerateFile('DynamicETL_ServiceIssues6_23_2020.csv')
 
 if __name__ == '__main__':
