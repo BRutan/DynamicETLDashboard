@@ -1,3 +1,8 @@
+#####################################
+# Temp.py
+#####################################
+# Description:
+# * Ad-hoc testing ground.
 
 from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
@@ -8,6 +13,20 @@ from Utilities.Helpers import LoadJsonFile
 import json
 import re
 import os
+
+def genreportwitherrors():
+    path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_20200115.xlsx"
+    errpath = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_20200115_Errs.xlsx"
+    insertdata = DataReader.Read(path)
+    testdata = DataReader.Read(errpath)
+    interface = TSQLInterface('.', 'MetricsDyetl')
+    interface.Insert(insertdata, 'InternalAudit_GSIBPhysicalAccessKnownExceptions')
+    tabledata = interface.Select("SELECT * FROM InternalAudit_GSIBPhysicalAccessKnownExceptions")
+    comp = DataComparer()
+    path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_ERRS.xlsx"
+    pKey = TSQLInterface.PrimaryKeys(insertdata, findFirst = True)
+    ignoreCols = ['FileDate', 'RunDate']
+    comp.GenerateComparisonReport(path, tabledata, testdata, ignoreCols, pKey = pKey)
 
 def postlargejobstest():
     serviceappsettings = LoadJsonFile("%s%s" % (os.getcwd(), "\\AppsettingsFiles\\appsettings-template.json"))
@@ -74,7 +93,6 @@ def pulldata():
     query = "EXEC dbo.AdHocReport_StuDurnin_DeskVolumes '2020-05-29'"
     results = interface.Execute(query, True)
     results.to_csv("StuDurninResults.csv")
-
     
 def testlogreader():
     reader = DynamicETLServiceIssueParser('\\\\nj1app20\\logs')
@@ -84,4 +102,5 @@ if __name__ == '__main__':
     #testlogreader()
     #storedprocfix()
     #postlargejobstest()
-    getpkey()
+    #getpkey()
+    genreportwitherrors()

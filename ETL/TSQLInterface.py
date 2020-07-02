@@ -157,7 +157,7 @@ class TSQLInterface:
         # Convert datetimes to proper type before insertion:
         data = TSQLInterface.__CleanData(data)
         table = TSQLInterface.__WrapName(table)
-        cols = ','.join(['[' + col + ']' for col in data.columns])
+        cols = ','.join([TSQLInterface.__WrapName(col) for col in data.columns])
         values = ','.join(['?' for col in data.columns])
         insert_query = 'INSERT INTO %s (%s) VALUES (%s)' % (table,cols,values)
         cursor = self.__connection.cursor()

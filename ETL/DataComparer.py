@@ -5,7 +5,7 @@
 # * Generate report comparing two datasets.
 
 import os
-from pandas import DataFrame
+from pandas import DataFrame, MultiIndex
 import xlsxwriter
 
 class DataComparer(object):
@@ -75,7 +75,7 @@ class DataComparer(object):
         headerFormat = wb.add_format(DataComparer.__headerFormat)
         diffSheet = wb.add_worksheet('Differences')
         # Write all rows with differing column values:
-        for rowNum in range(0, len(compData)):
+        for rowNum in range(0, len(compData) + 1):
             for colNum, col in enumerate(compData.columns):
                 if rowNum != 0:
                     diffSheet.write(rowNum, colNum, compData[col][rowNum - 1])
@@ -131,8 +131,13 @@ class DataComparer(object):
                         appendDiff = True
                 # Append differing values if differences occurred:
                 if appendDiff:
-                    for num, col in enumerate(matches_test.index.names):
-                        rowDiff[col] = matches_test.index[row][num]
+                    # Add the index value to difference to denote unique identifier where issue occurred:
+                    if isinstance(matches_test.index, MultiIndex):
+                        for num, col in enumerate(matches_test.index.names):
+                            rowDiff[col] = matches_test.index[row][num]
+                    else:
+                        col = matches_test.index.names[0]
+                        rowDiff[col] = matches_test.index[row]
                     for col in rowDiff:
                         diff[col].append(rowDiff[col])
             # Write entire row for each data_test pkey value not present in data_valid:

@@ -51,7 +51,7 @@ def GenerateColumnAttributesReport():
     dateConfigStr = "{RegPattern:'(?<date>%s)', DateFormat:'%s'}" % (GetRegexPattern(args.filedateinfo['regex']), ConvertDateFormat(args.filedateinfo['dateformat']))
     preops = [{"TypeName" : "AddFileDate", "ConfigValue": dateConfigStr}]
     kwargs = { 'preoperations' : preops }
-    # Append one new ETL per sheet if data file consists of multiple sheets:
+    # Append one new ETL per sheet if data file contains multiple sheets:
     if not attributes.Sheets is None:
         appender = None
         for sheet in attributes.Sheets:

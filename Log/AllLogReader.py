@@ -27,8 +27,15 @@ class AllLogReader:
         self.__webapireader = DynamicETLWebAPIIssueParser(kwargs['webapilogfolder'])
         self.__filewatcherreader = FileWatcherIssueParser(kwargs['filewatcherlogfolder'])
 
+    #################
+    # Interface Methods:
+    #################
+    def GenerateIssueReport(self):
+        pass
 
-
+    def SummarizeETLIssues(self):
+        pass
+    
     #################
     # Private Helpers:
     #################
