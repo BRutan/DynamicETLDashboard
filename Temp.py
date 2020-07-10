@@ -15,7 +15,7 @@ import re
 import os
 
 def testjiraapidata():
-    jira_data_path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\053_Create_Table_JIRAData.sql"
+    jira_data_path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRAData_07102020.csv"
     jira_data = DataReader.Read(jira_data_path)
     interface = TSQLInterface('.', 'MetricsDyetl')
     interface.Insert(jira_data, 'JIRAData')

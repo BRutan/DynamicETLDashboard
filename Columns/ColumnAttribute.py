@@ -83,17 +83,22 @@ class ColumnAttribute(object):
         self.__isUnique = True if self.__uniqueCount == len(column) else False
         if self.__uniqueCount < 25:
             self.__uniques = uniques.dropna()
-        # See if Pandas DataFrame has determined types, or check column types manually:
-        typeStr = DataFrame(list(uniques)).dtypes[0].name.lower()
-        if typeStr != 'object':
-            typeStr = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
+        # Determine the narrowest column type:
+        if self.__uniqueCount == 0:
+            # If all NULLS, default to varchar(max):
+            typeStr = 'varchar(max)'
         else:
-            # Verify that DataFrame has determine type effectively:
-            typeStr = ColumnAttribute.__DetermineColType(uniques)
-            if typeStr == 'o':
-                typeStr = 'varchar(max)'
-            elif typeStr in ColumnAttribute.__dtypeToSQLType:
-                typeStr = ColumnAttribute.__dtypeToSQLType[typeStr]
+            # See if Pandas DataFrame has determined types, or check column types manually:
+            typeStr = DataFrame(list(uniques)).dtypes[0].name.lower()
+            if typeStr != 'object':
+                typeStr = ColumnAttribute.DTypeToTSQLType(typeStr.lower())
+            else:
+                # Verify that DataFrame has determine type effectively:
+                typeStr = ColumnAttribute.__DetermineColType(uniques)
+                if typeStr == 'o':
+                    typeStr = 'varchar(max)'
+                elif typeStr in ColumnAttribute.__dtypeToSQLType:
+                    typeStr = ColumnAttribute.__dtypeToSQLType[typeStr]
         self.__type = typeStr
 
     def ToReportCell(self, header):

@@ -5,13 +5,13 @@
 # * Immutable container of ColumnAttributes 
 # for single entity.
 
+from Columns.ColumnAttribute import ColumnAttribute
+from Columns.ColumnRelationships import ColumnRelationships
 from datetime import datetime
 import os
 import pandas
 from pandas import DataFrame
 from sortedcontainers import SortedDict
-from Columns.ColumnAttribute import ColumnAttribute
-from Columns.ColumnRelationships import ColumnRelationships
 
 class ColumnAttributes(object):
     """
