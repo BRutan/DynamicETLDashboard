@@ -14,6 +14,16 @@ import json
 import re
 import os
 
+def testjiraapidata():
+    jira_data_path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\053_Create_Table_JIRAData.sql"
+    jira_data = DataReader.Read(jira_data_path)
+    interface = TSQLInterface('.', 'MetricsDyetl')
+    interface.Insert(jira_data, 'JIRAData')
+    compare_data = interface.Select("SELECT * FROM JIRAData")
+    pkey = TSQLInterface.PrimaryKeys(jira_data, 4, findFirst = True)
+    comp = DataComparer()
+    comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp.csv', jira_data, pKey = pkey)
+
 def genreportwitherrors():
     path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_20200115.xlsx"
     errpath = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_20200115_Errs.xlsx"
@@ -103,4 +113,5 @@ if __name__ == '__main__':
     #storedprocfix()
     #postlargejobstest()
     #getpkey()
-    genreportwitherrors()
+    #genreportwitherrors()
+    testjiraapidata()

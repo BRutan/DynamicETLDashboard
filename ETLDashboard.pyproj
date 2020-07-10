@@ -26,6 +26,12 @@
     </Compile>
     <Compile Include="Columns\ColumnAttribute.py" />
     <Compile Include="Columns\ColumnAttributes.py" />
+    <Compile Include="Columns\ColumnConverter.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Columns\ColumnMapper.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Columns\DataColumnAttributes.py" />
     <Compile Include="Columns\ColumnRelationships.py" />
     <Compile Include="Columns\__init__.py">
