@@ -123,7 +123,7 @@ class ColumnAttribute(object):
         if 'datetime' in typeStr:
             return 'datetime'
         if 'bool' in typeStr:
-            return 'bool'
+            return 'bit'
     @classmethod
     def IsInt(cls, val):
         try:
