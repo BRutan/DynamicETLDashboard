@@ -17,12 +17,29 @@ import os
 def testjiraapidata():
     jira_data_path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRAData_07102020.csv"
     jira_data = DataReader.Read(jira_data_path)
-    interface = TSQLInterface('.', 'MetricsDyetl')
-    interface.Insert(jira_data, 'JIRAData')
-    compare_data = interface.Select("SELECT * FROM JIRAData")
     pkey = TSQLInterface.PrimaryKeys(jira_data, 4, findFirst = True)
     comp = DataComparer()
-    comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp.csv', jira_data, pKey = pkey)
+    # Test locally:
+    #interface = TSQLInterface('.', 'MetricsDyetl')
+    #interface.Insert(jira_data, 'JIRAData')
+    #compare_data = interface.Select("SELECT * FROM JIRAData")
+    #comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp_LOCAL.xlsx', compare_data, jira_data, pKey = pkey)
+    # Test QA:
+    #interface = TSQLInterface('nj1qasql13', 'MetricsDyetl')
+    #interface.Insert(jira_data, 'JIRAData')
+    #compare_data = interface.Select("SELECT * FROM JIRAData")
+    #comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp_QA.xlsx', compare_data, jira_data, pKey = pkey)
+    # Test UAT:
+    #interface = TSQLInterface('nj1uatsql13', 'MetricsDyetl')
+    #interface.Insert(jira_data, 'JIRAData')
+    #compare_data = interface.Select("SELECT * FROM JIRAData")
+    #comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp_UAT.xlsx', compare_data, jira_data, pKey = pkey)
+    # Test STG:
+    interface = TSQLInterface('nj1stgsql13', 'MetricsDyetl')
+    interface.Insert(jira_data, 'JIRAData')
+    compare_data = interface.Select("SELECT * FROM JIRAData")
+    comp.GenerateComparisonReport('C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRADataComp_STG.xlsx', compare_data, jira_data, pKey = pkey)
+    
 
 def genreportwitherrors():
     path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1\\GS IB Physical Access Known Exceptions_20200115.xlsx"

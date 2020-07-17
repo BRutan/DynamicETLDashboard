@@ -11,7 +11,7 @@ import json
 import re
 import os
 import sys
-from Utilities.Helpers import FillEnvironmentVariables, FillUniversalEnvironmentVariables, GetRegexPattern, IsRegex, LoadJsonFile, StringIsDT
+from Utilities.Helpers import FillEnvironmentVariables, FillUniversalEnvironmentVariables, GetRegexPattern, IsNumeric, IsRegex, LoadJsonFile, StringIsDT
 
 ############################
 # ETLDashboard
@@ -508,6 +508,71 @@ def GenerateETLInfoJsonArgs():
         else:
             args['openfileexplorerpaths'] = False
             
+    if errs:
+        raise Exception('\n'.join(errs))
+    
+    return args
+
+
+############################
+# PullSampleFiles.py
+############################
+def PullSampleFilesJsonArgs():
+    """
+    * Pull json arguments from PullSampleFiles.json
+    to feed into PullSampleFiles.py script.
+    """
+    reqArgs = set(['count','etl','outputfolder'])
+    configPath = os.getcwd() + '\\AppsettingsFiles\\config.json'
+    errs = []
+    # Ensure all json files present:
+    if not os.path.exists('ETLDashboard.json'):
+        errs.append('ETLDashboard.json does not exist.')
+    if not os.path.exists('PullSampleFiles.json'):
+        errs.append('PullSampleFiles.json does not exist.')
+    if not os.path.exists('config.json'):
+        errs.append('config.json does not exist.')
+    if errs:
+        raise Exception('\n'.join(errs))
+    args = {}
+    args['config'] = LoadJsonFile(configPath)
+    args['pullsampleargs'] = LoadJsonFile('PullSampleFiles.json')
+    args['fixedargs'] = ETLDashboardJsonArgs()
+    args = FillEnvironmentVariables(args, args['config'])
+    # Ensure all require arguments present in PullSampleFiles.json:
+    missing = reqArgs - set(args['pullsampleargs'])
+    if missing:
+        raise Exception('The following required arguments are missing from PullSampleFiles.json: %s.' % ','.join(missing))
+    ##################################
+    # Required Arguments:
+    ##################################
+    # count:
+    if not IsNumeric(args['pullsampleargs']['count']):
+        errs.append('"count" must be numeric.')
+    elif not int(args['pullsampleargs']['count']) > 0:
+        errs.append('"count" must be positive.')
+    # etl:
+    if not isinstance(args['pullsampleargs']['etl'], (str, list)):
+        errs.append('"etl" must be an individual string single configured etl name or a list containing multiple configured etl names.')
+    elif isinstance(args['pullsampleargs']['etl'], str):
+        # Ensure etl has been configured in all necessary appsettings files:
+        pass
+    elif isinstance(args['pullsampleargs']['etl'], list):
+        if any([True for etl in args['pullsampleargs']['etl'] if not isinstance(etl, str)]):
+            errs.append('If multiple etls provided in list, all must be strings.')
+        # Ensure all etls have been configured in necessary appsettings files:
+        if any([True for etl in args['pullsampleargs']['etl'] if not etl in args['fixedargs']]):
+            errs.append('')
+        if any([True for etl in args['pullsampleargs']['etl'] if not etl in args['fixedargs']]):
+            errs.append('')
+        if any([True for etl in args['pullsampleargs']['etl'] if not etl in args['fixedargs']]):
+            errs.append('')
+    # outputfolder: 
+    if not isinstance(args['pullsampleargs']['outputfolder'], str):
+        errs.append('"outputfolder" must be a string.')
+    elif not os.path.isdir(args['pullsampleargs']['outputfolder']):
+        errs.append('"outputfolder" does not point to valid folder.')
+
     if errs:
         raise Exception('\n'.join(errs))
     

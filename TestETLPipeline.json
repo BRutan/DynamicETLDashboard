@@ -1,8 +1,8 @@
 {
-  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "etlname": "GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1",
   "filedate": "2020-06-08",
-  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\TradeRequests_Comp_QA.xlsx",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\Fix ETLs\\ExceptionReport\\GEMS.DyEtl.ExceptionReport.ScreensaverTimeout_LOCAL.xlsx",
   "postargspath": "postargs.json",
-  "testmode": "QA",
-  "removeprevfiledate": "TRUE"
+  "testmode": "LOCAL",
+  "removeprevfiledate": "FALSE"
 }

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>GenerateNewETL.py</StartupFile>
+    <StartupFile>TestETLPipeline.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -47,6 +47,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\FileTransferConfig.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ETL\SampleFilePuller.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Log\DynamicETLServiceIssueParser.py">
@@ -120,6 +123,9 @@
     <Compile Include="PullData.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PullSampleFiles.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
@@ -186,6 +192,7 @@
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
     <Folder Include="Log\" />
+    <Folder Include="SampleFiles\" />
     <Folder Include="Output\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
@@ -203,6 +210,7 @@
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="postargs.json" />
     <Content Include="GenerateFileTransferConfig.json" />
+    <Content Include="PullSampleFiles.json" />
     <Content Include="TestETLPipeline.json" />
     <Content Include="GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />
