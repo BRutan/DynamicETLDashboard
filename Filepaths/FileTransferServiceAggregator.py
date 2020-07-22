@@ -38,7 +38,8 @@ class FileTransferServiceAggregator:
         self.__paths = None
         self.__ftsurl = ftsurl
         self.__etlpathsjson = etlpathsjson
-        self.__driverpath = chromedriverpath
+        # Get paths to all versions of chromedriver.exe:
+        self.__GetChromeDriverPaths(chromedriverpath)
         self.__targetregex = groupregex if isinstance(groupregex, FileTransferServiceAggregator.__reType) else re.compile(groupregex)
         self.__transfersjson = {}
         self.__PullFromFTS()
@@ -69,7 +70,6 @@ class FileTransferServiceAggregator:
             raise Exception('filewatcherappsettingspath must point to json file.')
         elif not os.path.exists(filewatcherappsettingspath):
             raise Exception('filewatcherappsettingspath does not exist.')
-
         try:
             fwargs = LoadJsonFile(filewatcherappsettingspath)
         except Exception as ex:
@@ -85,17 +85,37 @@ class FileTransferServiceAggregator:
             out['files'].apend(etlgroup)
         json.dump(out, open(os.getcwd() + '\\AppsettingsFiles\\etlfilepaths.json', 'wb'))
         
-    def OutputLookup(self):
+    def OutputLookup(self, output, filename = 'filetransferconfig.json'):
         """
         * Output lookup file into filetransferconfig.json.
         """
-        if not os.path.exists('%s\\AppsettingsFiles\\' % os.getcwd()):
-            raise Exception('Local \\AppsettingsFiles\\ folder does not exist.')
-        json.dump(self.__transfersjson, open('%s\\AppsettingsFiles\\filetransferconfig.json' % os.getcwd(), 'wb'), sort_keys = True)
+        errs = []
+        if not isinstance(outputfolder, str):
+            errs.append('outputfolder must be a string.')
+        elif not os.path.isdir(outputfolder):
+            errs.append('outputfolder does not point to valid directory.')
+        if not isinstance(filename, str):
+            errs.append('filename must be a string.')
+        elif not filename.endswith('.json'):
+            errs.append('filename must point to .json file')
+        if errs:
+            raise Exception('\n'.join(errs))
+        json.dump(self.__transfersjson, open('%s\\%s' % (output, filename), 'wb'), sort_keys = True)
 
     ####################
     # Private Helpers:
-    #################### 
+    ####################
+    def __GetChromeDriverPaths(self, chromedriverpath):
+        """
+        * Get all chromedriver.exe versions stored
+        locally.
+        """
+        folder, file = os.path.split(chromedriverpath)
+        folder, folderRE = os.path.split(folder)
+        folderRE = re.compile(folderRE)
+        folders = FileConverter.GetAllFolderPaths(folder, folderRE)
+        self.__chromedriverpaths = [os.path.join(folder,file) for folder in folders]
+
     def __PullFromFTS(self):
         """
         * Open Chrome instance with Selenium to pull all existing
@@ -122,8 +142,18 @@ class FileTransferServiceAggregator:
         chromeOptions = webdriver.ChromeOptions()
         chromeOptions.add_experimental_option('useAutomationExtension', False)
         #chromeOptions.add_argument("download.default_directory=%s" % self.__tempdir)
-        self.__driver = webdriver.Chrome('%s\\Misc\\chromedriver.exe' % os.getcwd(), chrome_options = chromeOptions)
-        self.__driver.get(self.__ftsurl)
+        # Use the first valid chromedriver.exe given installed version of Google Chrome:
+        fail = True
+        for path in self.__chromedriverpaths:
+            try:
+                self.__driver = webdriver.Chrome(path, chrome_options = chromeOptions)
+                self.__driver.get(self.__ftsurl)
+                fail = False
+                break
+            except:
+                pass
+        if fail:
+            raise Exception('Could not use any chromedriver.exe to open selenium.')
         sleep(3)
         
     def __MaximizeTransfersPerSheet(self):
@@ -206,8 +236,6 @@ class FileTransferServiceAggregator:
             errs.append('chromedriverpath must be a string.')
         elif not chromedriverpath.endswith('.exe'):
             errs.append('chromedriverpath must point to an executable.')
-        elif not os.path.exists(chromedriverpath):
-            errs.append('chromedriverpath file does not exist.')
         if not isinstance(groupregex, (str, FileTransferServiceAggregator.__reType)):
             errs.append('groupregex must be a string or regular expression object.')
         elif isinstance(groupregex, str) and not IsRegex(groupregex):

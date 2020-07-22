@@ -50,9 +50,7 @@ def ETLDashboardJsonArgs():
         errs.append('(chromedriverpath) Must be a string.')
     elif not args['chromedriverpath'].endswith('.exe'):
         errs.append('(chromedriverpath) Must point to executable.')
-    elif not os.path.exists(args['chromedriverpath']):
-        errs.append('(chromedriverpath) Does not exist.')
-
+    
     # dynamicetlservicepath:
     if not os.path.exists(args['dynamicetlservicepath']):
         errs.append('(dynamicetlservicepath) Path does not exist.')
@@ -265,7 +263,7 @@ def GenerateFileTransferConfigJsonArgs():
     * Pull and validate required arguments for 
     GenerateFileTransferConfig script.
     """
-    req_args = set(['groupregex'])
+    req_args = set(['groupregex', 'outputfolder'])
     errs = []
     if not os.path.exists('GenerateFileTransferConfig.json'):
         raise Exception('GenerateFileTransferConfig.json does not exist.')
@@ -290,7 +288,14 @@ def GenerateFileTransferConfigJsonArgs():
     if not isinstance(args['groupregex'], str):
         errs.append('(groupregex) Must be a string.')
     elif not IsRegex(args['groupregex']):
-        errs.append('(groupregex) Invalid regular expression,')
+        errs.append('(groupregex) Invalid regular expression.')
+    # outputfolder:
+    if not isinstance(args['outputfolder'], str):
+        errs.append('(outputfolder) Must be a string.')
+    elif not os.path.isdir(args['outputfolder']):
+        errs.append('(outputfolder) Does not point to valid directory.')
+    elif not args['outputfolder'].endswith('\\'):
+        args['outputfolder'] += '\\'
     if errs:
         raise Exception('\n'.join(errs))
     return args

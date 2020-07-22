@@ -11,27 +11,59 @@ from Utilities.FileConverter import FileConverter
 
 class SampleFilePuller:
     """
-    * Singleton class that pulls sample files
+    * Class that pulls sample files
     at configured directories for one or more ETLs, and
     outputs to target folder.
     """
+    def __init__(self, etlconfigs):
+        """
+        * Instantiate object and store
+        all filepaths to 
+        """
+        SampleFilePuller.__Validate(etlconfigs)
+        self.__etldatapaths = {}
+        self.__etlConfigs = {}
+        self.__GenerateRegex(etlconfigs)
     ##################
-    # Interface Methods`:
+    # Properties:
     ##################
-    @classmethod
-    def PullFiles(etl, configs, outputFolder, maxNum):
+    def ETLDataPaths(self):
+        return self.__etlpaths.copy()
+    def ETLDataPathRegexes(self):
+        return self.__etlpathregex.copy()
+    ##################
+    # Interface Methods:
+    ##################
+    def PullFiles(self, etl, outputFolder, maxNum):
         """
         * Pull sample files for one or more passed ETLs,
         output into target folder.
+        Inputs:
+        * etl: string name of etl or iterable of etl name strings. Must
+        be configured in the FileWatcher appsettings file.
+        * outputFolder: String folder to output all data files.
+        * maxNum: Maximum number of data files to pull.
         """
-        SampleFilePuller.__Validate(etl, configs, outputFolder, maxNum)
-        etl = [etl] if isinstance(etl, str) else etl
-        for etlname in etl:
-            pass
+        SampleFilePuller.__Validate(etl, outputFolder, maxNum)
+        etls = [etl] if not hasattr(etl, '__iter__') else etl
+        for etl in etls:
+            paths = self.__etldatapaths[etl]
 
     ##################
     # Private Helpers:
     ##################
+    def __GenerateRegex(etlconfigs):
+        """
+        * Generate { ETL -> FileSourcePath } all regular 
+        expressions using configuration file.
+        """
+        self.__etlConfigs
+        for elem in etlconfigs["files"]:
+            etl = elem['subject']
+            # Fill in paths for all ETLs based on location
+            paths = elem['inbound']
+            self.__etlConfigs[etl] = paths
+
     @staticmethod
     def __Validate(etl, configs, outputFolder, maxNum):
         """

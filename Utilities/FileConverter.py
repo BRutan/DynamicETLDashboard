@@ -15,11 +15,44 @@ class FileConverter:
     * Empty singleton-like class that pulls in files (GetAllFilePaths())
     or converts large number of files to particular extension.
     """
+    __reObj = type(re.compile(''))
     def __init__(self):
         """
         * Initialize singleton object.
         """
         pass
+
+    @classmethod
+    def GetAllFolderPaths(cls, headpath, folderreg):
+        """
+        * Get all folders matching folderreg located
+        in headpath.
+        Inputs:
+        * headpath: String path containing folders want to search.
+        * folderreg: regex string or regex object used to find
+        folders.
+        """
+        errs = []
+        if not isinstance(headpath, str):
+            errs.append('headpath must be a string.')
+        elif not os.path.isdir(headpath):
+            errs.append('headpath does not point to valid directory.')
+        if not isinstance(folderreg, (str, FileConverter.__reObj)):
+            errs.append('folderreg must be a string or regular expression.')
+        elif isinstance(folderreg, str):
+            if not IsRegex(folderreg):
+                errs.append('folderreg must be a valid regular expression.')
+            else:
+                folderreg = re.compile(folderreg)
+        if errs:
+            raise Exception('\n'.join(errs))
+        # Get all matching folders:
+        folders = []
+        for folder in os.listdir(headpath):
+            fullpath = os.path.join(headpath, folder)
+            if os.path.isdir(fullpath) and folderreg.match(folder):
+                folders.append(fullpath)
+        return folders
 
     @classmethod
     def GetAllFilePaths(cls, folderpath, filereg, subdirs = False):

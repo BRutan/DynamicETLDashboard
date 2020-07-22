@@ -1,6 +1,6 @@
 {
   "dynamicetlservicepath": "H:\\Projects\\DynamicEtl.Service\\src\\DynamicEtl.Service\\bin\\Debug\\DynamicEtl.Service.exe",
-  "chromedriverpath": "{LocalPath}\\Misc\\chromedriver.exe",
+  "chromedriverpath": "{LocalPath}\\Misc\\selenium\\chromedriver[0-9][0-9]\\chromedriver.exe",
   "config": "{LocalPath}\\AppsettingsFiles\\config.json",
   "etlfilepaths": "{LocalPath}\\AppsettingsFiles\\etlfilepaths.json",
   "filewatcherappsettingstemplatepath": "{LocalPath}\\AppsettingsFiles\\FileWatcher_AppSettings-template.json",

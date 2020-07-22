@@ -1,3 +1,4 @@
 {
-  "groupregex": "RiskDashboard"
+  "groupregex": "RiskDashboard",
+  "outputfolder" :  "AppsettingsFiles\\FileTransfer.Service\\"
 }

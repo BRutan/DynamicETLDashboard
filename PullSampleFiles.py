@@ -18,17 +18,22 @@ def PullSampleFiles():
     """
     try:
         args = PullSampleFilesJsonArgs()
-        funcArgs = MapETLsToConfig(args)
+        funcArgs = InjectDependency(args)
         SampleFilePuller.PullFiles(**funcArgs)
     except Exception as ex:
         msg = "Failed to run PullSampleFiles.py. Reason: %s." % str(ex)
         PrintExceptionAndExit(msg)
 
-def MapETLsToConfig(args):
+def InjectDependency(args):
     """
-    *
+    * Return dictionary mapping all arguments
+    from PullSampleFiles.json to SampleFilePuller.PullFiles():
     """
-    pass
+    funcArgs = {}
+    # DynamicETL.Service appsettings:
+    args['serviceappsettings']['Etls']
+
+    return funcArgs
 
 
 if __name__ == '__main__':
