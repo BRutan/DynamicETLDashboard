@@ -138,6 +138,9 @@
     <Compile Include="Utilities\ArgumentFeeder.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\DateFormatFinder.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\Descriptions.py">
       <SubType>Code</SubType>
     </Compile>

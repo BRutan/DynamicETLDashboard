@@ -18,19 +18,27 @@ from Utilities.Helpers import ConvertDateFormat, GetRegexPattern, IsRegex
 from Utilities.LoadArgs import GenerateNewETLJsonArgs
 
 def GenerateColumnAttributesReport():
+    """
+    * Perform key steps in order.
+    """
     print ("------------------------------")
     print ("GenerateNewETL")
     print ("------------------------------")
     # Get script arguments:
     args = GenerateNewETLJsonArgs()
-    ###############################
-    # Get all column attributes for data file(s):
-    ###############################
+    attributes = GenerateReportAndTable(args)
+    AppendETL(args, attributes)
+    GeneratePostArgs(args, attributes)
+
+def GenerateReportAndTable(args):
+    """
+    * Get all column attributes for data file(s):
+    """
     print ("Reading all data files at")
     print (args.datapath)
     attributes = DataColumnAttributes()
     reportpath = "%s%s.xlsx" % (args.outputfolder, args.etlname)
-    attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets)
+    attributes.GetDataAttributes(args.datapath,args.filedateinfo,args.filenamereg,args.convertedpaths,args.sheets,args.delim)
     attributes.GenerateReport(reportpath)
     print ("Finished generating report at")
     print (reportpath)
@@ -40,9 +48,14 @@ def GenerateColumnAttributesReport():
     print (tableDefPath)
     attributes.CreateTableDefinitions(args.outputfolder, args.tablename, args.allnull)
     print ("Finished generating table definitions.")
-    # Generate new DynamicETL.Service appsettings-template.json (for committing to project) 
-    # Appsettings.json (for testing locally), and FileWatcher AppSettings-template.json files 
-    # based upon new etl:
+    return attributes
+    
+def AppendETL(args, attributes):
+    """
+    * Generate new DynamicETL.Service appsettings-template.json (for committing to project) 
+    Appsettings.json (for testing locally), and FileWatcher AppSettings-template.json files 
+    based upon new etl:
+    """
     updatedAppsettingsPath = "%sAppsettings.json" % args.outputfolder
     updatedTemplatePath = "%sappsettings-template.json" % args.outputfolder
     print ("Appending new ETL configuration to Appsettings.json and appsettings-template.json files at")
@@ -67,7 +80,11 @@ def GenerateColumnAttributesReport():
         appender = NewETLAppender(args.etlname, args.appsettingstemplate, args.config, kwargs)
     appender.OutputUpdatedTemplateFile(updatedTemplatePath)
     appender.OutputUpdatedAppsettingsFile(updatedAppsettingsPath)
-    # Generate postargs to folder:
+
+def GeneratePostArgs(args, attributes):
+    """
+    * Generate postargs to folder:
+    """
     postargsPath = "%spostargs.json" % args.outputfolder
     #print ("Generating postargs.json containing DynamicETL.WebAPI post arguments at")
     #print (postargsPath)

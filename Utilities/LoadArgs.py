@@ -143,6 +143,7 @@ class Arguments(object):
         self.sheets = args['data']['sheets'] if 'sheets' in args['data'] else None
         self.convertedpaths = None
         self.allnull = args['allnull'].lower() == 'true' if 'allnull' in args else False
+        self.delim = args['data']['delim'] if 'delim' in args['data'] else None
         if 'filenamereg' in args:
             self.filenamereg = re.compile(args['filenamereg'])
         if 'convert' in args:
@@ -176,6 +177,8 @@ class Arguments(object):
             errs.append(' '.join(['(data::path)', args['data']['path'], ' does not exist.']))
         if 'sheets' in args['data'] and not isinstance(args['data']['sheets'], list):
             errs.append('data::sheets must be a list.')
+        if 'delim' in args['data'] and not isinstance(args['data']['delim'], str):
+            errs.append('data::delim must be a string.')
         
         # "filedatereg" arguments:
         if not IsRegex(args['filedatereg']['Regex']):

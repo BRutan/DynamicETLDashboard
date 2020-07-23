@@ -17,7 +17,7 @@ class ColumnAttributes(object):
     """
     * Container of multiple ColAttributes for single entity.
     """
-    def __init__(self, path, fileDateFormat, sheet = None):
+    def __init__(self, path, fileDateFormat, sheet = None, delim = None):
         """
         * Instantiate new object.
         """
@@ -28,7 +28,7 @@ class ColumnAttributes(object):
         self.__attributes = SortedDict()
         self.__error = ''
         self.__GetFileDate(fileDateFormat)
-        self.__ParseFile()
+        self.__ParseFile(delim)
 
     def __eq__(self, attributes):
         for attr in attributes.Attributes:
@@ -84,12 +84,12 @@ class ColumnAttributes(object):
     ######################
     # Private Helpers:
     ######################
-    def __ParseFile(self):
+    def __ParseFile(self, delim = None):
         """
         * Parse column all column attributes in DataFrame.
         """
         try:
-            data = self.__GetFileData()
+            data = self.__GetFileData(delim)
         except BaseException as ex:
             self.__error = str(ex)
             return
@@ -122,8 +122,8 @@ class ColumnAttributes(object):
             raise Exception('File regex does not work with one or more filepaths.')
         self.__fileDate = datetime.strptime(match, format['dateformat'])
 
-    def __GetFileData(self):
+    def __GetFileData(self, delim = None):
         if '.csv' in self.__path:
-            return pandas.read_csv(self.__path)
+            return pandas.read_csv(self.__path, delimiter = delim)
         elif '.xls' in self.__path:
             return pandas.read_excel(self.__path, sheet_name = (0 if self.__sheetname is None else self.__sheetname))
