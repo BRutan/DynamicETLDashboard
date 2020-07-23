@@ -1,13 +1,15 @@
 {
-  "etlname": "JIRAData",
+  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
   "data": {
-    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\"
+    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\",
+    "delim" : "|"
   },
-  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\",
+  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\",
   "filedatereg": {
     "Regex": "\\d{8}",
     "DateFormat": "%m%d%Y"
   },
-  "filenamereg": "JIRAData_07102020.csv",
-  "tablename": "JIRAData"
+  "filenamereg": "TradeRequestAllStatus_\\d{8}.csv",
+  "tablename": "RegulatoryTradeRequests",
+  "allnull" :  "true"
 }

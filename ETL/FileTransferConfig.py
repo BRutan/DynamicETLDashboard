@@ -121,14 +121,27 @@ class FileTransferConfig:
         """
         * Parse the "Sources" attribute.
         """
-        sources = soup.find_all("source")
-        for source in sources:
-            converted = FileTransferSource(source)
-            desttags = source.find_all("destination")
-            destinations = []
-            for tag in desttags:
-                destinations.append(FileTransferDestination(tag))
-            self.__sources[converted.Path] = desttags
+        sourcetags = soup.find_all('source')
+        sourceattrs = set([attr.lower() for attr in dir(FileTransferSource) if not attr.startswith('_')])
+        desttags = set([attr.lower() for attr in dir(FileTransferDestination) if not attr.startswith('_')])
+        for tag in sourcetags:
+            # Collect all source attributes:
+            currsourcetags = []
+            innertag = tag.find_next_sibling()
+            while 'limitgethours' not in str(innertag):
+                if innertag.name in sourcetags:
+                    currsourcetags.append(innertag)
+                innertag = innertag.find()
+            section = soup.new_tag('source')
+            for innertag in currsourcetags:
+                section.append(innertag)
+        #for source in sources:
+        #    converted = FileTransferSource(source)
+        #    desttags = source.find_all("destination")
+        #    destinations = []
+        #    for tag in desttags:
+        #        destinations.append(FileTransferDestination(tag))
+        #    self.__sources[converted.Path] = desttags
 
     @staticmethod
     def __Validate(filepath):
@@ -161,21 +174,6 @@ class FileTransferConfig:
                     cleanedLines.append(cleanedLine)
         # Fix <source/> and <destination/> tags being ill defined:
         soup = Soup('\n'.join(cleanedLines), features = 'html.parser')
-        sourcetags = soup.find_all('source')
-        sourceattrs = set([attr.lower() for attr in dir(FileTransferSource) if not attr.startswith('_')])
-        desttags = set([attr.lower() for attr in dir(FileTransferDestination) if not attr.startswith('_')])
-        for tag in sources:
-            # Collect all source attributes:
-            currsourcetags = []
-            innertag = tag.find()
-            while 'limitgethours' not in str(innertag):
-                if innertag.name in sourcetags:
-                    currsourcetags.append(innertag)
-                innertag = innertag.find()
-            section = soup.new_tag('source')
-            for innertag in currsourcetags:
-                section.append(innertag)
-        
         return soup
 
     def __DefaultInitialize(self):

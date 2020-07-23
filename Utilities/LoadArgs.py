@@ -142,6 +142,7 @@ class Arguments(object):
         self.filenamereg = None
         self.sheets = args['data']['sheets'] if 'sheets' in args['data'] else None
         self.convertedpaths = None
+        self.allnull = args['allnull'].lower() == 'true' if 'allnull' in args else False
         if 'filenamereg' in args:
             self.filenamereg = re.compile(args['filenamereg'])
         if 'convert' in args:
@@ -198,6 +199,14 @@ class Arguments(object):
                 errs.append('%s is invalid conversion extension.' % args['convert']['toextension'])
             if 'convertpath' in args['convert'] and not os.path.exists(args['convert']['convertpath']):
                 errs.append('convertpath does not exist.')
+
+        #####################
+        # Optional args:
+        #####################
+        # "allnull" arguments:
+        if 'allnull' in args:
+            if not args['allnull'].lower() in ['true', 'false']:
+                errs.append('allnull must be "true"/"false".')
 
         if missing:
             errs.append('The following required subarguments are missing: {%s}' % ', '.join(missing))

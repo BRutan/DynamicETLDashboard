@@ -142,7 +142,7 @@ class DataColumnAttributes(object):
             self.__GenUniquesSheet(wb)
             wb.close()
         
-    def CreateTableDefinitions(self, outputpath, table = None):
+    def CreateTableDefinitions(self, outputpath, table = None, allnull = False):
         """
         * Create SQL table definition based upon latest 
         columnattributes.
@@ -172,13 +172,13 @@ class DataColumnAttributes(object):
                 table_full = DataColumnAttributes.__FixName(table_full)
                 path = '%s%s.sql' % (outputpath, table_full)
                 with open(path, 'w') as f:
-                    self.__WriteTableDef(f, attr, table_full)
+                    self.__WriteTableDef(f, attr, table_full, allnull)
         else:
             attr = self.__dateToAttrs[latest]
             tablename = table.replace(' ', '')
             path = ('%s%s.sql' % (outputpath, tablename))
             with open(path, 'w') as f:
-                self.__WriteTableDef(f, attr, table)
+                self.__WriteTableDef(f, attr, table, allnull)
 
     ##################
     # Private Helpers:
@@ -189,6 +189,7 @@ class DataColumnAttributes(object):
         """
         currAttrs = ColumnAttributes(path, self.__dateFormat)
         if currAttrs.Error:
+            tail, file = os.path.split(path)
             self.__errors[file] = currAttrs.Error
         else:
             self.__hasuniques = self.__hasuniques if self.__hasuniques else any([True for col in currAttrs.Attributes if not currAttrs.Attributes[col] is None])
@@ -351,7 +352,7 @@ class DataColumnAttributes(object):
                         uniqueSht.write(filerow, colNum, col, headerFormat)
             rowOff += maxUniques + 3
 
-    def __WriteTableDef(self, file, attributes, table = None):
+    def __WriteTableDef(self, file, attributes, table = None, allnull = False):
         """
         * Write table definition in standard format.
         """
@@ -367,10 +368,13 @@ class DataColumnAttributes(object):
         file.write('(\n')
         for num, name in enumerate(attributes.Attributes):
             attr = attributes.Attributes[name]
-            nullable = 'NOT NULL' if not attr.IsNullable else 'NULL'
+            if allnull:
+                nullable = 'NULL'
+            else:
+                nullable = 'NOT NULL' if not attr.IsNullable else 'NULL'
             file.write('[%s] %s %s,\n' % (attr.ColumnName, attr.Type, nullable))
-        file.write('[FileDate] datetime NULL,\n')
-        file.write('[RunDate] datetime NULL\n')
+        file.write('[FileDate] datetime NOT NULL,\n')
+        file.write('[RunDate] datetime NOT NULL\n')
         file.write(') ON [PRIMARY];\n\nGO\n')
 
     @classmethod

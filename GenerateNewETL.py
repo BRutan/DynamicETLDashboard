@@ -38,7 +38,7 @@ def GenerateColumnAttributesReport():
     tableDefPath = "%s%s.sql" % (args.outputfolder, args.tablename)
     print ("Generating table definition for %s at " % args.tablename)
     print (tableDefPath)
-    attributes.CreateTableDefinitions(args.outputfolder, args.tablename)
+    attributes.CreateTableDefinitions(args.outputfolder, args.tablename, args.allnull)
     print ("Finished generating table definitions.")
     # Generate new DynamicETL.Service appsettings-template.json (for committing to project) 
     # Appsettings.json (for testing locally), and FileWatcher AppSettings-template.json files 
