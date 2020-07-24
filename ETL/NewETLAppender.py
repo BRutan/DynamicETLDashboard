@@ -149,8 +149,8 @@ class NewETLAppender:
         elif isinstance(appsettingsobj, dict):
             if not 'Etls' in appsettingsobj:
                 errs.append('"Etls" attribute missing from appsettings json objecgt.')
-            elif isinstance(etlname, str) and etlname in appsettingsobj['Etls']:
-                errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
+            #elif isinstance(etlname, str) and etlname in appsettingsobj['Etls']:
+            #    errs.append('An ETL named %s has already been configured in appsettings-template.json file.' % etlname)
         if not kwargs is None and not isinstance(kwargs, dict):
             errs.append('kwargs must be a dictionary if provided.')
         if not configobj is None and not isinstance(configobj, dict):

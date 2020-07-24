@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>GenerateNewETL.py</StartupFile>
+    <StartupFile>Scripts\GenerateNewETL.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddFileWatcherConfig.py">
+    <Compile Include="ScriptArgs\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scripts\AddFileWatcherConfig.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Columns\ColumnAttribute.py" />
@@ -96,7 +99,7 @@
     <Compile Include="Filepaths\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GenerateFileTransferConfig.py">
+    <Compile Include="Scripts\GenerateFileTransferConfig.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GUI\GenerateColumnAttributesReportWindow.py">
@@ -120,10 +123,13 @@
     <Compile Include="Log\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PullData.py">
+    <Compile Include="Scripts\PullData.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PullSampleFiles.py">
+    <Compile Include="Scripts\PullSampleFiles.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scripts\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="setup.py">
@@ -132,7 +138,7 @@
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestETLPipeline.py">
+    <Compile Include="Scripts\TestETLPipeline.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\ArgumentFeeder.py">
@@ -166,7 +172,7 @@
     <Compile Include="GUI\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GenerateNewETL.py" />
+    <Compile Include="Scripts\GenerateNewETL.py" />
     <Compile Include="GUI\ETLInfoWindow.py">
       <SubType>Code</SubType>
     </Compile>
@@ -174,7 +180,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utilities\Helpers.py" />
-    <Compile Include="GenerateETLInfo.py">
+    <Compile Include="Scripts\GenerateETLInfo.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="__init__.py">
@@ -195,12 +201,14 @@
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
     <Folder Include="Log\" />
+    <Folder Include="ScriptArgs\" />
+    <Folder Include="Scripts\" />
     <Folder Include="SampleFiles\" />
     <Folder Include="Output\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AddFileWatcherConfig.json" />
+    <Content Include="ScriptArgs\AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\appsettings-template.json" />
     <Content Include="AppsettingsFiles\config.json" />
     <Content Include="AppsettingsFiles\DynamicETL.Service\appsettings-template.json" />
@@ -209,20 +217,20 @@
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="AppsettingsFiles\TransferId_297.xml" />
     <Content Include="Documentation.docx" />
-    <Content Include="ETLDashboard.json" />
+    <Content Include="ScriptArgs\ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="postargs.json" />
-    <Content Include="GenerateFileTransferConfig.json" />
-    <Content Include="PullSampleFiles.json" />
-    <Content Include="TestETLPipeline.json" />
-    <Content Include="GenerateNewETL.json" />
+    <Content Include="ScriptArgs\GenerateFileTransferConfig.json" />
+    <Content Include="ScriptArgs\PullSampleFiles.json" />
+    <Content Include="ScriptArgs\TestETLPipeline.json" />
+    <Content Include="ScriptArgs\GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\ColumnAttributes.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\ColumnAttributesReport.cpython-36.pyc" />
     <Content Include="Columns\__pycache__\__init__.cpython-36.pyc" />
     <Content Include="ETL\default.xml" />
     <Content Include="ETL\ftsattrs.json" />
-    <Content Include="GenerateETLInfo.json" />
+    <Content Include="ScriptArgs\GenerateETLInfo.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

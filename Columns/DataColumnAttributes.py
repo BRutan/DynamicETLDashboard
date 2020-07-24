@@ -5,6 +5,7 @@
 # * Aggregate column attributes (attributes and relationships).
 
 from Columns.ColumnAttributes import ColumnAttributes
+from Columns.ColumnAttribute import ColumnAttribute
 from Columns.ColumnRelationships import ColumnRelationships
 import copy
 import csv
@@ -25,7 +26,6 @@ class DataColumnAttributes(object):
     for columns.
     """
     __columnReportHeaders = ['Name', 'Type', 'IsNullable', 'IsUnique', 'UniqueCount']
-    __columnChgReportHeaders = ['Date', 'Name', 'Type', 'Nullable', 'IsUnique', 'UniqueCount']
     # For report generation:
     __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
     __one_one_format = {'font_color': 'black', 'bg_color' : 'green'}
@@ -98,7 +98,7 @@ class DataColumnAttributes(object):
         for file in filePaths:
             path = filePaths[file]
             if self.__sheets is None:
-                self.__ExtractFile(path)
+                self.__ExtractFile(path, delim)
             else:
                 self.__ExtractAllSheets(path)
         self.__filepaths = set([filePaths[key] for key in filePaths])
@@ -184,11 +184,11 @@ class DataColumnAttributes(object):
     ##################
     # Private Helpers:
     ################## 
-    def __ExtractFile(self, path):
+    def __ExtractFile(self, path, delim = None):
         """
         * Extract data from single file.
         """
-        currAttrs = ColumnAttributes(path, self.__dateFormat)
+        currAttrs = ColumnAttributes(path, self.__dateFormat, delim = delim)
         if currAttrs.Error:
             tail, file = os.path.split(path)
             self.__errors[file] = currAttrs.Error
@@ -262,19 +262,30 @@ class DataColumnAttributes(object):
         """
         if not self.__columnChgDates:
             return
-        chgSheet = wb.add_worksheet('Column Chg Report')
+        chgSheet = wb.add_worksheet('Column Change Report')
         headerFormat = wb.add_format(DataColumnAttributes.__headerFormat)
-        headers = DataColumnAttributes.__columnChgReportHeaders
+        properties = [attr for attr in dir(ColumnAttribute) if not attr.startswith('_') and not callable(getattr(ColumnAttribute, attr))]
+        skipProperties = set(['columnname', 'uniques'])
         rowNum = 0
-        for num, header in enumerate(headers):
-            chgSheet.write(rowNum, num, header, headerFormat)
+        colNum = 0
+        # Detail columns that have changed for each filedate that they differed:
         for dt in self.__columnChgDates:
+            chgSheet.write(rowNum, 0, "FileDate:", headerFormat)
+            chgSheet.write(rowNum, 1, dt.strftime('%Y-%m-%d'), headerFormat)
             rowNum += 1
-            attr = self.__columnChgDates[dt] if sheetname is None else self.__columnChgDates[dt][sheetname]
-            row = attr.ToReportRow()
-            for num, val in enumerate(row):
-                chgSheet.write(rowNum, num, val)
-            rowNum += 1
+            # Write list of properties in first column:
+            for num, prop in enumerate(properties):
+                if prop.lower() not in skipProperties:
+                    chgSheet.write(rowNum + num + 2 - len(skipProperties), 0, prop, headerFormat)
+            # Write all the differences:
+            diffs = self.__columnChgDates[dt] if sheetname is None else self.__columnChgDates[dt][sheetname]
+            for colNum, diff in enumerate(diffs):
+                chgSheet.write(rowNum, colNum, getattr(diff, 'ColumnName'))
+                for num, prop in enumerate(properties):
+                    if prop.lower() not in skipProperties:
+                        val = getattr(diff, prop)
+                        chgSheet.write(rowNum + num + 2 - len(skipProperties), colNum + 1, str(val) if not val is None else '')
+            rowNum += len(properties) - len(skipProperties) + 1
 
     def __GenColRelationshipsSheet(self, wb, sheetname = None):
         """

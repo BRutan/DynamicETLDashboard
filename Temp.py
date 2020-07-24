@@ -123,12 +123,12 @@ def pulldata():
     
 def testlogreader():
     reader = DynamicETLServiceIssueParser('\\\\nj1app20\\logs')
-    reader.GenerateFile('DynamicETL_ServiceIssues6_23_2020.csv')
+    reader.GenerateFile('DynamicETL_ServiceIssues7_24_2020.csv')
 
 if __name__ == '__main__':
-    #testlogreader()
+    testlogreader()
     #storedprocfix()
     #postlargejobstest()
     #getpkey()
     #genreportwitherrors()
-    testjiraapidata()
+    #testjiraapidata()

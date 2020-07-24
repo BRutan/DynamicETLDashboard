@@ -35,17 +35,35 @@ class ColumnAttribute(object):
         self.__type = None
         
     def __eq__(self, col):
-        if type(col) != type(self):
-            raise ValueError('Not a ColumnAttribute.')
+        """
+        * Equality operator. Checks if column has
+        same name and meta-data.
+        """
+        if not isinstance(col, ColumnAttribute):
+            raise ValueError('equality operator not supported with %s.' % str(type(col)))
         if col.ColumnName != self.ColumnName:
-            return False
-        if col.Type != self.Type:
             return False
         if col.IsUnique != self.IsUnique:
             return False
         if col.IsNullable != self.IsNullable:
             return False    
+        if col.Type != self.Type:
+            return False
         return True
+
+    def __sub__(self, col):
+        """
+        * Subtraction operator. Returns a ColumnAttributesDiff 
+        object detailing difference in name and meta-data
+        between lhs and rhs columns.
+        """
+        if not isinstance(col, ColumnAttribute):
+            raise ValueError('subtraction operator not supported with %s.' % str(type(col)))
+        diff = ColumnAttributeDiff.GetDifference(self, col)
+        if diff.HasDiff:
+            diff.ColumnName = col.ColumnName
+            return diff
+        return None
     
     ###################
     # Properties:
@@ -201,4 +219,138 @@ class ColumnAttribute(object):
         else:
             typeStr = 'o'
         return typeStr
-            
+        
+    
+class ColumnAttributeDiff:
+    """
+    * Object containing difference
+    in name and meta-data between two columns.
+    """
+    def __init__(self):
+        """
+        * Instantiate new empty difference
+        object.
+        """
+        self.__DefaultInitialize()
+
+    #################
+    # Properties:
+    #################
+    @property
+    def ColumnName(self):
+        return self.__colName
+    @property
+    def IsNullable(self):
+        return self.__isNullable
+    @property
+    def IsUnique(self):
+        return self.__isUnique
+    @property
+    def HasDiff(self):
+        return self.__hasdiff
+    @property
+    def Type(self):
+        return self.__type
+    @property
+    def UniqueCount(self):
+        return self.__uniqueCount
+    @property
+    def Uniques(self):
+        return self.__uniques
+    @ColumnName.setter
+    def ColumnName(self, val):
+        if not isinstance(val, str):
+            raise Exception('ColumnName must be a string.')
+        self.__colName = val
+    @IsNullable.setter
+    def IsNullable(self, val):
+        if not isinstance(val, bool):
+            raise Exception('IsNullable must be boolean.')
+        self.__isNullable = val
+    @IsUnique.setter
+    def IsUnique(self, val):
+        if not isinstance(val, bool):
+            raise Exception('IsUnique must be boolean.')
+        self.__isUnique = val
+    @HasDiff.setter
+    def HasDiff(self, val):
+        if not isinstance(val, bool):
+            raise Exception('HasDiff must be boolean.')
+        self.__hasdiff = val
+    @Type.setter
+    def Type(self, val):
+        if not isinstance(val, str):
+            raise Exception('Type must be a string.')
+        self.__type = val
+    @UniqueCount.setter
+    def UniqueCount(self, val):
+        if not isinstance(val, (float, int)):
+            raise Exception('UniqueCount must be numeric.')
+        elif val < 0:
+            raise Exception('UniqueCount must be non-negative.')
+        self.__uniqueCount = val
+    @Uniques.setter
+    def Uniques(self, val):
+        if not hasattr(val, '__iter__'):
+            raise Exception('Uniques must be an iterable.')
+        self.__uniques = val
+    #################
+    # Interface Methods:
+    #################
+    @classmethod
+    def GetDifference(cls, lhs, rhs):
+        """
+        * Generate ColumnAttributeDiff object detailing 
+        differences between another column.
+        """
+        ColumnAttributeDiff.__Validate(lhs, rhs)
+        diff = ColumnAttributeDiff()
+        properties = [attr for attr in dir(lhs) if not attr.startswith('_') and not callable(getattr(lhs, attr))]
+        for prop in properties:
+            if ColumnAttributeDiff.__CompareAttr(prop, lhs, rhs):
+                setattr(diff, prop, getattr(rhs, prop))
+                diff.HasDiff = True
+        return diff
+    #################
+    # Private Helpers:
+    #################
+    @staticmethod
+    def __Validate(lhs, rhs):
+        """
+        * Validate constructor parameters.
+        """
+        errs = []
+        if not isinstance(lhs, ColumnAttribute):
+            errs.append('lhs must be a ColumnAttribute.')
+        if not isinstance(rhs, ColumnAttribute):
+            errs.append('rhs must be a ColumnAttribute.')
+        if errs:
+            raise Exception('\n'.join(errs))
+
+    def __DefaultInitialize(self):
+        """
+        * Default initialize object.
+        """
+        self.__colName = None
+        self.__hasdiff = False
+        self.__isNullable = None
+        self.__isUnique = None
+        self.__type = None
+        self.__uniqueCount = None
+        self.__uniques = None
+
+    @staticmethod
+    def __CompareAttr(prop, lhs, rhs):
+        """
+        * Handle comparison of ColumnAttribute
+        properties, based upon type.
+        """
+        lhsAttr = getattr(lhs, prop)
+        rhsAttr = getattr(rhs, prop)
+        if hasattr(lhsAttr, '__iter__'):
+            if len(lhsAttr) != len(rhsAttr):
+                return False
+            elif lhsAttr != rhsAttr:
+                return False
+            return True
+        return lhsAttr != rhsAttr

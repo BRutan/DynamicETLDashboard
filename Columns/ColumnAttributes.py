@@ -19,7 +19,15 @@ class ColumnAttributes(object):
     """
     def __init__(self, path, fileDateFormat, sheet = None, delim = None):
         """
-        * Instantiate new object.
+        * Instantiate object containing meta information about
+        dataset located at path.
+        Inputs:
+        * path: String path to dataset.
+        * fileDateFormat: dictionary containing 'dateformat' and 
+        'regex' as attributes.
+        Optional:
+        * sheet: String name of sheet in workbook located at path.
+        * delim: String delimiter for csv file.
         """
         self.__path = path
         self.__colcount = None
@@ -31,12 +39,31 @@ class ColumnAttributes(object):
         self.__ParseFile(delim)
 
     def __eq__(self, attributes):
+        """
+        * Equality operator overload.
+        """
+        if not isinstance(attributes, ColumnAttributes):
+            raise Exception('equality operator not supported with %s.' % str(type(attributes)))
         for attr in attributes.Attributes:
             if attr not in self.Attributes:
                 return False
             if attributes.Attributes[attr] != self.Attributes[attr]:
                 return False
         return True
+
+    def __sub__(self, attributes):
+        """
+        * Subtraction operator overload.
+        Set difference that returns all columns 
+        with differing metadata.
+        """
+        if not isinstance(attributes, ColumnAttributes):
+            raise Exception('subtraction operator not supported with %s.' % str(type(attributes)))
+        diffs = []
+        for attr in self.Attributes:
+            if attr in attributes.Attributes and self.Attributes[attr] != attributes.Attributes[attr]:
+                diffs.append(self.Attributes[attr] - attributes.Attributes[attr])
+        return diffs
 
     ######################
     # Properties:
@@ -123,6 +150,9 @@ class ColumnAttributes(object):
         self.__fileDate = datetime.strptime(match, format['dateformat'])
 
     def __GetFileData(self, delim = None):
+        """
+        * Pull dataset from file at stored path.
+        """
         if '.csv' in self.__path:
             return pandas.read_csv(self.__path, delimiter = delim)
         elif '.xls' in self.__path:

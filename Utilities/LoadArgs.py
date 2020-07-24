@@ -22,10 +22,11 @@ def ETLDashboardJsonArgs():
     """
     errs = []
     req_args_fixed = set(['dynamicetlservicepath','chromedriverpath','config','etlfilepaths','filewatcherappsettingstemplatepath','filetransferurl','logpath','serviceappsettingspath','serviceappsettingstemplatepath','webapipath','webapiurl'])
-    if not os.path.exists('ETLDashboard.json'):
-        errs.append('ETLDashboard.json file does not exist.')
+    argPath = 'ScriptArgs\\ETLDashboard.json'
+    if not os.path.exists(argPath):
+        errs.append('%s file does not exist.' % argPath)
     else:
-        args = LoadJsonFile('ETLDashboard.json')
+        args = LoadJsonFile(argPath)
         missing = req_args_fixed - set(args)
         if missing:
             errs.append('The following required arguments are missing from ETLDashboard.json: %s' % ','.join(missing))
@@ -262,7 +263,7 @@ def GenerateNewETLJsonArgs():
     """
     * Pull script arguments from local json file.
     """
-    path = 'GenerateNewETL.json'
+    path = 'ScriptArgs\\GenerateNewETL.json'
     if not os.path.exists(path):
         raise Exception(''.join([path, ' does not exist.']))
     return Arguments(json.load(open(path, 'rb')))
@@ -276,14 +277,15 @@ def GenerateFileTransferConfigJsonArgs():
     GenerateFileTransferConfig script.
     """
     req_args = set(['groupregex', 'outputfolder'])
+    path = 'ScriptArgs\\GenerateFileTransferConfig.json'
     errs = []
-    if not os.path.exists('GenerateFileTransferConfig.json'):
-        raise Exception('GenerateFileTransferConfig.json does not exist.')
+    if not os.path.exists(path):
+        raise Exception('%s does not exist.' % path)
     try:
         args = ETLDashboardJsonArgs()
-        args.update(LoadJsonFile('GenerateFileTransferConfig.json'))
+        args.update(LoadJsonFile(path))
     except Exception as ex:
-        errs.append('Failed to read GenerateFileTransferConfig.json')
+        errs.append('Failed to read %s' % path)
         errs.append('Reason: %s' % str(ex))
         raise Exception('\n'.join(errs))
     missing = req_args - set(args)
@@ -322,13 +324,23 @@ def TestETLPipelineJsonArgs():
     req_args = set(['etlname','filedate','postargspath','reportpath','testmode'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
+    path = 'ScriptArgs\\TestETLPipeline.json'
     if not os.path.exists('TestETLPipeline.json'):
         raise Exception('TestETLPipeline.json does not exist.')
-    args = {}
-    args['testetlargs'] = LoadJsonFile('TestETLPipeline.json')
-    args['fixedargs'] = ETLDashboardJsonArgs()
-    # Ensure required arguments are present:
     errs = []
+    # Load Arguments from json files:
+    args = {}
+    try:
+        args['fixedargs'] = ETLDashboardJsonArgs()
+    except Exception as ex:
+        errs.append('Could not load ETLDashboard.json. Reason: %s' % str(ex))
+    try:
+        args['testetlargs'] = LoadJsonFile(path)
+    except Exception as ex:
+        errs.append('Could not load TestETLPipeline.json. Reason: %s' % str(ex))
+    if errs:
+        raise Exception('\n'.join(errs))
+    # Ensure required arguments are present:
     missing = req_args - set(args['testetlargs'])
     if missing:
         errs.append('The following required args are missing from TestETLPipeline.json: %s' % ','.join(missing))
@@ -491,16 +503,22 @@ def GenerateETLInfoJsonArgs():
     * Get and verify arguments from GenerateETLInfo.json.
     """
     reqArgs = set(['etlname','summarypath'])
-    args = ETLDashboardJsonArgs()
+    # Attempt to load arguments:
     errs = []
+    path = 'ScriptArgs\\GenerateETLInfo.json'
+    try:
+        args = ETLDashboardJsonArgs()
+    except Exception as ex:
+        errs.append('Could not load ETLDashboard.json. Reason: %s' % str(ex))
     if not os.path.exists('GenerateETLInfo.json'):
         errs.append('GenerateETLInfo.json does not exist.')
     else:
         try:
-            args.update(LoadJsonFile('GenerateETLInfo.json', args['config'], 'PROD'))
+            args.update(LoadJsonFile(path, args['config'], 'PROD'))
         except Exception as ex:
             errs.append('Could not load GenerateETLInfo.json. Reason: %s' % str(ex))
-        
+    if errs:
+        raise Exception('\n'.join(errs))
     if not args is None:
         missing = reqArgs - set(args)
         if missing:
@@ -541,19 +559,21 @@ def PullSampleFilesJsonArgs():
     """
     reqArgs = set(['count','etl','outputfolder'])
     configPath = os.getcwd() + '\\AppsettingsFiles\\config.json'
+    argPath = 'ScriptArgs\\PullSampleFiles.json'
+    fixedPath = 'ScriptArgs\\ETLDashboard.json'
     errs = []
     # Ensure all json files present:
-    if not os.path.exists('ETLDashboard.json'):
-        errs.append('ETLDashboard.json does not exist.')
-    if not os.path.exists('PullSampleFiles.json'):
-        errs.append('PullSampleFiles.json does not exist.')
-    if not os.path.exists('config.json'):
-        errs.append('config.json does not exist.')
+    if not os.path.exists(fixedPath):
+        errs.append('%s does not exist.' % fixedPath)
+    if not os.path.exists(argPath):
+        errs.append('%s does not exist.' % argPath)
+    if not os.path.exists(configPath):
+        errs.append('%s does not exist.' % configPath)
     if errs:
         raise Exception('\n'.join(errs))
     args = {}
     args['config'] = LoadJsonFile(configPath)
-    args['pullsampleargs'] = LoadJsonFile('PullSampleFiles.json')
+    args['pullsampleargs'] = LoadJsonFile(argPath)
     args['fixedargs'] = ETLDashboardJsonArgs()
     args = FillEnvironmentVariables(args, args['config'])
     # Ensure all require arguments present in PullSampleFiles.json:

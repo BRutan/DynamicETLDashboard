@@ -5,7 +5,8 @@
 # * Given a possible datetime string,
 # determine a regular expression/datetime 
 # pattern that works for the string.
-# Credit goes to: https://stackoverflow.com/questions/53892450/get-the-format-in-dateutil-parse
+# Credit for original functionality goes to: 
+# https://stackoverflow.com/questions/53892450/get-the-format-in-dateutil-parse
 
 from collections import defaultdict, Counter
 from dateutil.parser import parse
@@ -21,6 +22,8 @@ class DateFormatFinder:
     COMMON_SPECIFIERS = [
     '%a', '%A', '%d', '%b', '%B', '%m',
     '%Y', '%H', '%p', '%M', '%S', '%Z']
+    YYYYMMDDMap = { '%Y' : 'yyyy', '%m' : 'mm', '%d' : 'dd'}
+    RegexMap = { '%Y' : '\d{4}'}
     def __init__(self, valid_specifiers=COMMON_SPECIFIERS,date_element=r'([\w]+)',delimiter_element=r'([\W]+)',ignore_case=False):
         """
         * Create new object that can determine appropriate
