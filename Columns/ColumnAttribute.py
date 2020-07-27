@@ -4,13 +4,14 @@
 # Description:
 # * Immutable object containing target column attributes.
 
-from sortedcontainers import SortedSet
 from Columns.ColumnRelationships import RelationshipEnum
+import copy
 import dateutil.parser as dateparser
 from decimal import Decimal
 from pandas import DataFrame
 import numpy as np
 import re
+from sortedcontainers import SortedSet
 
 class ColumnAttribute(object):
     """
@@ -20,7 +21,7 @@ class ColumnAttribute(object):
     __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal(30,10)' }
     __floatPattern = re.compile('\.[0-9]')
     __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
-    __typeHierarchy = {}
+    __tSQLTypes = set(__dtypeToSQLType.values())
     def __init__(self, name):
         """
         * Instantiate attributes for data column.
@@ -48,6 +49,8 @@ class ColumnAttribute(object):
         if col.IsNullable != self.IsNullable:
             return False    
         if col.Type != self.Type:
+            return False
+        if set(col.Uniques).symmetric_difference(set(self.Uniques)):
             return False
         return True
 
@@ -108,16 +111,62 @@ class ColumnAttribute(object):
                 errs.append('columnLeft and columnRight have different column names')
         if errs:
             raise Exception('\n'.join(errs))
+
         # Return column with the least restrictive meta-attributes of either column:
-        useLeftType = ColumnAttribute.__typeHierarchy[columnLeft.Type] >= ColumnAttribute.__typeHierarchy[columnLeft.Type] 
-        column = ColumnAttribute(columnLeft.ColumnName)
+        colName = columnLeft.ColumnName
+        allUniques = set(columnLeft.Uniques).union(columnRight.Uniques)
+        allUniques = DataFrame({colName : allUniques})
+        column = ColumnAttribute(colName)
         column._ColumnAttribute__isNullable = columnLeft.IsNullable or columnRight.IsNullable
         column._ColumnAttribute__isUnique = columnLeft.IsUnique and columnRight.IsUnique
         column._ColumnAttribute__uniqueCount = max(columnLeft.UniqueCount, columnRight.UniqueCount)
-        column._ColumnAttribute__uniques = columnLeft.Uniques if columnLeft.UniqueCount > columnRight.UniqueCount else columnRight.Uniques
-        column._ColumnAttribute__type = columnLeft.Type if useLeftType else columnRight.Type
+        column._ColumnAttribute__uniques = copy.deepcopy(allUniques)
+        column._ColumnAttribute__type = cls.LeastRestrictiveType(columnLeft.Type, columnRight.Type)
 
         return column
+
+    @classmethod
+    def LeastRestrictiveType(cls, typeLeft, typeRight):
+        """
+        * Return the least restrictive type.
+        Inputs:
+        * typeLeft, typeRight: string types that must be present
+        in TSQLTypes.
+        """
+        errs = []
+        if not isinstance(typeLeft, str):
+            errs.append('typeLeft must be a string.')
+        elif not typeLeft in ColumnAttribute.__tSQLTypes:
+            errs.append('typeLeft not present in TSQLTypes.')
+        if not isinstance(typeRight, str):
+            errs.append('typeRight must be a string.')
+        elif not typeRight in ColumnAttribute.__tSQLTypes:
+            errs.append('typeRight not present in TSQLTypes.')
+        if errs:
+            raise Exception('\n'.join(errs))
+        # Return the least restrictive type:
+        # Default case:
+        if typeLeft == typeRight:
+            return typeLeft
+        # Check for string types:
+        if typeLeft == 'varchar(max)' or typeRight == 'varchar(max)':
+            return 'varchar(max)'
+        # Check numeric types:
+        if 'decimal' in typeLeft or 'decimal' in typeRight:
+            return typeLeft
+        if typeLeft == 'int64' or typeRight == 'int64':
+            return 'int64'
+        # Check date types:
+        if 'datetime' in typeLeft or 'datetime' in typeRight:
+            return 'datetime'
+        
+    @classmethod
+    def TSQLTypes(cls):
+        """
+        * Return set of all T-SQL types that currently 
+        get converted to.
+        """
+        return copy.deepcopy(__tSQLTypes)
 
     def ParseColumn(self, column):
         """

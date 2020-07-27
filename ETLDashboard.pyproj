@@ -135,6 +135,21 @@
     <Compile Include="setup.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tables\ColumnDefinition.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\TableObject.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\TSQLColumnDefinition.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\TSQLTable.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Temp.py">
       <SubType>Code</SubType>
     </Compile>
@@ -201,6 +216,7 @@
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
     <Folder Include="Log\" />
+    <Folder Include="Tables\" />
     <Folder Include="ScriptArgs\" />
     <Folder Include="Scripts\" />
     <Folder Include="SampleFiles\" />

@@ -115,7 +115,8 @@ class ColumnAttributes(object):
         # Return the least restrictive ColumnAttributes object:
         attrs = {}
         for col in colAttrLeft.Attributes:
-            pass
+            attrs[col] = ColumnAttribute.LeastRestrictive(colAttrLeft[col], colAttrRight[col])
+
 
     ######################
     # Private Helpers:
