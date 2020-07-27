@@ -27,7 +27,7 @@ class TableObject(ABC):
     @property
     def Columns(self):
         """
-        * Maps {}
+        * Maps { ColumnName -> ColumnDefinitionObj }.
         """
         return copy.deepcopy(self.__columns)
     @property
@@ -43,9 +43,17 @@ class TableObject(ABC):
         """
         pass
     @abstractmethod
+    def ReadDefinitionFile(self, path):
+        """
+        * Convert table definition file
+        into TableObject.
+        """
+        pass
+    @abstractmethod
     def TableDifference(self, table, path):
         """
         * Generate a column update script 
-        at path.
+        at path based upon difference between
+        two tables.
         """
         pass

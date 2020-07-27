@@ -133,6 +133,58 @@ class TSQLInterface:
         else:
             return read_sql(query, self.__connection)
 
+    def GetColumnAttributes(self, tablename):
+        """
+        * Return set of column names and attributes that
+        belong to table in current Database as a DataFrame.
+        Inputs:
+        * tablename: string table in connection.
+        """
+        if not isinstance(tablename, str):
+            raise Exception('tablename must be a string.')
+        results = self.GetAllTableAttributes()
+        if not results:
+            None
+        # Filter out so only attributes for table are present:
+        return results.loc[results['TableName'] == tablename]
+
+    def GetAllTableAttributes(self, schema = None):
+        """
+        * Get all attributes for all tables at all
+        schemas, or given schema, at current server connection.
+        Optional:
+        * schema: string name of schema at current server.
+        """
+        if not schema is None and not isinstance(schema, str):
+            raise Exception('schema must be a string if provided.')
+        query = ['SELECT t.name AS [TableName], t.object_id, t.principal_id,']
+        query.append('t.schema_id, t.parent_object_id, t.type, t.type_desc, t.create_date,')
+        query.append('t.modify_date, t.is_ms_shipped, t.is_published, t.is_schema_published, t.lob_data_space_id,')
+        query.append('t.filestream_data_space_id, t.max_column_id_used, t.lock_on_bulk_load, t.uses_ansi_nulls, ')
+        query.append('t.is_replicated, t.has_replication_filter, t.is_merge_published, t.is_sync_tran_subscribed, t.has_unchecked_assembly_data,')
+        query.append('t.text_in_row_limit, t.large_value_types_out_of_row, t.is_tracked_by_cdc, t.lock_escalation, t.lock_escalation_desc,')
+        query.append('t.is_filetable, t.is_memory_optimized, t.durability, t.durability_desc, t.temporal_type, t.temporal_type_desc,')
+        query.append('t.history_table_id, t.is_remote_data_archive_enabled, t.is_external, s.name as [SchemaName],')
+        query.append('s.schema_id, s.principal_id, f.is_hidden as [SchemaIsHidden], f.column_ordinal, f.name as [ColumnName], f.is_nullable as [ColumnIsNullable],')
+        query.append('f.system_type_id, f.system_type_name as [ColumnType], f.max_length as [ColumnMaxLength],')
+        query.append('f.precision as [ColumnPrecision], f.scale as [ColumnScale], f.collation_name as [ColumnCollationName],')
+        query.append('f.user_type_id, f.user_type_database, f.user_type_schema, f.user_type_name, ')
+        query.append('f.assembly_qualified_type_name, f.xml_collection_id, f.xml_collection_database,')
+        query.append('f.xml_collection_schema, f.xml_collection_name, f.is_xml_document,')
+        query.append('f.is_case_sensitive, f.is_fixed_length_clr_type, f.source_server,')
+        query.append('f.source_database, f.source_schema, f.source_table, f.source_column,')
+        query.append('f.is_identity_column, f.is_part_of_unique_key, f.is_updateable,')
+        query.append('f.is_computed_column, f.is_sparse_column_set, f.ordinal_in_order_by_list,')
+        query.append('f.order_by_is_descending, f.order_by_list_length, f.error_number,')
+        query.append('f.error_severity, f.error_state, f.error_message, f.error_type, f.error_type_desc')
+        query.append('FROM sys.tables AS t INNER JOIN sys.schemas AS s')
+        query.append('ON t.[schema_id] = s.[schema_id] CROSS APPLY sys.dm_exec_describe_first_result_set')
+        query.append("(N'SELECT * FROM ' + QUOTENAME(s.name) + N'.' + QUOTENAME(t.name), N'', 0) AS f")
+        if not schema is None:
+            query.append("WHERE s.name = '%s'" % TSQLInterface.__WrapName(schema))
+        query = ' '.join(query)
+        return read_sql(query, self.__connection)
+
     def Insert(self, data, table, identity_insert = False):
         """
         * Insert data into table on current connection.

@@ -12,7 +12,7 @@ class TSQLTable(TableObject):
     * Contains column names and meta
     attributes for T-SQL tables.
     """
-    def __init__(self):
+    def __init__(self, name, schema):
         """
         * Contains column names and meta
         attributes for T-SQL tables.
@@ -26,9 +26,15 @@ class TSQLTable(TableObject):
     ################
     # Interface Methods:
     ################
-    def GenerateTableDef(self, path):
+    def GenerateTableDef(self, path, template = None):
         """
-        * Generate table definition at path.
+        * Generate table definition at path, using
+        template if necessary.
+        Inputs:
+        * path: string path to .sql file to
+        store table definition script.
+        Optional:
+        * template: 
         """
         pass
     

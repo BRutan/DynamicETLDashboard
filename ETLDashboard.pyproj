@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Scripts\GenerateNewETL.py</StartupFile>
+    <StartupFile>Scripts\TestETLPipeline.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -136,6 +136,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\ColumnDefinition.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\SQLTableObject.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\TableObject.py">
