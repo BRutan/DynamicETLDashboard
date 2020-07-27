@@ -93,20 +93,29 @@ class ColumnAttributes(object):
     ######################
     # Interface Methods:
     ######################
-    def ToFileRow(self, horiz = True):
+    @classmethod
+    def LeastRestrictive(cls, colAttrLeft, colAttrRight):
         """
-        * Express as string for output to file.
-        Inputs:
-        * horiz: Put True if want to print horizontally. Else will be
-        vertical.
+        * Return the ColumnAttributes object that has the least
+        restrictive column attributes.
+        * colAttrLeft, colAttrRight: ColumnAttributes objects.
+        Must have identical column names.
         """
-        row = []
-        for attr in self.__attributes:
-            if horiz:
-                row.append(attr.ToRow())
-            else:
-                row.append([attr.ToRow()])
-        return row
+        errs = []
+        if not isinstance(colAttrLeft, ColumnAttributes):
+            errs.append('colAttrLeft must be a ColumnAttributes object.')
+        if not isinstance(colAttrRight, ColumnAttributes):
+            errs.append('colAttrRight must be a ColumnAttributes object.')
+        if not errs:
+            missing = set(colAttrLeft.Attributes).symmetric_difference(set(colAttrRight.Attributes))
+            if missing:
+                errs.append('The following columns are missing from both colAttrLeft and colAttrRight: %s' % ','.join(missing))
+        if errs:
+            raise Exception('\n'.join(errs))
+        # Return the least restrictive ColumnAttributes object:
+        attrs = {}
+        for col in colAttrLeft.Attributes:
+            pass
 
     ######################
     # Private Helpers:

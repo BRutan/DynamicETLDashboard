@@ -16,11 +16,11 @@ class ColumnAttribute(object):
     """
     * Immutable object containing target column's attribute.
     """
-    __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
-    __floatPattern = re.compile('\.[0-9]')
     __datePattern = re.compile('^[0-9]{1,2}[//-_][0-9]{1,2}//[0-9]{2,4}$')
     __dtypeToSQLType = { 'o' : 'varchar(max)', 'int64' : 'int', 'datetime64[ns]' : 'datetime', 'float64' : 'decimal(30,10)' }
-
+    __floatPattern = re.compile('\.[0-9]')
+    __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
+    __typeHierarchy = {}
     def __init__(self, name):
         """
         * Instantiate attributes for data column.
@@ -89,6 +89,36 @@ class ColumnAttribute(object):
     ###################
     # Interface Methods:
     ###################
+    @classmethod
+    def LeastRestrictive(cls, columnLeft, columnRight):
+        """
+        * Return new ColumnAttribute with the least
+        restrictive meta attributes.
+        Inputs:
+        * columnLeft, columnRight: ColumnAttribute objects.
+        Must have same ColumnName.
+        """
+        errs = []
+        if not isinstance(columnLeft, ColumnAttribute):
+            errs.append('columnLeft must be a ColumnAttribute object.')
+        if not isinstance(columnRight, ColumnAttribute):
+            errs.append('columnRight must be a ColumnAttribute object.')
+        if not errs:
+            if columnLeft.ColumnName != columnRight.ColumnName:
+                errs.append('columnLeft and columnRight have different column names')
+        if errs:
+            raise Exception('\n'.join(errs))
+        # Return column with the least restrictive meta-attributes of either column:
+        useLeftType = ColumnAttribute.__typeHierarchy[columnLeft.Type] >= ColumnAttribute.__typeHierarchy[columnLeft.Type] 
+        column = ColumnAttribute(columnLeft.ColumnName)
+        column._ColumnAttribute__isNullable = columnLeft.IsNullable or columnRight.IsNullable
+        column._ColumnAttribute__isUnique = columnLeft.IsUnique and columnRight.IsUnique
+        column._ColumnAttribute__uniqueCount = max(columnLeft.UniqueCount, columnRight.UniqueCount)
+        column._ColumnAttribute__uniques = columnLeft.Uniques if columnLeft.UniqueCount > columnRight.UniqueCount else columnRight.Uniques
+        column._ColumnAttribute__type = columnLeft.Type if useLeftType else columnRight.Type
+
+        return column
+
     def ParseColumn(self, column):
         """
         * Determine the type and attributes of the column.

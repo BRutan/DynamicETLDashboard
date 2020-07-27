@@ -27,22 +27,23 @@ class DataColumnAttributes(object):
     """
     __columnReportHeaders = ['Name', 'Type', 'IsNullable', 'IsUnique', 'UniqueCount']
     # For report generation:
+    __etl_excl_chars = set([ch for ch in string.punctuation])
     __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
     __one_one_format = {'font_color': 'black', 'bg_color' : 'green'}
     __one_many_format = {'font_color': 'black', 'bg_color' : 'blue'}
     __many_many_format = {'font_color': 'black', 'bg_color' : 'red'}
-    __etl_excl_chars = set([ch for ch in string.punctuation])
     __regType = type(re.compile(''))
     def __init__(self):
         """
         * Instantiate new object.
         """
         # Map date to attributes, and attributes that have changed with time:
-        self.__hasuniques = False
-        self.__dateToAttrs = SortedDict()
         self.__columnChgDates = SortedDict()
+        self.__dateToAttrs = SortedDict()
         self.__errors = {}
         self.__filepaths = set()
+        self.__hasuniques = False
+        
     ###################
     # Properties:
     ###################
@@ -145,8 +146,8 @@ class DataColumnAttributes(object):
         
     def CreateTableDefinitions(self, outputpath, table = None, allnull = False):
         """
-        * Create SQL table definition based upon latest 
-        columnattributes.
+        * Create SQL table definition based upon least restrictive
+        ColumnAttributes object.
         Will create one table definition per sheet if file consists of 
         multiple sheets.
         Inputs:
@@ -271,7 +272,7 @@ class DataColumnAttributes(object):
         # Detail columns that have changed for each filedate that they differed:
         for dt in self.__columnChgDates:
             chgSheet.write(rowNum, 0, "FileDate:", headerFormat)
-            chgSheet.write(rowNum, 1, dt.strftime('%Y-%m-%d'), headerFormat)
+            chgSheet.write(rowNum, 1, dt.strftime('%Y-%m-%d'))
             rowNum += 1
             # Write list of properties in first column:
             for num, prop in enumerate(properties):
@@ -280,7 +281,7 @@ class DataColumnAttributes(object):
             # Write all the differences:
             diffs = self.__columnChgDates[dt] if sheetname is None else self.__columnChgDates[dt][sheetname]
             for colNum, diff in enumerate(diffs):
-                chgSheet.write(rowNum, colNum, getattr(diff, 'ColumnName'))
+                chgSheet.write(rowNum, colNum + 1, getattr(diff, 'ColumnName'))
                 for num, prop in enumerate(properties):
                     if prop.lower() not in skipProperties:
                         val = getattr(diff, prop)
