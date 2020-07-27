@@ -58,6 +58,19 @@ class TSQLColumnDefinition(ColumnDefinition):
         in a TSQL table definition script.
         """
         pass
+
+    def ReadTableDefinitionString(self, tableDefString):
+        """
+        * Convert passed string located in 
+        table definition script into a
+        derived ColumnDefinition object.
+        Inputs:
+        * tableDefString: Passed string that must 
+        match pattern "[ColumnName] [Type] [[MetaAttributes],...]".
+        """
+        if not isinstance(tableDefString, str):
+            raise Exception('tableDefString must be a string.')
+
     ###############
     # Private Helpers:
     ###############

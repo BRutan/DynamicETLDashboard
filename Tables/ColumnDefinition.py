@@ -50,6 +50,14 @@ class ColumnDefinition(ABC):
         script.
         """
         pass
+    @abstractmethod
+    def ReadTableDefinitionString(self, tableDefString):
+        """
+        * Convert passed string located in 
+        table definition script into a
+        derived ColumnDefinition object.
+        """
+        pass
     ###############
     # Private Helpers:
     ###############

@@ -24,6 +24,8 @@ def comparetablecols():
     attrs = interface.GetColumnAttributes('RegulatoryTradeRequests')
     attrs = set(attrs['ColumnName'])
     diff = cols - attrs
+    with TSQLInterface('abc', 'nowhere') as f:
+        pass
 
 
 def testjiraapidata():

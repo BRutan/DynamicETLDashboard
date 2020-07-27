@@ -3,7 +3,7 @@
 #####################################
 # Description:
 # * Perform SELECT, INSERT, UPDATE, etc queries on TSQL server 
-# databases.
+# databases, get attributes for tables.
 
 from itertools import combinations
 from numba import jit
@@ -15,14 +15,17 @@ from sqlalchemy import create_engine
 class TSQLInterface:
     """
     * Perform SELECT, INSERT, UPDATE, etc queries on TSQL server
-    databases.
+    databases, get attributes for tables.
     """
     __connectString = 'Driver={SQL Server};Server=%s;Database=%s;Trusted_Connection=yes;'
     def __init__(self, server, database):
         """
         * Connect to server and target database.
+        Inputs:
+        * server: string server name.
+        * database: string database name in server.
         """
-        self.__Validate(server, database)
+        TSQLInterface.__Validate(server, database)
         self.__server = None
         self.__database = None
         self.__connectString = None
@@ -35,6 +38,19 @@ class TSQLInterface:
         * Close connection if opened.
         """
         self.__CloseConnection()
+
+    def __enter__(self):
+        """
+        * Open connection, for use with 'with' statement.
+        """
+        return self
+
+    def __exit__(self):
+        """
+        * Close connection after execution of 'with' statement.
+        """
+        self.__CloseConnection()
+
     ######################
     # Interface Methods:
     ######################
@@ -361,8 +377,8 @@ class TSQLInterface:
         * Determine if connected to instance.
         """
         return not self.__connection is None
-
-    def __Validate(self, server, database):
+    @staticmethod
+    def __Validate(server, database):
         """
         * Validate construction parameters.
         """
