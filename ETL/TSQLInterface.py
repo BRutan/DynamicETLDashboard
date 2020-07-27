@@ -143,8 +143,8 @@ class TSQLInterface:
         if not isinstance(tablename, str):
             raise Exception('tablename must be a string.')
         results = self.GetAllTableAttributes()
-        if not results:
-            None
+        if results is None:
+            return results
         # Filter out so only attributes for table are present:
         return results.loc[results['TableName'] == tablename]
 
@@ -183,7 +183,9 @@ class TSQLInterface:
         if not schema is None:
             query.append("WHERE s.name = '%s'" % TSQLInterface.__WrapName(schema))
         query = ' '.join(query)
-        return read_sql(query, self.__connection)
+        result = read_sql(query, self.__connection)
+        # Return None if no values returned:
+        return result if len(result) > 0 else None
 
     def Insert(self, data, table, identity_insert = False):
         """

@@ -14,6 +14,18 @@ import json
 import re
 import os
 
+def comparetablecols():
+    interface = TSQLInterface('.', 'MetricsDyetl')
+    kwargs = {}
+    kwargs['path'] = 'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\TradeRequestAllStatus_07102020.csv'
+    kwargs['delim'] = '|'
+    data = DataReader.Read(**kwargs)
+    cols = set(data.columns)
+    attrs = interface.GetColumnAttributes('RegulatoryTradeRequests')
+    attrs = set(attrs['ColumnName'])
+    diff = cols - attrs
+
+
 def testjiraapidata():
     jira_data_path = "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\JIRAData\\JIRAData_07102020.csv"
     jira_data = DataReader.Read(jira_data_path)
@@ -126,9 +138,4 @@ def testlogreader():
     reader.GenerateFile('DynamicETL_ServiceIssues7_24_2020.csv')
 
 if __name__ == '__main__':
-    testlogreader()
-    #storedprocfix()
-    #postlargejobstest()
-    #getpkey()
-    #genreportwitherrors()
-    #testjiraapidata()
+    comparetablecols()
