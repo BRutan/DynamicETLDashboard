@@ -14,6 +14,20 @@ import json
 import re
 import os
 
+def comparetraderequests():
+    interface = TSQLInterface('.', 'MetricsDyetl')
+    kwargs = {}
+    kwargs['path'] = 'C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\TradeRequestAllStatus_07122020.csv'
+    kwargs['delim'] = '|'
+    data_true = DataReader.Read(**kwargs)
+    query = "SELECT * FROM [dbo].[RegulatoryTradeRequests] WHERE [FileDate] = '7-12-2020'"
+    data_compare = interface.Select(query)
+    ignoreCols = ['FileDate', 'RunDate']
+    pKey = TSQLInterface.PrimaryKeys(data_true, 4, ignoreCols, True)
+    comparer = DataComparer()
+    comparer.GenerateComparisonReport('TradeRequests_Local.xlsx', data_compare, data_true, ignoreCols, pKey)
+
+
 def comparetablecols():
     interface = TSQLInterface('.', 'MetricsDyetl')
     kwargs = {}
@@ -140,4 +154,4 @@ def testlogreader():
     reader.GenerateFile('DynamicETL_ServiceIssues7_24_2020.csv')
 
 if __name__ == '__main__':
-    comparetablecols()
+    comparetraderequests()
