@@ -324,9 +324,9 @@ def TestETLPipelineJsonArgs():
     req_args = set(['etlname','filedate','postargspath','reportpath','testmode'])
     req_postargs = set(['id', 'fileid', 'subject', 'arg', 'fileName'])
     req_postargs_arg = set(['FilePath'])
-    path = 'ScriptArgs\\TestETLPipeline.json'
-    if not os.path.exists('TestETLPipeline.json'):
-        raise Exception('TestETLPipeline.json does not exist.')
+    jsonPath = 'ScriptArgs\\TestETLPipeline.json'
+    if not os.path.exists(jsonPath):
+        raise Exception('%s does not exist.' % jsonPath)
     errs = []
     # Load Arguments from json files:
     args = {}
@@ -335,9 +335,9 @@ def TestETLPipelineJsonArgs():
     except Exception as ex:
         errs.append('Could not load ETLDashboard.json. Reason: %s' % str(ex))
     try:
-        args['testetlargs'] = LoadJsonFile(path)
+        args['testetlargs'] = LoadJsonFile(jsonPath)
     except Exception as ex:
-        errs.append('Could not load TestETLPipeline.json. Reason: %s' % str(ex))
+        errs.append('Could not load %s. Reason: %s' % (jsonPath, str(ex)))
     if errs:
         raise Exception('\n'.join(errs))
     # Ensure required arguments are present:

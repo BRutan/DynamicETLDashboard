@@ -5,19 +5,19 @@
 # * Contains column names and meta
 # attributes for T-SQL tables.
 
-from Tables.TableObject import TableObject
+from Tables.SQLTableObject import SQLTableObject
 
-class TSQLTable(TableObject):
+class TSQLTable(SQLTableObject):
     """
     * Contains column names and meta
     attributes for T-SQL tables.
     """
-    def __init__(self, name, schema):
+    def __init__(self, tablename, database, server):
         """
         * Contains column names and meta
         attributes for T-SQL tables.
         """
-        super().__init__(self)
+        super().__init__(tablename, database, server)
 
     ################
     # Properties:

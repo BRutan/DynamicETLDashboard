@@ -425,28 +425,28 @@
       "subject": "CC.UserGroups.v1",
       "inbound": "{CC_Source_Path}\\Trade Surveillance\\UserGroups\\*_UserAccountsWithExtProps.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "CC.InsiderTrading.v1",
       "inbound": "{CC_Source_Path}\\Trade Surveillance\\InsiderTrading\\*_InsiderTradingEmployeeView1.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "CC.EmployeeTrades.v1",
       "inbound": "{CC_Source_Path}\\Trade Surveillance\\EmployeeTrades\\*_ExecutedTradesAllFirms.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "CC.GSEmployeeTrades.v1",
       "inbound": "{CC_Source_Path}\\Trade Surveillance\\GSEmployeeTrades\\*_ExecutedTrades.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
 
@@ -454,371 +454,370 @@
       "subject": "GI.Roster.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GI Roster\\RevisedGIRosterUpdated*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GP.TraqsCA.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Trace Reporting Journals\\CA_TR_LNKS*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GP.TraqsSP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Trace Reporting Journals\\SP_TR_LNKS*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GP.TraqsTS.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Trace Reporting Journals\\TS_TR_LNKS*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GS.Hires.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GS Hire Term\\RevisedSecuritiesHire*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GS.Terms.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GS Hire Term\\RevisedSecuritiesTerm*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GS.Roster.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GS Roster\\RevisedSecuritiesRosterUpdated*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
-    },
+    },    
     {
       "subject": "GP.Roster.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GP Roster\\RevisedGPRosterUpdated*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GS.SecurityExceptions.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\CyberSecurity\\GS_InfoSec_Exceptions*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "LNKClosedLoanTrades.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Loans\\LNK Closed Loan Trades Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GiftsAndEntertainment.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GiftsAndEntertainment\\UpdatedGiftsandEntertainmentExpense*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InternalTraining.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalTraining\\Risk Team Training Assignment Tracker and Status Report*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "EqubeTradeExecutionExtract.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\EqubeTradeExecutionExtract\\TradeExecutionExtract*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GTXCustomerPopulation.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GTXCustomerData\\GTX Customer Population*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "CreditProbability.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\CreditProbability\\Probability*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InternalAudit.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\GS Action Plan Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InternalClosedAudit.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\GS Action Plan Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
-    },
-    {
+    },{
       "subject": "HeadCountDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\HeadCount_Detail\\DetailedHeadcount*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FidessaMarketMaker.v1",
       "inbound": "{CC_Source_Path}\\Fidessa\\MarketMakerReport\\MARKET_MAKER_REPORT*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "CyberSecurityExceptionsGI.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\CyberSecurity\\GI_InfoSec_Exceptions_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "OpenLoansTradeReport.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Loans\\LNK Open Loan Trades Report for *.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "PositionsAndHoldings.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Loans\\Positions and Holdings as of *.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "UserAccountsWithExtProps.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ComplianceUserGroups\\*_UserAccountsWithExtProps.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TransactionCashCancelRebill.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Finpro\\TransactionCashCancelRebill_*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TransactionFinanceCancelRebill.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Finpro\\TransactionFinanceCancelRebill_*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "RepoAutoMailCustomerBooks.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\CustomerBooks\\OFCRPT_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "BusinessSupervisionControlsTradeApproval.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeApproval\\TradeRequest_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "EquitiesFidessa.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\Order\\ORDER.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GS.YTDEmployeeTrades.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExecutionHistory\\YTD_Executed_Trades_for_Guggenheim_Securities_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "BloombergFixedIncomeEODMonthly.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\BloombergEOD_Monthly\\Monthly_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinanceGSSalesTradingPnL.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\SalesTrading_PnL\\Consolidated Daily Sales & Trading Net Revenue Report *.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinancialRiskLiquidityFINRAExamDailySummary.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\DailySummary\\Daily Liquidity Estimate Report *.xlsm",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "PershingPrePost.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\PershingPrePost\\Pre & Post Sxm Fails ALL LedgerReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "MarketDataImpact.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Finpro\\AllActiveMarketdataImpactPrice_Report*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "PC.UserGroupAudit.v2",
       "inbound": "{CC_Source_Path}\\Trade Surveillance\\UserGroups2\\*_UserGroupAuditData.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GSProfitsAndLosses.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GSProfitsAndLosses\\GSProfitsAndLosses*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TomsToImpactBookMapping.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TomsToImpactBookMapping\\TomsToImpactBookMapping*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinancialRiskMarketDailySummary.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\MarketRisk\\MarketRiskDatabase*.accdb",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "RiskLiquidityReport.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\LiquidityRisk\\GS Liquidity Report*.xlsm",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "RiskLiquidityOutput.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\LiquidityRisk\\Output\\GS Liquidity Report*.xlsm",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardActivityTotalsCorp.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\CA\\ActivityTotal\\*CORP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardActivityTotalsSP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\SP\\ActivityTotal\\*SP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardActivityTotalsTR.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\TR\\ActivityTotal\\*TR*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardLatetradesCORP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\CA\\LateTrade\\*CORP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardLatetradesTR.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\TR\\LateTrade\\*TR*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardLatetradesSP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\SP\\LateTrade\\*SP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardTradeReportingAnalysisCORP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\CA\\ReportAnalysis\\*CORP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardTradeReportingAnalysisSP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\SP\\ReportAnalysis\\*SP*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "TracecardTradeReportingAnalysisTR.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\TradeReportCard\\TR\\ReportAnalysis\\*TR*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GP.MetricsRoster.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\GP Roster\\DynamicETL\\RevisedGPRosterUpdated*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinanceGSSalesTradingequityPnL.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\SalesTrading_Equity_PnL\\BlotterPivotTable*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SalesTradingPnlFootnotes.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\SalesTrading_PnL_Footnotes\\Consolidated Daily Sales & Trading Net Revenue Report *.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SalesTradingEquityPnlFootnotes.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\SalesTrading_Equity_PnL_Footnotes\\BlotterPivotTable*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
 
@@ -827,105 +826,105 @@
       "subject": "FinanceAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\Finance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinanceAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\Finance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GIAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\GI AP Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GIAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\GI AP Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "HRAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\HR APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "HRAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\HR APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InsuranceAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\Insurance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InsuranceAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\Insurance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "ITAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\IT APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "ITAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\IT APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "LegalComplianceAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\Legal & Compliance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "LegalComplianceAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\Legal & Compliance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SharedServicesAllAPTrackingClosedDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditClosed\\Shared Services APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SharedServicesAllAPTrackingDetail.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAudit\\Shared Services APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "BBGDebtTicker.v1",
       "inbound": "{CC_Source_Path}\\BBGDebtTicker\\Bloomberg_debt_tickers*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
 
@@ -934,182 +933,182 @@
       "subject": "FinanceAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\Finance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "FinanceAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\Finance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GIAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\GI AP Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GIAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\GI AP Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GSAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\GS Action Plan Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GSAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\GS Action Plan Tracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "HRAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\HR APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "HRAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\HR APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InsuranceAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\Insurance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "InsuranceAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\Insurance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "ITAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\IT APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "ITAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\IT APTrackingReport*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "LegalComplianceAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\Legal & Compliance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "LegalComplianceAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\Legal & Compliance APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SharedServicesAllAPTrackingInProgress.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditInProgress\\Shared Services APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "SharedServicesAllAPTrackingUpcoming.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\InternalAuditUpcoming\\Shared Services APTracking Report*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.CounterpartyAccount.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\Counterparty Account\\CPTY_ACCOUNT.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.CounterpartyControl.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\Counterparty Control\\COUNTERPARTY_CONTROL.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.CustomerDetailReport.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\Customer Detail Report\\CUSTOMER_DETAIL_REPORT.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.MAEntityLimitsEOD.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\MA Entity Limits EOD\\MA_ENTITY_LIMITS_EOD.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.MAEntityLimitsIntraDayAudit.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\MA Entity Limits Intraday Audit\\MA_ENTITY_LIMITS_INTRA_DAY_AUDIT.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.Fidessa.TradingPosition.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Fidessa\\Trading Position\\TRADING_POSITION.*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.IB.MnA.Dealogic.AdvisoryRankings.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\M&A\\Advisory Rankings\\Dealogic Data - Weekly M&A_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.IB.MnA.Dealogic.Deals.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\M&A\\Deals\\Dealogic Data - Weekly M&A_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.GS.IB.MnA.Dealogic.IndependentDeals.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\M&A\\Independent Deals\\Dealogic Data - Weekly M&A_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
-    },
+    },   
     {
       "subject": "GEMS.DyEtl.GS.IB.MnA.Dealogic.LastWeekDeals.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Investment Banking\\M&A\\Last Week Deals\\Dealogic Data - Weekly M&A_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
@@ -1126,116 +1125,151 @@
         "{FileDistributor}"
       ]
     },
-    {
+	  {
       "subject": "GEMS.DyEtl.RiskManagement.VendorRisk.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Vendor Risk\\Data\\66908_*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
-    {
+	  {
       "subject": "GEMS.DyEtl.InternalAudit.IADKnownExceptionList.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\IAD Known Exception List\\IAD Known Exceptions List -*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.InternalAudit.GSIBPhysicalAccessKnownExceptions.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\GS IB Physical Access\\GS IB Physical Access Known Exceptions_*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
-      "subject": "GEMS.DyEtl.ExceptionReport.AllowPST.v1",
+	  "subject": "GEMS.DyEtl.ExceptionReport.AllowPST.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\AllowPST\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.CitrixToLocal.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\CitrixToLocal\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.LocalAdmin.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\LocalAdmin\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.LocalAdminFilter.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\LocalAdminFilter\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.MassMedia.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\MassMedia\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.NonITAdmin.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\NonITAdmin\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.PasswordNeverExpires.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\PasswordNeverExpires\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.RDP.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\RDP\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.RDPFilter.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\RDPFilter\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.Reboot.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\Reboot\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.ScreensaverTimeout.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\ScreensaverTimeout\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.ExceptionReport.Website.v1",
       "inbound": "{CC_Source_Path}\\Risk Dashboard\\ExceptionReport\\Website\\*.xlsx",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
+      ]
+    },
+    {
+      "subject": "CoveredPersonLifeCycle.WorkerChangeHistoryRaw.v1",
+      "inbound": "{CC_Source_Path}\\Workday\\WorkerChangeHistory\\WorkdayWorkerChangeHistory*.csv",
+      "outbound": [
+        "{CC_Source_Path}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.Phishing.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Phishing\\Phishing Data*.csv",
+      "outbound": [
+        "{CC_Source_Path}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.OutlookAddins.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\OutlookAddins\\OutlookAddins_*.csv",
+      "outbound": [
+        "{CC_Source_Path}"
       ]
     },
     {
       "subject": "GEMS.DyEtl.Regulatory.TradeRequests",
-      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\Trade Requests\\TradeRequests_*.xlsx",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\Trade Requests\\TradeRequestAllStatus_*.csv",
       "outbound": [
-        "{CC_Job_Url}"
+        "{CC_Source_Path}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.GSGiftsAndEntertainment.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\GSGiftsAndEntertainment\\GS_Gifts_and_Entertainment_*.txt",
+      "outbound": [
+        "{CC_Source_Path}"
+      ]
+    },
+    {
+      "subject": "GEMS.DyEtl.IBMSDealStatus.v1",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\IBMSDealStatus\\ib_project_status_extract_*.xlsx",
+      "outbound": [
+        "{CC_Source_Path}"
       ]
     }
   ]

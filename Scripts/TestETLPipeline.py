@@ -32,9 +32,28 @@ from Utilities.Helpers import Countdown
 from Utilities.LoadArgs import TestETLPipelineJsonArgs
 
 def TestETLPipeline():
+    """
+    * Perform key steps in order.
+    """
     print ("------------------------------")
     print ("TestETLPipeline: ")
     print ("------------------------------")
+    # Get parameters from .json files:
+    args, argTup = GetParameters()
+    # Connect to T-SQL instance:
+    interface = ConnectToServer(args, argTup)
+    # Drop sample file to correct location, or if testing locally, run DYETL.WebApi, post arguments
+    # and run DYETL.Service:
+    waittime = OutputSampleFile(args, argTup, interface)
+    pkeys, ignorecols, data_test, data_valid = GetDatasets(args, argTup, interface, waittime)
+    # Output report detailing difference between file data and data in table:
+    GenerateReport(pkeys, ignorecols, data_test, data_valid, tester)
+
+def GetParameters():
+    """
+    * Validate and get parameters from local
+    json files.
+    """
     # Ensure all AppSettings json files can be uploaded:
     #FixJsonConfigs()
     # Pull and verify script parameters:
@@ -48,6 +67,20 @@ def TestETLPipeline():
     # (0, 1, 2, 3, 4)
     # (FileDateVal, Server, DataBase, TableName, FileDateColumnName)
     argTup = (args['testetlargs']['filedate'].strftime('%Y-%m-%d'),args['testetlargs']['server'],args['testetlargs']['database'],args['testetlargs']['tablename'],args['testetlargs']['filedatecolname'])
+    return args, argTup
+
+def ConnectToServer(args, argTup):
+    """
+    * Connect to target T-SQL server and database. 
+    If testing LOCAL:
+    * Drop existing rows with test FileDate.
+    * Open DYETL.WebApi, post file using postargs.json.
+    * Run DYETL.Service to insert data into target table.
+    * Check local log file, throw exception if issue occurred with
+    DYETL.Service.
+    If not testing STG:
+    * Drop existing rows with test FileDate.
+    """
     try:
         interface = TSQLInterface(argTup[1], argTup[2])
     except Exception as ex:
@@ -79,8 +112,14 @@ def TestETLPipeline():
             print ('Reason: %s' % str(ex))
             input ('Press enter to exit.')
             os._exit(0)
-    # Output sample file to FileWatcher folder, wait for sample file to be sucked
-    # up by ETL. If does not suck up, notify user:
+
+    return interface
+
+def OutputSampleFile(args, argTup, interface):
+    """
+    * Output sample file to FileWatcher folder, wait for sample file to be sucked
+    up by ETL. If does not suck up, notify user:
+    """
     waittime = 40
     print ('Outputting data file to')
     print ('%s' % args['testetlargs']['etlfolder'])
@@ -102,7 +141,13 @@ def TestETLPipeline():
             print ("The following issues occurred in DynamicETL.Service: %s" % issues)
             input ('Press enter to exit.')
             os._exit(0)
-    # Query server to get uploaded data:
+    return waittime
+
+def GetDatasets(args, argTup, interface, waittime):
+    """
+    Query server to get test data, pull
+    valid data from local file.
+    """
     try:
         query = "SELECT * FROM [%s] WHERE [%s] = '%s'" % (argTup[3], argTup[4], argTup[0])
         print ('Waiting %d seconds to allow data to be pulled and transformed...' % waittime)
@@ -121,7 +166,6 @@ def TestETLPipeline():
     data_valid = DataReader.Read(compareFile)
     # Compare test file data versus output etl data:
     print('Generating comparison report...')
-    tester = DataComparer()
     ignoreCols = ['%s' % argTup[4], 'RunDate']
     if 'ignorecols' in args['testetlargs']:
         ignoreCols.extend(args['testetlargs']['ignorecols'])
@@ -132,8 +176,16 @@ def TestETLPipeline():
         print ("Finding appropriate primary key(s) to compare datasets using input file...")
         pkeys = TSQLInterface.PrimaryKeys(data_valid, 4, ignoreCols, True)
         print ("Using: {%s} as primary key(s)..." % ', '.join(pkeys))
+
+    return pkeys, ignorecols, data_test, data_valid
+
+def GenerateReport(pkeys, ignorecols, data_test, data_valid, tester):
+    """
+    * Generate report comparing input data and data in server.
+    """
+    tester = DataComparer()
     try:
-        tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignoreCols, pkeys)
+        tester.GenerateComparisonReport(args['testetlargs']['reportpath'], data_test, data_valid, ignorecols, pkeys)
     except Exception as ex:
         print ('Could not generate report.')
         print ('Reason: %s' % str(ex))

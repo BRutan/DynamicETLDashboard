@@ -1254,7 +1254,7 @@
     },
     {
       "subject": "GEMS.DyEtl.Regulatory.TradeRequests",
-      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\Trade Requests\\TradeRequests_*.xlsx",
+      "inbound": "{CC_Source_Path}\\Risk Dashboard\\Regulatory\\Trade Requests\\TradeRequestAllStatus_*.csv",
       "outbound": [
         "{CC_Job_Url}"
       ]

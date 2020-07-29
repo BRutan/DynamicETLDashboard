@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Temp.py</StartupFile>
+    <StartupFile>Scripts\TestETLPipeline.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -238,7 +238,7 @@
     <Content Include="Documentation.docx" />
     <Content Include="ScriptArgs\ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
-    <Content Include="postargs.json" />
+    <Content Include="ScriptArgs\postargs.json" />
     <Content Include="ScriptArgs\GenerateFileTransferConfig.json" />
     <Content Include="ScriptArgs\PullSampleFiles.json" />
     <Content Include="ScriptArgs\TestETLPipeline.json" />
