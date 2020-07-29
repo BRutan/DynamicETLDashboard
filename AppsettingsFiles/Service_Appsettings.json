@@ -3430,7 +3430,8 @@
         "EmailTo": "{RiskDashboardEmailTo}"
       },
       "DataReader": {
-        "TypeName": "Excel"
+        "TypeName": "Csv",
+        "ConfigVal": "{delimiter:'|'}"
       },
       "InputOperations": [
         { "TypeName": "AddRunDate" },
@@ -3439,7 +3440,7 @@
       "PreOperations": [
         {
           "TypeName": "AddFileDate",
-          "ConfigValue": "{RegPattern:'(?<date>\\\\d{4}_\\\\d{4})', DateFormat:'yyyy_MMdd'}"
+          "ConfigValue": "{RegPattern:'(?<date>\\\\d{8})', DateFormat:'MMddyyyy'}"
         }
       ],
       "PostOperations": [

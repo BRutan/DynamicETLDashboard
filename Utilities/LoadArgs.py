@@ -395,7 +395,7 @@ def TestETLPipelineJsonArgs():
 
     # etlname: ensure etl is present in appsettings files. 
     # If present then get etl's database, table names and filedate column from the 
-    # appsettings file:
+    # appsettings file. Extract delimiter used if configured to read from CSV files:
     if 'serviceappsettings' in args['fixedargs'] and not args['testetlargs']['etlname'] in args['fixedargs']['serviceappsettings']['Etls']:
         errs.append('(etlname) ETL %s not in DynamicETL.Service Appsettings.json file.' % args['testetlargs']['etlname'])
     elif 'serviceappsettings' in args['fixedargs']:
@@ -425,6 +425,19 @@ def TestETLPipelineJsonArgs():
                 else:
                     dbName = source[0].split('=')[1].strip(';')
                     args['testetlargs']['database'] = dbName
+
+        # Extract delimiter used if configured:
+        args['testetlargs']['delim'] = None
+        if 'DataReader' in args['fixedargs']['serviceappsettings']['Etls'][etl]:
+            if 'TypeName' in args['fixedargs']['serviceappsettings']['Etls'][etl]['DataReader']:
+                typename = args['fixedargs']['serviceappsettings']['Etls'][etl]['DataReader']['TypeName']
+                if 'ConfigVal' in args['fixedargs']['serviceappsettings']['Etls'][etl]['DataReader']:
+                    if typename.lower() == 'csv':
+                        configVal = args['fixedargs']['serviceappsettings']['Etls'][etl]['DataReader']['ConfigVal']
+                        delimMatch = re.search("delimiter:'.'", configVal, re.IGNORECASE)
+                        args['testetlargs']['delim'] = delimMatch[0].strip("delimiter:'")
+            else:
+                errs.append('%s::DataReader is missing "TypeName" attribute.' % etl)
         # Get FileDate column used for ETL if a mapping exists:
         if 'FieldOverride' in args['fixedargs']['serviceappsettings']['Etls'][etl]:
             if not 'Fields' in args['fixedargs']['serviceappsettings']['Etls'][etl]['FieldOverride']:
@@ -453,7 +466,7 @@ def TestETLPipelineJsonArgs():
            args['testetlargs']['etlfolder'] = os.path.split(path)[0] + ('\\' if not os.path.split(path)[0].endswith('\\') else '')
            if args['testetlargs']['testmode'] != 'LOCAL' and not os.path.exists(args['testetlargs']['etlfolder']):
                errs.append('(filewatcherappsettingstemplatepath) ETL folder does not exist.')
-           
+       
     # filedate: 
     if not StringIsDT(args['testetlargs']['filedate'], False):
         errs.append('(filedate) %s is invalid date string.' % args['testetlargs']['filedate'])
@@ -461,8 +474,11 @@ def TestETLPipelineJsonArgs():
         args['testetlargs']['filedate'] = StringIsDT(args['testetlargs']['filedate'], True)
 
     # reportpath:
-    if not args['testetlargs']['reportpath'].endswith('.xlsx'):
+    folder, filename = os.path.split(args['testetlargs']['reportpath'])
+    if not filename.endswith('.xlsx'):
         errs.append('(reportpath) Must point to xlsx file.')
+    if not os.path.exists(folder):
+        errs.append('(reportpath) The enclosing folder does not exist.')
 
     # comparefile (optional):
     if 'comparefile' in args['testetlargs'] and not os.path.isfile(args['testetlargs']['comparefile']):

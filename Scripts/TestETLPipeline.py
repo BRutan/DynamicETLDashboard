@@ -47,7 +47,7 @@ def TestETLPipeline():
     waittime = OutputSampleFile(args, argTup, interface)
     pkeys, ignorecols, data_test, data_valid = GetDatasets(args, argTup, interface, waittime)
     # Output report detailing difference between file data and data in table:
-    GenerateReport(pkeys, ignorecols, data_test, data_valid, tester)
+    GenerateReport(args, pkeys, ignorecols, data_test, data_valid)
 
 def GetParameters():
     """
@@ -163,23 +163,23 @@ def GetDatasets(args, argTup, interface, waittime):
         os._exit(0)
     # Pull data from test file:
     compareFile = args['testetlargs']['comparefile'] if 'comparefile' in args['testetlargs'] else args['testetlargs']['samplefile']
-    data_valid = DataReader.Read(compareFile)
+    data_valid = DataReader.Read(compareFile, delim = args['testetlargs']['delim'])
     # Compare test file data versus output etl data:
     print('Generating comparison report...')
-    ignoreCols = ['%s' % argTup[4], 'RunDate']
+    ignorecols = ['%s' % argTup[4], 'RunDate']
     if 'ignorecols' in args['testetlargs']:
-        ignoreCols.extend(args['testetlargs']['ignorecols'])
-    ignoreCols = set([col.strip() for col in ignoreCols if col.strip()])
+        ignorecols.extend(args['testetlargs']['ignorecols'])
+    ignorecols = set([col.strip() for col in ignorecols if col.strip()])
     if 'pkey' in args['testetlargs']:
         pkeys = args['testetlargs']['pkey'] 
     else:
         print ("Finding appropriate primary key(s) to compare datasets using input file...")
-        pkeys = TSQLInterface.PrimaryKeys(data_valid, 4, ignoreCols, True)
+        pkeys = TSQLInterface.PrimaryKeys(data_valid, 4, ignorecols, True)
         print ("Using: {%s} as primary key(s)..." % ', '.join(pkeys))
 
     return pkeys, ignorecols, data_test, data_valid
 
-def GenerateReport(pkeys, ignorecols, data_test, data_valid, tester):
+def GenerateReport(args, pkeys, ignorecols, data_test, data_valid):
     """
     * Generate report comparing input data and data in server.
     """
