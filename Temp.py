@@ -8,7 +8,7 @@ from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
 from ETL.TSQLInterface import TSQLInterface
 from ETL.LocalLargeDataJobPoster import LocalLargeDataJobPoster
-from Log.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
+from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 from Utilities.Helpers import LoadJsonFile
 import json
 import re

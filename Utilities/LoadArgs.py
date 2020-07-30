@@ -276,21 +276,27 @@ def GenerateETLSummaryReportJsonArgs():
     * Pull arguments for GenerateETLSummaryReport.py.
     """
     argPath = 'ScriptArgs\\GenerateETLSummaryReport.json'
+    configPath = 'Config\\config.json'
     req = set(['logpath'])
-
+    errs = []
+    # Ensure required paths exist:
     if not os.path.exists(argPath):
-        raise Exception('%s is missing.' % argPath)
+        errs.append('%s is missing.' % argPath)
+    if errs:
+        raise Exception('\n'.join(errs))
+    # Pull in arguments:
     try:
-        args = FillEnvironmentVariables(json.load(open(argPath, 'rb')))
+        args = FillUniversalEnvironmentVariables(json.load(open(argPath, 'rb')))
     except Exception as ex:
         raise Exception('Could not load %s, reason: %s' % (argPath, str(ex)))
-    errs = []
+    
     missing = req - set(args)
     if missing:
         errs.append('The following required arguments are missing from %s: %s' % (argPath, ','.join(missing)))
     if errs:
         raise Exception('\n'.join(errs))
-
+    
+    return args
 
 ############################
 # GenerateFileTransferConfig.py
@@ -370,11 +376,13 @@ def TestETLPipelineJsonArgs():
         errs.append('The following required args are missing from TestETLPipeline.json: %s' % ','.join(missing))
     if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
         errs.append('Local \\AppsettingsFiles\\ folder is missing.')
-    elif not os.path.exists(os.getcwd() + '\\AppsettingsFiles\\config.json'):
-        errs.append('Local \\AppsettingsFiles\\config.json file is missing.')
+    if not os.path.exists('\\Config\\'):
+        errs.append('\\Config\\ folder is missing.')
+    elif not os.path.exists(os.getcwd() + '\\Config\\config.json'):
+        errs.append('Local \\Config\\config.json file is missing.')
     else:
         try:
-            args['config'] = LoadJsonFile(os.getcwd() + '\\AppsettingsFiles\\config.json')
+            args['config'] = LoadJsonFile(os.getcwd() + '\\Config\\config.json')
         except Exception as ex:
             errs.append('Issue with config.json: %s' % str(err))
     if errs:
@@ -598,7 +606,7 @@ def PullSampleFilesJsonArgs():
     to feed into PullSampleFiles.py script.
     """
     reqArgs = set(['count','etl','outputfolder'])
-    configPath = os.getcwd() + '\\AppsettingsFiles\\config.json'
+    configPath = os.getcwd() + '\\Config\\config.json'
     argPath = 'ScriptArgs\\PullSampleFiles.json'
     fixedPath = 'ScriptArgs\\ETLDashboard.json'
     errs = []

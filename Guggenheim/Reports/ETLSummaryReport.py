@@ -97,19 +97,20 @@ class ETLSummaryReport:
         """
         * Fill data into the workbook.
         """
-        summarySheet = wb.add_worksheet('%s Summary' % self.ETLName)
+        headerFormat = wb.add_format(ETLSummaryReport.__headerFormat)
+        summarySheet = wb.add_worksheet('Summary')
         # chgSheet.write(rowNum, 0, "FileDate:", headerFormat)
-        properties = [attr for attr in dir(lhs) if not attr.startswith('_') and not callable(getattr(lhs, attr))]
+        properties = [attr for attr in dir(self) if not attr.startswith('_') and not callable(getattr(self, attr))]
         for row, prop in enumerate(properties):
-            summarySheet.write(row + 1, 0, prop, ETLSummaryReport.__headerFormat)
+            summarySheet.write(row, 0, prop, headerFormat)
             obj = getattr(self, prop)
             if isinstance(obj, datetime):
-                val = obj.strftime('%m-%d-%Y ')
-            elif hasattr(obj, '__iter__'):
+                val = obj.strftime('%m/%d/%Y %H:%M:%S')
+            elif not isinstance(obj, str) and hasattr(obj, '__iter__'):
                 val = ';'.join(obj)
             else:
                 val = obj
-            summarySheet.write(row + 1, 1, val)
+            summarySheet.write(row, 1, val)
 
     def __GetProperties(self, **kwargs):
         """
@@ -121,15 +122,13 @@ class ETLSummaryReport:
         self.__etlname = kwargs['etl']
         self.__etlstatus = kwargs['status']
         self.__filerowcount = 0
-        self.__inputoperations = list(kwargs['input'] if 'input' in kwargs else list())
+        self.__inputoperations = list(kwargs['input'] if 'input' in kwargs and not kwargs['input'] is None else list())
         self.__insertionrowcount = 0
-        self.__postoperations = list(kwargs['post'] if 'post' in kwargs else list())
-        self.__preoperations = list(kwargs['pre'] if 'pre' in kwargs else list())
+        self.__postoperations = list(kwargs['post'] if 'post' in kwargs and not kwargs['post'] is None else list())
+        self.__preoperations = list(kwargs['pre'] if 'pre' in kwargs and not kwargs['pre'] is None else list())
         self.__server = kwargs['server']
         self.__starttime = kwargs['starttime']
         self.__tablename = kwargs['tablename']
-        self.__filerowcount = None
-        self.__insertionrowcount = None
 
     def __AccumulateAttributes(self, **kwargs):
         """
@@ -155,7 +154,8 @@ class ETLSummaryReport:
         # Query server to get inserted row count:
         try:
             interface = TSQLInterface(self.__server, self.__database)
-            data = interface.Select("SELECT * FROM [%s] WHERE [FileDate] = '%s'" % (self.__tablename, kwargs['filedate']))
+            fdStr = kwargs['filedate'].strftime('%m-%d-%Y')
+            data = interface.Select("SELECT * FROM [%s] WHERE [FileDate] = '%s'" % (self.__tablename, fdStr))
             self.__insertionrowcount = len(data)
         except Exception as ex:
             errs.append('Could not query %s::%s. Reason: %s' % str(ex))
@@ -199,7 +199,9 @@ class ETLSummaryReport:
         elif not 'delim' in kwargs:
             kwargs['delim'] = None
         for op in ETLSummaryReport.__optional:
-            if op in kwargs and not hasattr(kwargs[op], '__iter__'):
-                errs.append('%s must be an iterable.' % op)
+            if op == 'delim':
+                continue
+            if op in kwargs and not kwargs[op] is None and not (not isinstance(kwargs[op], str) and hasattr(kwargs[op], '__iter__')):
+                errs.append('%s must be a container.' % op)
         if errs:
             raise Exception('\n'.join(errs))

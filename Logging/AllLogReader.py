@@ -5,9 +5,9 @@
 # * Summarize issues that occur in all notable
 # log files.
 
-from Log.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
-from Log.DynamicETLWebAPIIssueParser import DynamicETLWebAPIIssueParser
-from Log.FileWatcherIssueParser import FileWatcherIssueParser
+from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
+from Logging.DynamicETLWebAPIIssueParser import DynamicETLWebAPIIssueParser
+from Logging.FileWatcherIssueParser import FileWatcherIssueParser
 import re
 import os
 

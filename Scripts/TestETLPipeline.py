@@ -21,7 +21,7 @@ from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
 from ETL.ETLJobLoader import ETLJobLoader
 from ETL.TSQLInterface import TSQLInterface
-from Log.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
+from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 import json
 import os
 from shutil import copyfile

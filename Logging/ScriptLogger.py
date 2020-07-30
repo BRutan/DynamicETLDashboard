@@ -5,30 +5,40 @@
 # * Wrapper class to log events.
 
 import logging
+import os
 
 class ScriptLogger:
     """
     * Wrapper class to log events.
     """
-    def __init__(self, outLocation):
+    def __init__(self, outLocation, appName):
         """
         * Instantiate logger to be output at
         outLocation.
         Inputs:
-        * outLocation: Output location for log file.
-        Must be a string.
+        * outLocation: String output location for log file.
+        * appName: String application name.
         """
-        ScriptLogger.__Validate(outLocation)
+        ScriptLogger.__Validate(outLocation, appName)
         self.__outlocation = outLocation
-        logging.basicConfig(filename = outLocation, level = logging.DEBUG)
+        self.__logger = logging.getLogger(appName)
+        self.__logger.setLevel(logging.DEBUG)
+        self.__handler = logging.FileHandler(outLocation)
+        self.__handler.setLevel(logging.DEBUG)
+        self.__appname = appName
+        self.__handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+        self.__logger.addHandler(self.__handler)
 
     #################
     # Properties:
     #################
     @property
+    def ApplicationName(self):
+        return self.__appname
+    @property
     def OutputLocation(self):
         return self.__outlocation
-
+    
     #################
     # Interface Methods:
     #################
@@ -40,7 +50,7 @@ class ScriptLogger:
         """
         if not isinstance(msg, str):
             raise Exception('msg must be a string.')
-        logging.exception(msg)
+        self.__logger.exception(msg)
 
     def Error(self, msg):
         """
@@ -50,7 +60,7 @@ class ScriptLogger:
         """
         if not isinstance(msg, str):
             raise Exception('msg must be a string.')
-        logging.error(msg)
+        self.__logger.error(msg)
 
     def Critical(self, msg):
         """
@@ -60,7 +70,7 @@ class ScriptLogger:
         """
         if not isinstance(msg, str):
             raise Exception('msg must be a string.')
-        logging.critical(msg)
+        self.__logger.critical(msg)
 
     def Info(self, msg):
         """
@@ -70,7 +80,7 @@ class ScriptLogger:
         """
         if not isinstance(msg, str):
             raise Exception('msg must be a string.')
-        logging.info(msg)
+        self.__logger.info(msg)
     
     def Warning(self, msg):
         """
@@ -80,18 +90,22 @@ class ScriptLogger:
         """
         if not isinstance(msg, str):
             raise Exception('msg must be a string.')
-        logging.warning(msg)
+        self.__logger.warning(msg)
 
     #################
     # Private Helpers:
     #################
     @staticmethod
-    def __Validate(outLocation):
+    def __Validate(outLocation, appName):
         """
         * Validate constructor parameters.
         """
         errs = []
         if not isinstance(outLocation, str):
             errs.append('outLocation must be a string.')
+        elif not os.path.exists(os.path.split(outLocation)[0]):
+            errs.append('Containing folder for outLocation does not exist.')
+        if not isinstance(appName, str):
+            errs.append('appName must be a string.')
         if errs:
             raise Exception('\n'.join(errs))

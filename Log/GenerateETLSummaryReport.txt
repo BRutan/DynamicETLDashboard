@@ -1,0 +1,39 @@
+2020-07-30 16:39:57,145 - GenerateETLSummaryReport - ERROR - Error with argument parsing:
+2020-07-30 16:39:57,145 - GenerateETLSummaryReport - ERROR - Issue with following arguments: 2
+2020-07-30 16:43:20,141 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:44:15,171 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:44:42,007 - GenerateETLSummaryReport - ERROR - Could not generate report.
+2020-07-30 16:44:45,649 - GenerateETLSummaryReport - ERROR - post must be an iterable.
+2020-07-30 16:45:47,512 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:45:49,780 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:47:18,283 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:47:56,509 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:49:13,090 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:49:38,112 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:49:50,067 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:50:42,357 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:51:10,656 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:51:59,568 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:52:12,297 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:52:22,478 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:52:53,432 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:54:56,570 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:55:34,426 - GenerateETLSummaryReport - ERROR - Could not generate report.
+2020-07-30 16:55:34,426 - GenerateETLSummaryReport - ERROR - 'dict' object has no attribute '_get_xf_index'
+2020-07-30 16:56:13,496 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:57:49,077 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:58:01,918 - GenerateETLSummaryReport - ERROR - Could not generate report.
+2020-07-30 16:58:01,918 - GenerateETLSummaryReport - ERROR - 'dict' object has no attribute '_get_xf_index'
+2020-07-30 16:58:30,545 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 16:58:31,501 - GenerateETLSummaryReport - ERROR - Could not generate report.
+2020-07-30 16:58:31,501 - GenerateETLSummaryReport - ERROR - 'dict' object has no attribute '_get_xf_index'
+2020-07-30 16:59:05,412 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:02:30,460 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:04:08,532 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:04:30,984 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:05:24,294 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:05:25,296 - GenerateETLSummaryReport - INFO - Finished generating report at TradeRequestsReport.xlsx.
+2020-07-30 17:05:41,304 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:05:42,324 - GenerateETLSummaryReport - INFO - Finished generating report at TradeRequestsReport.xlsx.
+2020-07-30 17:06:54,938 - GenerateETLSummaryReport - INFO - Pulling in arguments for ETL GEMS.DyEtl.Regulatory.TradeRequests run on 2020-07-30 04:08:00.
+2020-07-30 17:06:55,901 - GenerateETLSummaryReport - INFO - Finished generating report at TradeRequestsReport.xlsx.

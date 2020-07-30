@@ -4,13 +4,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Scripts\TestETLPipeline.py</StartupFile>
+    <StartupFile>Scripts\GenerateETLSummaryReport.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>ETLDashboard</Name>
     <RootNamespace>ETLDashboard</RootNamespace>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <CommandLineArguments>GEMS.DyEtl.Regulatory.TradeRequests Completed "C:\Users\berutan\Desktop\Projects\New ETL\GEMS.DyEtl.Regulatory.TradeRequests\New Dataset\TradeRequestAllStatus_07102020.csv" 07-10-2020 RegulatoryTradeRequests MetricsDyetl . TradeRequestsReport.xlsx "7-30-2020 04:07" "7-30-2020 04:08" --pre AddFileDate --input AddRunDate AddFileDate --delim | </CommandLineArguments>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +33,7 @@
     <Compile Include="Guggenheim\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\ScriptLogger.py">
+    <Compile Include="Logging\ScriptLogger.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScriptArgs\__init__.py">
@@ -67,13 +70,13 @@
     <Compile Include="ETL\SampleFilePuller.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\DynamicETLServiceIssueParser.py">
+    <Compile Include="Logging\DynamicETLServiceIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\LocalLargeDataJobPoster.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\AllLogReader.py">
+    <Compile Include="Logging\AllLogReader.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\NewETLAppender.py">
@@ -129,13 +132,13 @@
     <Compile Include="GUI\TestETLPipelineWindow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\DynamicETLWebAPIIssueParser.py">
+    <Compile Include="Logging\DynamicETLWebAPIIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\FileWatcherIssueParser.py">
+    <Compile Include="Logging\FileWatcherIssueParser.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Log\__init__.py">
+    <Compile Include="Logging\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scripts\PullData.py">
@@ -234,8 +237,10 @@
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
-    <Folder Include="Log\" />
+    <Folder Include="Logging\" />
     <Folder Include="Guggenheim\" />
+    <Folder Include="Log\" />
+    <Folder Include="Config\" />
     <Folder Include="Tables\" />
     <Folder Include="ScriptArgs\" />
     <Folder Include="Scripts\" />
@@ -246,7 +251,7 @@
   <ItemGroup>
     <Content Include="ScriptArgs\AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\appsettings-template.json" />
-    <Content Include="AppsettingsFiles\config.json" />
+    <Content Include="Config\config.json" />
     <Content Include="AppsettingsFiles\DynamicETL.Service\appsettings-template.json" />
     <Content Include="AppsettingsFiles\FileWatcher\AppSettings-template.json" />
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
