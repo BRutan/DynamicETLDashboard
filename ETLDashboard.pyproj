@@ -21,6 +21,18 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Guggenheim\Reports\ETLSummaryReport.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Guggenheim\Reports\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Guggenheim\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Log\ScriptLogger.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScriptArgs\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +109,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filepaths\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scripts\GenerateETLSummaryReport.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scripts\GenerateFileTransferConfig.py">
@@ -213,12 +228,14 @@
     <Folder Include="Columns\__pycache__\" />
     <Folder Include="Data\" />
     <Folder Include="ETL\" />
+    <Folder Include="Guggenheim\Reports\" />
     <Folder Include="GUI\" />
     <Folder Include="Exceptions\" />
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
     <Folder Include="Log\" />
+    <Folder Include="Guggenheim\" />
     <Folder Include="Tables\" />
     <Folder Include="ScriptArgs\" />
     <Folder Include="Scripts\" />
@@ -240,6 +257,7 @@
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="ScriptArgs\postargs.json" />
     <Content Include="ScriptArgs\GenerateFileTransferConfig.json" />
+    <Content Include="ScriptArgs\GenerateETLSummaryReport.json" />
     <Content Include="ScriptArgs\PullSampleFiles.json" />
     <Content Include="ScriptArgs\TestETLPipeline.json" />
     <Content Include="ScriptArgs\GenerateNewETL.json" />

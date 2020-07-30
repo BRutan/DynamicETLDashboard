@@ -1,8 +1,8 @@
 {
   "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
   "filedate": "2020-07-12",
-  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\GEMS.DyEtl.Regulatory.TradeRequests_QA.xlsx",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\GEMS.DyEtl.Regulatory.TradeRequests_STG.xlsx",
   "postargspath": "ScriptArgs\\postargs.json",
-  "testmode": "QA",
+  "testmode": "STG",
   "removeprevfiledate": "FALSE"
 }

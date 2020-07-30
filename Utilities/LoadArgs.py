@@ -269,6 +269,30 @@ def GenerateNewETLJsonArgs():
     return Arguments(json.load(open(path, 'rb')))
 
 ############################
+# GenerateETLSummaryReport.py
+############################
+def GenerateETLSummaryReportJsonArgs():
+    """
+    * Pull arguments for GenerateETLSummaryReport.py.
+    """
+    argPath = 'ScriptArgs\\GenerateETLSummaryReport.json'
+    req = set(['logpath'])
+
+    if not os.path.exists(argPath):
+        raise Exception('%s is missing.' % argPath)
+    try:
+        args = FillEnvironmentVariables(json.load(open(argPath, 'rb')))
+    except Exception as ex:
+        raise Exception('Could not load %s, reason: %s' % (argPath, str(ex)))
+    errs = []
+    missing = req - set(args)
+    if missing:
+        errs.append('The following required arguments are missing from %s: %s' % (argPath, ','.join(missing)))
+    if errs:
+        raise Exception('\n'.join(errs))
+
+
+############################
 # GenerateFileTransferConfig.py
 ############################
 def GenerateFileTransferConfigJsonArgs():
