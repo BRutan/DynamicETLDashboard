@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Scripts\GenerateETLSummaryReport.py</StartupFile>
+    <StartupFile>Temp.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -34,6 +34,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logging\ScriptLogger.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Reports\Reporter.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScriptArgs\__init__.py">
@@ -85,7 +88,7 @@
     <Compile Include="ETL\PostArgsFactory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ETL\TSQLInterface.py">
+    <Compile Include="Tables\TSQLInterface.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Exceptions\CustomExceptions.py">
@@ -154,6 +157,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\ColumnDefinition.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\InsertProcedureGenerator.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\SQLTableObject.py">
@@ -241,6 +247,7 @@
     <Folder Include="Guggenheim\" />
     <Folder Include="Log\" />
     <Folder Include="Config\" />
+    <Folder Include="Reports\" />
     <Folder Include="Tables\" />
     <Folder Include="ScriptArgs\" />
     <Folder Include="Scripts\" />

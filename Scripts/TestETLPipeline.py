@@ -20,12 +20,12 @@ from datetime import datetime
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
 from ETL.ETLJobLoader import ETLJobLoader
-from ETL.TSQLInterface import TSQLInterface
 from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 import json
 import os
 from shutil import copyfile
 import sys
+from Tables.TSQLInterface import TSQLInterface
 from time import sleep
 from Utilities.FixJsonConfigs import FixJsonConfigs
 from Utilities.Helpers import Countdown

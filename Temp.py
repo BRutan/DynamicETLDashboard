@@ -6,13 +6,20 @@
 
 from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
-from ETL.TSQLInterface import TSQLInterface
 from ETL.LocalLargeDataJobPoster import LocalLargeDataJobPoster
 from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
-from Utilities.Helpers import LoadJsonFile
 import json
-import re
 import os
+import re
+from Tables.InsertProcedureGenerator import InsertProcedureGenerator
+from Tables.TSQLInterface import TSQLInterface
+from Utilities.Helpers import LoadJsonFile
+
+
+def generateprocedure():
+    gen = InsertProcedureGenerator('.', 'MetricsDYETL')
+    gen.Generate('JIRAData', 'InsertJIRAData', 'C:\\Users\\berutan\\Desktop\\Projects\\Temp\\JIRAInsertProcedure.sql')
+
 
 def comparetraderequests():
     interface = TSQLInterface('.', 'MetricsDyetl')
@@ -154,4 +161,4 @@ def testlogreader():
     reader.GenerateFile('DynamicETL_ServiceIssues7_24_2020.csv')
 
 if __name__ == '__main__':
-    comparetraderequests()
+    generateprocedure()

@@ -197,7 +197,7 @@ class TSQLInterface:
         query.append('ON t.[schema_id] = s.[schema_id] CROSS APPLY sys.dm_exec_describe_first_result_set')
         query.append("(N'SELECT * FROM ' + QUOTENAME(s.name) + N'.' + QUOTENAME(t.name), N'', 0) AS f")
         if not schema is None:
-            query.append("WHERE s.name = '%s'" % TSQLInterface.__WrapName(schema))
+            query.append("WHERE s.name = '%s'" % TSQLInterface.WrapName(schema))
         query = ' '.join(query)
         result = read_sql(query, self.__connection)
         # Return None if no values returned:
@@ -226,7 +226,7 @@ class TSQLInterface:
 
         # Convert datetimes to proper type before insertion:
         data = TSQLInterface.__CleanData(data)
-        table = TSQLInterface.__WrapName(table)
+        table = TSQLInterface.WrapName(table)
         cols = ','.join([TSQLInterface.__WrapName(col) for col in data.columns])
         values = ','.join(['?' for col in data.columns])
         insert_query = 'INSERT INTO %s (%s) VALUES (%s)' % (table,cols,values)
@@ -394,7 +394,7 @@ class TSQLInterface:
         """
         * Insert using Pandas Dataframe and Sqlalchemy engine. 
         """
-        table = TSQLInterface.__WrapName(self.__database) + '.' + TSQLInterface.__WrapName(table)
+        table = TSQLInterface.WrapName(self.__database) + '.' + TSQLInterface.WrapName(table)
         engine = create_engine('mssql+pyodbc:///?odbc_connect=%s' % self.__connectString)
         data.to_sql(name=table, con=engine)
 
@@ -411,10 +411,14 @@ class TSQLInterface:
         return data.fillna('')
 
     @classmethod
-    def __WrapName(cls, name):
+    def WrapName(cls, name):
         """
         * Wrap names in brackets.
+        Inputs:
+        * name: string to wrap in [].
         """
+        if not isinstance(name, str):
+            raise Exception('name must be a string.')
         if not name.startswith('['):
             name = '[' + name
         if not name.endswith(']'):

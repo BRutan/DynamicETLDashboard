@@ -8,8 +8,8 @@
 
 from datetime import datetime
 from ETL.DataReader import DataReader
-from ETL.TSQLInterface import TSQLInterface
 import os
+from Tables.TSQLInterface import TSQLInterface
 import xlsxwriter
 
 class ETLSummaryReport:
