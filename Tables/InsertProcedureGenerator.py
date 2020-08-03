@@ -18,9 +18,11 @@ class InsertProcedureGenerator:
     def __init__(self, server, database):
         """
         * Connect to server and database.
+        Inputs:
+        * server: T-SQL server to connect to. Must be a string.
+        * database: Database on server to connect to. Must be a string.
         """
-        connect = InsertProcedureGenerator.__Validate(server, database)
-        self.__SetProperties(connect, server, database)
+        self.ChangeConnection(server, database)
 
     ################
     # Properties:
@@ -40,15 +42,26 @@ class InsertProcedureGenerator:
     ################
     # Interface Methods:
     ################
+    def ChangeConnection(self, server, database):
+        """
+        * Connect to different server::database.
+        Inputs:
+        * server: T-SQL server to connect to. Must be a string.
+        * database: Database on server to connect to. Must be a string.
+        """
+        connect = InsertProcedureGenerator.__Validate(server, database)
+        self.__SetProperties(connect, server, database)
+        
     def Generate(self, tablename, procname, outpath):
         """
         * Generate insert procedure for tablename at 
         outpath.
         Inputs:
-        * tablename: string table to generate insertion
-        procedure for.
-        * outpath: full string path to .sql file to store
-        insertion procedure.
+        * tablename: table to generate insertion
+        procedure for. Must be a string.
+        * procname: Name for stored procedure. Must be a string.
+        * outpath: Full path to .sql file to store
+        insertion procedure. Must be a string.
         """
         errs = []
         if not isinstance(tablename, str):
