@@ -24,6 +24,21 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data\APIConfigReader.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\APIFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\APIReceiver.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\ETLSummaryReportAPI.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Guggenheim\Reports\ETLSummaryReport.py">
       <SubType>Code</SubType>
     </Compile>
@@ -86,6 +101,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\PostArgsFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scripts\RunAPIs.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\TSQLInterface.py">
@@ -271,6 +289,7 @@
     <Content Include="ScriptArgs\GenerateFileTransferConfig.json" />
     <Content Include="ScriptArgs\GenerateETLSummaryReport.json" />
     <Content Include="ScriptArgs\PullSampleFiles.json" />
+    <Content Include="ScriptArgs\RunAPIs.json" />
     <Content Include="ScriptArgs\TestETLPipeline.json" />
     <Content Include="ScriptArgs\GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />

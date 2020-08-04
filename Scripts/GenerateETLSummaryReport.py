@@ -19,8 +19,7 @@ import warnings
 def GenerateETLSummaryReport():
     """
     * Perform key steps in generating
-    ETL summary report following DynamicEtl.Service 
-    run.
+    ETL summary report following DynamicEtl.Service run.
     """
     print ("------------------------------")
     print ("GenerateETLSummaryReport: ")
@@ -101,6 +100,8 @@ def GenerateReport(args, log):
     msg = 'Finished generating report at %s.' % args['reportdest']
     log.Info(msg)
     print(msg)
+
+
 
 if __name__ == '__main__':
     GenerateETLSummaryReport()
