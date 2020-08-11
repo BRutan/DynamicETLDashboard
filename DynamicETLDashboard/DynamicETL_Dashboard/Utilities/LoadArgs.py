@@ -409,7 +409,7 @@ def TestETLPipelineJsonArgs():
         else:
             args['testetlargs']['samplefile'] = match[0].strip("{}'")
         if 'samplefile' in args['testetlargs'] and not os.path.isfile(args['testetlargs']['samplefile']):
-            errs.append('(postargspath) File at arg::FilePath does not point to valid file.')
+            errs.append('(postargspath) arg::FilePath (%s) does not point to valid file.' % args['testetlargs']['samplefile'])
 
     # testmode:
     args['testetlargs']['testmode'] = args['testetlargs']['testmode'].upper()

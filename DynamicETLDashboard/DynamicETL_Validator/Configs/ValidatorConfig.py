@@ -116,5 +116,5 @@ class ValidatorConfig:
             raise Exception('\n'.join(errs))
 
 if __name__ == '__main__':
-    path = r"C:\Users\berutan\Desktop\Projects\DynamicETLDashboard\DynamicETL.Validator\DynamicETL.Validator.json"
+    path = r"C:\Users\berutan\Desktop\Projects\DynamicETLDashboard\DynamicETL_Validator\ScriptArgs\DynamicETL_Validator.json"
     reader = ValidatorConfig(path)

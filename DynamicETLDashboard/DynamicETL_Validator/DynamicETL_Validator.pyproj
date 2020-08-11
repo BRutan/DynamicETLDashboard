@@ -6,7 +6,7 @@
     <ProjectHome>
     </ProjectHome>
     <StartupFile>Configs\ValidatorConfig.py</StartupFile>
-    <SearchPath>..\DynamicETL_Validator;..\DynamicETL_Dashboard</SearchPath>
+    <SearchPath>..\DynamicETL_Validator;..\DynamicETL_Dashboard;..\..\DynamicETLDashboard</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>DynamicETL_Validator</Name>

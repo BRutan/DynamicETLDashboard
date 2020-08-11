@@ -280,7 +280,7 @@ class DataColumnAttributes(object):
                     chgSheet.write(rowNum + num + 2 - len(skipProperties), 0, prop, headerFormat)
             # Write all the differences:
             diffs = self.__columnChgDates[dt] if sheetname is None else self.__columnChgDates[dt][sheetname]
-            rowInc = len(properties) - len(skipProperties) + 1
+            rowInc = len(properties) - len(skipProperties) + 2
             for colNum, diff in enumerate(diffs):
                 if diff is None:
                     continue
@@ -289,7 +289,7 @@ class DataColumnAttributes(object):
                     if prop.lower() not in skipProperties:
                         val = getattr(diff, prop)
                         chgSheet.write(rowNum + num + 2 - len(skipProperties), colNum + 1, str(val) if not val is None else '')
-                rowNum += rowInc
+            rowNum += rowInc
 
     def __GenColRelationshipsSheet(self, wb, sheetname = None):
         """

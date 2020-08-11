@@ -6,10 +6,8 @@
 # ETL validation.
 
 from DynamicETL_Dashboard.Logging.ScriptLogger import ScriptLogger
-from DynamicETL_Validator.Data.ValidatorConfig import ValidatorConfig
-from DynamicETL_Validator.Utilities.LoadArgs import DynamicETL_ValidatorJsonArgs
-from flask_injector import FlaskInjector
-from injector import inject
+from Configs.ValidatorConfig import ValidatorConfig
+from Utilities.LoadArgs import DynamicETL_ValidatorJsonArgs
 import sys
 
 # https://levelup.gitconnected.com/python-dependency-injection-with-flask-injector-50773d451a32
