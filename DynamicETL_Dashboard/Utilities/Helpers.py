@@ -293,9 +293,10 @@ def FillEnvironmentVariables(target, configjson, configval, fixPath = True):
         copied = deepcopy(configjson)
         normalizedConfig = { WrapVariable(var.lower(), '{', '}')  : copied[var] for var in copied }
         for var in vars:
-            if var.lower() in normalizedConfig:
-                target = target.replace(var, var.lower())
-                target = target.replace(target, normalizedConfig[var.lower()][configval])
+            lowered = var.lower()
+            if lowered in normalizedConfig:
+                target = target.replace(var, lowered)
+                target = target.replace(lowered, normalizedConfig[lowered][configval])
         if fixPath:
             target = FixPath(target)
     elif isinstance(target, dict):
