@@ -7,7 +7,7 @@
 # when receive data.
 
 from abc import ABC, abstractmethod, abstractproperty
-from flask import Flask
+from flask import Flask, Blueprint
 import re
 
 class APIReceiver(ABC):
@@ -30,33 +30,30 @@ class APIReceiver(ABC):
         """
         APIReceiver.__Validate(name, url)
         self.__SetProperties(name, url)
-        # Run the API:
-        self.__RunAPI()
-
+        
     ################
     # Properties:
     ################
-    @property
-    def App(self):
-        return self.__app
     @property
     def Name(self):
         return self.__name
     @property
     def URL(self):
         return self.__url
-    @property
-    def URLPattern(self):
-        return APIReceiver.__urlPattern
 
     ################
     # Private Helpers:
     ################
-    def __RunAPI(self):
+    @classmethod
+    def IsValidUrl(cls, url):
         """
-        * Run the API.
+        * Test to see if passed url is valid.
+        Inputs:
+        * url: string url.
         """
-        self.__app.run()
+        if not isinstance(url, str):
+            raise Exception('url must be a string.')
+        return APIReceiver.__urlPattern.match(url)
 
     def __SetProperties(self, name, url):
         """
@@ -65,7 +62,6 @@ class APIReceiver(ABC):
         """
         self.__name = name
         self.__url = url
-        self.__app = Flask(name, url)
         
     @staticmethod
     def __Validate(name, url):

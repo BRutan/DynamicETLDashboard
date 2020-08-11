@@ -3,9 +3,7 @@
 #####################################
 # Description:
 # * Define all functions that load arguments 
-# into runscripts (AddFileWatcherConfig.py, 
-# GenerateColumnAttributesReport.py, TestETLPipeline.py, 
-# ValidateAndAppendNewETL.py).
+# into runscripts. 
 
 import json
 import re
@@ -45,7 +43,7 @@ def ETLDashboardJsonArgs():
         errs.append('(config) Does not exist.')
     else:
         args['config'] = FillUniversalEnvironmentVariables(LoadJsonFile(args['config']))
-
+        
     # chromedriverpath:
     if not isinstance(args['chromedriverpath'], str):
         errs.append('(chromedriverpath) Must be a string.')
@@ -374,15 +372,15 @@ def TestETLPipelineJsonArgs():
     missing = req_args - set(args['testetlargs'])
     if missing:
         errs.append('The following required args are missing from TestETLPipeline.json: %s' % ','.join(missing))
-    if not os.path.exists(os.getcwd() + '\\AppsettingsFiles'):
+    if not os.path.exists('%s\\AppsettingsFiles' % os.getcwd()):
         errs.append('Local \\AppsettingsFiles\\ folder is missing.')
-    if not os.path.exists('\\Config\\'):
-        errs.append('\\Config\\ folder is missing.')
-    elif not os.path.exists(os.getcwd() + '\\Config\\config.json'):
+    if not os.path.exists('%s\\Config\\' % os.getcwd()):
+        errs.append('Local \\Config\\ folder is missing.')
+    elif not os.path.exists('%s\\Config\\config.json' % os.getcwd()):
         errs.append('Local \\Config\\config.json file is missing.')
     else:
         try:
-            args['config'] = LoadJsonFile(os.getcwd() + '\\Config\\config.json')
+            args['config'] = LoadJsonFile('%s\\Config\\config.json' % os.getcwd())
         except Exception as ex:
             errs.append('Issue with config.json: %s' % str(err))
     if errs:
@@ -661,46 +659,4 @@ def PullSampleFilesJsonArgs():
     if errs:
         raise Exception('\n'.join(errs))
     
-    return args
-
-############################
-# RunAPIs.py
-############################
-def RunAPIsJsonArgs():
-    """
-    * Load all arguments for RunAPIs.py from
-    RunAPIs.json.
-    """
-    argpath = 'ScriptArgs\\RunApis.json'
-    req = set(['APIs', 'logpath'])
-    # Ensure json file exists and can be loaded:
-    if not os.path.exists(argpath):
-        raise Exception('%s does not exist.' % argpath)
-    try:
-        args = json.load(open(argpath, 'rb'))
-    except Exception as ex:
-        raise Exception('Could not load %s. Reason: %s' % (argpath, str(ex)))
-    missing = req - set(args)
-    if missing:
-        raise Exception('The following keys are missing from %s: %s' % (argpath, ','.join(missing)))
-    
-    ##################################
-    # Required Arguments:
-    ##################################
-    # Ensure all required arguments are valid:
-    errs = []
-    # APIs:
-    if not isinstance(args['APIs'], list):
-        errs.append('RunAPIs::APIs must be a list.')
-    # logpath:
-    if not isinstance(args['logpath'], str):
-        errs.append('logpath must be a string.')
-
-    ##################################
-    # Optional Arguments:
-    ##################################
-    # Ensure optional arguments are valid if used:
-    if errs:
-        raise Exception('\n'.join(errs))
-
     return args

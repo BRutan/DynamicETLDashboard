@@ -1,0 +1,10 @@
+Notes:
+---------------------------
+- DynamicETL.Service appsettings-template.json:
+	* If "AddFileDate" is specified as InputOperation, then need to have
+	as PreOperation with following keys:
+		* {
+          	"TypeName": "AddFileDate",
+          	"ConfigValue": "{RegPattern:'(?<date>\\\\d{4}_\\\\d{4})\\\\.', DateFormat:'yyyy_MMdd'}"
+        	  }
+	

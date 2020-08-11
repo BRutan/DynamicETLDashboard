@@ -7,9 +7,8 @@
 # run in production.
 
 from datetime import datetime
-from ETL.DataReader import DataReader
+from ETLDashboard.ETL.DataReader import DataReader
 import os
-from Tables.TSQLInterface import TSQLInterface
 import xlsxwriter
 
 class ETLSummaryReport:
@@ -19,14 +18,26 @@ class ETLSummaryReport:
     run in production.
     """
     __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
-    __optional = set(['pre', 'input', 'post', 'delim'])
-    __req = set(['etl', 'inputfilepath', 'filedate', 'tablename', 'database', 'server', 'status', 'starttime', 'endtime'])
+    __optional = set(['pre', 'input', 'post'])
+    __req = set(['etl', 'tablename', 'database', 'data', 'server', 'status', 'starttime', 'endtime'])
+    RequiredArgs = __req
     def __init__(self, **kwargs):
         """
         * Accumulate data necessary to generate report 
         using passed arguments.
+        Inputs:
+        * etl: Name of ETL.
+        * tablename: Name of table associated with ETL.
+        * database: Database where ETL table exists.
+        * data: json dictionary containing all inserted data.
+        * server: Server hosting database and table.
+        * status: String detailing whether ETL completed successfully or not.
+        * starttime: Datetime when ETL started processing.
+        * endtime: Datetime when ETL stopped processing.
+        Optional:
+        * pre/input/post: Pre/Input/Post operations performed during ETL.
         """
-        # Normalize arguments:
+        # Normalize and validate arguments:
         kwargs = { arg.lower() : kwargs[arg] for arg in kwargs if isinstance(arg, str) }
         ETLSummaryReport.__Validate(**kwargs)
         self.__GetProperties(**kwargs)
@@ -134,7 +145,15 @@ class ETLSummaryReport:
         """
         * Accumulate necessary attributes to generate report.
         """
-        self.__CompareSources(**kwargs)
+        self.__ReviewData(kwargs['data'])
+        #self.__CompareSources(**kwargs)
+
+    def __ReviewData(self, data):
+        """
+        * Accumulate ETL performance attributes by analysing sent dataset.
+        """
+        # Assuming that data has following form: {{ColName->Value}}:
+        self.__insertionrowcount = len(data)
 
     def __CompareSources(self, **kwargs):
         """
@@ -175,16 +194,12 @@ class ETLSummaryReport:
         # Validate required arguments:
         if not isinstance(kwargs['etl'], str):
             errs.append('etl must be a string.')
-        if not isinstance(kwargs['inputfilepath'], str):
-            errs.append('inputfilepath must be a string.')
-        elif not os.path.exists(kwargs['inputfilepath']):
-            errs.append('inputfilepath does not exist.')
-        if not isinstance(kwargs['filedate'], datetime):
-            errs.append('filedate must be a datetime object.')
         if not isinstance(kwargs['tablename'], str):
             errs.append('tablename must be a string.')
         if not isinstance(kwargs['database'], str):
             errs.append('database must be a string.')
+        if not isinstance(kwargs['data'], dict):
+            errs.append('data must be a dictionary.')
         if not isinstance(kwargs['server'], str):
             errs.append('server must be a string.')
         if not isinstance(kwargs['status'], str):
@@ -194,10 +209,6 @@ class ETLSummaryReport:
         if not isinstance(kwargs['endtime'], datetime):
             errs.append('endtime must be a datetime object.')
         # Validate optional arguments:
-        if 'delim' in kwargs and not isinstance(kwargs['delim'], str):
-            errs.append('delim must be a string if provided.')
-        elif not 'delim' in kwargs:
-            kwargs['delim'] = None
         for op in ETLSummaryReport.__optional:
             if op == 'delim':
                 continue

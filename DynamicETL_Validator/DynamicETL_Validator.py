@@ -1,14 +1,18 @@
 #####################################
-# RunAPIs.py
+# DynamicETL_Validator.py
 #####################################
 # Description:
-# * Run all configured APIs defined in Data namespace.
+# * Run all configured APIs to perform
+# ETL validation.
 
-from Data.APIConfigReader import APIConfigReader
-from Data.APIFactory import APIFactory
-from Logging.ScriptLogger import ScriptLogger
+from DynamicETL_Dashboard.Logging.ScriptLogger import ScriptLogger
+from DynamicETL_Validator.Data.ValidatorConfig import ValidatorConfig
+from DynamicETL_Validator.Utilities.LoadArgs import DynamicETL_ValidatorJsonArgs
+from flask_injector import FlaskInjector
+from injector import inject
 import sys
-from Utilities.LoadArgs import RunAPIsJsonArgs
+
+# https://levelup.gitconnected.com/python-dependency-injection-with-flask-injector-50773d451a32
 
 def RunAPIs():
     """
@@ -24,7 +28,7 @@ def Initialize():
     """
     log = ScriptLogger()
     try:
-        args = RunAPIsJsonArgs()
+        args = DynamicETL_ValidatorJsonArgs()
     except Exception as ex:
         msg = "Error with RunAPIs.json: %s." % str(ex)
         log.Exception(msg)
@@ -34,10 +38,10 @@ def Initialize():
 
 def GetConfigs(log, args):
     """
-    * Read RunAPIs.json to get all configured
-    APIs.
+    * Read RunAPIs.json to get all 
+    configured APIs.
     """
-    reader = APIConfigReader()
+    reader = ValidatorConfig("")
 
 def RunAllAPIs(log, args, configs):
     """

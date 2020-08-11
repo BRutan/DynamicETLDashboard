@@ -50,7 +50,9 @@ class ColumnAttribute(object):
             return False    
         if col.Type != self.Type:
             return False
-        if set(col.Uniques).symmetric_difference(set(self.Uniques)):
+        if (col.Uniques is None) ^ (self.Uniques is None):
+            return False
+        elif not col.Uniques is None and not self.Uniques is None and set(col.Uniques).symmetric_difference(set(self.Uniques)):
             return False
         return True
 
@@ -365,14 +367,14 @@ class ColumnAttributeDiff:
     def UniqueCount(self, val):
         if not isinstance(val, (float, int)):
             raise Exception('UniqueCount must be numeric.')
-        elif val < 0:
+        elif not int(val) >= 0:
             raise Exception('UniqueCount must be non-negative.')
-        self.__uniqueCount = val
+        self.__uniqueCount = int(val)
     @Uniques.setter
     def Uniques(self, val):
-        if not hasattr(val, '__iter__'):
-            raise Exception('Uniques must be an iterable.')
-        self.__uniques = val
+        if not hasattr(val, '__iter__') and not isinstance(val, str) and not val is None:
+            raise Exception('Uniques must be an iterable or None.')
+        self.__uniques = set(val) if not val is None else val
     #################
     # Interface Methods:
     #################
@@ -426,10 +428,14 @@ class ColumnAttributeDiff:
         """
         lhsAttr = getattr(lhs, prop)
         rhsAttr = getattr(rhs, prop)
-        if hasattr(lhsAttr, '__iter__'):
+        if (lhsAttr is None) ^ (rhsAttr is None):
+            return False
+        elif lhsAttr is None and rhsAttr is None:
+            return True
+        elif hasattr(lhsAttr, '__iter__') and not isinstance(lhsAttr, str):
             if len(lhsAttr) != len(rhsAttr):
                 return False
-            elif lhsAttr != rhsAttr:
+            elif set(lhsAttr) != set(rhsAttr):
                 return False
             return True
         return lhsAttr != rhsAttr

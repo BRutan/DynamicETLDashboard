@@ -4,13 +4,13 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Temp.py</StartupFile>
+    <StartupFile>Scripts\TestETLPipeline.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>ETLDashboard</Name>
-    <RootNamespace>ETLDashboard</RootNamespace>
+    <Name>DynamicETL_Dashboard</Name>
+    <RootNamespace>DynamicETL_Dashboard</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <CommandLineArguments>GEMS.DyEtl.Regulatory.TradeRequests Completed "C:\Users\berutan\Desktop\Projects\New ETL\GEMS.DyEtl.Regulatory.TradeRequests\New Dataset\TradeRequestAllStatus_07102020.csv" 07-10-2020 RegulatoryTradeRequests MetricsDyetl . TradeRequestsReport.xlsx "7-30-2020 04:07" "7-30-2020 04:08" --pre AddFileDate --input AddRunDate AddFileDate --delim | </CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
@@ -24,30 +24,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Data\APIConfigReader.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Data\APIFactory.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Data\APIReceiver.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Data\ETLSummaryReportAPI.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Data\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Guggenheim\Reports\ETLSummaryReport.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Guggenheim\Reports\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Guggenheim\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Logging\ScriptLogger.py">
       <SubType>Code</SubType>
     </Compile>
@@ -101,9 +77,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ETL\PostArgsFactory.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Scripts\RunAPIs.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tables\TSQLInterface.py">
@@ -253,16 +226,13 @@
     <Folder Include="AppsettingsFiles\FileWatcher\" />
     <Folder Include="Columns\" />
     <Folder Include="Columns\__pycache__\" />
-    <Folder Include="Data\" />
     <Folder Include="ETL\" />
-    <Folder Include="Guggenheim\Reports\" />
     <Folder Include="GUI\" />
     <Folder Include="Exceptions\" />
     <Folder Include="DefaultScriptConfigs\" />
     <Folder Include="AppsettingsFiles\" />
     <Folder Include="Filepaths\" />
     <Folder Include="Logging\" />
-    <Folder Include="Guggenheim\" />
     <Folder Include="Log\" />
     <Folder Include="Config\" />
     <Folder Include="Reports\" />
@@ -289,7 +259,6 @@
     <Content Include="ScriptArgs\GenerateFileTransferConfig.json" />
     <Content Include="ScriptArgs\GenerateETLSummaryReport.json" />
     <Content Include="ScriptArgs\PullSampleFiles.json" />
-    <Content Include="ScriptArgs\RunAPIs.json" />
     <Content Include="ScriptArgs\TestETLPipeline.json" />
     <Content Include="ScriptArgs\GenerateNewETL.json" />
     <Content Include="Columns\__pycache__\ColAttributes.cpython-36.pyc" />

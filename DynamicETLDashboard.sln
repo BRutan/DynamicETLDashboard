@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ETLDashboard", "ETLDashboard.pyproj", "{B3DB16DB-A958-4583-A420-4B90B1661BB8}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DynamicETL_Dashboard", "DynamicETL_Dashboard\DynamicETL_Dashboard.pyproj", "{B3DB16DB-A958-4583-A420-4B90B1661BB8}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "DynamicETL_Validator", "DynamicETL_Validator\DynamicETL_Validator.pyproj", "{D10A2CCE-7F24-454C-AA4F-FE7690AC7AC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B3DB16DB-A958-4583-A420-4B90B1661BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3DB16DB-A958-4583-A420-4B90B1661BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10A2CCE-7F24-454C-AA4F-FE7690AC7AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10A2CCE-7F24-454C-AA4F-FE7690AC7AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

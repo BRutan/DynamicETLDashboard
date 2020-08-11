@@ -280,13 +280,16 @@ class DataColumnAttributes(object):
                     chgSheet.write(rowNum + num + 2 - len(skipProperties), 0, prop, headerFormat)
             # Write all the differences:
             diffs = self.__columnChgDates[dt] if sheetname is None else self.__columnChgDates[dt][sheetname]
+            rowInc = len(properties) - len(skipProperties) + 1
             for colNum, diff in enumerate(diffs):
+                if diff is None:
+                    continue
                 chgSheet.write(rowNum, colNum + 1, getattr(diff, 'ColumnName'))
                 for num, prop in enumerate(properties):
                     if prop.lower() not in skipProperties:
                         val = getattr(diff, prop)
                         chgSheet.write(rowNum + num + 2 - len(skipProperties), colNum + 1, str(val) if not val is None else '')
-            rowNum += len(properties) - len(skipProperties) + 1
+                rowNum += rowInc
 
     def __GenColRelationshipsSheet(self, wb, sheetname = None):
         """
@@ -309,7 +312,7 @@ class DataColumnAttributes(object):
                 relSheet.write(1, col, '', type_format[type_])
                 col += 1
         rowOff = 2
-        # Write all relationships for each report:
+        # Write all relationships between all columns across all source files:
         for dt in self.__dateToAttrs:
             attr = self.__dateToAttrs[dt] if sheetname is None else self.__dateToAttrs[dt][sheetname]
             df = attr.Relationships.ToDataFrame(False)

@@ -4,7 +4,7 @@
 # Description:
 # * General helper functions for various classes. 
 
-import copy
+from copy import deepcopy
 from datetime import datetime
 import dateutil.parser as dateparse
 #from docx import Document
@@ -25,13 +25,13 @@ def FullCopy(obj):
         if isinstance(obj, dict):
             copyObj = {}
             for key in obj:
-                copyObj[copy.deepcopy(key)] = FullCopy(obj)
+                copyObj[deepcopy(key)] = FullCopy(obj)
         else:
             copyObj = getattr(str(type(obj)))
             for elem in obj:
                 pass
     else:
-        copyObj = copy.deepcopy(obj)
+        copyObj = deepcopy(obj)
 
     return copyObj
                 
@@ -285,12 +285,17 @@ def FillEnvironmentVariables(target, configjson, configval, fixPath = True):
         raise Exception('\n'.join(errs))
     
     if isinstance(target, str):
-        for key in configjson:
-            copy = key
-            var = '{' + copy if not copy.startswith('}') else copy
-            var = var + '}' if not var.endswith('}') else var
-            rep = configjson[key][configval]
-            target = target.replace(var, rep)
+        # Search for environment variables in the string (wrapped in {}):
+        vars = FindEnvironmentVariables(target, '{', '}')
+        if not vars:
+            return target
+        # Replace all environment variables if configured in config json:
+        copied = deepcopy(configjson)
+        normalizedConfig = { WrapVariable(var.lower(), '{', '}')  : copied[var] for var in copied }
+        for var in vars:
+            if var.lower() in normalizedConfig:
+                target = target.replace(var, var.lower())
+                target = target.replace(target, normalizedConfig[var.lower()][configval])
         if fixPath:
             target = FixPath(target)
     elif isinstance(target, dict):
@@ -342,6 +347,16 @@ def ConvertDateFormat(formatstr):
 
     return formatstr
 
+def FindEnvironmentVariables(val, left, right):
+    """
+    * Return the environment variable(s) located in passed string.
+    """
+    invalid = [var for var in [val, left, right] if not isinstance(var, str)]
+    if invalid:
+        raise Exception('The following arguments must be strings: %s.' % ','.join(invalid))
+    pattern = WrapVariable('.+', left, right)
+    return set(re.findall(pattern, val))
+
 def FixPath(path):
     """
     * Fix too many backslash issue that occurs when reading
@@ -371,6 +386,16 @@ def FixRegexPatterns(obj):
         for key in obj:
             obj[key] = FixRegexPatterns(obj[key])
     return obj
+
+def WrapVariable(val, left, right):
+    """
+    * Wrap string variable name in wrapper.
+    """
+    invalid = [var for var in [val, left, right] if not isinstance(var, str)]
+    if invalid:
+        raise Exception('The following arguments must be strings: %s.' % ','.join(invalid))
+    val = left + val if not val.startswith(left) else val
+    return val + right if not val.endswith(right) else val
 
 ################
 # Decorators:

@@ -1,0 +1,11 @@
+{
+  "ControllerConfig": {
+    "AppName": "ETLDashboard",
+    "BaseURL": "http://localhost/DynamicETL.Validator/api/"
+  },
+  "APIs": {
+    "ETLSummaryReport": {
+      "reportpath": "SummaryReport.xlsx"
+    }
+  }
+}

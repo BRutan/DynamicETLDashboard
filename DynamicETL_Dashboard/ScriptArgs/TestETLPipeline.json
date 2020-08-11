@@ -1,0 +1,8 @@
+{
+  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "filedate": "2020-07-12",
+  "reportpath": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\GEMS.DyEtl.Regulatory.TradeRequests_LOCAL.xlsx",
+  "postargspath": "ScriptArgs\\postargs.json",
+  "testmode": "QA",
+  "removeprevfiledate": "FALSE"
+}
