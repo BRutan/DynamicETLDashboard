@@ -5,6 +5,8 @@
 # * Singleton class that generates
 # new instances from type objects.
 
+import inspect
+import os
 import re
 import sys
 
@@ -14,6 +16,10 @@ class TypeConstructor:
     new instances from type objects.
     """
     __replacements = re.compile('|'.join(['class', '<', '>',"'", ' +']))
+    __moduleType = type(sys.modules['re'])
+    __modPathRE = re.compile("from '.+'")
+    __modPathStrip = re.compile('[from ]')
+    __modPathStrip = lambda x, pat = __modPathStrip : pat.sub('', x).strip(' ') 
     ################
     # Interface Methods:
     ################
@@ -67,45 +73,72 @@ class TypeConstructor:
         return TypeConstructor.__CreateClassObj(module, classname, kwargs)
 
     @classmethod
-    def GetUsedModules(cls, modulepath):
+    def GetDefinedClasses(cls, modules):
+        """
+        * Get all classes defined in module(s) 
+        at path, or in module objects.
+        Inputs:
+        * modules: string name of module (assuming has been imported) or module object,
+        or iterable of string names or module objects.
+        An exception will be thrown if any named modules have not been imported.
+        Output:
+        * Dictionary with { FullClassName -> (ModuleName, ClassName, ClassTypeObj) }. 
+        """
+        if isinstance(modules, (str, TypeConstructor.__moduleType)):
+            modules = [modules]
+        elif hasattr(modules, __iter__) and any([not isinstance(mod, str) and not isinstance(mod, TypeConstructor.__moduleType) for mod in modules]):
+            raise Exception('modulepath can only contain module name strings or module objects if an iterable.')
+        out = {}
+        errs = []
+        for num, mod in enumerate(modules):
+            if isinstance(mod, str):
+                if not TypeConstructor.IsImported:
+                    errs.append(mod)
+                    continue
+                else:
+                    mod = sys.modules[mod]
+            classes = inspect.getmembers(mod, inspect.isclass)
+            for item in classes:
+                modname, classname = TypeConstructor.SplitType(item[1])
+                fullname = '%s.%s' % (modname, classname)
+                out[fullname] = (modname, classname, item[1])
+        if errs:
+            raise Exception('The following modules were not imported before call: %s.' % ','.join(errs))
+        return out
+
+    @classmethod
+    def GetUsedModules(cls, modules):
         """
         * Get all modules that were imported in module
         at path(s).
         Inputs:
-        * modulepath: Can either be 
+        * modules: Can either be 
         1. Single string path to module or module object.
         2. Iterable of string paths to module or module objects.
+        Returns set of all module objects imported by passed modules.
         """
-        if isinstance(modulepath, (str, sys.module)):
-            modulepath = [modulepath]
-        elif hasattr(modulepath, __iter__) and any([not isinstance(pth, str) and not isinstance(pth, sys.modules) for pth in modulepath]):
-            raise Exception('modulepath can only contain strings or modules if an iterable.')
-        if hasattr(modulepath, __iter__):
-            # Get for all paths:
-            out = set()
-            errs = []
-            for num, obj in enumerate(modulepath):
-                if not errs:
-                    if isinstance(obj, sys.module):
-                        vals = [attr for attr in dir(obj) if not attr.startswith('_') and not callable(attr)]
-                    elif os.path.exists(obj):
-                        f = open(path, 'r')
-                        content = f.read()
-                        instructions = dis.get_instructions(content)
-                        imports = [__ for __ in instructions if 'IMPORT' in __.opname]
-                        grouped = {}
-                        for instr in imports:
-                            grouped[instr.opname].append(instr.argval)
-                        f.close()
-                        out = grouped['IMPORT_NAME']
-                    else:
-                        errs.append('%s does not exist.' % num)
-                        continue
-                out.update(vals)
-            if errs:
-                raise ValueError('\n'.join(errs))
-        else:
-            raise ValueError('modulepath must be a string path hor an iterable of string paths.')
+        if not isinstance(modules, (str, TypeConstructor.__moduleType)) and not (not isinstance(modules, str) and hasattr(modules, '__iter__')): 
+            raise ValueError('modules must be a single string path/module object or iterable of string paths/module objects.')
+        elif isinstance(modules, (str, TypeConstructor.__moduleType)):
+            modules = [modules]
+        if hasattr(modulepath, '__iter__') and any([not isinstance(pth, str) and not isinstance(pth, TypeConstructor.__moduleType) for pth in modulepath]):
+            raise ValueError('modulepath can only contain strings or modules if an iterable.')
+        out = set()
+        errs = []
+        for num, obj in enumerate(modulepath):
+            if isinstance(obj, str) and not os.path.exists(obj):
+                errs.append(num)
+            if isinstance(obj, TypeConstructor.__moduleType):
+                vals = [attr for attr in dir(obj) if not attr.startswith('_') and not callable(attr)]
+            else:
+                f = open(path, 'r')
+                content = f.read()
+                instructions = dis.get_instructions(content)
+                vals = [inst.argval for inst in instructions if 'IMPORT_NAME' == inst.opname]
+                f.close()
+            out.update(vals)
+        if errs:
+            raise ValueError('The following module paths do not exist: %s.' % ','.join(errs))
         return out
 
     @classmethod
@@ -137,6 +170,21 @@ class TypeConstructor:
     ################
     # Private Helpers:
     ################
+    @staticmethod
+    def __ExtractModulePaths(modules):
+        """
+        * Extract module paths from passed
+        iterable of modules so they can be
+        read by various libraries (like inspect).
+        Inputs:
+        * modules: Expecting iterable of module objects.
+        """
+        paths = set()
+        for mod in modules:
+            subbed = TypeConstructor.__modPathRE.find(mod)
+            paths.add(TypeConstructor.__modPathStrip(mod))
+        return paths
+
     @staticmethod
     def __FindModules(module):
         """

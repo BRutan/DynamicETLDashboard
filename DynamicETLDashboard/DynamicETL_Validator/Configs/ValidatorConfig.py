@@ -16,8 +16,8 @@ class ValidatorConfig:
     * Convert config json file into APIConfigs to be
     injected into Flask controllers.
     """
-    __attributeMap = { "apis" : ({ "etlsummaryreport" : (ETLSummaryReportConfig, "__etlsummaryreport") }),
-                       "controllerconfig" : (ControllerConfig, "__controllerconfig") }
+    __attributeMap = { "apis" : ({ "etlsummaryreport" : (ETLSummaryReportConfig, "etlsummaryreportconfig") }),
+                       "controllerconfig" : (ControllerConfig, "controllerconfig") }
     def __init__(self, path):
         """
         * Convert all target sections in json file
@@ -33,10 +33,12 @@ class ValidatorConfig:
     ####################
     @property
     def ControllerConfig(self):
-        return self.__controllerconfig
+        return self.controllerconfig
+        #return self.__controllerconfig
     @property
     def ETLSummaryReportConfig(self):
-        return self.__etlsummaryreport
+        return self.etlsummaryreportconfig
+        #return self.__etlsummaryreportconfig
     
     ####################
     # Private Helpers:
@@ -99,7 +101,6 @@ class ValidatorConfig:
             if isinstance(attrs, dict):
                 config[section] = { key.lower() : config[section][key] for key in config[section] }
                 for attr in attrs:
-                    # Normalize keys in lowercase:
                     kwargs = config[section][attr]
                     sectionType = attrs[attr][0]
                     targetAttr = attrs[attr][1]
