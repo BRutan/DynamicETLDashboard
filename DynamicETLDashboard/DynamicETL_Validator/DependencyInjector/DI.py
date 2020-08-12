@@ -6,7 +6,6 @@
 
 from DynamicETL_Dashboard.Utilities.TypeConstructor import TypeConstructor
 from injector import singleton
-from pydoc import locate
 import sys
 
 def inject_api_dependencies(binder, parentcfg, allconfigs, *objs, **kwargs):
@@ -25,7 +24,6 @@ def inject_api_dependencies(binder, parentcfg, allconfigs, *objs, **kwargs):
         allconfigs = sys.modules[allconfigs]
     if errs:
         raise ValueError('\n'.join(errs))
-    
     # Convert .json file into parent configuration object:
     parent = TypeConstructor.ConstructTypeKwargs(parentcfg, **kwargs)
     # Extract each member from the parent object for dependency injection:

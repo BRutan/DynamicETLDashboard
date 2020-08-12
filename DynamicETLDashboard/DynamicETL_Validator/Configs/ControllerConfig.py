@@ -13,20 +13,20 @@ class ControllerConfig:
     * Object to store flask API configurations
     from .json file for generation at runtime.
     """
-    __req = set(['appname', 'baseurl'])
+    __req = set(['appname', 'hostname'])
     __urlPattern = 'http://.+'
     __urlPatternRE = re.compile(__urlPattern)
-    def __init__(self, appname, baseurl):
+    def __init__(self, appname, hostname):
         """
         * Convert dictionary key and value into
         an APIConfig object.
         Inputs:
         * appname: Name of API.
-        * baseurl: Dictionary object containing all
+        * hostname: Dictionary object containing all
         required configurations for API.
         """
-        ControllerConfig.__Validate(appname, baseurl)
-        self.__SetProperties(appname, baseurl)
+        ControllerConfig.__Validate(appname, hostname)
+        self.__SetProperties(appname, hostname)
 
     ####################
     # Properties:
@@ -35,8 +35,8 @@ class ControllerConfig:
     def AppName(self):
         return self.__appname
     @property
-    def BaseURL(self):
-        return self.__baseurl
+    def Hostname(self):
+        return self.__hostname
 
     ####################
     # Interface Methods:
@@ -49,23 +49,23 @@ class ControllerConfig:
     # Private Helpers:
     ####################
     @staticmethod
-    def __Validate(appname, baseurl):
+    def __Validate(appname, hostname):
         """
         * Validate constructor parameters.
         """
         errs = []
         if not isinstance(appname, str):
             errs.append('appname must be a string.')
-        if not isinstance(baseurl, str):
-            errs.append('baseurl must be a string.')
-        elif not ControllerConfig.__urlPatternRE.match(baseurl):
-            errs.append('baseurl must match pattern %s.' % ControllerConfig.__urlPattern)
+        if not isinstance(hostname, str):
+            errs.append('hostname must be a string.')
+        #elif not ControllerConfig.__urlPatternRE.match(hostname):
+        #    errs.append('hostname must match pattern %s.' % ControllerConfig.__urlPattern)
         if errs:
             raise Exception('\n'.join(errs))
 
-    def __SetProperties(self, appname, baseurl):
+    def __SetProperties(self, appname, hostname):
         """
         * Get object properties from constructor parameters.
         """
         self.__appname = appname
-        self.__baseurl = baseurl
+        self.__hostname = hostname

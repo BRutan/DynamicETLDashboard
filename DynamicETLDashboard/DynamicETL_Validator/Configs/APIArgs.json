@@ -1,7 +1,7 @@
 {
   "ControllerConfig": {
-    "AppName": "ETLDashboard",
-    "BaseURL": "http://localhost/DynamicETL.Validator/api/"
+    "AppName" : "DynamicETLDashboard",
+    "HostName" :  "127.0.0.1"
   },
   "APIs": {
     "ETLSummaryReport": {

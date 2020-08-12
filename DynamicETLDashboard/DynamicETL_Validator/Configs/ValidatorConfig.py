@@ -2,8 +2,8 @@
 # ValidatorConfig.py
 #####################################
 # Description:
-# * Convert config json file into APIConfigs to be
-# injected into Flask controllers.
+# * Register one config object for each
+# API. Note that all configs class members must be public.
 
 from Configs.ControllerConfig import ControllerConfig
 from Configs.ETLSummaryReportConfig import ETLSummaryReportConfig
@@ -34,11 +34,9 @@ class ValidatorConfig:
     @property
     def ControllerConfig(self):
         return self.controllerconfig
-        #return self.__controllerconfig
     @property
     def ETLSummaryReportConfig(self):
         return self.etlsummaryreportconfig
-        #return self.__etlsummaryreportconfig
     
     ####################
     # Private Helpers:

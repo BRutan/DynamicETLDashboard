@@ -1,4 +1,5 @@
 {
-  "apijson": "APIs\\APIArgs.json",
+  "apijson": "Configs\\APIArgs.json",
+  "debug": true,
   "logpath": "C:\\logs\\"
 }

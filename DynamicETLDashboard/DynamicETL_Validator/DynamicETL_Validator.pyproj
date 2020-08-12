@@ -21,9 +21,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="APIs\APIReceiver.py" />
-    <Compile Include="APIs\DeployAPIs.py" />
     <Compile Include="APIs\ETLSummaryReportAPI.py" />
+    <Compile Include="APIs\FlaskAPIFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="APIs\FlaskController.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="APIs\MiscControllers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="APIs\__init__.py">
       <SubType>Code</SubType>
     </Compile>
