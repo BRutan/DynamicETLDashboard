@@ -14,7 +14,7 @@ import sys
 ############################
 # DynamicETL_Validator.py
 ############################
-def DynamicETL_ValidatorJsonArgs():
+def DynamicETLValidatorJsonArgs():
     """
     * Load all arguments for RunAPIs.py from
     DynamicETL_Validator.json.

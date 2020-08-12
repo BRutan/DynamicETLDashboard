@@ -5,6 +5,7 @@
 # * Object to store flask API configurations
 # from .json file for generation at runtime.
 
+import copy
 import re
 
 class ControllerConfig:
@@ -15,17 +16,17 @@ class ControllerConfig:
     __req = set(['appname', 'baseurl'])
     __urlPattern = 'http://.+'
     __urlPatternRE = re.compile(__urlPattern)
-    def __init__(self, section):
+    def __init__(self, appname, baseurl):
         """
         * Convert dictionary key and value into
         an APIConfig object.
         Inputs:
-        * name: Name of API.
-        * config: Dictionary object containing all
+        * appname: Name of API.
+        * baseurl: Dictionary object containing all
         required configurations for API.
         """
-        ControllerConfig.__Validate(name, config)
-        self.__SetProperties(name, config)
+        ControllerConfig.__Validate(appname, baseurl)
+        self.__SetProperties(appname, baseurl)
 
     ####################
     # Properties:
@@ -42,37 +43,29 @@ class ControllerConfig:
     ####################
     @classmethod
     def RequiredAttrs(cls):
-        return ControllerConfig.__req
+        return copy.deepcopy(ControllerConfig.__req)
 
     ####################
     # Private Helpers:
     ####################
     @staticmethod
-    def __Validate(section):
+    def __Validate(appname, baseurl):
         """
         * Validate constructor parameters.
         """
         errs = []
-        if not isinstance(section, dict):
-            errs.append('section must be a dictionary.')
-        else:
-            section = { sec.lower() : section[sec] for sec in section }
-            missing = ControllerConfig._req - set(section)
-            if missing:
-                errs.append('section is missing the following required attributes: %s.' % ','.join(missing))
-            if 'appname' in section and not isinstance(section['appname'], str):
-                errs.append('section::appname must be a string.')
-            if 'baseurl' in section:
-                if not isinstance(section['baseurl'], str):
-                    errs.append('section::baseurl must be a string.')
-                elif not ControllerConfig.__urlPattern.match(section):
-                    errs.append('section::baseurl must match pattern %s.' % ControllerConfig.__urlPattern)
+        if not isinstance(appname, str):
+            errs.append('appname must be a string.')
+        if not isinstance(baseurl, str):
+            errs.append('baseurl must be a string.')
+        elif not ControllerConfig.__urlPatternRE.match(baseurl):
+            errs.append('baseurl must match pattern %s.' % ControllerConfig.__urlPattern)
         if errs:
             raise Exception('\n'.join(errs))
 
-    def __SetProperties(self, section):
+    def __SetProperties(self, appname, baseurl):
         """
         * Get object properties from constructor parameters.
         """
-        self.__appname = section['appname']
-        self.__baseurl = section['baseurl']
+        self.__appname = appname
+        self.__baseurl = baseurl

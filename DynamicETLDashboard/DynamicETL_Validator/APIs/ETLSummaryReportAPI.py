@@ -9,13 +9,14 @@
 # their completion.
 
 import copy
-from DynamicETL.Validator.Configs.ValidatorConfig import ValidatorConfig
-from DynamicETL.Validator.Configs.APIReceiver import APIReceiver
-from DynamicETL.Validator.Configs.Configs.ETLSummaryReportConfig import ETLSummaryReportConfig
-from DynamicETL.Validator.Reports.ETLSummaryReport import ETLSummaryReport
-from ETLDashboard.Logging.ScriptLogger import ScriptLogger
+from APIs.APIReceiver import APIReceiver
+from DependencyInjector.DI import inject_api_dependencies
+from Configs.ValidatorConfig import ValidatorConfig
+from Configs.ETLSummaryReportConfig import ETLSummaryReportConfig
+from DynamicETL_Dashboard.Logging.ScriptLogger import ScriptLogger
+from flask_injector import FlaskInjector
 from flask import Blueprint, Flask, request
-from injector import inject
+from Reports.ETLSummaryReport import ETLSummaryReport
 
 prefix = 'ETLSummaryReportAPI'
 etlsummaryreport_bp = Blueprint('etlsummaryreport_bp', "ETLSummaryReportAPI")
@@ -103,11 +104,3 @@ class ETLSummaryReportAPI(APIReceiver):
         """
         self.__config = config
         self.__log = log
-
-if __name__ == '__main__':
-    folder = "C:\\Users\\berutan\\Desktop\\Projects\\"
-    config = {'reportpath' : "%s\\ETLSummaryReport.xlsx" % folder}
-    config = APIConfig(config)
-    log = ScriptLogger(folder, "ETLSummaryReportAPI")
-    api = ETLSummaryReportAPI(config, log)
-    api.RunAPI()

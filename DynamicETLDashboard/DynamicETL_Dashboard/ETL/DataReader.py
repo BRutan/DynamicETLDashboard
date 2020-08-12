@@ -9,7 +9,7 @@ import numpy as np
 from pandas import DataFrame, isnull, read_csv, read_excel
 import re
 import os
-from Utilities.Helpers import IsNumeric, StringIsDT
+from DynamicETL_Dashboard.Utilities.Helpers import IsNumeric, StringIsDT
 
 class DataReader:
     """

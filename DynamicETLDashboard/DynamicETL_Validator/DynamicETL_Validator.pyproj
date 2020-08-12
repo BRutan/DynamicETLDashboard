@@ -5,7 +5,7 @@
     <ProjectGuid>d10a2cce-7f24-454c-aa4f-fe7690ac7ac8</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Configs\ValidatorConfig.py</StartupFile>
+    <StartupFile>DynamicETL_Validator.py</StartupFile>
     <SearchPath>..\DynamicETL_Validator;..\DynamicETL_Dashboard;..\..\DynamicETLDashboard</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -27,10 +27,19 @@
     <Compile Include="APIs\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configs\AllConfigs.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Configs\ControllerConfig.py" />
     <Compile Include="Configs\ValidatorConfig.py" />
     <Compile Include="Configs\ETLSummaryReportConfig.py" />
     <Compile Include="Configs\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DependencyInjector\DI.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DependencyInjector\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DynamicETL_Validator.py" />
@@ -56,12 +65,13 @@
     <Folder Include="APIs\static\" />
     <Folder Include="APIs\templates\" />
     <Folder Include="Configs\" />
+    <Folder Include="DependencyInjector\" />
     <Folder Include="Utilities\" />
     <Folder Include="ScriptArgs\" />
     <Folder Include="Reports\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="APIs\APIArgs.json" />
+    <Content Include="Configs\APIArgs.json" />
     <Content Include="ScriptArgs\DynamicETL_Validator.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

@@ -13,7 +13,7 @@ class ETLSummaryReportConfig:
     controller.
     """
     __req = set(['reportpath'])
-    def __init__(self, section):
+    def __init__(self, reportpath):
         """
         * Generate new object from section dictionary using
         baseurl.
@@ -21,8 +21,8 @@ class ETLSummaryReportConfig:
         * section: json dictionary section from config file.
         """
         # Normalize attributes:
-        ETLSummaryReportConfig.__Validate(section)
-        self.__SetProperties(section)
+        ETLSummaryReportConfig.__Validate(reportpath)
+        self.__SetProperties(reportpath)
 
     ####################
     # Properties:
@@ -35,32 +35,24 @@ class ETLSummaryReportConfig:
     # Private Helpers:
     ####################
     @staticmethod
-    def __Validate(section):
+    def __Validate(reportpath):
         """
         * Validate constructor parameters.
         """
         errs = []
-        if not isinstance(section, dict):
-            errs.append('section must be a dictionary.')
+        if not isinstance(reportpath, str):
+            errs.append('reportpath must be a string.')
         else:
-            section = { sec.lower() : section[sec] for sec in section }
-            missing = ETLSummaryReportConfig.__req - set(section)
-            if missing:
-                errs.append('section is missing the following attributes: %s.' % ','.join(missing))
-            if 'reportpath' in section:
-                if not isinstance(section['reportpath'], str):
-                    errs.append('section::reportpath must be a string.')
-                else:
-                    folder, file = os.split(section['reportpath'])
-                    if not os.path.exists(folder):
-                        errs.append('section::reportpath does not point to existing folder.')
-                    if not file.endswith('.xlsx'):
-                        errs.append('section::reportpath must point to an .xlsx file.')
+            folder, file = os.path.split(reportpath)
+            if folder and not os.path.exists(folder):
+                errs.append('reportpath does not point to existing folder.')
+            if not file.endswith('.xlsx'):
+                errs.append('reportpath must point to an .xlsx file.')
         if errs:
             raise Exception('\n'.join(errs))
 
-    def __SetProperties(self, section):
+    def __SetProperties(self, reportpath):
         """
         * Set object properties from constructor parameters.
         """
-        self.__reportpath = section["reportpath"]
+        self.__reportpath = reportpath

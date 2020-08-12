@@ -7,7 +7,7 @@
 # run in production.
 
 from datetime import datetime
-from ETLDashboard.ETL.DataReader import DataReader
+from DynamicETL_Dashboard.ETL.DataReader import DataReader
 import os
 import xlsxwriter
 

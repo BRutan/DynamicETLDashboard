@@ -192,6 +192,9 @@
     <Compile Include="Utilities\FixJsonConfigs.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\TypeConstructor.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Utilities\__init__.py">
       <SubType>Code</SubType>
     </Compile>
