@@ -4,8 +4,11 @@
 # Description:
 # * Wrapper class for required and 
 # properties necessary to create Flask endpoints.
+# Can read and write to xml templates.
 
-class FlaskEndpoint:
+from APIs.APITemplate import APITemplate
+
+class FlaskEndpoint(FlaskAPITemplate):
     """
     * Wrapper class for required and optional
     properties necessary to create Flask endpoints.

@@ -9,6 +9,7 @@
 #from APIs.ETLSummaryReportAPI import 
 from APIs.FlaskAPIFactory import FlaskAPIFactory
 from APIs.MiscControllers import healthcheck
+from APIs.RegisterEndpoints import register_endpoints
 import Configs.AllConfigs 
 from Configs.ValidatorConfig import ValidatorConfig
 from DependencyInjector.DI import inject_api_dependencies
@@ -68,28 +69,21 @@ def GetEndpoints(args, log):
     * Return list of all endpoints and blueprints 
     to add to the FlaskAPIFactory.
     """
-    # List of tuples with (func, endpoint, route, injection, handler, **options):
-    endpoints = []
-    endpoints.append(({"func" : healthcheck, "endpoint" : 'healthcheck', "route" : '/'}, { 'methods' : ['GET'] }))
-
-    return endpoints
+    # List of tuples with (func, endpoint, route, methods, injection, handler, **options):
+    return register_endpoints()
 
 def ConfigureAndRunFlask(args, log, config, endpoints):
     """
     * Set up dependency injection and Flask application.
     """
     # Set up Flask application:
-    # (appname, url, port = 5000, debug = True, injector = None)
     kwargs = { 'appname' : config.ControllerConfig.AppName, 
                'hostname' : config.ControllerConfig.Hostname, 
                'debug' : args['debug'] }
     try:
         factory = FlaskAPIFactory(**kwargs)
         for arg in endpoints:
-            if hasattr(arg, '__iter__') and len(arg) == 2:
-                factory.AddEndpoint(**arg[0], **arg[1])
-            else:
-                factory.AddEndpoint(**arg)
+            factory.AddEndpoint(**arg)
         factory.Run()
     except Exception as ex:
         log.Error('Failed to run Flask application. Reason: %s.' % str(ex))

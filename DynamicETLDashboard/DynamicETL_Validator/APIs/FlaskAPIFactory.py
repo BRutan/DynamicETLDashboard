@@ -7,7 +7,6 @@
 # blueprints, manage dependency injection
 # and run Flask application dynamically.
 
-# https://stackoverflow.com/questions/19261833/what-is-an-endpoint-in-flask
 # https://flask.palletsprojects.com/en/1.1.x/api/
 # https://flask.palletsprojects.com/en/1.1.x/config/
 # https://www.digitalocean.com/community/tutorials/how-to-make-a-web-application-using-flask-in-python-3
@@ -32,8 +31,10 @@ class FlaskAPIFactory(object):
     __defaultTemplate = {}
     __invalidNames = set(['flask'])
     __invalidNamesREs = [re.compile(name, re.IGNORECASE) for name in __invalidNames]
+    __moduleType = type(sys.modules['sys'])
     __urlPattern = r'http://.+'
     __urlRE = re.compile(__urlPattern)
+    __validMethods = set(['get', 'post', 'put'])
     def __init__(self, appname, hostname = '127.0.0.1', port = 5000, debug = True, injector = None):
         """
         * Create new factory object where controllers will later
@@ -52,6 +53,9 @@ class FlaskAPIFactory(object):
     def BlueprintNames(self):
         return self.__blueprints
     @property
+    def EndpointNames(self):
+        return self.__endpointnames
+    @property
     def Debug(self):
         return self.__debug
     @property
@@ -66,44 +70,62 @@ class FlaskAPIFactory(object):
     ####################
     def Run(self):
         """
-        * Set up dependency injector if used, and 
-        run the Flask app with all configured endpoints/blueprints.
+        * Run the Flask app with all configured endpoints/blueprints,
+        and setup FlaskInjector if used.
         """
         # Set injector if used:
+        if self.__shouldinject:
+            injector = FlaskInjection(**self.__injection).init_app(FlaskAPIFactory.__app)
         kwargs = { 'host' : self.__hostname, 'port' : self.__port, 'debug' : self.__debug }
-        #kwargs = { 'port' : self.__port, 'debug' : self.__debug }
+        # Run Flask application:
         FlaskAPIFactory.__app.run(**kwargs)
 
-    def AddEndpoint(self, func, endpoint, route, injection = None, handler = None, **options):
+    def AddEndpoint(self, func, name, route, methods, inject = False, handler = None, **options):
         """
         * Add endpoint to Flask app.
         Inputs:
         * func: callable that will be used as endpoint in Flask app.
-        * route: 
+        * name: string name of endpoint, just for identification purposes. Cannot
+        have already been used.
+        * route: string route to endpoint. Must not have already been used.
+        * methods: REST methods to use with endpoint. Must satisfy IsValidRESTMethod().
+        Optional:
+        * inject: must be a boolean indicating that function should be injected
+        using the FlaskInjector.
+        * handler: Error handler. Must be callable if provided.
+        * **options: General options for use with add_url_rule().
         """
         errs = []
         if not callable(func):
             errs.append('func must be callable.')
-        if not isinstance(endpoint, str):
-            errs.append('endpoint must be a string.')
+        if not isinstance(name, str):
+            errs.append('name must be a string.')
+        elif name in self.EndpointNames:
+            errs.append('endpoint with name has already been added.')
         if not isinstance(route, str):
             errs.append('route must be a string.')
         elif not route.startswith('/'):
             errs.append('route must start with forward slash.')
-        elif self.__HasURL(endpoint, route):
+        elif self.__HasURL(route, errs):
             errs.append('route has already been used.')
-        if not injection is None and not (not isinstance(injection, str) and hasattr('__iter__', injection)):
-            errs.append('injection must be None or an iterable of injector.inject objects.')
+        if not FlaskAPIFactory.IsValidRESTMethod(methods, errs):
+            pass
+        if not isinstance(inject, bool):
+            errs.append('inject must be a boolean.')
         if not handler is None and not callable(handler):
             errs.append('handler must be callable if provided.')
         if errs:
             raise ValueError('\n'.join(errs))
-        kwargs = { 'rule' : route, 'endpoint' : endpoint, 'view_func' : func }
+        # Strip out parameter names in route before using as name:
+        kwargs = { 'rule' : route, 'endpoint' : name, 'view_func' : func, 'methods' : methods }
         #if not handler is None:
         #    kwargs['handler'] = EndpointAction(handler)
-
+        # Add the endpoint to the API:
         FlaskAPIFactory.__app.add_url_rule(**kwargs, **options)
-        self.__UpdateUrls(endpoint, route)
+        with FlaskAPIFactory.__app.test_request_context():
+            self.__UpdateEndpoints(url_for(name), name)
+        if inject:
+            self.__UpdateInjection(func)
 
     def RegisterBlueprint(self, bp, prefix = None, url_defaults = None):
         """
@@ -149,7 +171,7 @@ class FlaskAPIFactory(object):
     @classmethod
     def DefaultTemplate(cls):
         """
-        * Output default template object that can
+        * Output default application json object that can
         be printed to file and filled in.
         """
         pass
@@ -183,6 +205,29 @@ class FlaskAPIFactory(object):
         can be used with Flask.
         """
         pass
+
+    @classmethod
+    def IsValidRESTMethod(cls, method, errs = None):
+        """
+        * Verify that passed method(s) are valid
+        to be used with endpoint.
+        Inputs:
+        * method: string method or list of string methods.
+        """
+        if not errs is None and not isinstance(errs, list):
+            raise ValueError('errs must be a list if provided.')
+        if isinstance(method, str):
+            method = [method]
+        if any([not isinstance(met, str) for met in method]):
+            raise ValueError('method must only consist of strings.')
+        # Ensure that all provided methods are valid:
+        method = [met.lower() for met in method]
+        invalid = set(method) - FlaskAPIFactory.__validMethods
+        if invalid:
+            if not errs is None:
+                errs.append('The following methods are invalid: %s.' % ','.join(invalid))
+            return False
+        return True
     
     @classmethod
     def IsValidUrl(cls, url, errs = None):
@@ -212,29 +257,49 @@ class FlaskAPIFactory(object):
         """
         * Set object properties using constructor parameters.
         """
+        injector = [] if injector is None else injector
         self.__appname = appname
         self.__hostname = hostname
         self.__baseurl = 'http://%s/' % self.__hostname
         self.__debug = debug
-        self.__injector = injector
+        self.__endpointnames = set()
+        self.__injectors = [injector] if callable(injector) else list(injector)
+        # 'modules' contains the functions that take (bind) as parameter:
+        self.__injection = { 'views' : [], 'modules' : self.__injectors }
         self.__port = port
+        self.__shouldinject = False
         self.__urls = set()
         # Start Flask app:
         FlaskAPIFactory.__app = Flask(appname)
+
+    def __UpdateInjection(self, view):
+        """
+        * Update stored injection parameters to
+        be fed into the FlaskInjector.
+        """
+        self.__injection['views'].append(view)
+        self.__shouldinject = True 
         
-    def __HasURL(self, endpoint, route):
+    def __HasURL(self, route, errs = None):
         """
         * Check that route has not already been added.
         """
-        url = r'%s%s%s' % (self.__baseurl, endpoint, route)
-        return url in self.__urls
+        if not errs is None and not isinstance(errs, list):
+            raise ValueError('errs must be a list if provided.')
+        url = r'%s%s' % (self.__baseurl, route.lstrip('/'))
+        result = url in self.__urls
+        if result and not errs is None:
+            errs.append('%s has already been used.' % url)
+        return result
 
-    def __UpdateUrls(self, endpoint, route):
+    def __UpdateEndpoints(self, route, name):
         """
-        * Add url to stored URLs to keep
-        track of which urls the Flask application can use.
+        * Update used endpoint names and full URLs 
+        to keep track of which urls are currently being used 
+        and the names of the endpoints.
         """
-        self.__urls.add(r'%s\%s%s' % (self.__baseurl, endpoint, route))
+        self.__urls.add('%s%s' % (self.__baseurl, route.lstrip('/')))
+        self.__endpointnames.add(name)
 
     @staticmethod
     def __Validate(appname, hostname, port, debug, injector):
@@ -248,7 +313,10 @@ class FlaskAPIFactory(object):
         #    pass
         if not isinstance(debug, bool):
             errs.append('debug must be boolean.')
-        if not injector is None and not callable(injector):
-            errs.append('injector must be callable if provided.')
+        if not injector is None:
+            if not callable(injector) and not (not isinstance(injector, str) and hasattr(injector, '__iter__')):
+                errs.append('injector must be callable or iterable of callables if provided.')
+            elif not (not isinstance(injector, str) and hasattr(injector, '__iter__')) and any([not callable(at) for at in injector]):
+                errs.append('injector must only contain callables if an iterable.')
         if errs:
             raise ValueError('\n'.join(errs))

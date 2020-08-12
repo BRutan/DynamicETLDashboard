@@ -28,7 +28,7 @@ class ETLSummaryReportConfig:
     # Properties:
     ####################
     @property
-    def Reportpath(self):
+    def ReportPath(self):
         return self.__reportpath
 
     ####################

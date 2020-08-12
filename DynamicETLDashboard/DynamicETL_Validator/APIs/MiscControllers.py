@@ -7,7 +7,10 @@
 from flask import Blueprint, Flask, make_response, Response, url_for
 
 def healthcheck():
-    return Response(status = 200)
+    """
+    * Indicate that application is working.
+    """
+    return "Working."
 
 
 
