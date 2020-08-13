@@ -43,7 +43,7 @@
     <Compile Include="Configs\AllConfigs.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configs\ControllerConfig.py" />
+    <Compile Include="Configs\AppConfig.py" />
     <Compile Include="Configs\ValidatorConfig.py" />
     <Compile Include="Configs\ETLSummaryReportConfig.py" />
     <Compile Include="Configs\__init__.py">

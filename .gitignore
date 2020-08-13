@@ -19,3 +19,5 @@ __pycache__/
 *.csv
 # Copies of configuration files:
 * - Copy.*
+/Documentation/~$namicETL_Dashboard Documentation.docx
+/Documentation/~WRL3352.tmp

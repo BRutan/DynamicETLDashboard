@@ -49,7 +49,7 @@ def GetConfig(args):
     except Exception as ex:
         msg = "Could not pull config from %s. Reason: %s." % (args['apijson'], str(ex))
         sys.exit(0)
-    log = ScriptLogger(args['logpath'], config.ControllerConfig.AppName)
+    log = ScriptLogger(args['logpath'], config.AppConfig.AppName)
     
     return config, log
 
@@ -78,8 +78,8 @@ def ConfigureAndRunFlask(args, log, config, endpoints, injector):
     * Set up dependency injection and Flask application.
     """
     # Set up Flask application:
-    kwargs = { 'appname' : config.ControllerConfig.AppName, 
-               'hostname' : config.ControllerConfig.Hostname, 
+    kwargs = { 'appname' : config.AppConfig.AppName, 
+               'hostname' : config.AppConfig.Hostname, 
                'debug' : args['debug'], 'injector' : injector }
     try:
         factory = FlaskAPIFactory(**kwargs)

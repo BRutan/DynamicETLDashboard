@@ -1,5 +1,5 @@
 #####################################
-# ControllerConfig.py
+# AppConfig.py
 #####################################
 # Description:
 # * Object to store flask API configurations
@@ -8,7 +8,7 @@
 import copy
 import re
 
-class ControllerConfig:
+class AppConfig:
     """
     * Object to store flask API configurations
     from .json file for generation at runtime.
@@ -25,7 +25,7 @@ class ControllerConfig:
         * hostname: Dictionary object containing all
         required configurations for API.
         """
-        ControllerConfig.__Validate(appname, hostname)
+        AppConfig.__Validate(appname, hostname)
         self.__SetProperties(appname, hostname)
 
     ####################
@@ -43,7 +43,7 @@ class ControllerConfig:
     ####################
     @classmethod
     def RequiredAttrs(cls):
-        return copy.deepcopy(ControllerConfig.__req)
+        return copy.deepcopy(AppConfig.__req)
 
     ####################
     # Private Helpers:
@@ -58,8 +58,8 @@ class ControllerConfig:
             errs.append('appname must be a string.')
         if not isinstance(hostname, str):
             errs.append('hostname must be a string.')
-        #elif not ControllerConfig.__urlPatternRE.match(hostname):
-        #    errs.append('hostname must match pattern %s.' % ControllerConfig.__urlPattern)
+        #elif not AppConfig.__urlPatternRE.match(hostname):
+        #    errs.append('hostname must match pattern %s.' % AppConfig.__urlPattern)
         if errs:
             raise Exception('\n'.join(errs))
 

@@ -8,7 +8,7 @@
 # be injected create one in Configs package and 
 # add here.
 
-from Configs.ControllerConfig import ControllerConfig
+from Configs.AppConfig import AppConfig
 from Configs.ETLSummaryReportConfig import ETLSummaryReportConfig
 
 

@@ -5,7 +5,7 @@
 # * Register one config object for each
 # API. Note that all configs class members must be public.
 
-from Configs.ControllerConfig import ControllerConfig
+from Configs.AppConfig import AppConfig
 from Configs.ETLSummaryReportConfig import ETLSummaryReportConfig
 from DynamicETL_Dashboard.Utilities.TypeConstructor import TypeConstructor
 import json
@@ -17,7 +17,7 @@ class ValidatorConfig:
     injected into Flask controllers.
     """
     __attributeMap = { "apis" : ({ "etlsummaryreport" : (ETLSummaryReportConfig, "etlsummaryreportconfig") }),
-                       "controllerconfig" : (ControllerConfig, "controllerconfig") }
+                       "appconfig" : (AppConfig, "appconfig") }
     def __init__(self, path):
         """
         * Convert all target sections in json file
@@ -32,8 +32,8 @@ class ValidatorConfig:
     # Properties:
     ####################
     @property
-    def ControllerConfig(self):
-        return self.controllerconfig
+    def AppConfig(self):
+        return self.appconfig
     @property
     def ETLSummaryReportConfig(self):
         return self.etlsummaryreportconfig

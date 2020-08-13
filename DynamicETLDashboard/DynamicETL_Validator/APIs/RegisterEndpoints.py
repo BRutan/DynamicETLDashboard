@@ -16,9 +16,8 @@ def register_endpoints():
     fed into the FlaskAPIFactory.
     """
     endpoints = []
-    endpoints.append({"func" : healthcheck, "name" : 'healthcheck', "route" : '/healthcheck', 'methods' : ['GET'] })
-    # @etlsummaryreport_bp.route('/<databody>', methods = ['POST'])
-    endpoints.append({"func" : ETLSummaryReporthealthcheck, "name" : 'etlsummaryreporthealthcheck', "route" : '/ETLSummaryReport/healthcheck', 'methods' : ['GET'], "inject" : True })
-    endpoints.append({"func" : GenerateReport, "name" : 'GenerateReport', "route" : '/ETLSummaryReport/GenerateReport/', 'methods' : ['POST'], "inject" : True })
+    endpoints.append({"func" : healthcheck, "name" : "healthcheck", "route" : "/healthcheck", "methods" : ["GET"] })
+    endpoints.append({"func" : ETLSummaryReporthealthcheck, "name" : "etlsummaryreporthealthcheck", "route" : "/ETLSummaryReport/healthcheck", "methods" : ["GET"], "inject" : True })
+    endpoints.append({"func" : GenerateReport, "name" : "GenerateReport", "route" : "/ETLSummaryReport/GenerateReport/", "methods" : ["POST"], "inject" : True })
 
     return endpoints

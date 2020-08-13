@@ -1,0 +1,14 @@
+{
+  "etl": "TestETL",
+  "tablename" : "TestETLTable",
+  "database": "MetricsDYETL",
+  "sourcedata" : { "Col1" : [ "A", "B", "C" ]},
+  "insertdata": { "Col1" : [ "A", "B" ]},
+  "server": "nj1sql13",
+  "status" : "Completed",
+  "preops" : ["PreOp1", "PreOp2"],
+  "inputops" : ["InputOp1", "InputOp2", "InputOp3"],
+  "postops" : "PostOp",
+  "starttime" : "2020-02-15 12:05",
+  "endtime" : "2020-02-15 12:06"
+}
