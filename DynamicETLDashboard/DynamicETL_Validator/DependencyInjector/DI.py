@@ -5,7 +5,8 @@
 # * Inject dependencies into flask apis.
 
 from DynamicETL_Dashboard.Utilities.TypeConstructor import TypeConstructor
-from injector import singleton
+from injector import ClassProvider, InstanceProvider, Injector, SingletonScope, singleton
+from DynamicETL_Dashboard.Logging.ScriptLogger import ScriptLogger
 import sys
 
 def inject_api_dependencies(binder, parentcfg, allconfigs, *objs, **kwargs):
@@ -24,6 +25,7 @@ def inject_api_dependencies(binder, parentcfg, allconfigs, *objs, **kwargs):
         allconfigs = sys.modules[allconfigs]
     if errs:
         raise ValueError('\n'.join(errs))
+
     # Convert .json file into parent configuration object:
     parent = TypeConstructor.ConstructTypeKwargs(parentcfg, **kwargs)
     # Extract each member from the parent object for dependency injection:
@@ -31,7 +33,14 @@ def inject_api_dependencies(binder, parentcfg, allconfigs, *objs, **kwargs):
     for cfg in configs:
         cfgName = configs[cfg][1]
         cfgType = configs[cfg][2]
-        binder.bind(getattr(parent, cfgName), to=cfgType, scope=singleton)
+        binder.bind(cfgType, to=getattr(parent, cfgName))
     # Bind additional objects:
     for obj in objs:
-        binder.bind(obj, to=type(obj), scope=singleton)
+        binder.bind(type(obj), to=obj)
+
+    # Test:
+    #injector = Injector()
+    #provider = InstanceProvider(ScriptLogger)
+    #sng = SingletonScope(injector)
+    #a = sng.get(ScriptLogger, provider)._instance
+    #b = sng.get(ScriptLogger, provider)

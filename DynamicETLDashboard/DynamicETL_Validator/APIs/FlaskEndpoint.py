@@ -12,6 +12,7 @@ class FlaskEndpoint(FlaskAPITemplate):
     """
     * Wrapper class for required and optional
     properties necessary to create Flask endpoints.
+    Can read and write from/to xml templates.
     """
     def __init__(self, route):
         pass

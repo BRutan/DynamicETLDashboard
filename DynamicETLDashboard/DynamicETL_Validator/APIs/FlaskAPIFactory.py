@@ -14,11 +14,15 @@
 # https://stackoverflow.com/questions/3523028/valid-characters-of-a-hostname
 
 from flask import Blueprint, Flask, url_for
+from flask.views import View, MethodView
 from flask_injector import FlaskInjector
 import json
 import re
 import socket
 import sys
+
+# TODO: Implement View, MethodView as templates for
+# controllers.
 
 class FlaskAPIFactory(object):
     """
@@ -39,6 +43,13 @@ class FlaskAPIFactory(object):
         """
         * Create new factory object where controllers will later
         be added.
+        Inputs:
+        * appname: Name of Flask application.
+        Optional:
+        * hostname: Address to host application.
+        * port: 
+        * debug:
+        * injector:
         """
         FlaskAPIFactory.__Validate(appname, hostname, port, debug, injector)
         self.__SetProperties(appname, hostname, port, debug, injector)
@@ -75,7 +86,8 @@ class FlaskAPIFactory(object):
         """
         # Set injector if used:
         if self.__shouldinject:
-            injector = FlaskInjection(**self.__injection).init_app(FlaskAPIFactory.__app)
+            kwargs = { 'app' : FlaskAPIFactory.__app, 'modules' : self.__injection['modules']}
+            injector = FlaskInjector(**kwargs)
         kwargs = { 'host' : self.__hostname, 'port' : self.__port, 'debug' : self.__debug }
         # Run Flask application:
         FlaskAPIFactory.__app.run(**kwargs)
@@ -277,6 +289,11 @@ class FlaskAPIFactory(object):
         * Update stored injection parameters to
         be fed into the FlaskInjector.
         """
+        # Throw exception if a view was provided but an injector function
+        # was not provided at the constructor:
+        if not self.__injection['modules']:
+            msg = 'Please provide injector at constructor before provided views to be injected.'
+            raise ValueError(msg)
         self.__injection['views'].append(view)
         self.__shouldinject = True 
         
@@ -316,7 +333,7 @@ class FlaskAPIFactory(object):
         if not injector is None:
             if not callable(injector) and not (not isinstance(injector, str) and hasattr(injector, '__iter__')):
                 errs.append('injector must be callable or iterable of callables if provided.')
-            elif not (not isinstance(injector, str) and hasattr(injector, '__iter__')) and any([not callable(at) for at in injector]):
+            elif (not isinstance(injector, str) and hasattr(injector, '__iter__')) and any([not callable(at) for at in injector]):
                 errs.append('injector must only contain callables if an iterable.')
         if errs:
             raise ValueError('\n'.join(errs))

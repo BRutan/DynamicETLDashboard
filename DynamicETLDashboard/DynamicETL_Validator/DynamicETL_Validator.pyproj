@@ -52,6 +52,9 @@
     <Compile Include="DependencyInjector\DI.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DependencyInjector\InjectionFactory.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DependencyInjector\__init__.py">
       <SubType>Code</SubType>
     </Compile>

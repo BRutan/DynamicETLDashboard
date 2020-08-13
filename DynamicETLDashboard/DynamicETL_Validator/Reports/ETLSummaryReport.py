@@ -7,6 +7,7 @@
 # run in production.
 
 from datetime import datetime
+import dateutil.parser as dtparse
 from DynamicETL_Dashboard.ETL.DataReader import DataReader
 import os
 import xlsxwriter
@@ -18,9 +19,9 @@ class ETLSummaryReport:
     run in production.
     """
     __headerFormat = {'bold': True, 'font_color': 'white', 'bg_color' : 'black'}
-    __optional = set(['pre', 'input', 'post'])
-    __req = set(['etl', 'tablename', 'database', 'data', 'server', 'status', 'starttime', 'endtime'])
-    RequiredArgs = __req
+    __optional = { 'preops' : (list, str), 'inputops' : (list, str), 'postops' : (list, str) }
+    __req = { 'etl' : str, 'tablename' : str, 'database' : str, 'sourcedata' : dict, 'insertdata' : dict, 
+              'server' : str, 'status' : str, 'starttime' : (str, datetime), 'endtime' : (str, datetime) }
     def __init__(self, **kwargs):
         """
         * Accumulate data necessary to generate report 
@@ -29,7 +30,8 @@ class ETLSummaryReport:
         * etl: Name of ETL.
         * tablename: Name of table associated with ETL.
         * database: Database where ETL table exists.
-        * data: json dictionary containing all inserted data.
+        * sourcedata: json dictionary containing all data rows from original source.
+        * insertdata: json dictionary containing all data rows inserted into target.
         * server: Server hosting database and table.
         * status: String detailing whether ETL completed successfully or not.
         * starttime: Datetime when ETL started processing.
@@ -39,10 +41,9 @@ class ETLSummaryReport:
         """
         # Normalize and validate arguments:
         kwargs = { arg.lower() : kwargs[arg] for arg in kwargs if isinstance(arg, str) }
-        ETLSummaryReport.__Validate(**kwargs)
+        ETLSummaryReport.__Validate(True, **kwargs)
         self.__GetProperties(**kwargs)
-        self.__AccumulateAttributes(**kwargs)
-
+        
     #################
     # Properties:
     #################
@@ -59,9 +60,6 @@ class ETLSummaryReport:
     def ETLStatus(self):
         return self.__etlstatus
     @property
-    def FileRowCount(self):
-        return self.__filerowcount
-    @property
     def InputOperations(self):
         return self.__inputoperations
     @property
@@ -77,6 +75,9 @@ class ETLSummaryReport:
     def Server(self):
         return self.__server
     @property
+    def SourceRowCount(self):
+        return self.__sourcerowcount
+    @property
     def StartTime(self):
         return self.__starttime
     @property
@@ -86,6 +87,34 @@ class ETLSummaryReport:
     #################
     # Interface Methods:
     #################
+    @classmethod
+    def ArgsAreValid(cls, databody, errs = None):
+        """
+        * Indicate whether or not databody is valid and
+        can be used to generate reports.
+        Inputs;
+        * databody: json dictionary containing arguments
+        to generate report with.
+        Optional:
+        * errs: List to include errors.
+        """
+        if not errs is None and not isinstance(errs, list):
+            raise ValueError('errs must be a list if provided.')
+        issues = ETLSummaryReport.__Validate(False, **databody)
+        if issues and errs:
+            errs = issues
+        if issues:
+            return False
+        return True
+
+    @classmethod
+    def RequiredArguments(cls):
+        """
+        * Return required arguments and types
+        necessary to generate report.
+        """
+        return copy.deepcopy(ETLSummaryReport.__req)
+
     def GenerateReport(self, reportpath):
         """
         * Generate ETLSummaryReport at path.
@@ -94,8 +123,6 @@ class ETLSummaryReport:
             raise Exception('reportpath must be a string.')
         elif not reportpath.endswith('xlsx'):
             raise Exception('reportpath must point to .xlsx file.')
-        else:
-            pass
         # Generate report:
         wb = xlsxwriter.Workbook(reportpath)
         self.__FillData(wb)
@@ -129,40 +156,62 @@ class ETLSummaryReport:
         before analyzing.
         """
         self.__database = kwargs['database']
-        self.__endtime = kwargs['endtime']
+        
         self.__etlname = kwargs['etl']
         self.__etlstatus = kwargs['status']
-        self.__filerowcount = 0
-        self.__inputoperations = list(kwargs['input'] if 'input' in kwargs and not kwargs['input'] is None else list())
+        self.__sourcerowcount = 0
         self.__insertionrowcount = 0
-        self.__postoperations = list(kwargs['post'] if 'post' in kwargs and not kwargs['post'] is None else list())
-        self.__preoperations = list(kwargs['pre'] if 'pre' in kwargs and not kwargs['pre'] is None else list())
         self.__server = kwargs['server']
-        self.__starttime = kwargs['starttime']
+        self.__starttime = dtparse.parse(kwargs['starttime'])
+        self.__endtime = dtparse.parse(kwargs['endtime'])
         self.__tablename = kwargs['tablename']
+        self.__inputoperations = []
+        self.__postoperations = []
+        self.__preoperations = []
+        self.__SetOps(**kwargs)
+        self.__AccumulateStatistics(**kwargs)
+        
+    def __SetOps(self, **kwargs):
+        """
+        * Set attributes about operations performed.
+        """
+        if 'inputops' in kwargs:
+            if isinstance(kwargs['inputops'], str):
+                kwargs['inputops'] = [kwargs['inputops']]
+            self.__inputoperations = set(kwargs['inputops'])
+        if 'postops' in kwargs:
+            if isinstance(kwargs['postops'], str):
+                kwargs['postops'] = [kwargs['postops']]
+            self.__postoperations = set(kwargs['postops'])
+        if 'preops' in kwargs:
+            if isinstance(kwargs['preops'], str):
+                kwargs['preops'] = [kwargs['preops']]
+            self.__preoperations = set(kwargs['preops'])
 
-    def __AccumulateAttributes(self, **kwargs):
+    def __AccumulateStatistics(self, **kwargs):
         """
-        * Accumulate necessary attributes to generate report.
+        * Accumulate statistics regarding ETL.
         """
-        self.__ReviewData(kwargs['data'])
+        self.__ReviewData(**kwargs)
         #self.__CompareSources(**kwargs)
 
-    def __ReviewData(self, data):
+    def __ReviewData(self, **kwargs):
         """
         * Accumulate ETL performance attributes by analysing sent dataset.
         """
         # Assuming that data has following form: {{ColName->Value}}:
-        self.__insertionrowcount = len(data)
+        colSource = list(kwargs['sourcedata'].keys())[0]
+        colInsert = list(kwargs['insertdata'].keys())[0]
+        self.__sourcerowcount = len(kwargs['sourcedata'][colSource])
+        self.__insertionrowcount = len(kwargs['insertdata'][colInsert])
 
     def __CompareSources(self, **kwargs):
-        """
+        """ DEPRECATED
         * Compare the input file versus the data that was
         loaded into the table.
         """
-        # NOTE: Potentially use REST API with DYEL.Service to get data as opposed
-        # to reading original file.
-        # Pull original data from file:
+        # NOTE: this is deprecated, but potentially can be reimplemented, since
+        # api is naive about data source to maintain loose coupling.
         errs = []
         try:
             inputData = DataReader.Read(kwargs['inputfilepath'], delim = kwargs['delim'])
@@ -182,37 +231,32 @@ class ETLSummaryReport:
             raise Exception('\n'.join(errs))
 
     @staticmethod
-    def __Validate(**kwargs):
+    def __Validate(raiseErr, **kwargs):
         """
         * Validate constructor parameters.
         """
         errs = []
         # Ensure all required arguments present:
-        missing = ETLSummaryReport.__req - set(kwargs)
+        missing = set(ETLSummaryReport.__req) - set(kwargs)
         if missing:
-            Exception('The following required arguments are missing: %s' % ','.join(missing))
+            raise Exception('The following required arguments are missing: %s' % ','.join(missing))
         # Validate required arguments:
-        if not isinstance(kwargs['etl'], str):
-            errs.append('etl must be a string.')
-        if not isinstance(kwargs['tablename'], str):
-            errs.append('tablename must be a string.')
-        if not isinstance(kwargs['database'], str):
-            errs.append('database must be a string.')
-        if not isinstance(kwargs['data'], dict):
-            errs.append('data must be a dictionary.')
-        if not isinstance(kwargs['server'], str):
-            errs.append('server must be a string.')
-        if not isinstance(kwargs['status'], str):
-            errs.append('status must be a string.')
-        if not isinstance(kwargs['starttime'], datetime):
-            errs.append('starttime must be a datetime object.')
-        if not isinstance(kwargs['endtime'], datetime):
-            errs.append('endtime must be a datetime object.')
+        for arg in ETLSummaryReport.__req:
+            _type = ETLSummaryReport.__req[arg]
+            if not isinstance(kwargs[arg], _type):
+                if hasattr(_type, '__iter__'):
+                    errs.append('%s must be one of: %s.' % ','.join([str(tp) for tp in _type]))
+                else:
+                    errs.append('%s must be a %s.' % str(tp))
         # Validate optional arguments:
         for op in ETLSummaryReport.__optional:
-            if op == 'delim':
-                continue
-            if op in kwargs and not kwargs[op] is None and not (not isinstance(kwargs[op], str) and hasattr(kwargs[op], '__iter__')):
-                errs.append('%s must be a container.' % op)
-        if errs:
+            _type = ETLSummaryReport.__optional[op]
+            if op in kwargs and not isinstance(kwargs[op], _type):
+                if hasattr(_type, '__iter__'):
+                    errs.append('%s must be one of: %s.' % ','.join([str(tp) for tp in _type]))
+                else:
+                    errs.append('%s must be a %s.' % str(tp))    
+        if errs and raiseErr:
             raise Exception('\n'.join(errs))
+        elif errs:
+            return errs

@@ -15,6 +15,7 @@ from Configs.ValidatorConfig import ValidatorConfig
 from DependencyInjector.DI import inject_api_dependencies
 from DynamicETL_Dashboard.Logging.ScriptLogger import ScriptLogger
 from Utilities.LoadArgs import DynamicETLValidatorJsonArgs
+from Reports.ETLSummaryReport import ETLSummaryReport
 import sys
 
 def RunAPIs():
@@ -23,9 +24,9 @@ def RunAPIs():
     """
     args = GetArgs()
     config, log = GetConfig(args)
-    #injector = SetInjector(args, config, log)
+    injector = SetInjector(args, config, log)
     endpoints = GetEndpoints(args, log)
-    ConfigureAndRunFlask(args, log, config, endpoints)
+    ConfigureAndRunFlask(args, log, config, endpoints, injector)
 
 def GetArgs():
     """
@@ -72,14 +73,14 @@ def GetEndpoints(args, log):
     # List of tuples with (func, endpoint, route, methods, injection, handler, **options):
     return register_endpoints()
 
-def ConfigureAndRunFlask(args, log, config, endpoints):
+def ConfigureAndRunFlask(args, log, config, endpoints, injector):
     """
     * Set up dependency injection and Flask application.
     """
     # Set up Flask application:
     kwargs = { 'appname' : config.ControllerConfig.AppName, 
                'hostname' : config.ControllerConfig.Hostname, 
-               'debug' : args['debug'] }
+               'debug' : args['debug'], 'injector' : injector }
     try:
         factory = FlaskAPIFactory(**kwargs)
         for arg in endpoints:
