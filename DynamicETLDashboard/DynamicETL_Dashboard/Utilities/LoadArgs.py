@@ -163,11 +163,14 @@ class Arguments(object):
         if missing:
             raise Exception(' '.join(['The following required arguments are missing:', ', '.join(missing)]))
 
+        #############################
+        # Required Arguments:
+        #############################
         # "etlname":
         if not isinstance(args['etlname'], str):
             errs.append('etlname must be a string.')
         
-        # "data" arguments:
+        # "data":
         if 'path' not in args['data']:
             missing.append('data::path')
         elif not os.path.isdir(args['data']['path']):
@@ -179,21 +182,30 @@ class Arguments(object):
         if 'delim' in args['data'] and not isinstance(args['data']['delim'], str):
             errs.append('data::delim must be a string.')
         
-        # "filedatereg" arguments:
+        # "filedatereg":
         if not IsRegex(args['filedatereg']['Regex']):
             errs.append(' '.join(['(filedatereg)', args['filedatereg']['Regex'], 'Not a valid regular expression.']))
 
-        # "outputfolder" arguments:
+        # "outputfolder":
         if not os.path.isdir(args['outputfolder']):
            errs.append('(outputfolder) Folder does not exist.')
         elif not args['outputfolder'].endswith('\\'):
             args['outputfolder'] = args['outputfolder'] + '\\'
         
-        # "filenamereg" arguments:
+        # "filenamereg":
         if 'filenamereg' in args and not IsRegex(args['filenamereg']):
             errs.append(' '.join(['(filenamereg) ', args['filenamereg'], ' is not a valid regular expression.']))
 
-        # "convert" arguments:
+        
+        #####################
+        # Optional:
+        #####################
+        # "allnull" arguments:
+        if 'allnull' in args:
+            if not args['allnull'].lower() in ['true', 'false']:
+                errs.append('allnull must be "true"/"false".')
+
+        # "convert":
         if 'convert' in args:
             if not ('convertpath' in args['convert'] and 'toextension' in args['convert']):
                 errs.append('convert requires "toextension" and "convertpath" as attributes.')
@@ -201,14 +213,6 @@ class Arguments(object):
                 errs.append('%s is invalid conversion extension.' % args['convert']['toextension'])
             if 'convertpath' in args['convert'] and not os.path.exists(args['convert']['convertpath']):
                 errs.append('convertpath does not exist.')
-
-        #####################
-        # Optional args:
-        #####################
-        # "allnull" arguments:
-        if 'allnull' in args:
-            if not args['allnull'].lower() in ['true', 'false']:
-                errs.append('allnull must be "true"/"false".')
 
         if missing:
             errs.append('The following required subarguments are missing: {%s}' % ', '.join(missing))

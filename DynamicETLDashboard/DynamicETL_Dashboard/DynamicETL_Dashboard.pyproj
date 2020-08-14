@@ -255,7 +255,6 @@
     <Content Include="AppsettingsFiles\FileWatcher_AppSettings-template.json" />
     <Content Include="AppsettingsFiles\Service_Appsettings.json" />
     <Content Include="AppsettingsFiles\TransferId_297.xml" />
-    <Content Include="Documentation.docx" />
     <Content Include="ScriptArgs\ETLDashboard.json" />
     <Content Include="AppsettingsFiles\etlfilepaths.json" />
     <Content Include="ScriptArgs\postargs.json" />
