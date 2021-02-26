@@ -12,13 +12,7 @@ from Logging.DynamicETLServiceIssueParser import DynamicETLServiceIssueParser
 import json
 import os
 import re
-from Tables.InsertProcedureGenerator import InsertProcedureGenerator
 from Utilities.Helpers import LoadJsonFile
-
-
-def generateprocedure():
-    gen = InsertProcedureGenerator('.', 'MetricsDYETL')
-    gen.Generate('JIRAData', 'InsertJIRAData', 'C:\\Users\\berutan\\Desktop\\Projects\\Temp\\JIRAInsertProcedure.sql')
 
 
 def comparetraderequests():
