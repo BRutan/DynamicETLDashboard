@@ -1,5 +1,5 @@
 #####################################
-# TSQLInterface.py
+# tsql.py
 #####################################
 # Description:
 # * Perform SELECT, INSERT, UPDATE, etc queries on TSQL server 

@@ -6,8 +6,8 @@
 # for use with ASP.Net WebApis to directly insert data
 # into target tables.
 
+from Database.tsql import TSQLInterface
 import os
-from Tables.TSQLInterface import TSQLInterface
 
 class InsertProcedureGenerator:
     """

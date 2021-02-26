@@ -8,9 +8,9 @@
 
 from argparse import ArgumentParser, ArgumentError
 import dateutil.parser as dtparser
-from Guggenheim.Reports.ETLSummaryReport import ETLSummaryReport
 from Logging.ScriptLogger import ScriptLogger
 import os
+from Reports.ETLSummaryReport import ETLSummaryReport
 from Utilities.LoadArgs import GenerateETLSummaryReportJsonArgs
 from Utilities.Helpers import StringIsDT
 import sys

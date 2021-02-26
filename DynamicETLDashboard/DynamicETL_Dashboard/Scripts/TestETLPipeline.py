@@ -16,6 +16,7 @@
 # 3) Generate report accounting for differences between data in table versus
 # source file.
 
+from Database.tsql import TSQLInterface
 from datetime import datetime
 from ETL.DataComparer import DataComparer
 from ETL.DataReader import DataReader
@@ -25,7 +26,6 @@ import json
 import os
 from shutil import copyfile
 import sys
-from Tables.TSQLInterface import TSQLInterface
 from time import sleep
 from Utilities.FixJsonConfigs import FixJsonConfigs
 from Utilities.Helpers import Countdown

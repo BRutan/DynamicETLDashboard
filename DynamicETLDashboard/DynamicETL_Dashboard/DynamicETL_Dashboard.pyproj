@@ -24,6 +24,15 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Database\base.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\postgres.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Logging\ScriptLogger.py">
       <SubType>Code</SubType>
     </Compile>
@@ -79,7 +88,7 @@
     <Compile Include="ETL\PostArgsFactory.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tables\TSQLInterface.py">
+    <Compile Include="Database\tsql.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Exceptions\CustomExceptions.py">
@@ -238,6 +247,7 @@
     <Folder Include="Logging\" />
     <Folder Include="Log\" />
     <Folder Include="Config\" />
+    <Folder Include="Database\" />
     <Folder Include="Reports\" />
     <Folder Include="Tables\" />
     <Folder Include="ScriptArgs\" />

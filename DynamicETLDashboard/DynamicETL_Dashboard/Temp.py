@@ -4,6 +4,7 @@
 # Description:
 # * Ad-hoc testing ground.
 
+from Database.tsql import TSQLInterface
 from ETL.DataReader import DataReader
 from ETL.DataComparer import DataComparer
 from ETL.LocalLargeDataJobPoster import LocalLargeDataJobPoster
@@ -12,7 +13,6 @@ import json
 import os
 import re
 from Tables.InsertProcedureGenerator import InsertProcedureGenerator
-from Tables.TSQLInterface import TSQLInterface
 from Utilities.Helpers import LoadJsonFile
 
 

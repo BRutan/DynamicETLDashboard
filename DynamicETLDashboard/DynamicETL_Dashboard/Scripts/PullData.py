@@ -5,7 +5,7 @@
 # * Pull data using query, store in file.
 
 
-from Tables.TSQLInterface import TSQLInterface
+from Database.tsql import TSQLInterface
 from Utilities.LoadArgs import PullDataJsonArgs
 
 def PullData():
