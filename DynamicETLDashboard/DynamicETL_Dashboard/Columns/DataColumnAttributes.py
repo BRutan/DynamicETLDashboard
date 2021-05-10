@@ -17,6 +17,7 @@ from pandas import DataFrame, concat
 import re
 from sortedcontainers import SortedDict
 import string
+import time
 from Utilities.FileConverter import FileConverter
 import xlsxwriter
 
@@ -59,7 +60,7 @@ class DataColumnAttributes(object):
     ###################
     # Interface Methods:
     ###################
-    def GetDataAttributes(self, path, dateFormat, fileExp = None, filePaths = None, sheets = None, delim = None):
+    def GetDataAttributes(self, path, fileExp, dateFormat = None, filePaths = None, sheets = None, delim = None, recursive = False, skiprows = None):
         """
         * Get all column attributes in files at path or at provided paths.
         Inputs:
@@ -71,17 +72,19 @@ class DataColumnAttributes(object):
         * filePaths: Dictionary mapping { FileName -> Path }.
         * sheets: Sheets to use if using xls/xlsx file (will create one ETL/table definition per sheet).
         * delim: String delimiter used in csv file.
+        * recursive: Search for all folders within folder to find matching files.
         """
         errs = []
         if not isinstance(path, str):
             errs.append("path must be a string.")
-        if not isinstance(dateFormat, dict):
-            errs.append("dateFormat must be a dictionary with keys ['regex', 'dateformat' ].")
-        elif not 'regex' in dateFormat and 'dateformat' not in dateFormat:
-            errs.append("dateFormat must have 'regex' and 'dateformat' keys.")
+        if not dateFormat is None:
+            if not isinstance(dateFormat, dict):
+                errs.append("dateFormat must be a dictionary with keys ['regex', 'dateformat'].")
+            elif not 'regex' in dateFormat and 'dateformat' not in dateFormat:
+                errs.append("dateFormat must have 'regex' and 'dateformat' keys.")
         if fileExp and not isinstance(fileExp, DataColumnAttributes.__regType):
             errs.append("fileExp must be a regular expression object, or None.")
-        if filePaths and not isinstance(filePaths, dict):
+        if not filePaths is None and not isinstance(filePaths, dict):
             errs.append('filePaths must be a dictionary mapping { FileName -> Path } or None.')
         if not sheets is None and not isinstance(sheets, list):
             errs.append('sheets must be a list if provided.')
@@ -92,16 +95,16 @@ class DataColumnAttributes(object):
         self.__dateFormat = dateFormat
         # Get all files that match data file expression at provided path if not supplied:
         if filePaths is None:
-            filePaths = FileConverter.GetAllFilePaths(path, fileExp)
+            filePaths = FileConverter.GetAllFilePaths(path,fileExp,recursive)
             if len(filePaths) == 0:
                 raise Exception('Could not find any matching files matching regex.')
         # Get column attributes of all target files:
         for file in filePaths:
             path = filePaths[file]
             if self.__sheets is None:
-                self.__ExtractFile(path, delim)
+                self.__ExtractFile(path,delim,skiprows)
             else:
-                self.__ExtractAllSheets(path)
+                self.__ExtractAllSheets(path,skiprows)
         self.__filepaths = set([filePaths[key] for key in filePaths])
         # Determine if columns have changed:
         prevAttrs = None
@@ -185,11 +188,11 @@ class DataColumnAttributes(object):
     ##################
     # Private Helpers:
     ################## 
-    def __ExtractFile(self, path, delim = None):
+    def __ExtractFile(self, path, delim = None, skiprows = None):
         """
         * Extract data from single file.
         """
-        currAttrs = ColumnAttributes(path, self.__dateFormat, delim = delim)
+        currAttrs = ColumnAttributes(path, self.__dateFormat, delim = delim, skiprows = skiprows)
         if currAttrs.Error:
             tail, file = os.path.split(path)
             self.__errors[file] = currAttrs.Error
@@ -198,7 +201,7 @@ class DataColumnAttributes(object):
             # Map { FileDate -> ColumnAttributes }:
             self.__dateToAttrs[currAttrs.FileDate] = currAttrs
 
-    def __ExtractAllSheets(self, path):
+    def __ExtractAllSheets(self, path, skiprows):
         """
         * Extract column attributes from multiple target sheets, to each be implemented
         as own ETLs.
@@ -206,7 +209,7 @@ class DataColumnAttributes(object):
         filedate = self.__GetFileDate(path)
         self.__dateToAttrs[filedate] = SortedDict()
         for sheetname in self.__sheets:
-            currAttrs = ColumnAttributes(path, self.__dateFormat, sheetname)
+            currAttrs = ColumnAttributes(path, self.__dateFormat, sheet = sheetname, skiprows = skiprows)
             if currAttrs.Error:
                 self.__errors[file][sheetname] = currAttrs.Error
             else:
@@ -233,9 +236,13 @@ class DataColumnAttributes(object):
         """
         * Extract file date from file name.
         """
-        format = { arg.lower() : self.__dateFormat[arg] for arg in self.__dateFormat }
-        match = format['regex'].search(path)[0]
-        return datetime.strptime(match, format['dateformat'])
+        if not self.__dateFormat is None:
+            format = { arg.lower() : self.__dateFormat[arg] for arg in self.__dateFormat }
+            match = format['regex'].search(path)[0]
+            return datetime.strptime(match, format['dateformat'])
+        else:
+            # Extract date from file creation date
+            return dtparse.parse(time.ctime(os.path.getmtime(path)))
 
     def __GenColumnAttributeSheet(self, wb, sheetname = None):
         """

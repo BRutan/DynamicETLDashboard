@@ -1,0 +1,13 @@
+{
+  "processname": "indexiq_basket_daily_process",
+  "data": {
+    "path": "C:\\Shared\\ETF Global\\Projects\\indexiq funds and basket dags\\20210430\\",
+    "sheets": ["BasketExcel"],
+    "rowstart" : 8
+  },
+  "outputfolder": "C:\\Shared\\ETF Global\\Projects\\indexiq funds and basket dags\\Report\\",
+  "recursive" : "false",
+  "filenamereg": "Index IQ EPIC Basket Detail.xlsx",
+  "tablename": "indexiq_basket",
+  "allnull": "true"
+}

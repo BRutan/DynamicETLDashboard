@@ -12,20 +12,21 @@ import os
 import pandas
 from pandas import DataFrame
 from sortedcontainers import SortedDict
+import time
 
 class ColumnAttributes(object):
     """
     * Container of multiple ColAttributes for single entity.
     """
-    def __init__(self, path, fileDateFormat, sheet = None, delim = None):
+    def __init__(self, path, fileDateFormat = None, sheet = None, delim = None, skiprows = None):
         """
         * Instantiate object containing meta information about
         dataset located at path.
         Inputs:
         * path: String path to dataset.
+        Optional:
         * fileDateFormat: dictionary containing 'dateformat' and 
         'regex' as attributes.
-        Optional:
         * sheet: String name of sheet in workbook located at path.
         * delim: String delimiter for csv file.
         """
@@ -36,7 +37,7 @@ class ColumnAttributes(object):
         self.__attributes = SortedDict()
         self.__error = ''
         self.__GetFileDate(fileDateFormat)
-        self.__ParseFile(delim)
+        self.__ParseFile(delim,skiprows)
 
     def __eq__(self, attributes):
         """
@@ -117,16 +118,15 @@ class ColumnAttributes(object):
         for col in colAttrLeft.Attributes:
             attrs[col] = ColumnAttribute.LeastRestrictive(colAttrLeft[col], colAttrRight[col])
 
-
     ######################
     # Private Helpers:
     ######################
-    def __ParseFile(self, delim = None):
+    def __ParseFile(self, delim = None, skiprows = None):
         """
         * Parse column all column attributes in DataFrame.
         """
         try:
-            data = self.__GetFileData(delim)
+            data = self.__GetFileData(delim, skiprows)
         except BaseException as ex:
             self.__error = str(ex)
             return
@@ -151,19 +151,28 @@ class ColumnAttributes(object):
         """
         * Extract FileDate from file (every file must have a file date).
         """
-        format = { arg.lower() : format[arg] for arg in format }
-        filename = os.path.split(self.__path)[1]
-        try:
-            match = format['regex'].search(filename)[0]
-        except Exception as ex:
-            raise Exception('File regex does not work with one or more filepaths.')
-        self.__fileDate = datetime.strptime(match, format['dateformat'])
+        if format is None:
+            # Get file date from file itself if not in file name:
+            self.__fileDate = time.ctime(os.path.getmtime(self.__path))
+        else:
+            format = { arg.lower() : format[arg] for arg in format }
+            filename = os.path.split(self.__path)[1]
+            try:
+                match = format['regex'].search(filename)[0]
+            except Exception as ex:
+                raise Exception('File regex does not work with one or more filepaths.')
+            self.__fileDate = datetime.strptime(match, format['dateformat'])
 
-    def __GetFileData(self, delim = None):
+    def __GetFileData(self, delim = None, skiprows = None):
         """
         * Pull dataset from file at stored path.
         """
         if '.csv' in self.__path:
-            return pandas.read_csv(self.__path, delimiter = delim)
-        elif '.xls' in self.__path:
-            return pandas.read_excel(self.__path, sheet_name = (0 if self.__sheetname is None else self.__sheetname))
+            return pandas.read_csv(self.__path,skiprows = skiprows,delimiter = delim)
+        elif self.__path.endswith('.xls'):
+            return pandas.read_excel(self.__path,skiprows = skiprows,sheet_name = (0 if self.__sheetname is None else self.__sheetname))
+        elif self.__path.endswith('.xlsx'):
+            data = pandas.read_excel(self.__path,skiprows = skiprows,sheet_name = (0 if self.__sheetname is None else self.__sheetname),engine = 'openpyxl')
+            return data
+        else:
+            raise ValueError('%s extension is invalid.' % self.__path[self.__path.find('.'):])

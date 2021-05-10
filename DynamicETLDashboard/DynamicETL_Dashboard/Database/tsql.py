@@ -476,7 +476,9 @@ class TSQLTable(SQLTableObject):
     ################
 
 
-
+############################
+# Column Class:
+############################
 class TSQLColumnDefinition(ColumnDefinition):
     """
     * Column definition appropriate

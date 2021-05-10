@@ -1,15 +1,14 @@
 {
-  "etlname": "GEMS.DyEtl.Regulatory.TradeRequests",
+  "etlname": "indexiq_basket_daily_process",
   "data": {
-    "path": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\",
-    "delim" : "|"
+    "path": "C:\\Shared\\ETF Global\\Projects\\indexiq funds and basket dags\\20210430\\"
   },
-  "outputfolder": "C:\\Users\\berutan\\Desktop\\Projects\\New ETL\\GEMS.DyEtl.Regulatory.TradeRequests\\New Dataset\\",
+  "outputfolder": "C:\\Shared\\ETF Global\\Projects\\indexiq funds and basket dags\\Report\\",
   "filedatereg": {
     "Regex": "\\d{8}",
     "DateFormat": "%m%d%Y"
   },
-  "filenamereg": "TradeRequestAllStatus_\\d{8}.csv",
-  "tablename": "RegulatoryTradeRequests",
-  "allnull" :  "true"
+  "filenamereg": "Index IQ EPIC Basket Detail_\\d{8}.csv",
+  "tablename": "indexiq_basket",
+  "allnull": "true"
 }

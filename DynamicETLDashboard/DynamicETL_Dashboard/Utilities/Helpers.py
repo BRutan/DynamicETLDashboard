@@ -9,7 +9,7 @@ from datetime import datetime
 import dateutil.parser as dateparse
 #from docx import Document
 import json
-from jsonargparse import ArgumentError
+#from jsonargparse import ArgumentError
 import os
 import re
 from time import sleep

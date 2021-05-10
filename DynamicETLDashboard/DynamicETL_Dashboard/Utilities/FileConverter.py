@@ -83,10 +83,22 @@ class FileConverter:
         if errs:
             raise Exception('\n'.join(errs))
         filePaths = {}
-        if filereg:
-            filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file)) and filereg.match(file)}
+        if not subdirs:
+            if filereg:
+                filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file)) and filereg.match(file)}
+            else:
+                filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file))}
         else:
-            filePaths = { file : os.path.join(folderpath, file) for file in os.listdir(folderpath) if os.path.isfile(os.path.join(folderpath, file))}
+            # Get all files (with or without signature) in all folders within top directory (only down one level):
+            filePaths = {}
+            # traverse root directory, and list directories as dirs and files as files
+            for root, dirs, files in os.walk(folderpath):
+                if not dirs:
+                    pass
+                else:
+                    for dir in dirs:
+                        for file in files:
+                            pass
         return filePaths
 
     @classmethod

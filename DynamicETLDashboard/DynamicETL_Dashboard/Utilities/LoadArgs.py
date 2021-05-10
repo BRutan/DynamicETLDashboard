@@ -119,6 +119,104 @@ def ETLDashboardJsonArgs():
     return args
 
 ############################
+# EvaluateData.py
+############################
+def EvaluateDataJsonArgs():
+    """
+    * Get arguments used in EvaluateData.py script.
+    """
+    req = set(['data','filenamereg','outputfolder','processname','recursive','tablename'])
+    opt = set(['allnull','filedatereg'])
+    path = 'ScriptArgs\\EvaluateData.json'
+    if not os.path.exists(path):
+        raise Exception('%s is missing.' % path)
+    args = json.load(open(path, 'rb'))
+    missing = req - set(args)
+    if missing:
+        raise Exception('The following required arguments are missing: %s' % ','.join(missing))
+    errs = []
+    #############################
+    # Required Arguments:
+    #############################
+    # "processname":
+    if not isinstance(args['processname'], str):
+        errs.append('(processname) Must be a string.')
+        
+    # "data":
+    if 'path' not in args['data']:
+        missing.append('data::path')
+    elif not os.path.isdir(args['data']['path']):
+        errs.append('data::path must point to folder.')
+    elif not os.path.exists(args['data']['path']):
+        errs.append(' '.join(['(data::path)', args['data']['path'], ' does not exist.']))
+    if 'sheets' in args['data']:
+        if not isinstance(args['data']['sheets'],list):
+            errs.append('data::sheets must be a list.')
+    else:
+        args['data']['sheets'] = None
+    if 'delim' in args['data'] and not isinstance(args['data']['delim'], str):
+        errs.append('data::delim must be a string.')
+    else:
+        args['data']['delim'] = None
+
+    if 'rowstart' in args['data']:
+        if not isinstance(args['data']['rowstart'], int):
+            errs.append('data::rowstart must be an integer.')
+        elif not args['data']['rowstart'] >= 0:
+            errs.append('data::rowstart must be nonnegative integer.')
+    
+    # "filenamereg":
+    if 'filenamereg' in args and not IsRegex(args['filenamereg']):
+        errs.append(' '.join(['(filenamereg) ', args['filenamereg'], ' is not a valid regular expression.']))
+    else:
+        args['filenamereg'] = re.compile(args['filenamereg'])
+
+    # "outputfolder":
+    if not os.path.isdir(args['outputfolder']):
+        errs.append('(outputfolder) Folder does not exist.')
+    elif not args['outputfolder'].endswith('\\'):
+        args['outputfolder'] = args['outputfolder'] + '\\'
+    
+    # "recursive":
+    tf = {'true' : True, 'false' : False}
+    if 'recursive' in args and not args['recursive'].lower() in tf:
+        errs.append('(recursive) Must be true/false.')
+    else:
+        args['recursive'] = tf[args['recursive'].lower()]
+        
+    #####################
+    # Optional:
+    #####################
+    # "allnull" arguments:
+    if 'allnull' in args:
+        if not args['allnull'].lower() in ['true', 'false']:
+            errs.append('allnull must be "true"/"false".')
+        else:
+            args['allnull'] = tf[args['allnull'].lower()]
+    else:
+        args['allnull'] = False
+
+    # "filedatereg":
+    if 'filedatereg' in args:
+        if not 'Regex' in args['filedatereg']:
+            errs.append('filedatereg requires "Regex" argument.')
+        elif not IsRegex(args['filedatereg']['Regex']):
+            errs.append(' '.join(['(filedatereg)', args['filedatereg']['Regex'], 'Not a valid regular expression.']))
+        else:
+            args['filedatereg'] = re.compile(args['filedatereg']['Regex'])
+    else:
+        # Pull all files in folder:
+        args['filedatereg'] = None
+
+    if missing:
+        errs.append('The following required subarguments are missing: {%s}' % ', '.join(missing))
+    if errs:
+        raise Exception("\n".join(errs))
+
+    return args
+    
+
+############################
 # GenerateColumnAttributesReport.py
 ############################
 class Arguments(object):
@@ -183,7 +281,9 @@ class Arguments(object):
             errs.append('data::delim must be a string.')
         
         # "filedatereg":
-        if not IsRegex(args['filedatereg']['Regex']):
+        if not 'Regex' in args['filedatereg']:
+            errs.append('filedatereg requires "Regex" argument.')
+        elif not IsRegex(args['filedatereg']['Regex']):
             errs.append(' '.join(['(filedatereg)', args['filedatereg']['Regex'], 'Not a valid regular expression.']))
 
         # "outputfolder":
