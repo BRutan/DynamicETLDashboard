@@ -124,27 +124,40 @@ class DataColumnAttributes(object):
                         self.__columnChgDates[currAttrs.FileDate][sheetname] = currAttrs - prevAttrs
                     prevAttrs = currAttrs
 
-    def GenerateReport(self, path):
+    def GenerateReport(self, path, comparecols = False):
         """
         * Output report to file at path.
+        Inputs:
+        * path: String path to output xlsx report.
+        Optional:
+        * comparecols: If True then generate sheet listing all 
+        unique columns and indicate whether each 
+        data source has that column.
         """
+        errs = []
         if not isinstance(path, str):
-            raise Exception("path must be a string.")
+            errs.append("path must be a string.")
         elif not '.xlsx' in path:
-            raise Exception("file must be a .xlsx file.")
+            errs.append("file must be a .xlsx file.")
+        if not isinstance(comparecols, bool):
+            errs.append('comparecols must be a boolean.')
+        if errs:
+            raise ValueError('\n'.join(errs))
         if not self.__dateToAttrs:
-            # Skip report if no column attributes could be generated:
+            # Skip report if no column attributes were generated:
             return
         # Generate one report per sheet in workbook if
         # data workbooks consist of multiple sheets:
         if not self.__sheets is None:
-            self.__GenerateAllReports(path)
+            self.__GenerateAllReports(path, comparecols)
         else:
             wb = xlsxwriter.Workbook(path)
             self.__GenColumnAttributeSheet(wb)
             self.__GenColChangeDateSheet(wb)
             self.__GenColRelationshipsSheet(wb)
             self.__GenUniquesSheet(wb)
+            if comparecols:
+                self.__GenColumnCompareSheet(wb)
             wb.close()
         
     def CreateTableDefinitions(self, outputpath, table = None, allnull = False):
@@ -217,7 +230,7 @@ class DataColumnAttributes(object):
                 # Map { FileDate -> { SheetName -> ColumnAttributes }}:
                 self.__dateToAttrs[filedate][sheetname] = currAttrs
 
-    def __GenerateAllReports(self, path):
+    def __GenerateAllReports(self, path, comparecols):
         """
         * Generate one report per target sheet.
         """
@@ -230,7 +243,13 @@ class DataColumnAttributes(object):
             self.__GenColChangeDateSheet(wb, sheetname)
             self.__GenColRelationshipsSheet(wb, sheetname)
             self.__GenUniquesSheet(wb, sheetname)
-            wb.close()
+        if comparecols:
+            # Generate sheet listing all unique columns across all
+            # datasources, indicating whether each datasource has
+            self.__GenColumnCompareSheet(wb)
+
+        wb.close()
+
         
     def __GetFileDate(self, path):
         """
@@ -342,6 +361,14 @@ class DataColumnAttributes(object):
                         # Write column headers:
                         relSheet.write(filerow, num, col, headerFormat)
             rowOff += df.shape[0] + 3
+
+    def __GenColumnCompareSheet(self, wb):
+        """
+        * Generate sheet detailing whether or not columns
+        present in target files.
+        """
+        pass
+
 
     def __GenUniquesSheet(self, wb, sheetname = None):
         """

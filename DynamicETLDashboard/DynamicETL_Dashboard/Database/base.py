@@ -7,6 +7,7 @@
 
 from abc import ABC, abstractmethod
 import copy
+import numpy as np
 
 ############################
 # Database Base Class:
@@ -45,78 +46,45 @@ class TableObject(ABC):
     * Abstract base class for derived table objects 
     that can be used in various SQL or database languages.
     """
-    def __init__(self, name, database, server):
+    def __init__(self, name, dbname, servername, language):
         """
-        * Table object that uses common
-        SQL functionality and attributes.
+        * Initialize base class members.
+        Inputs:
+        * name: String name of table.
+        * dbname: String name of database (can be None if not attached to database yet).
+        * servername: String name of server (can be None if not attached to server yet).
+        * language: SQL language flavor.
         """
-        SQLTableObject.__Validate(database, server)
-        self.__NormalizeAndSetMembers(database, server)
-        super(self).__init__(name)
+        self.__checkinputs(name, dbname, servername, language)
+        self.__columns = {}
+        self.__tablename = name
+        self.__dbname = database
+        self.__servername = servername
+        self.__language = language
 
-    def __sub__(self, sqlTable):
+    def __sub__(self, table):
         """
         * Subtraction operator overload. 
         Generate ALTER COLUMN script based upon 
         difference between two tables.
         Inputs:
-        * sqlTable: SQLTableObject to compare this table
-        against. Must have same name and belong to same database
-        as this table.
+        *
         """
-        if not isinstance(sqlTable, SQLTableObject):
-            raise Exception('subtraction operator not supported with %s.' % str(type(sqlTable)))
-        elif not (self.Name == sqlTable.Name and self.Database == sqlTable.Database and self.Server == sqlTable.Server):
-            raise Exception('sqlTable must have same Name and belong to same Database.')
+        if not isinstance(table, TableObject):
+            raise Exception('subtraction operator not supported with %s.' % str(type(table)))
+        elif not (self.Name == table.Name and self.Database == sqlTable.Database and self.Server == sqlTable.Server):
+            raise Exception('')
         pass
 
-    ###############
-    # Properties:
-    ###############
-    @property
-    def Database(self):
-        return self.__database
-    @property
-    def Server(self):
-        return self.__server
-    ###############
-    # Private Helpers:
-    ###############
-    def __NormalizeAndSetMembers(self, database, server):
+    def __eq__(self, table):
         """
-        * Normalize members and store state in object.
-        I.E. put all members in lowercase since SQL
-        in general is case sensitive for database object
-        names.
+        * Determine if all aspects of table are the same.
+        Inputs:
+        * 
         """
-        self.__database = database.lower()
-        self.__server = server.lower()
-    @staticmethod
-    def __Validate(database, server):
-        """
-        * Validate constructor parameters.
-        """
-        errs = []
-        if not isinstance(database, str):
-            errs.append('database must be a string.')
-        if not isinstance(server, str):
-            errs.append('server must be a string.')
-        if errs:
-            raise Exception('\n'.join(errs))
-
-# Alt:
-class TableObject(ABC):
-    """
-    * Abstract base class for derived table objects 
-    that can be used in various SQL or database languages.
-    """
-    def __init__(self, name):
-        """
-        * Initialize base class members.
-        """
-        self.__columns = {}
-        self.__tablename = name
-
+        if not isinstance(table, TableObject):
+            raise Exception('subtraction operator not supported with %s.' % str(type(table)))
+        
     ##################
     # Properties:
     ##################
@@ -127,15 +95,25 @@ class TableObject(ABC):
         """
         return copy.deepcopy(self.__columns)
     @property
+    def DatabaseName(self):
+        return self.__dbname
+    @property
+    def Name(self):
+        return self.__name
+    @property
+    def ServerName(self):
+        return self.__servername
+    @property
     def TableName(self):
         return self.__tablename
     ##################
     # Interface Methods:
     ##################
     @abstractmethod
-    def GenerateTableDef(self, path):
+    def ImportTableDef(self, path):
         """
-        * Generate table definition at path.
+        * Import table definition using
+        file.
         """
         pass
     @abstractmethod
@@ -145,12 +123,21 @@ class TableObject(ABC):
         into TableObject.
         """
         pass
-    @abstractmethod
-    def TableDifference(self, table, path):
+    ##################
+    # Private Helpers:
+    ##################
+    def __checkinputs(self, name, dbname, servername, language):
         """
-        * Generate a column update script 
-        at path based upon difference between
-        two tables.
+        * Ensure constructor inputs are valid.
         """
-        pass
-    
+        errs = []
+        if not isinstance(name,str):
+            errs.append('name must be a string.')
+        if not dbname is None and not isinstance(dbname, str):
+            errs.append('dbname must be a string if provided.')
+        if not servername is None and not isinstance(servername, str):
+            errs.append('servername must be a string.')
+        if not isinstance(language, str):
+            errs.append('language must be a string.')
+        if errs:
+            raise ValueError('\n'.join(errs))

@@ -6,6 +6,7 @@
 # with SQL database that uses T-SQL
 # as SQL flavor language.
 
+from Database.columnattributes import ColumnAttributesGenerator
 from itertools import combinations
 from numba import jit
 import numpy as np
@@ -546,3 +547,17 @@ class TSQLColumnDefinition(ColumnDefinition):
     ###############
 
 
+class TSQLColumnConverter(ColumnAttributesGenerator):
+    """
+    * Map numpy dtypes to postgresql
+    types and attributes for usage in creating tables.
+    """
+    __conversionTable = {'i ':' ', 'b ':' ', 'u ':' ', 'f ':' ', 'c ':' ', 'm ':' ', 'M ':' ', 'O ':' ', 'S ':' ', 'U ':' ', 'V ':' '}
+    @staticmethod
+    def GetColumnTypes(df):
+        """
+        * Get column types appropriate for PostGreSQL from
+        numpy dtypes.
+        """
+        out = {}
+        tps = ColumnAttributesGenerator.GetColumnTypes(df)

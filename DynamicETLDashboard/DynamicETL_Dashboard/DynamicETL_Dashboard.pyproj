@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Scripts\EvaluateData.py</StartupFile>
+    <StartupFile>Database\postgres.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Database\base.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\columnattributes.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Database\postgres.py">

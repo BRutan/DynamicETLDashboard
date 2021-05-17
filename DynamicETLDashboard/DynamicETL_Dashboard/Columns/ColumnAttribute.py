@@ -22,18 +22,18 @@ class ColumnAttribute(object):
     __floatPattern = re.compile('\.[0-9]')
     __numericPattern = re.compile('^[0-9]+(\.[0-9]+)$')
     __tSQLTypes = set(__dtypeToSQLType.values())
-    def __init__(self, name):
+    def __init__(self, name, isnullable = None, isunique = None, uniquecount = None, uniques = None, type = None):
         """
         * Instantiate attributes for data column.
         """
         if not isinstance(name, str):
             raise Exception('name must be a string.')
         self.__colName = name
-        self.__isNullable = None
-        self.__isUnique = None
-        self.__uniqueCount = None
-        self.__uniques = None
-        self.__type = None
+        self.__isNullable = isnullable
+        self.__isUnique = isunique
+        self.__uniqueCount = uniquecount
+        self.__uniques = uniques
+        self.__type = type
         
     def __eq__(self, col):
         """
