@@ -38,14 +38,14 @@ class ColumnAttributesGenerator(ABC):
         """
         if not isinstance(series, Series):
             raise ValueError('series must be a DataFrame Series object.')
-        elif not any([tp in series.dtype for tp in ColumnAttributesGenerator.__numerictps]):
+        elif not any([tp in series.dtype.str for tp in ColumnAttributesGenerator.__numerictps]):
             raise ValueError('series dtypes must be one of %s' % ','.join(ColumnAttributesGenerator.__numerictps))
-        series = series.astype('str')
-        digits = []
-        mantissa = []
-        maxdigits = np.argmax(digits)
+        series = series.astype('str').dropna()
+        digits = [len(val[0:val.find('.')]) for val in series]
+        mantissa = [len(val[val.find('.'):]) for val in series]
+        maxdigit = np.argmax(digits)
         maxmantissa = np.argmax(mantissa)
-        return [digits, mantissa]
+        return (digits[maxdigit], mantissa[maxmantissa])
 
     @staticmethod
     def GetMaxStringLen(series):
@@ -60,8 +60,11 @@ class ColumnAttributesGenerator(ABC):
             raise ValueError('series must be a DataFrame Series object.')
         elif series.dtype != 'object':
             raise ValueError('series must have object dtype.')
-        lengths = np.argmax(series.apply(lambda x : len(x))) 
-        return lengths[0] if len(lengths) > 0 else 0
+        if len(series) == 0:
+            return 0
+        lengths = series.dropna().apply(lambda x : len(x))
+        maxlenidx = np.argmax(lengths) 
+        return lengths[maxlenidx]
 
     @staticmethod
     def GetColumnTypes(df):
