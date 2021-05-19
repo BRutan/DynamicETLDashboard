@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b3db16db-a958-4583-a420-4b90b1661bb8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Database\columnattributes.py</StartupFile>
+    <StartupFile>Database\postgres.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -118,6 +118,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Filepaths\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Scripts\CompareGroupedData.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scripts\EvaluateData.py">
@@ -241,6 +244,7 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ScriptArgs\CompareGroupedData.json" />
     <Content Include="ScriptArgs\AddFileWatcherConfig.json" />
     <Content Include="AppsettingsFiles\appsettings-template.json" />
     <Content Include="Config\config.json" />

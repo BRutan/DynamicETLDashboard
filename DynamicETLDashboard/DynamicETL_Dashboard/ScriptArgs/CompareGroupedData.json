@@ -1,0 +1,9 @@
+{
+  "folder": "/20210430/",
+  "filepattern": "(.*)_Holdings_WithCash_IndexIQ_04302021.xls",
+  "reportfile": "columnreport.csv",
+  "dropunnamed": true,
+  "dropduplicates": true,
+  "standardize": true,
+  "skiprows": 1
+}

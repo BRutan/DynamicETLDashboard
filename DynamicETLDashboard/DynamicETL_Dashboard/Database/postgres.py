@@ -96,15 +96,18 @@ class PostGresTable(TableObject):
     # Interface Methods:
     ################
     @staticmethod
-    def GenerateTableDef(df, tablename, outpath = None, template = None):
+    def GenerateTableDef(df, tablename, std_names = False, outpath = None, templatedef = False, template = None):
         """
         * Convert passed dataframe with dtypes into
         CREATE TABLE script with appropriate types for PostGresSQL.
         Inputs:
-        * df: Pandas dataframe.
-        * tablename: String name for table.
+        * df: Pandas dataframe containing data to store in PostGresSQL table.
+        * tablename: string name for table.
         Optional:
+        * std_names: lowercase all column names and replace with underscores.
         * outpath: string path to output table definition.
+        * templatedef: put True to include a "template" table definition 
+        with character varying as all types.
         * template: path to file to insert table definition. 
         Must have one %s placed to indicate where to place
         table definition.
@@ -114,22 +117,40 @@ class PostGresTable(TableObject):
             errs.append('df must be a DataFrame.')
         if not isinstance(tablename, str):
             errs.append('tablename must be a string.')
+        if not isinstance(std_names, bool):
+            errs.append('std_names must be boolean.')
         if not outpath is None and not isinstance(outpath, str):
             errs.append('outpath must be a string if provided.')
+        elif not outpath.endswith('\\'):
+            outpath += '\\'
         if not template is None:
             if not isinstance(template, str):
                 errs.append('template must be a string path if provided.')
             elif not os.path.exists(template):
                 errs.append('template does not exist at path.')
+        if not isinstance(templatedef, bool):
+            errs.append('templatedef must be boolean.')
         if errs:
             raise ValueError('\n'.join(errs))
+        if std_names:
+            df = ColumnAttributesGenerator.StandardizeNames(df)
         # Convert types:
         types = PostGresColumnConverter.GetColumnTypes(df)
         attributes = PostGresColumnConverter.GetColumnAttributes(df)
         definition = ['CREATE TABLE %s' % tablename, '(']
-        for col in types:
-            definition.append('%s %s %s,')
+        if templatedef:
+            t_definition = ['CREATE TABLE %s_template' % tablename, '(']
+        for num, col in enumerate(types):
+            attr = attributes[col]
+            addl = 'NOT NULL ' if not attr['nullable'] else ''
+            definition.append('%s %s %s%s' % (col, types[col], addl, ',' if num != len(types) - 1 else ''))
+            if templatedef:
+                t_definition.append('%s character varying%s' % (col,',' if num != len(types) - 1 else ''))
         definition.append(')')
+        if templatedef:
+            t_definition.append(')')
+            definition.append('\n')
+            definition.extend(t_definition)
         if not outpath is None:
             with open('%s%s.sql' % (outpath, tablename), 'w') as f:
                 f.write('\n'.join(definition))
@@ -195,9 +216,11 @@ class PostGresColumnConverter(ColumnAttributesGenerator):
                     prec = nptp[1:]
                     nptp = nptp[0]
                     tp = PostGresColumnConverter.__conversionTable[nptp][prec]
-                elif '|' in nptp:
-                    nptp = nptp.replace('|', '')
-                    PostGresColumnConverter.__conversionTable[nptp]
+                elif 'O' in nptp:
+                    nptp = nptp.replace('|', '') if '|' in nptp else nptp
+                    tp = PostGresColumnConverter.__conversionTable[nptp]
+                    max_len = ColumnAttributesGenerator.GetMaxStringLen(df[name])
+                    tp = '%s(%s)' % (tp, max_len)
                 else:
                     tp = PostGresColumnConverter.__conversionTable[nptp]
                 out[name] = tp
@@ -222,6 +245,6 @@ class PostGresColumnConverter(ColumnAttributesGenerator):
         return ColumnAttributesGenerator.GetColumnAttributes(df)
 
 
-df = read_csv(r'C:\Shared\ETF Global\Projects\indexiq funds and basket dags\csv_output\IndexIQ_processed_constituents.csv')
+df = read_csv(r'C:\Shared\ETF Global\Projects\indexiq funds and basket dags\indexiq_dags\cleaned\IndexIQ_04302021_processed_constituents.csv')
 df = df[[col for col in df.columns if not 'Unnamed: ' in col]]
-PostGresTable.GenerateTableDef(df,'indexiq_table',r'C:\Shared\ETF Global\Projects\indexiq funds and basket dags',None)
+PostGresTable.GenerateTableDef(df,'index_holdings',True,r'C:\Shared\ETF Global\Projects\indexiq funds and basket dags',True)
